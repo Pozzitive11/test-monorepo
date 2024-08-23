@@ -1,0 +1,49 @@
+
+.bodys2 {
+  text-align: center;
+
+  border: 1px black solid;
+  background-color: dimgray;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.table {
+
+  width: 50%;
+}
+
+.lo {
+  position: absolute;
+  left: 100px;
+}
+
+.po {
+  position: absolute;
+  left: 700px;
+}
+
+.head {
+  border: 5px black solid;
+  text-align: center;
+  background-color: #b6effb;
+  height: 30px;
+}
+
+.bodys {
+  border: 1px black solid;
+}
+
+.bodys1 {
+  text-align: center;
+  border: 1px black solid;
+  height: 40px;
+}
+
+tr.data {
+  background: #b6effb;
+  font-weight: bold;
+}

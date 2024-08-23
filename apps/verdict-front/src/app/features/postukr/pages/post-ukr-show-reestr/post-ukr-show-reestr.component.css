@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+.bg {
+  margin-top: 20px;
+  background-color: #b6effb;
+  border-radius: 20px;
+  padding: 10px;
+
+  width: 600px;
+  height: 200px;
+}
+
+.form {
+  border: 2px black solid;
+  width: 580px;
+  height: auto;
+  border-radius: 20px;
+}
+
+.form-title {
+  color: #07123C;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: Geologica;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 66px; /* 117.857% */
+  text-align: center;
+}
+
+.form-text {
+  display: flex;
+  color: #07123C;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: Geologica;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  padding: 20px;
+}
+
+.form-input-text {
+  vertical-align: middle;
+  margin-left: 10px;
+}
+
+p {
+  margin: 0;
+}
+
+.form-file {
+  display: flex;
+  color: #07123C;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: Geologica;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  padding: 20px;
+
+
+}
+
+.custom-file-upload {
+  display: inline-block;
+  margin-left: 10px;
+  cursor: pointer;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+.custom-file-upload input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload:hover {
+  background-color: #e1e1e1;
+}
+
+.error-message {
+  display: flex;
+  color: red;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: Geologica;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: -20px;
+}
+
+.form-button {
+  padding: 20px;
+}
+
+.form-button-first {
+  padding: 10px;
+  background-color: #198754;
+  color: white;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: Geologica;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  border-radius: 15px;
+  border: 0px;
+}
+
+.form-button-first:hover {
+  background-color: #11633d;
+}
+
+.form-button-first:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}

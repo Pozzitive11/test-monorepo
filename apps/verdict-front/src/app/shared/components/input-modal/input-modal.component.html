@@ -1,0 +1,25 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ title() }}</h4>
+  <button (click)="activeModal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+</div>
+
+<div class="modal-body my-2 d-flex flex-column">
+  <input
+    (keydown.enter)="activeModal.close(value())"
+    [(ngModel)]="value"
+    [placeholder]="placeholder()"
+    [type]="typeOfInput()"
+    class="form-control"
+  >
+</div>
+
+<div class="modal-footer">
+  <button (click)="activeModal.dismiss()" class="btn btn-outline-secondary" type="button">
+    <i class="bi bi-x"></i> Скасувати
+  </button>
+
+  <button (click)="activeModal.close(value())" class="btn btn-outline-success" type="button">
+    <i class="bi bi-check"></i> Зберегти
+  </button>
+</div>
+

@@ -1,0 +1,32 @@
+.status-label {
+  display: flex;
+  padding: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  width: 100%;
+  align-items: center;
+}
+
+.custom-bg-fcbdbd {
+  background-color: #fcbdbd;
+}
+
+.custom-bg-a2e8a3 {
+  background-color: #a2e8a3;
+}
+
+.rowss {
+  flex-shrink: 0;
+  display: flex;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * .5);
+  padding-left: calc(var(--bs-gutter-x) * .5);
+  margin-top: var(--bs-gutter-y);
+}
+
+.symbol {
+  height: 130px;
+  width: 100%;
+
+}

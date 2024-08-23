@@ -1,0 +1,116 @@
+<!-- <ngb-progressbar
+  *ngIf="dataService.loading.pastInfoPage"
+  [animated]="true"
+  [height]="'5px'"
+  [striped]="true"
+  [type]="'success'"
+  [value]="100"
+></ngb-progressbar> -->
+<!-- [class.disabled-table]="dataService.loading.pastInfoPage" -->
+<div class="container-fluid top-margin-sm">
+  <h4 class="h4 mb-2">Запити по НКС</h4>
+
+  <div class="row top-margin-sm">
+    <div class="col-4">
+      <div class="mb-3">
+        <label class="form-label" for="ContractIdInput">НКС</label>
+        <div class="input-group">
+          <input
+            #contract
+            (dblclick)="contract.value = ''"
+            [(ngModel)]="contractId"
+            [class.is-invalid]="!contract.validity.valid"
+            [class.is-valid]="contract.validity.valid"
+            autofocus
+            class="form-control"
+            id="ContractIdInput"
+            pattern="\d*"
+            placeholder="Введіть НКС"
+            required
+            type="text"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-4 g-4 top-margin-sm">
+    <!-- <div (click)="contractId().length >= 8 ? openModal(content, 'longReq') : null" class="col pointer">
+      <div class="card h-100" [ngStyle]="contractId().length < 8 ? { opacity: '0.5' } : null">
+        <div class="card-header d-flex justify-content-between">НКС: {{ contractId() }}</div>
+        <div class="card-body">
+          <h5 class="card-title">Довгі заявки</h5>
+        </div>
+      </div>
+    </div> -->
+    <!-- (click)="contractId().length >= 8 ? openModal(content, 'DsRs') : null" -->
+    <div
+      (click)="contractId().length >= 8 ? createDsRs() : null"
+      class="col pointer"
+    >
+      <div class="card h-100" [ngStyle]="contractId().length < 8 ? { opacity: '0.5' } : null">
+        <div class="card-header d-flex justify-content-between">НКС: {{ contractId() }}</div>
+        <div class="card-body">
+          <h5 class="card-title">ДС/РС</h5>
+        </div>
+      </div>
+    </div>
+    <div (click)="contractId().length >= 8 ? requestForDocuments() : null" class="col pointer">
+      <div class="card h-100" [ngStyle]="contractId().length < 8 ? { opacity: '0.5' } : null">
+        <div class="card-header d-flex justify-content-between">НКС: {{ contractId() }}</div>
+        <div class="card-body">
+          <h5 class="card-title">Запит документів</h5>
+        </div>
+      </div>
+    </div>
+    <div (click)="contractId().length >= 8 ? openModal(content, 'closCer') : null" class="col pointer">
+      <div class="card h-100" [ngStyle]="contractId().length < 8 ? { opacity: '0.5' } : null">
+        <div class="card-header d-flex justify-content-between">НКС: {{ contractId() }}</div>
+        <div class="card-body">
+          <h5 class="card-title">Довідка про закриття</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">НКС: {{ contractId() }}</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      @switch (cardType()) {
+        @case ('longReq') {
+          <ngb-progressbar
+            *ngIf="lrDataService.loading.nksManagement"
+            [animated]="true"
+            [height]="'5px'"
+            [striped]="true"
+            [type]="'success'"
+            [value]="100"
+          ></ngb-progressbar>
+          <div *ngFor="let prom of lrDataService.contractPromotions()" class="col">
+            <lr-contract-promotion-card (selected)="selectPromotion($event)" [contractPromotion]="prom">
+            </lr-contract-promotion-card>
+          </div>
+          <div (click)="createPromotion()" class="col pointer mt-2">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between">
+                НКС: {{ contractId() }}
+                <i class="bi bi-plus-circle d-block fs-5"></i>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Створити нову довгу заявку</h5>
+              </div>
+            </div>
+          </div>
+        }
+        @case ('DsRs') {
+          <h2>DSRS</h2>
+        }
+        @case ('closCer') {
+          <app-dc-create-closing-certificate [contractId]="contractId()"></app-dc-create-closing-certificate>
+        }
+      }
+    </div>
+  </ng-template>
+</div>

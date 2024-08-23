@@ -1,0 +1,90 @@
+@if (document()) {
+  <ngb-progressbar
+  *ngIf="loading()"
+  [animated]="true"
+  [height]="'5px'"
+  [striped]="true"
+  [type]="'info'"
+  [value]="100"
+></ngb-progressbar>
+  <div ngbAccordion #accordion="ngbAccordion" class="mb-3">
+    <div [ngbAccordionItem]="document()?.DocName || ''">
+      <h2 ngbAccordionHeader>
+        <button ngbAccordionButton>{{ document()?.DocName }}</button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <app-file-upload
+              (fileAdded)="selectFiles($event)"
+              [id]="'otherDocsInput'"
+              [multiple]="true"
+            ></app-file-upload>
+            @if (selectedFiles().length > 0) {
+              <div class="alert alert-primary">
+                <div class="row">
+                  <div
+                    *ngFor="let file of selectedFiles(); let i = index"
+                    class="input-group top-margin-sm text-12"
+                    ngbDropdown
+                  >
+                    <button
+                      [class.btn-outline-danger]="!file.docType"
+                      [class.btn-outline-success]="!!file.docType"
+                      class="btn text-14 text-start"
+                      ngbDropdownToggle
+                      style="width: 37%; overflow: hidden"
+                      type="button"
+                    >
+                      <span [title]="file.docType ? file.docType : 'Тип документа'">
+                        {{ file.docType ? file.docType : 'Тип документа' }}
+                      </span>
+                    </button>
+                    <span
+                      [class.btn-outline-danger]="!file.docType"
+                      [style.border]="file.docType ? '1px solid #198754' : '1px solid #dc3545'"
+                      [title]="file.file.name"
+                      class="input-group-text"
+                      style="width: 53%; overflow: hidden"
+                      >{{ file.file.name | shortText: 40 }}</span
+                    >
+
+                    <ul class="scrollable-drop-list" ngbDropdownMenu>
+                      @for (militaryDocType of militaryDocTypes(); track $index) {
+                        <li style="width: 300px">
+                          <a (mousedown)="file.docType = militaryDocType.name; file.fileId = militaryDocType.id" class="pointer" ngbDropdownItem>
+                            {{ militaryDocType.name }}
+                          </a>
+                        </li>
+                      }
+                    </ul>
+                    <button
+                      (click)="removeFile(i)"
+                      class="btn btn-outline-danger d-flex justify-content-center align-items-center"
+                      style="width: 7%; border-top-right-radius: 5px; border-bottom-right-radius: 5px"
+                    >
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
+            <button
+              (click)="uploadFiles()"
+              [disabled]="canUploadMilitaryDocs()"
+              class="btn btn-primary"
+            >Завантажити файли
+            </button>
+            <ul class="list-group list-group-flush">
+              @for (childItem of document()?.Children; track $index) {
+                <li class="list-group-item fw-bold">
+                  {{ childItem.DocName }}
+                </li>
+              }
+            </ul>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+}

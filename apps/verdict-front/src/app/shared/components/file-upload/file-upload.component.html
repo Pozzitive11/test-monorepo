@@ -1,0 +1,26 @@
+<div
+  class="row"
+>
+  <input
+    #fileInput
+    (change)="onUploadFile($event)"
+    [accept]="accepts"
+    [id]="id"
+    [multiple]="multiple"
+    hidden="hidden"
+    style="width: 100%; height: 100%"
+    type="file"
+  >
+  <div
+    #fileButton
+    (click)="fileInput.click()"
+    (dragleave)="fileButton.classList.replace('dragged-into', 'non-dragged')"
+    (dragover)="fileButton.classList.replace('non-dragged', 'dragged-into')"
+    (drop)="onFileDrop($event); fileButton.classList.replace('dragged-into', 'non-dragged')"
+    class="col-12 form-control-file non-dragged mt-2 mb-2"
+    draggable="true"
+  >
+    {{ title }}
+  </div>
+</div>
+

@@ -1,0 +1,70 @@
+<ngb-progressbar
+  *ngIf="loading"
+  [animated]="true"
+  [height]="'3px'"
+  [striped]="true"
+  [type]="'info'"
+  [value]="100"
+></ngb-progressbar>
+
+<ul class="list-group list-group-flush">
+  <li class="list-group-item">
+    <strong>Дата рішення:</strong>
+    <app-date-picker-popup
+      [(chosenDate)]="decisionDate"
+      [maxDate]="maxDecisionDate"
+      [minDate]="minDecisionDate"
+    ></app-date-picker-popup>
+  </li>
+
+  <li class="list-group-item">
+    <div *ngFor="let decision of inflation.DecisionSums; let index = index">
+      <strong>Сума рішення:</strong>
+      <app-sum-input
+        (inputBlur)="calculateAccruedSum()"
+        [(sum)]="decision.Sum"
+      >
+        <app-default-dropdown
+          (valueSelected)="changeCurrency(decision, $event)"
+          [btnClass]="'btn btn-outline-secondary ms-3'"
+          [cycled]="true"
+          [placement]="'bottom-end'"
+          [selectedValue]="decision.Currency"
+          [valueList]="currencies"
+        ></app-default-dropdown>
+        <span
+          (click)="removeDecisionSum(index)"
+          *ngIf="inflation.DecisionSums.length > 1"
+          class="bi bi-x-circle pointer ms-3 text-danger"
+          style="font-size: 25px">
+      </span>
+        <span
+          (click)="addDecisionSum()"
+          *ngIf="index === inflation.DecisionSums.length - 1"
+          class="bi bi-plus-circle pointer ms-3 text-primary"
+          style="font-size: 25px">
+      </span>
+      </app-sum-input>
+    </div>
+  </li>
+
+  <li class="list-group-item">
+    <strong>Нарахування:</strong>
+    <span class="float-end">
+    {{ accruedSum | currency: 'UAH':'symbol':'1.0-2' }}
+      <i [ngbTooltip]="accruedSumInfo" class="bi bi-question-circle"></i>
+    <ng-template #accruedSumInfo>
+      Інфляція: {{ inflation.InflationSum | currency: 'UAH':'symbol':'1.0-2' }} <br />
+      3%: {{ inflation.ThreePercentSum | currency: 'UAH':'symbol':'1.0-2' }}
+    </ng-template>
+  </span>
+  </li>
+
+  <li class="list-group-item mb-5">
+    <strong>Можливість подати позов на 3%:</strong>
+    <strong *ngIf="inflation.IsPossible" class="float-end text-success">є</strong>
+    <strong *ngIf="!inflation.IsPossible" class="float-end text-danger">відсутня</strong>
+  </li>
+</ul>
+
+

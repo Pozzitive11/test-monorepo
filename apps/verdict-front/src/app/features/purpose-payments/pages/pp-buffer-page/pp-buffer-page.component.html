@@ -1,0 +1,172 @@
+<div [class.disabled-table]="dataLoading$ | async" class="container-fluid">
+
+  <div class="row">
+    <div class="col-9">
+      <div class="h4 my-3">
+        <div class="d-inline-flex flex-wrap">
+          <span class="me-3 mt-2">Рознесення платежів</span>
+          <span class="me-5 mt-2">
+            <app-default-dropdown
+              (valueSelected)="updateProcessType($event)"
+              [cycled]="true"
+              [selectedValue]="processType"
+              [valueList]="processTypes"
+              btnClass="btn btn-outline-success dropdown-toggle d-inline"
+            ></app-default-dropdown>
+          </span>
+
+          <file-upload-button
+            (fileAdded)="sendUploadedIds($event)"
+            [buttonClass]="'btn btn-outline-primary me-2 mt-2 dashed-border'"
+            [title]="'Завантажити файл з id платежів'"
+          ></file-upload-button>
+
+          <button (click)="openSaveLayoutModal(saveLayoutModal)" class="btn btn-outline-warning me-2 mt-2">
+            Зберегти вигляд
+          </button>
+
+          <button (click)="openLoadLayout(selectLayoutModal)" class="btn btn-outline-warning me-2 mt-2">
+            Обрати вигляд
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="filterService.dataLength > 0" class="col-3 mt-3">
+      <ngb-pagination
+        (pageChange)="goToPage($event)"
+        [boundaryLinks]="true"
+        [collectionSize]="filterService.dataLength"
+        [maxSize]="3"
+        [pageSize]="filterService.maxRowsPerPage"
+        [page]="filterService.page"
+        [rotate]="true"
+      ></ngb-pagination>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+
+      <div class="row mt-3">
+        <pp-payment-update-errors
+        ></pp-payment-update-errors>
+      </div>
+
+      <div class="row">
+
+        <div class="col-12">
+          <button
+            (click)="openGlobalFilters()"
+            class="btn btn-outline-primary mt-2 me-2"
+          >
+            <i class="bi bi-arrow-bar-right"></i>
+            Відкрити фільтри
+          </button>
+
+          <button
+            (click)="downloadFileFromIds()"
+            [disabled]="!rowsSelected"
+            class="btn mt-2 me-2 btn-outline-primary"
+          >
+            Скачати файл з обраними id
+          </button>
+
+          <button
+            (click)="autoUpdatePaymentIds()"
+            [disabled]="!rowsSelected"
+            class="btn mt-2 me-2 btn-outline-primary"
+          >
+            Прив'язати обрані платежі до БД {{ processType }}
+          </button>
+
+          <ng-container *ngIf="wasChanged">
+            <button
+              (click)="saveChanges()"
+              class="btn btn-outline-success mt-2 me-2"
+            >Зберегти зміни
+            </button>
+
+            <button
+              (click)="resetChanges()"
+              class="btn btn-outline-danger mt-2 me-2"
+            >Скасувати зміни
+            </button>
+          </ng-container>
+        </div>
+
+      </div>
+
+      <div class="row mt-3">
+        <app-switch-checkbox [(value)]="showUnex" [id]="'showUnexSwitch'">
+          Відображати платежі Юнекс
+        </app-switch-checkbox>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+@if (!(dataLoading$ | async)) {
+  <hr>
+} @else {
+  <app-loading-bar
+    [customType]="'inf-bar'"
+    [loading]="true"
+    class="mt-2"
+  ></app-loading-bar>
+}
+
+<div>
+  <pp-table [class.disabled-table]="dataLoading$ | async"></pp-table>
+</div>
+
+
+<!--   MODALS TEMPLATES   -->
+<ng-template #saveLayoutModal let-modal>
+  <div class="modal-header">
+    <h6 class="modal-title">Оберіть необхідні дані для збереження</h6>
+    <button (click)="modal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+  </div>
+
+  <div class="modal-body">
+    <label class="form-label fw-bold" for="layoutName">Назва вигляду</label>
+    <input [(ngModel)]="filterService.layoutName" class="form-control mb-3" id="layoutName" placeholder="Назва вигляду"
+           type="text">
+
+    <app-searchable-list
+      [(selectedValues)]="selectedSettings"
+      [list]="settings"
+    ></app-searchable-list>
+  </div>
+
+  <div class="modal-footer">
+    <button (click)="modal.close()" [disabled]="selectedSettings.length === 0" class="btn btn-outline-primary"
+            type="button">Зберегти
+    </button>
+    <button (click)="modal.dismiss()" class="btn btn-outline-secondary" type="button">Відмінити</button>
+  </div>
+</ng-template>
+
+
+<ng-template #selectLayoutModal let-modal>
+  <div class="modal-header">
+    <h6 class="modal-title">Оберіть вигляд для застосування</h6>
+    <button (click)="modal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+  </div>
+
+  <div class="modal-body">
+    <app-searchable-list
+      (valueSelected)="filterService.loadLayout($event); modal.close()"
+      *ngIf="filterService.userLayouts$ | async as layouts"
+      [list]="layouts"
+      [multiple]="false"
+    ></app-searchable-list>
+  </div>
+
+  <div class="modal-footer">
+    <button (click)="modal.dismiss()" class="btn btn-outline-secondary" type="button">Відмінити</button>
+  </div>
+</ng-template>
+
+

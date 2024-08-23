@@ -1,0 +1,26 @@
+<h4 class="h4">Звірка платежів</h4>
+
+<ul
+  #nav="ngbNav"
+  (activeIdChange)="verificationService.activeTab.set($event)"
+  [activeId]="verificationService.activeTab()"
+  class="nav-tabs"
+  ngbNav>
+  <li [ngbNavItem]="'contractPayments'">
+    <button ngbNavLink>Звірка платежів НКС з виписками</button>
+    <ng-template ngbNavContent>
+      <ppv-contract-payments></ppv-contract-payments>
+    </ng-template>
+  </li>
+
+  <li [ngbNavItem]="'paymentDocs'">
+    <button ngbNavLink>Платежі без документів/заявок/інформації</button>
+    <ng-template ngbNavContent>
+      <ppv-payment-docs></ppv-payment-docs>
+    </ng-template>
+  </li>
+
+</ul>
+
+<div [ngbNavOutlet]="nav" class="mt-2"></div>
+

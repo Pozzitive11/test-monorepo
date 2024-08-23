@@ -1,0 +1,21 @@
+<div>
+  <form class="row row-cols-sm-auto">
+    <div>
+      <div class="input-group">
+        <input
+          #d="ngbDatepicker"
+          (dateSelect)="changeValue()"
+          (dblclick)="value=null; changeValue()"
+          [(ngModel)]="value"
+          class="form-control"
+          name="dp"
+          ngbDatepicker
+          placeholder="dd.mm.yyyy"
+        >
+        <button (click)="d.toggle()" class="btn btn-outline-secondary calendar" type="button"></button>
+      </div>
+    </div>
+  </form>
+</div>
+
+

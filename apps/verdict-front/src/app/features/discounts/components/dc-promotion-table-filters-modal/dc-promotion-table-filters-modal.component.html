@@ -1,0 +1,13 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{ title }}</h4>
+    <button (click)="modal.dismiss('Cross click')" aria-label="Close" class="btn-close" type="button"></button>
+  </div>
+  <div class="modal-body fs-5">
+    <ng-content></ng-content>
+  </div>
+</ng-template>
+
+<button (click)="open(content)" class="btn btn-lg btn-outline-primary modal-button">
+  <i class="bi bi-question-lg"></i>
+</button>

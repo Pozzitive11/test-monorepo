@@ -1,0 +1,214 @@
+<div class="container-fluid top-margin-sm">
+
+  <!--  ФИЛЬТРЫ ТУТ -->
+  <div class="row-cols-auto">
+    <button class="btn btn-outline-secondary" routerLink="/callcenter/SegmentsRPCNC">Повернутися</button>
+  </div>
+  <div class="row alert alert-info top-margin-sm">
+    <div class="row">
+      <div class="col-5">
+        <div class="form-check form-switch">
+          <a (click)="toggleDates()" class="nav-link pointer">
+            <input
+              [checked]="wholeTime"
+              class="form-check-input"
+              type="checkbox"
+            >
+            За весь час
+          </a>
+        </div>
+        <app-datepicker [disabled]="wholeTime"></app-datepicker>
+      </div>
+
+      <div class="col-5 top-margin-sm">
+        <p>Обрані проєкти:
+          <strong>{{ projects }}</strong>
+          <!--          <strong *ngFor="let project of projects; let p=index">-->
+          <!--            {{ project }}<strong *ngIf="p!==projects.length-1">; </strong>-->
+          <!--          </strong>-->
+        </p>
+        <p>Категорія: <strong>{{ positionRoute }}</strong></p>
+        <p>Регіон: <strong>{{ regionType }}</strong></p>
+        <p *ngIf="!wholeTime">
+          Період: з <strong>{{ startDate | formatDate }}</strong> по <strong>{{ endDate | formatDate }}</strong>
+        </p>
+        <p *ngIf="wholeTime">
+          Період: <strong>весь час</strong>
+        </p>
+        <div class="form-check form-switch">
+          <p *ngFor="let status of rpcNcDataService.phoneStatuses; let i=index">
+            <a (click)="togglePhoneStatus(status)" class="nav-link pointer">
+              <input
+                [checked]="status.selected"
+                class="form-check-input"
+                type="checkbox"
+              >
+              {{ status.name }}
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-4 top-margin-sm">
+        <div class="btn-group top-margin-sm" role="group">
+          <button
+            (click)="getData()"
+            [disabled]="!filtersSelected() || updating"
+            class="btn btn-success"
+          >
+            Завантажити дані
+          </button>
+          <button
+            (click)="updatePivot()"
+            [disabled]="updating || contractsPivot.actions.length === 0"
+            class="btn btn-primary"
+          >
+            Оновити фільтри
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!--  ТАБЛИЦА С ОТЧЁТОМ ТУТ -->
+  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+  <ngb-progressbar
+    *ngIf="updating"
+    [animated]="true"
+    [height]="'7px'"
+    [striped]="true"
+    [type]="'info'"
+    [value]="100"
+  ></ngb-progressbar>
+  <div
+    *ngIf="contractsPivot.actions.length > 0"
+    [class.disabled-table]="updating"
+    class="row max-height-div"
+  >
+    <div class="col-auto">
+      <table class="table table-bordered table-responsive table-hover table-sm text-13">
+        <caption>Кількість дій</caption>
+        <thead class="sticky-top">
+        <tr class="header-level">
+          <th scope="col">
+            Кількість дій по НКС
+          </th>
+          <th scope="col">
+            Кількість НКС
+          </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr
+          *ngFor="let row of contractsPivot.actions; let i=index"
+          [class.top-level-row-0]="row.range.includes('Всього')"
+          [class.top-level-row-1]="segments[i].selectedContract && !row.range.includes('Всього')"
+        >
+          <td (click)="segments[i].selectedContract=!segments[i].selectedContract"
+              [class.pointer]="!row.range.includes('Всього')"
+          >{{ row.range }}
+          </td>
+          <td
+            (click)="downloadPhonesFromContracts(row.contracts)"
+            class="pointer"
+          >{{ row.contractsCount | number:'1.0-0' }}
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-auto">
+      <table class="table table-bordered table-responsive table-hover table-sm text-13">
+        <caption>Кількість спроб по НКС, за якими було {{ actionPerContract }} дій</caption>
+        <thead class="sticky-top">
+        <tr class="header-level">
+          <th scope="col">
+            Кількість спроб по НКС
+          </th>
+          <th scope="col">
+            Кількість НКС
+          </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor="let row of contractsPivot.tries" [class.top-level-row-0]="row.range.includes('Всього')">
+          <td>{{ row.range }}</td>
+          <td
+            (click)="downloadPhonesFromContracts(row.contracts)"
+            class="pointer"
+          >{{ row.contractsCount | number:'1.0-0' }}
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-auto">
+      <table class="table table-bordered table-responsive table-hover table-sm text-13">
+        <caption>Кількість дій по телефонам</caption>
+        <thead class="sticky-top">
+        <tr class="header-level">
+          <th scope="col">
+            Кількість дій по телефонам
+          </th>
+          <th scope="col">
+            Кількість телефонів
+          </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr
+          *ngFor="let row of phonesPivot.actions; let i=index"
+          [class.top-level-row-0]="row.range.includes('Всього')"
+          [class.top-level-row-1]="segments[i].selectedPhone && !row.range.includes('Всього')"
+        >
+          <td (click)="segments[i].selectedPhone=!segments[i].selectedPhone"
+              [class.pointer]="!row.range.includes('Всього')"
+          >{{ row.range }}
+          </td>
+          <td (click)="downloadPhones(row.contractsPhones)"
+              class="pointer"
+          >{{ row.phonesCount | number:'1.0-0' }}
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-auto">
+      <table class="table table-bordered table-responsive table-hover table-sm text-13">
+        <caption>Кількість спроб по телефонам, по яких було {{ actionPerPhone }} дій</caption>
+        <thead class="sticky-top">
+        <tr class="header-level">
+          <th scope="col">
+            Кількість спроб по телефонам
+          </th>
+          <th scope="col">
+            Кількість телефонів
+          </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor="let row of phonesPivot.tries" [class.top-level-row-0]="row.range.includes('Всього')">
+          <td>{{ row.range }}</td>
+          <td (click)="downloadPhones(row.contractsPhones)"
+              class="pointer"
+          >{{ row.phonesCount | number:'1.0-0' }}
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+</div>
+

@@ -1,0 +1,67 @@
+<div class="row" style="margin-top: 50px">
+  <div class="col-4">
+    <ul class="nav flex-column">
+      <li (click)="allEP.show = !allEP.show" class="nav-link fs-4 nav-link d-flex" role="button">
+        Документація
+        <span></span>
+        <i
+          class="bi ms-2"
+          (click)="allEP.show = !allEP.show"
+          [class.bi-chevron-down]="!allEP.show"
+          [class.bi-chevron-up]="allEP.show"
+        ></i>
+      </li>
+
+      <ul *ngIf="allEP.show" class="nav nav-pills flex-column ms-3">
+        <li (click)="allEP.openedEP.show = !allEP.openedEP.show" class="nav-link d-flex" role="button">
+          Виконавчі впровадження
+          <i
+            [class.bi-chevron-down]="!allEP.openedEP.show"
+            [class.bi-chevron-up]="allEP.openedEP.show"
+            class="bi ms-2"
+          ></i>
+        </li>
+        <li *ngIf="allEP.openedEP.show" class="nav nav-pills flex-column ms-4">
+          <a class="nav-link d-flex" role="button" routerLink="executive">
+            <i
+              class="fa-solid fa-arrow-right"
+              style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px; padding-top: 4px"
+            ></i
+            >Процедури перевірки ВП
+          </a>
+        </li>
+      </ul>
+
+      <ul *ngIf="allEP.show" class="nav nav-pills flex-column ms-3">
+        <li class="nav-link d-flex" role="button">Судові процеси</li>
+      </ul>
+
+      <ul *ngIf="allEP.show" class="nav nav-pills flex-column ms-3">
+        <li (click)="allEP.stopEP.show = !allEP.stopEP.show" class="nav-link d-flex" role="button">
+          КЦ
+          <i [class.bi-chevron-down]="!allEP.stopEP.show" [class.bi-chevron-up]="allEP.stopEP.show" class="bi ms-2"></i>
+        </li>
+        <li *ngIf="allEP.stopEP.show" class="nav nav-pills flex-column ms-3">
+          <a class="nav-link d-flex" role="button" routerLink="list">
+            <i
+              class="fa-solid fa-arrow-right"
+              style="color: #1277da; margin-left: -33px; padding-right: 20px; padding-top: 4px"
+            ></i
+            >Стоп-листи
+          </a>
+        </li>
+        @for (document of documentationService.docsList(); track document.id) {
+          <li *ngIf="allEP.stopEP.show" class="nav nav-pills flex-column ms-3">
+            <a class="nav-link d-flex" role="button" (click)="documentationService.downloadFile(document.id)">
+              <i
+                class="fa-solid fa-arrow-right"
+                style="color: #1277da; margin-left: -33px; padding-right: 20px; padding-top: 4px"
+              ></i
+              >{{ document.Name }}
+            </a>
+          </li>
+        }
+      </ul>
+    </ul>
+  </div>
+</div>

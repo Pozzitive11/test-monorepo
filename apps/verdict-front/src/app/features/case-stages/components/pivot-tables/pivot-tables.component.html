@@ -1,0 +1,72 @@
+<br>
+<div class="row mb-5">
+  <div class="col-6">
+
+
+    <h2>Full-Table</h2>
+
+    <table>
+      <thead>
+      <tr>
+        <th class="head">CaseStage</th>
+        <th class="head">Тип</th>
+        <th class="head">ІНН</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of totalAngularPackages?.full_table || []" [ngClass]="{'data': user.CaseStage === 'Total'}">
+        <td class="bodys1"><a routerLink="./table/total/{{user.CaseStage}}" target="_blank">{{ user.CaseStage }}</a>
+        </td>
+        <td class="bodys1"><a routerLink="./table/total/{{user.CaseStage}}" target="_blank">{{ user.CaseType }}</a></td>
+        <td class="bodys1"><a routerLink="./table/total/{{user.CaseStage}}" target="_blank">{{ user.INN }}</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col-6">
+
+
+    <h2>Max-Stage-Table</h2>
+
+    <table>
+      <thead>
+      <tr>
+        <th class="head">CaseStage</th>
+        <th class="head">Тип</th>
+        <th class="head">ІНН</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user1 of totalAngularPackages?.max_stages || []"
+          [ngClass]="{'data': user1.CaseStage === 'Total'}">
+        <td class="bodys1"><a routerLink="./table/max/{{user1.CaseStage}}" target="_blank">{{ user1.CaseStage }}</a>
+        </td>
+        <td class="bodys1"><a routerLink="./table/max/{{user1.CaseStage}}" target="_blank">{{ user1.CaseType }}</a></td>
+        <td class="bodys1"><a routerLink="./table/max/{{user1.CaseStage}}" target="_blank">{{ user1.INN }}</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<!--<input type="text" [(ngModel)]="case">
+<button (click)="CaseStage_Add()">test</button>
+
+<table class="table table-striped" style="margin-left: 90px ; margin-bottom: 40px ;">
+  <thead>
+      <tr>
+        <th class="head">CaseStage</th>
+        <th class="head">Тип</th>
+        <th class="head">ІНН</th>
+      </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user2 of totalAngularPackages1">
+      <td class="bodys1"><a>{{ user2.CaseStage }}</a></td>
+      <td class="bodys"><a>{{ user2.CaseType }}</a></td>
+      <td class="bodys1"><a>{{ user2.INN }}</a></td>
+    </tr>
+  </tbody>
+</table>-->

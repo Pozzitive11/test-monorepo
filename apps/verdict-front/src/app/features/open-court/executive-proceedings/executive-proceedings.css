@@ -1,0 +1,964 @@
+.container {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width:1200px
+}
+
+
+
+.btn.btn-primary.dropdown-toggle {
+  background-color: transparent; /* Прозрачный фон */
+  color: #007bff; /* Цвет текста, такой же как у активной кнопки */
+  border: 1px solid #007bff; /* Граница синего цвета */
+  border-radius: 0.5rem; /* Закругление углов, если нужно */
+  padding: 10px 20px; /* Отступы внутри кнопки */
+  font-size: 16px; /* Размер шрифта */
+  font-weight: bold; /* Жирный шрифт */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Плавные переходы */
+}
+
+
+/* Эффекты при наведении на dropdown-toggle */
+.btn.btn-primary.dropdown-toggle:hover {
+  background-color: rgba(0, 123, 255, 0.1); /* Прозрачный синий фон при наведении */
+  color: #0056b3; /* Темно-синий цвет текста при наведении */
+  border-color: #0056b3; /* Темно-синяя граница при наведении */
+}
+
+
+/* Overriding Bootstrap button styles */
+.btn {
+  /* Ensures buttons have a consistent height */
+  display: inline-block;
+  width: auto; /* or set to 100% if you want full-width buttons */
+  padding: 0.5rem 1rem; /* Adjust padding as needed */
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+  border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/* Ensures that the text inside buttons is vertically and horizontally centered */
+.btn {
+  display: inline-block; /* Centers text horizontally */
+  line-height: normal; /* Resets any line-height */
+  padding: 0.5rem 1rem; /* Provides padding inside the button */
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  cursor: pointer;
+  outline: none;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* Adjusts the padding for select elements to match the buttons */
+
+/* Additional styles to ensure consistent button sizing */
+.btn-primary,
+.btn-secondary {
+  min-width: 120px; /* Ensures a minimum width for buttons */
+  text-align: center; /* Ensures text is centered */
+}
+
+/* Bootstrap dropdown-toggle button fix to vertically center content */
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Optional: Overriding Bootstrap's default padding for dropdown items */
+.dropdown-item {
+  padding: 0.25rem 1.5rem; /* Adjust the top/bottom padding to center the text */
+}
+
+/* Ensures that the dropdown menu text is aligned in the center */
+
+/* Ensuring the primary button has appropriate styling */
+.btn-primary {
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+/* Ensuring that button dimensions are not affected by column padding */
+.col .btn {
+  margin-top: 0.5rem; /* Add margin-top for spacing if needed */
+  margin-bottom: 0.5rem; /* Add margin-bottom for spacing if needed */
+}
+
+/* Additional styles to handle form controls and buttons in a column layout */
+.col .form-control {
+  width: 100%; /* Ensures the input takes up the full width of the column */
+   /* Spacing between form controls */
+}
+
+/* Adjustments for dropdowns within a column layout */
+.dropdown-toggle {
+  width: 100%; /* Ensures the dropdown takes up the full width of the column */
+  text-align: left; /* Aligns the text to the left */
+}
+
+/* Ensure that button groups within columns do not wrap unexpectedly */
+.btn-group, .input-group {
+  width: 100%; /* Full width within a column */
+}
+
+
+.search-button {
+  background-color: transparent;
+  border: 1px solid #007bff;
+  border-radius: 20px;
+  color: #007bff;
+  padding: 0.375rem 0.75rem;
+  font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+.selected-filters .badge {
+  background-color: #1a73e8;
+  border-radius: 24px;
+  color: #ffffff;
+  padding: 8px 16px;
+  margin-left: 10px;
+  font-weight: 500;
+}
+
+.selected-filters .badge span {
+  color: #ffffff;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.filter-group .col {
+  display: flex;
+}
+
+.filter-group .dropdown {
+  flex: 1;
+}
+
+
+.dropdown-menu {
+  border: none; /* Убираем границу */
+  box-shadow: none; /* Убираем тень */
+  border-radius: 10px; /* Закругляем углы */
+  min-width: 200px; /* Минимальная ширина */
+   /* Максимальная ширина */
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem; /* Увеличиваем отступы внутри элементов списка */
+  border-radius: 10px; /* Закругляем углы */
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  border-radius: 10px;
+  max-width: 450px; /* Закругляем углы */
+}
+
+.tooltip-container:hover .tooltip {
+  display: block;
+}
+
+.tooltip {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 1000;
+  display: none;
+  padding: 8px;
+  background-color: #424242;
+  color: #ffffff;
+  border-radius: 4px;
+}
+
+.category-list {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.dropdown-menu {
+  display: none; /* Hide dropdown by default */
+}
+
+.dropdown-menu.show {
+  display: block; /* Show dropdown when 'show' class is added */
+}
+
+/* Общие стили для контейнера */
+.col {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+/* Стили для кнопки открытия dropdown */
+.dropdown-toggle {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  cursor: pointer;
+  outline: none;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown-toggle:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Стили для dropdown меню */
+.dropdown-menu {
+  border: 1px solid #ced4da;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: none;
+  flex-direction: column;
+  padding: 10px;
+  background-color: white;
+  transition: box-shadow 0.3s ease;
+}
+
+.dropdown-menu.show {
+  display: flex;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для фильтров участников */
+.participant-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+/* Стили для элементов формы */
+.form-control {
+  padding: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 0.5rem;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #80bdff;
+  outline: none;
+}
+
+/* Стили для кнопок */
+.btn-remove,
+.btn-add,
+.btn-search {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+
+.btn-search {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 20px; /* Немного больше отступ для кнопки поиска */
+}
+
+.btn-search:hover {
+  background-color: #0069d9;
+  transform: translateY(-2px);
+}
+
+/* Дополнительные стили */
+.add-text {
+  margin-left: 4px;
+  font-size: 14px;
+}
+
+/* Эффекты при наведении для интерактивности */
+.form-control:hover,
+.btn-remove:hover,
+.btn-add:hover,
+.btn-search:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Эффекты фокусировки для полей ввода */
+.form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+}
+
+.btn-add {
+  background-color: transparent; /* Прозрачный фон */
+  color: #1a73e8; /* Синий цвет текста, как у других кнопок */
+  border: 1px solid #1a73e8; /* Синяя граница */
+  border-radius: 24px; /* Скругление углов */
+  padding: 8px 16px; /* Отступы */
+  font-weight: 500; /* Жирность шрифта */
+  margin-right: 8px; /* Отступ справа, чтобы отделить от текста */
+  cursor: pointer; /* Курсор в виде руки при наведении */
+  transition: color 0.3s ease, border-color 0.3s ease; /* Плавный переход для цвета и границы */
+}
+
+.btn-add:hover {
+  color: #0d47a1; /* Тёмно-синий цвет текста при наведении */
+  border-color: #0d47a1; /* Тёмно-синяя граница при наведении */
+}
+
+/* Стили для текста рядом с кнопкой добавления */
+.add-text {
+  color: #1a73e8; /* Синий цвет текста */
+  font-weight: 500; /* Жирность шрифта */
+  cursor: default; /* Стандартный курсор для текста */
+}
+
+/* Убираем стандартную обводку фокуса у кнопок и полей ввода */
+.btn:focus,
+.form-control:focus,
+.role-selector:focus,
+.criteria-selector:focus,
+.search-input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Стили для кнопки 'Добавить сторону' */
+.btn-add {
+  background-color: transparent; /* Прозрачный фон */
+  border: none; /* Убираем границу */
+  color: #1a73e8; /* Синий цвет текста, как у других кнопок */
+  padding: 0; /* Убираем отступы */
+  font-weight: 500; /* Жирность шрифта */
+}
+
+/* Стили для текста 'Добавить сторону' */
+.add-text {
+  display: inline; /* Текст будет в той же строке, что и кнопка */
+  margin-left: 8px; /* Отступ слева от иконки */
+  color: #1a73e8; /* Синий цвет текста, как у кнопки */
+  font-weight: 500; /* Жирность шрифта */
+  vertical-align: middle; /* Выравнивание по вертикали с иконкой */
+  cursor: pointer; /* Курсор в виде руки при наведении на текст */
+}
+
+/* Убираем стандартный фон при наведении и фокусе */
+.btn-add:hover,
+.btn-add:focus {
+  background-color: transparent;
+  color: #0d47a1; /* Тёмно-синий цвет текста при наведении */
+}
+
+/* Убираем стандартное поведение для активной кнопки */
+.btn-add:active {
+  background-color: transparent;
+  transform: none; /* Убираем эффект нажатия */
+}
+
+/* Убираем лишние стили для иконки, если она есть */
+.btn-add .icon {
+  margin: 0; /* Убираем внешние отступы */
+}
+
+/* Добавляем эффект наведения для текста 'Добавить сторону' */
+.add-text:hover {
+  text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+.btn-remove {
+  background-color: transparent; /* Прозрачный фон */
+  border: none; /* Убираем границу */
+  color: #6c757d; /* Серый цвет текста */
+  padding: 0; /* Убираем отступы */
+  margin-right: 8px; /* Отступ справа для разделения иконки и текста */
+  cursor: pointer; /* Курсор в виде руки при наведении */
+}
+
+/* Стили для текста 'Видалити сторону' */
+.remove-text {
+  display: inline; /* Текст будет в той же строке, что и кнопка */
+  margin-left: 8px; /* Отступ слева от иконки */
+  color: #6c757d; /* Серый цвет текста */
+  font-weight: 500; /* Жирность шрифта */
+  vertical-align: middle; /* Выравнивание по вертикали с иконкой */
+  cursor: pointer; /* Курсор в виде руки при наведении на текст */
+}
+
+/* Убираем стандартный фон при наведении и фокусе для серой кнопки */
+.btn-remove:hover,
+.btn-remove:focus {
+  background-color: transparent;
+  color: #5a6268; /* Темно-серый цвет текста при наведении */
+}
+
+/* Убираем стандартное поведение для активной серой кнопки */
+.btn-remove:active {
+  background-color: transparent;
+  transform: none; /* Убираем эффект нажатия */
+}
+
+/* Эффект наведения для текста 'Видалити сторону' */
+.remove-text:hover {
+  text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+
+
+/* Стили для элементов выпадающего списка */
+.dropdown-item {
+  padding: 0.5rem 1rem; /* Устанавливаем отступы для элементов списка */
+  /* Убеждаемся, что текст в элементах списка не переносится */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.selected-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem; /* Adjust the gap as needed */
+  align-items: center; /* This aligns items vertically */
+}
+
+.badge {
+  padding: 0.5em 0.75em; /* Provides consistent padding around the text */
+  display: inline-flex;
+  align-items: center; /* Aligns the × icon with the text */
+}
+
+.cursor-pointer {
+  cursor: pointer;
+  margin-left: 0.5em; /* Consistent spacing before the × icon */
+}
+
+.filter-group .col {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Aligns children to the top */
+}
+
+.search-container {
+  margin-bottom: 15px; /* Отступ снизу */
+}
+
+.form-check-input:checked + .form-check-label,
+.form-check-input + .form-check-label {
+  font-weight: bold; /* Жирный текст при выборе */
+}
+
+
+.form-check-input:checked + .form-check-label::before {
+
+  color: #007bff; /* Цвет галочки */
+  font-size: 16px; /* Размер шрифта галочки */
+  font-weight: bold; /* Жирный */
+
+}
+
+.search-input {
+  border-color: #ced4da; /* Цвет границы поля */
+}
+
+.search-input:focus {
+  border-color: #80bdff; /* Цвет границы при фокусе */
+}
+
+.search-input::placeholder {
+  color: #6c757d; /* Цвет placeholder */
+}
+
+.search-container .dropdown-menu {
+  width: 100%; /* Sets the width of the dropdown to match the search container */
+}
+
+/* If the search container does not directly wrap the dropdown, you may need a more specific selector */
+
+
+.dropdown-menu {
+  max-height: 300px; /* Установите максимальную высоту меню */
+  overflow-y: auto; /* Добавьте прокрутку по Y, если содержимое не помещается */
+}
+
+.list-unstyled {
+  max-height: inherit; /* Наследуйте максимальную высоту от родительского элемента */
+  overflow-y: auto; /* Добавьте прокрутку по Y, если содержимое не помещается */
+}
+
+/* Стили для дропдауна */
+.dropdown.category-dropdown {
+  position: relative;
+  width: 200px; /* Ширина дропдауна */
+}
+
+.category-dropdown-menu {
+  max-height: 300px;
+  overflow-y: auto;
+  width: 100%; /* Ширина меню */
+}
+
+.category-dropdown-menu .dropdown-item {
+  cursor: pointer;
+  padding: 10px;
+}
+
+.inner-dropdown-menu {
+  position: static;
+  margin-top: 0;
+  box-shadow: none;
+  max-width: 250px;
+}
+
+.inner-dropdown-menu .form-check-label {
+  margin-left: 10px;
+}
+
+.inner-dropdown-menu .form-check-input:checked + .form-check-label {
+  font-weight: bold;
+  color: #007bff;
+}
+
+/* Стили для элемента поиска в дропдауне */
+.category-dropdown .form-control.mb-2 {
+  margin-bottom: 10px; /* Отступ снизу для разделения от остальных элементов */
+}
+
+/* Стили для элемента фильтра в дропдауне */
+.category-dropdown .jstree-anchor {
+  display: block;
+  padding: 0.5rem 1rem;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+}
+
+/* Стили для активного пункта списка */
+.category-dropdown .dropdown-item.active,
+.category-dropdown .dropdown-item:focus {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Стили для вложенного меню дропдауна */
+.category-dropdown .inner-dropdown-menu {
+  position: static; /* Чтобы вложенное меню было видимым */
+  margin-top: 0;
+  box-shadow: none;
+}
+
+/* Стили для чекбоксов и меток в списке категорий споров */
+.category-dropdown .form-check-label {
+  margin-left: 10px;
+}
+
+/* Стили для активного чекбокса и метки */
+.category-dropdown .form-check-input:checked + .form-check-label {
+  font-weight: bold;
+  color: #007bff;
+}
+
+.form-check-input,
+.form-check-label {
+  display: inline-block;  /* Отображать элементы в строчку */
+  white-space: nowrap; /* Запретить перенос текста на новую строку */
+  vertical-align: middle; /* Выравнивать элементы по вертикали по центру */
+}
+
+.search-label {
+  cursor: pointer; /* Добавляем указатель при наведении на текст для обозначения, что его можно кликнуть */
+}
+
+.selected {
+  font-weight: bold; /* Делаем текст жирным для обозначения выбранного состояния */
+  color: #007bff; /* Делаем текст синим для подсветки */
+}
+
+.col-auto {
+  margin: 1px;
+}
+.col-md-4 {
+  height: auto !important;
+  margin-bottom: 20px; /* Сброс высоты перед каждой подстройкой */
+}
+
+.card {
+  height: auto !important; /* Сброс высоты перед каждой подстройкой */
+}
+
+.jstree-anchor::after {
+  content: "";
+  display: inline-block;
+  margin-left: 0.255em;
+  vertical-align: 0.255em;
+  border-top: 0.3em solid;
+  border-right: 0.3em solid transparent;
+  border-bottom: 0;
+  border-left: 0.3em solid transparent;
+}
+
+.category-dropdown {
+  position: relative;
+}
+
+
+.inner-dropdown-menu .form-check:hover {
+  background-color: #f8f9fa;
+}
+
+.form-check-input {
+  margin-right: 0.5rem;
+}
+
+.jstree-anchor {
+  cursor: pointer;
+}
+
+.jstree-anchor:hover {
+  text-decoration: underline;
+}
+
+.inner-dropdown-menu .form-check {
+  padding: 0.25rem 1.5rem;
+  white-space: nowrap; /* Запрещаем перенос слов */
+  overflow: hidden; /* Скрытие части текста, которая не помещается */
+  text-overflow: ellipsis; /* Отображение многоточия в конце текста */
+}
+
+.inner-dropdown-menu .form-check:hover {
+  overflow: visible; /* При наведении отображаем весь текст */
+  white-space: normal; /* Разрешаем перенос слов */
+  text-overflow: clip; /* Отключаем многоточие */
+}
+
+/* Общие стили для таблицы и ее содержимого */
+
+.view-switcher-container {
+  margin-bottom: 20px;
+}
+
+.view-switcher-header {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.view-switcher {
+  display: flex;
+
+}
+
+.view-switcher span {
+  cursor: pointer;
+  padding: 10px 15px;
+  border-radius: 5px;
+
+}
+
+.view-switcher span.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.view-switcher span:hover {
+  background-color: #f8f9fa;
+}
+
+.view-switcher span i.material-icons {
+  font-size: 24px;
+  margin-right: 5px;
+}
+
+/* Добавляем границы для ячеек таблицы */
+.gradient-table th {
+  background-color: #007bff !important; /* Синий цвет */
+  color: white; /* Белый цвет текста */
+  font-weight: bold; /* Жирный текст */
+  text-align: center; /* Выравнивание текста по центру */
+  padding: 10px; /* Отступ внутри ячеек шапки */
+}
+
+/* Стили для строк таблицы */
+.gradient-table td.even-row {
+  background-color: white !important; /* Голубой цвет */
+}
+
+.gradient-table td.odd-row {
+  background-color: #B0E0E6 !important;
+}
+
+/* Создаем вертикальные и горизонтальные разделители */
+
+.gradient-table td a.btn-link {
+  color: #007bff !important; /* Цвет текста ссылки */
+  text-decoration: underline !important; /* Подчеркивание текста ссылки */
+  cursor: pointer; /* Установка курсора в виде указателя */
+  white-space: nowrap; /* Отмена автоматического переноса текста на следующую строку */
+}
+
+.gradient-table td a.btn-link:hover {
+  color: #0056b3 !important; /* Цвет текста ссылки при наведении */
+  text-decoration: underline !important; /* Подчеркивание текста ссылки при наведении */
+}
+.form-check-label {
+  display: block;
+  white-space: nowrap; /* Запрещаем перенос текста */
+  overflow: hidden; /* Скрываем возможное переполнение текста */
+  text-overflow: ellipsis; /* Отображаем многоточие для обрезанного текста */
+}
+@keyframes changeIcon {
+  0% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(-10px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+span i {
+  animation: changeIcon 0.3s ease-in-out;
+}
+
+
+
+
+.role-selector::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 5px 0 5px; /* Треугольник снизу */
+  border-color: #000 transparent transparent transparent; /* Цвета стрелочки */
+}
+.link {
+  cursor: pointer;
+  color: blue; /* Цвет ссылки */
+  text-decoration: underline; /* Подчеркивание ссылки */
+}
+
+.link:hover {
+  color: darkblue; /* Цвет ссылки при наведении курсора */
+}
+.custom-input {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
+.custom-input:focus {
+  border-color: #80bdff !important; /* добавим !important для принудительного применения цвета */
+  outline: 0; /* убираем стандартный контур фокуса (outline) */
+}
+.nav-link {
+  background-color: #f0f0f0; /* Сероватый цвет фона для неактивной вкладки */
+  color: #000000; /* Цвет текста для неактивной вкладки */
+  cursor: pointer; /* Изменение курсора на указатель для неактивной вкладки */
+}
+
+.nav-link.active {
+  background-color: #007bff; /* Синий цвет фона для активной вкладки */
+  color: #ffffff; /* Белый цвет текста для активной вкладки */
+  cursor: default; /* Стандартный курсор для активной вкладки */
+}
+
+.nav-link:hover {
+  background-color: #e9ecef; /* Цвет фона при наведении для неактивной вкладки */
+}
+.active-tab-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50%; /* Ширина полоски под выбранным табом (можете настроить по вашему желанию) */
+  height: 3px; /* Высота полоски */
+  background-color: blue; /* Цвет полоски */
+  transition: width 0.3s ease; /* Плавное изменение ширины при переключении табов */
+}
+
+
+.container {
+  max-width: 1200px; /* Максимальная ширина контейнера */
+  margin: 0 auto; /* Центрирование контейнера */
+}
+
+.site-title {
+  font-size: 28px; /* Размер шрифта названия сайта */
+  margin: 0; /* Убираем внешние отступы */
+  color: #333333; /* Цвет текста названия сайта */
+  text-align: center; /* Выравнивание текста по центру */
+}
+
+.court-icon img {
+  width: 40px; /* Ширина значка суда */
+  height: auto; /* Автоматическая высота для сохранения пропорций */
+  margin-left: 20px; /* Отступ от названия сайта */
+}
+
+.nav-switches {
+  flex-grow: 1; /* Растягиваем блок с переключателями по ширине */
+}
+h6 {
+  display: block; /* Делаем элемент блочным */
+   /* Добавляем отступ сверху */
+}
+.nav-switches{
+margin-left: 20px;
+}
+/* Стили для подсветки цифр синим цветом */
+.highlighted-number {
+  color: #007bff;
+}
+.personal-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.icon-container {
+  display: flex;
+  align-items: center;
+  border-radius: 20px; /* Измените значение на ваше усмотрение */
+  border: 1px solid #ccc;
+  padding: 5px;
+  margin-right: 10px;
+  width: 40px; /* Ширина контейнера */
+  height: 30px; /* Высота контейнера */
+}
+
+
+.dropdown-icon, .profile-icon {
+  margin-right: 5px;
+}
+
+.dropdown-icon i, .profile-icon i {
+  cursor: pointer;
+}
+
+.personal-cabinet {
+  background-color: #f8f9fa;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px; /* Закругление элемента */
+  padding: 10px;
+  width: 300px;
+  position: absolute;
+  top: calc(100% + 10px); /* Отступ от нижней границы personal-icon */
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.options-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.options-list li {
+  padding: 10px;
+  border-bottom: 1px solid #e2e2e2;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.options-list li:hover {
+  background-color: #e9ecef;
+}
+
+.options-list li i {
+  margin-right: 10px;
+}
+
+.options-list li:last-child {
+  border-bottom: none;
+}
+.notification-icon {
+  position: relative;
+  cursor: pointer;
+}
+
+.notification-count {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: bold;
+}
+.notification-dropdown {
+  position: absolute;
+  top: 20%;
+  right: 120px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 100;
+  display: none;
+}
+
+.notification-item {
+  margin-bottom: 10px;
+}
+.notification-item{
+  background-color: #f8f9fa;
+  border: 1px solid #e2e2e2;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Показать дропдаун при наличии класса show-dropdown */
+.notification-dropdown.show-dropdown {
+  display: block;
+}
+.btn-add{
+   background-color: transparent;
+    border: none;
+    color: #1a73e8;
+    padding: 0;
+    font-weight: 500;
+}
+
+
+
+
+

@@ -1,0 +1,22 @@
+<div class="my-3">
+  @if (dcClosingCertificatesService.closingCertificatesInfo()) {
+    <app-table-with-sort
+      [tableData]="dcClosingCertificatesService.closingCertificatesInfo()"
+      [tableHeaders]="dcClosingCertificatesService.tableHeaders()"
+      [dateTableHeaders]="dateTableHeaders"
+      [priceTableHeaders]="priceTableHeaders"
+      [isCheckboxes]="true"
+      [checkboxesParameter]="'id'"
+      (selectedCheckboxRows)="handleSelectedCheckboxRows($event)"
+    ></app-table-with-sort>
+  }
+  @if (dcClosingCertificatesService.closingCertificatesInfo()?.length === 0) {
+    <div class="alert alert-warning" role="alert">Немає даних</div>
+  }
+  @if (dcClosingCertificatesService.closingCertificatesLoader()) {
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  }
+</div>
+

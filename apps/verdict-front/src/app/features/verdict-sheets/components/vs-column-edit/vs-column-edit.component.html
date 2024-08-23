@@ -1,0 +1,161 @@
+<div class="modal-header">
+  <h5 class="modal-title">Стовпець: {{ column().table_name }}.{{ column().column_name || '?' }}</h5>
+  <button (click)="cancel()" aria-label="Close" class="btn-close" type="button"></button>
+</div>
+<app-loading-bar [customType]="'inf-bar'" [loading]="loading()" />
+<div class="modal-body" [class.disabled-table]="loading()">
+  <ul class="list-group">
+    <li class="list-group-item">
+      <app-input-in-group
+        [value]="column().alias"
+        (valueChange)="updateAlias($event)"
+        [fillColor]="'#e7ffe6'"
+        [placeholder]="'Введіть назву стовпця'"
+        [inputClass]="'my-1'"
+      >
+        <span class="input-group-text fw-bold">Назва стовпця:</span>
+      </app-input-in-group>
+    </li>
+
+    <li class="list-group-item">
+      <div class="input-group align-items-center">
+        <strong class="me-auto">Таблиця:</strong>
+        <app-default-dropdown
+          [selectedValue]="column().table_name || ''"
+          (selectedValueChange)="updateTableName($event)"
+          [valueList]="tableNames()"
+          [scrollable]="true"
+          [placement]="'auto'"
+        />
+      </div>
+    </li>
+
+    <li class="list-group-item">
+      <div class="input-group align-items-center">
+        <strong class="me-auto">Відповідний стовпець:</strong>
+        <app-default-dropdown
+          [selectedValue]="column().column_name || ''"
+          (selectedValueChange)="updateColumnName($event)"
+          [disabled]="!column().table_name"
+          [valueList]="tableColumns()"
+          [scrollable]="true"
+          [placement]="'auto'"
+        />
+      </div>
+    </li>
+
+    <!--    TODO   -->
+    <li class="list-group-item" [class.disabled-table]="true">
+      <div class="input-group align-items-center">
+        <app-switch-checkbox [value]="column().for_insert" (valueChange)="updateForInsert($event)"
+                             [id]="'column-for-insert'">
+          <strong>Для стоврення нових записів в таблиці</strong>
+        </app-switch-checkbox>
+      </div>
+    </li>
+
+    <li class="list-group-item"
+        [class.disabled-table]="(!column().table_name || !column().column_name) && !column().editable">
+      <div class="input-group align-items-center">
+        <app-switch-checkbox [value]="column().editable" (valueChange)="updateEditability($event)"
+                             [id]="'editable-column'">
+          <strong>Може редагуватися</strong>
+        </app-switch-checkbox>
+      </div>
+    </li>
+
+    @if (column().editable) {
+      <li class="list-group-item">
+        <div class="input-group align-items-center">
+          <strong class="me-auto">Редагування відносно:</strong>
+          <app-default-dropdown
+            [selectedValue]="column().related_key || ''"
+            (selectedValueChange)="updateRelatedKey($event)"
+            [valueList]="tableColumns()"
+            [scrollable]="true"
+            [placement]="'auto'"
+          />
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="input-group align-items-center">
+          <strong class="me-auto">Підключення до бази даних:</strong>
+          <app-default-dropdown
+            [valueList]="dbList"
+            [selectedValue]="column().db || ''"
+            (selectedValueChange)="updateDb($event)"
+            [cycled]="true"
+            [customTooltip]="'Сервер'"
+            [showButtonTooltip]="true"
+            [showTooltip]="false"
+            [placement]="'auto'"
+          />
+        </div>
+      </li>
+
+      <li class="list-group-item" [class.disabled-table]="!column().table_name || !column().column_name">
+        <div class="input-group align-items-center">
+          <app-switch-checkbox [value]="isDictionary() || !!selectedDictionary()"
+                               (valueChange)="isDictionary.set($event)"
+                               [id]="'column-is-dictionary'">
+            <strong>Значення зі словника</strong>
+          </app-switch-checkbox>
+        </div>
+      </li>
+
+      @if (isDictionary() || !!selectedDictionary()) {
+        <li class="list-group-item">
+          <div class="input-group align-items-center gap-2">
+            <strong class="me-auto">Словник:</strong>
+            <app-default-dropdown
+              [selectedValue]="selectedDictionary()"
+              (selectedValueChange)="updateDictionary($event)"
+              [valueList]="dictionaryNames()"
+              [scrollable]="true"
+              [placement]="'auto'"
+            />
+            <button class="btn btn-outline-success rounded" type="button" (click)="addEditDictionary(null)">
+              <i class="bi bi-plus"></i>
+            </button>
+            @if (selectedDictionary()) {
+              <button class="btn btn-outline-primary rounded" type="button"
+                      (click)="addEditDictionary(selectedDictionary())">
+                <i class="bi bi-pencil"></i>
+              </button>
+            }
+          </div>
+        </li>
+      }
+    }
+
+    @if (columnInfo(); as columnInfo) {
+      <li class="list-group-item d-flex flex-row gap-2 align-items-center">
+        <span class="text-muted">
+          {{ columnInfo.type.original_type }}
+          @if (columnInfo.type.length) {
+            (max. {{ columnInfo.type.length }})
+          }
+        </span>
+        @if (columnInfo.nullable) {
+          <span class="badge bg-secondary rounded-pill text-white" [ngbTooltip]="'Може бути NULL'">NULL</span>
+        }
+        @if (columnInfo.default) {
+          <span class="badge bg-secondary rounded-pill text-white"
+                [ngbTooltip]="'Значення по-замовчуванню: ' + columnInfo.default">DEF</span>
+        }
+        @if (columnInfo.autoincrement) {
+          <span class="badge bg-secondary rounded-pill text-white" [ngbTooltip]="'Автоінкремент'">A-INC</span>
+        }
+        @if (columnInfo.unique) {
+          <span class="badge bg-secondary rounded-pill text-white" [ngbTooltip]="'Унікальне значення'">UNIQ</span>
+        }
+      </li>
+    }
+  </ul>
+</div>
+<div class="modal-footer">
+  <button (click)="save()" [disabled]="!canBeSaved()" class="btn btn-outline-success" type="button">Підтвердити</button>
+  <button (click)="cancel()" class="btn btn-outline-secondary" type="button">Відмінити</button>
+</div>
+

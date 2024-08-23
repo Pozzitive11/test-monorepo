@@ -1,0 +1,47 @@
+.head {
+  border: 5px black solid;
+  align-items: center;
+  margin: 0;
+}
+
+.bodys {
+  border: 1px black solid;
+}
+
+.bodys1 {
+
+  border: 1px black solid;
+
+}
+
+.bodys2 {
+  text-align: center;
+
+  border: 1px black solid;
+  background-color: dimgray;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.container.mt-5.lo {
+  padding: 0;
+  margin: 0;
+}
+
+.table.table-striped {
+  width: 500%;
+  text-align: center;
+  align-items: center;
+
+}
+
+.row {
+  border: 2px dotted black;
+  border-radius: 10px;
+  padding: 5px;
+  font-size: 15px;
+}
+

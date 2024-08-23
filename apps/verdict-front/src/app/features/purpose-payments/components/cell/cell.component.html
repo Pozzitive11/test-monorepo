@@ -1,0 +1,93 @@
+<!-- ВЫПАДАЮЩИЕ СПИСКИ -->
+<pp-dropdown-main-cell (valueChange)="sendDataChange($event)"
+                       *ngIf="isEditable() && !isDisabled() && fieldType === 'dropdown'"
+                       [col]="col"
+                       [dropdownMenu]="dropdownMenu"
+                       [row]="row"
+                       [value]="value">
+</pp-dropdown-main-cell>
+
+<!-- ВЫПАДАЮЩИЕ СПИСКИ С ЗАВИСИМОСТЬЮ -->
+<pp-dropdown-depended-cell (valueChange)="sendDataChange($event)"
+                           *ngIf="isEditable() && fieldType === 'dropdown_depended'"
+                           [col]="col"
+                           [dropdownColDependency]="dropdownColDependency"
+                           [row]="row"
+                           [value]="value"
+></pp-dropdown-depended-cell>
+
+<!-- ПОЛЯ НКС, АЙДИ ПЛАТЕЖА, АЙДИ КРЕДИТА К1 -->
+<pp-number-cell (valueChange)="sendDataChange($event)"
+                *ngIf="isEditable() && fieldType === 'default'"
+                [value]="value">
+</pp-number-cell>
+
+<!-- ПРОВЕРКА ТИПА ПЛАТЕЖА -->
+<pp-button-cell (valueChange)="sendDataChange($event)"
+                *ngIf="fieldType === 'one_click_btn'"
+                [value]="value">
+</pp-button-cell>
+
+
+<!-- ДАТА ДЛЯ ЗАГРУЗКИ -->
+<pp-date-cell (valueChange)="sendDataChange($event)"
+              *ngIf="fieldType === 'date'"
+              [value]="value"
+></pp-date-cell>
+
+<!-- НОМЕР ЗАЯВКИ -->
+<pp-list-cell (valueChange)="sendDataChange($event)"
+              *ngIf="fieldType === 'requests_1c' && isDebit"
+              [value]="value"
+>
+</pp-list-cell>
+
+<!-- БІЗНЕС -->
+<pp-business-cell (valueChange)="sendDataChange($event)"
+                  *ngIf="fieldType === 'business' && isDebit"
+                  [row]="row"
+                  [value]="value"
+>
+</pp-business-cell>
+
+<!-- БІЗНЕС-ПРОЄКТ -->
+<pp-project-cell (valueChange)="sendDataChange($event)"
+                 *ngIf="fieldType === 'business_project' && isDebit"
+                 [row]="row"
+                 [value]="value"
+></pp-project-cell>
+
+
+<!-- БАТЬКІВСЬКА СТАТТЯ ЗАТРАТ -->
+<pp-spending-parent-cell (valueChange)="sendDataChange($event)"
+                         *ngIf="fieldType === 'spending_type_parent' && isDebit"
+                         [row]="row"
+                         [value]="value"
+></pp-spending-parent-cell>
+
+
+<!-- СТАТТЯ ЗАТРАТ -->
+<pp-spending-cell (valueChange)="sendDataChange($event)"
+                  *ngIf="fieldType === 'spending_type' && isDebit"
+                  [row]="row"
+                  [value]="value"
+></pp-spending-cell>
+
+
+<!-- ДОКУМЕНТИ -->
+<pp-docs-cell (valueChange)="sendDataChange($event)"
+              *ngIf="fieldType === 'documents' && isDebit"
+              [row]="row"
+              [value]="value"
+              class="d-flex justify-content-center">
+</pp-docs-cell>
+
+
+<!-- ВСЕ ОСТАЛЬНЫЕ ЯЧЕЙКИ -->
+<div *ngIf="!isEditable()" [class.right-text]="isMoney()" class="text-11">
+  <span *ngIf="!isMoney()">{{ value }}</span>
+  <span *ngIf="isMoney()">{{ value | number:'1.0-2' }}</span>
+</div>
+
+
+

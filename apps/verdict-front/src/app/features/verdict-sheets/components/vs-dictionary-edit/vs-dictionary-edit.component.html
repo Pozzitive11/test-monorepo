@@ -1,0 +1,53 @@
+<div class="modal-header">
+  <h5 class="modal-title">Словник: {{ dictionary().id || '(новий)' }}. {{ dictionary().name || '?' }}</h5>
+  <button (click)="cancel()" aria-label="Close" class="btn-close" type="button"></button>
+</div>
+
+<div class="modal-body">
+  <ul class="list-group">
+    <li class="list-group-item">
+      <app-input-in-group
+        [value]="dictionary().name"
+        (valueChange)="updateName($event)"
+        [fillColor]="'#e7ffe6'"
+        [placeholder]="'Введіть назву стовпця'"
+        [inputClass]="'my-1'"
+      >
+        <span class="input-group-text fw-bold">Назва словника:</span>
+      </app-input-in-group>
+    </li>
+
+    <li class="list-group-item">
+      <h5>SQL-запит:</h5>
+
+      <textarea
+        [ngModel]="dictionary().query"
+        (ngModelChange)="updateQuery($event)"
+        placeholder="Введіть sql-запит"
+        class="form-control"
+        rows="5"
+      ></textarea>
+    </li>
+
+    <li class="list-group-item">
+      <div class="input-group align-items-center">
+        <strong class="me-auto">Підключення до бази даних:</strong>
+        <app-default-dropdown
+          [valueList]="dbList"
+          [selectedValue]="dictionary().db || ''"
+          (selectedValueChange)="updateDb($event)"
+          [cycled]="true"
+          [customTooltip]="'Сервер'"
+          [showButtonTooltip]="true"
+          [showTooltip]="false"
+        />
+      </div>
+    </li>
+
+  </ul>
+</div>
+
+<div class="modal-footer">
+  <button (click)="save()" [disabled]="!canBeSaved()" class="btn btn-outline-success" type="button">Зберегти</button>
+  <button (click)="cancel()" class="btn btn-outline-secondary" type="button">Скасувати</button>
+</div>

@@ -1,0 +1,53 @@
+<!-- Ваш компонент или шаблон Angular -->
+
+<div class="container">
+  <div class="content-left">
+    <div class="form-container">
+      <div class="form-header">
+        Перевірка адрес
+      </div>
+      <div class="form-body">
+        <p>Ваш логін: {{ session_id }}</p>
+        <div class="file-input">
+          <p>Оберіть файл: <span>{{ userFile }}</span></p>
+          <div class="form-button form-button-upload">
+            <label class="custom-file-upload">
+              <input (change)="onFileSelected($event)" type="file">
+
+            </label>
+          </div>
+          <div *ngIf="fileError" class="error-message">{{ fileError }}</div>
+        </div>
+        <div class="form-footer">
+          <button (click)="upload_address()" [disabled]="isdisabled" class="submit-button">Перевірити</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-right">
+      <div *ngIf="load === 1" class="progress-container">
+        <div class="progress-header">
+          Прогрес перевірки :
+          <div class="progress-container">
+
+            <div class="progress-info">{{ displayinfo }}</div>
+          </div>
+        </div>
+        <div class="form-button">
+          <button (click)="downloadFile()" [disabled]="canUpload" class="submit-button">Скачати файл</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- <div class="infoTable">
+      <div class="form-info">
+          <p class="form-title" style="margin: 0;">Інформаційна дошка</p><br>
+          <p class="form-text" style="margin: 0;">Колонки, які мають бути присутні у файлі: &nbsp;<strong>index, нкс, ІПН, Name, Адреса, Телефон, uuid</strong></p><br>
+          <p class="form-text" style="margin: 0;"><strong>index</strong>&nbsp; - пронумеровані рядки</p>
+      </div>
+  </div> -->
+
+
+  <!--<input type="file" (change)="onFileSelected($event)">-->

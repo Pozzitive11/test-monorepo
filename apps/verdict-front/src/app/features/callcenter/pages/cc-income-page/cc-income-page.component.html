@@ -1,0 +1,167 @@
+<div class="container-fluid top-margin-sm">
+  <!--  ФИЛЬТРЫ ТУТ -->
+  <div class="row alert alert-info top-margin-sm">
+    <div class="row">
+      <div class="col-auto">
+        <app-datepicker></app-datepicker>
+      </div>
+      <div class="col-lg-3">
+        <a (click)="switchReestrMode()" class="nav-link pointer">
+          <input
+            [checked]="isInvestProjectOnly"
+            class="form-check-input big-check"
+            type="checkbox"
+          >
+          Фільтр за інвест-портфелями
+        </a>
+        <div [class.disabled-table]="isInvestProjectOnly" class="row top-margin-sm">
+          <app-project-manager></app-project-manager>
+        </div>
+        <div [class.disabled-table]="isInvestProjectOnly" class="row top-margin-sm">
+          <app-project></app-project>
+        </div>
+
+        <hr>
+
+        <div [class.disabled-table]="!isInvestProjectOnly" class="row top-margin-sm">
+          <app-invest-project></app-invest-project>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="row">
+          <a
+            (click)="toggleIsActual()"
+            class="nav-link pointer"
+          >
+            <input
+              [checked]="isActual"
+              class="form-check-input big-check"
+              type="checkbox"
+            >
+            Актуальні реєстри
+          </a>
+        </div>
+        <div class="row top-margin-sm">
+          <app-reestr-type></app-reestr-type>
+        </div>
+        <div class="row top-margin-sm">
+          <app-reestr-status></app-reestr-status>
+        </div>
+        <div class="row top-margin-sm">
+          <app-reestr></app-reestr>
+        </div>
+      </div>
+    </div>
+
+    <div class="row top-margin-sm">
+      <div class="col-4">
+        <button
+          (click)="getData()"
+          [disabled]="!allFiltersSelected() || loading"
+          class="btn btn-success"
+        >
+          Завантажити звіт
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-3 top-margin-sm">
+        <a (click)="isDateFirst=!isDateFirst; updateReport()" class="nav-link pointer">
+          <input
+            [checked]="isDateFirst"
+            class="form-check-input big-check"
+            type="checkbox"
+          >
+          Групувати за датою
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!--  ТАБЛИЦА С ОТЧЁТОМ ТУТ -->
+  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+  <app-income-date-table *ngIf="isDateFirst" [class.disabled-table]="loading"></app-income-date-table>
+  <app-income-rnumber-table *ngIf="!isDateFirst" [class.disabled-table]="loading"></app-income-rnumber-table>
+  <!--  <div-->
+  <!--    class="row max-height-div"-->
+  <!--    *ngIf="!loading && !!reportData"-->
+  <!--  >-->
+  <!--    <table class="table table-bordered table-responsive table-sm text-12">-->
+  <!--      <caption>Дохід</caption>-->
+  <!--      <thead class="sticky-top">-->
+  <!--        <tr class="header-level-1">-->
+  <!--          <th colspan="1">-->
+  <!--            <i class="pointer" *ngIf="!areProjectsHidden()" (click)="hideAllProjects()">Згорнути</i>-->
+  <!--            <i class="pointer" *ngIf="areProjectsHidden()" (click)="showAllProjects()">Розгорнути</i>-->
+  <!--          </th>-->
+  <!--          <th colspan="1">-->
+  <!--            <i class="pointer" *ngIf="!areReestrsHidden()" (click)="hideAllReestrs()">Згорнути</i>-->
+  <!--            <i class="pointer" *ngIf="areReestrsHidden()" (click)="showAllReestrs()">Розгорнути</i>-->
+  <!--          </th>-->
+  <!--          <th colspan="5"></th>-->
+  <!--        </tr>-->
+  <!--        <tr class="header-level">-->
+  <!--          <th-->
+  <!--            scope="col"-->
+  <!--            *ngFor="let column of reportData.column_names"-->
+  <!--          >-->
+  <!--            {{ column }}-->
+  <!--          </th>-->
+  <!--        </tr>-->
+  <!--      </thead>-->
+
+  <!--      <tbody>-->
+  <!--        <tr-->
+  <!--          *ngFor="let row of reportData.rows"-->
+  <!--          [class.top-level-row-0]="row.ProjectName.includes('Всього')"-->
+  <!--          [class.top-level-row-1]="row.RNumber === 'Всього за проєктом'"-->
+  <!--          [class.top-level-row-2]="row.DatePay === 'Всього за реєстром'"-->
+  <!--          [hidden]="hiddenRows.includes(row.RowNum)"-->
+  <!--          style="text-align: right"-->
+  <!--        >-->
+  <!--          <td-->
+  <!--            [class.pointer]="!row.ProjectName.includes('Всього')"-->
+  <!--            [rowSpan]="getProjectLen(row.ProjectNum)"-->
+  <!--            *ngIf="isFirstProjectRow(row)"-->
+  <!--            (click)="toggleProject(row.ProjectNum)"-->
+  <!--            style="text-align: left"-->
+  <!--          >-->
+  <!--            <b *ngIf="isProjectHidden(row.ProjectNum) && !row.ProjectName.includes('Всього')">[+]</b>-->
+  <!--            <b *ngIf="!isProjectHidden(row.ProjectNum) && !row.ProjectName.includes('Всього')">[-]</b>-->
+  <!--            {{ row.ProjectName }}-->
+  <!--          </td>-->
+
+  <!--          <td-->
+  <!--            class="pointer"-->
+  <!--            [rowSpan]="getReestrLen(row.RNumber)"-->
+  <!--            *ngIf="isFirstReestrRow(row)"-->
+  <!--            (click)="toggleReestr(row.RNumber)"-->
+  <!--            style="text-align: left"-->
+  <!--          >-->
+  <!--            <b *ngIf="isReestrHidden(row.RNumber) && !!row.DatePay">[+]</b>-->
+  <!--            <b *ngIf="!isReestrHidden(row.RNumber) && !!row.DatePay">[-]</b>-->
+  <!--            {{ row.RNumber }}-->
+  <!--          </td>-->
+  <!--          <td style="text-align: left">-->
+  <!--                       {{ row.DatePay }}                </td>-->
+  <!--          <td>         {{ row.Prc | number:'1.0-2' }}                    </td>-->
+  <!--          <td>         {{ row.AllPay | number:'1.2-2' }}                 </td>-->
+  <!--          <td>         {{ row.Income | number:'1.2-2' }}                 </td>-->
+  <!--          <td>         {{ row.MaxDatePayReestr }}       </td>-->
+  <!--        </tr>-->
+  <!--      </tbody>-->
+
+  <!--    </table>-->
+  <!--  </div>-->
+
+</div>
+
+
+
+
+
+
+

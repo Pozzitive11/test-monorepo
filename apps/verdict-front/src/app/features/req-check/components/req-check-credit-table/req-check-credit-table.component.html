@@ -1,0 +1,32 @@
+<div class="row mb-0 mt-3">
+  <div *ngIf="elementService.creditTable">
+    <div *ngIf="elementService.creditTable.credits.length > 0">
+      <div class="col-md-12 text-center border p-2 rounded text-success">
+        <label class="status-label custom-bg-fcbdbd">Знайдено кредити в К1</label>
+      </div>
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>Сума</th>
+          <th>Дата повернення</th>
+          <th>Початок</th>
+          <th>Статус</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let record of elementService.creditTable.credits; let i = index">
+          <td>{{ record.amount }}</td>
+          <td>{{ record.fact_return_date }}</td>
+          <td>{{ record.start_date }}</td>
+          <td>{{ record.status }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="elementService.creditTable.credits.length === 0">
+      <div class="col-md-12 text-center border p-2 rounded text-success">
+        <label class="status-label custom-bg-a2e8a3">Не знайдено кредити в К1</label>
+      </div>
+    </div>
+  </div>
+</div>

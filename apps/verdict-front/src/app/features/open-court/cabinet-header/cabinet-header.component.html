@@ -1,0 +1,55 @@
+
+    <div class="tab-content">
+      <div *ngIf="activeTab === 'myCases'">
+        <app-my-cases-table></app-my-cases-table>
+      </div>
+      <div *ngIf="activeTab === 'eventCalendar'">
+        <app-event-calendar></app-event-calendar>
+      </div>
+    </div>
+  
+  
+
+
+<div class="container d-flex justify-content-between align-items-center">
+    <h1 class="site-title">OPENCOURT <h6>Особистий кабінет</h6></h1>
+    <div class="nav-switches">
+        <ul class="nav nav-tabs">
+            <li class="nav-item" (click)="switchToMyCases()" [ngClass]="{ 'active': activeTab === 'myCases' }">
+              <a class="nav-link">Мої справи</a>
+            </li>
+            <li class="nav-item" (click)="switchToEventCalendar()" [ngClass]="{ 'active': activeTab === 'eventCalendar' }">
+              <a class="nav-link">Календар подій</a>
+            </li>
+          </ul>
+    </div>
+    <div class="personal-icon" (click)="togglePersonalCabinet()">
+      <strong>Admin</strong> <i class="bi bi-person-circle" style="font-size: 30px; margin: 0 0.5rem;"></i>
+      <div *ngIf="showPersonalCabinet" class="personal-cabinet">
+        <ul class="options-list">
+          <li (click)="goToPersonalCabinet()"><i class="bi bi-house"></i> Особистий кабінет</li>
+          <li><i class="bi bi-gear"></i> Налаштування</li>
+          <li><i class="bi bi-box-arrow-right"></i> Вийти</li>
+        </ul>
+      </div>
+    </div>
+    <div class="notification-icon" (click)="toggleNotifications()">
+      <i class="fas fa-bell"></i>
+      <span class="notification-count">{{ notificationCount }}</span>
+    </div>
+
+      <!-- Уведомления по судовым справам -->
+      <div *ngIf="showCourtNotifications" class="notification-group">
+        <div *ngFor="let notification of courtNotifications" class="notification-item">
+          <p>{{ notification }} <a href="" style="text-decoration: underline;">Докладніше</a></p>
+        </div>
+      </div>
+    
+      <!-- Уведомления по виконавчим провадженням -->
+      <div *ngIf="showExecutionNotifications" class="notification-group">
+        <div *ngFor="let notification of executionNotifications" class="notification-item">
+          <p>{{ notification }} <a href="" style="text-decoration: underline;">Докладніше</a></p>
+        </div>
+      </div>
+    </div>
+    

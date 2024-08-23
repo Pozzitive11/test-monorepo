@@ -1,0 +1,142 @@
+
+<app-loading-bar [customType]="'inf-bar'" [loading]="loading()" />
+<div class="container-fluid my-3" [class.disabled-table]="loading()">
+
+  <div class="mb-3">
+    <div class="input-group">
+      <span class="input-group-text pe-4 fw-bold">Підключення до бази даних: </span>
+      <app-default-dropdown
+        [valueList]="dbList"
+        [(selectedValue)]="db"
+        [cycled]="true"
+        [btnClass]="'btn btn-outline-primary rounded-start-0'"
+        [customTooltip]="'Сервер'"
+        [showButtonTooltip]="true"
+        [showTooltip]="false"
+      />
+
+      @if (configIsValid()) {
+        <button class="btn btn-outline-success d-flex gap-2 ms-auto rounded-start" (click)="saveSheetConfig()">
+          <i class="bi bi-check2-circle"></i> Зберегти
+        </button>
+        @if (dataService.isAdmin() || dataService.isConfigurator()) {
+          <app-default-dropdown
+            [valueList]="groupsDropdown()"
+            [btnClass]="'btn btn-outline-primary rounded-0'"
+            [selectedValue]="groupName() || 'Без групи'"
+            [showButtonTooltip]="true"
+            [showTooltip]="false"
+            [customTooltip]="'Група таблиці'"
+            (valueSelected)="groupName.set($event)"
+          />
+        }
+        <button class="btn btn-outline-warning d-flex gap-2"
+                [disabled]="!dataService.isAdmin()"
+                (click)="editAccessRights()"
+        >
+          <i class="bi bi-pencil-square"></i> Права доступу
+        </button>
+        <button class="btn btn-outline-primary d-flex gap-2" (click)="goToSheet()">
+          Перейти до таблиці <i class="bi bi-arrow-right"></i>
+        </button>
+      } @else {
+        <span class="ms-auto text-danger input-group-text rounded-0 fw-bold">
+          @if (!sheetConfig()) {
+            Застосуйте SQL-запит
+          } @else if (!sheetName()) {
+            Введіть назву конфігурації
+          } @else {
+            Оберіть стовпці, відносно яких буде відбуватись редагування
+          }
+        </span>
+      }
+    </div>
+
+    <div class="input-group col-6">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-xl-6">
+      @if (!hideTextArea()) {
+        <textarea
+          #sqlQueryInput
+          [(ngModel)]="sqlQuery"
+          placeholder="Введіть sql-запит"
+          class="form-control"
+          rows="5"
+        ></textarea>
+        <button
+          (click)="saveQuery()"
+          class="btn btn-outline-primary mt-2"
+        >
+          Зберегти SQL-запит
+        </button>
+      } @else {
+        <code class="pointer" [ngbTooltip]="'Редагувати'" (click)="hideTextArea.set(false)">
+          <span class="bi bi-pencil-square text-20 me-3"></span>
+          {{ sqlQuery() | shortText:100 }}
+        </code>
+      }
+    </div>
+
+    <div class="col-12 col-xl-6">
+      <div class="input-group text-12" role="group">
+        <input
+          class="form-control"
+          id="typeahead-format"
+          placeholder="Введіть назву таблиці"
+          type="text"
+          [(ngModel)]="tableName"
+        />
+        <button
+          (click)="loadTableInfo()"
+          [disabled]="!tableName() && false"
+          class="btn btn-outline-primary"
+        >
+          Додати таблицю
+        </button>
+      </div>
+    </div>
+  </div>
+
+  @if (sheetConfig(); as sheetConfig) {
+    <div class="row mt-2">
+      <div class="col-12 col-xl-6">
+        <input
+          class="form-control mb-2"
+          id="config-name"
+          placeholder="Введіть назву конфігурації"
+          type="text"
+          [(ngModel)]="sheetName"
+        />
+
+        @if (sheetConfig.selected_columns.length) {
+          <app-vs-selected-columns [selectedColumns]="sheetConfig.selected_columns"
+                                   (selectedColumnsChange)="updateConfig($event)"
+                                   [tables]="sheetConfig.tables" />
+        } @else {
+          <div class="alert alert-warning mt-3">Оберіть стовпці, що використовуються в таблиці</div>
+        }
+      </div>
+
+      <div class="col-12 col-xl-6">
+        <app-accordion [items]="sheetConfig.tables"
+                       [titleKey]="'table_name'"
+                       [closeOthers]="true"
+                       [trackBy]="'table_name'"
+                       [template]="tableInfoTemplate" />
+        <ng-template let-info #tableInfoTemplate>
+          @if (asITableInfoModel(info); as info) {
+            <app-vs-table-info [tableName]="info.table_name"
+                               [tableColumns]="info.inspector_info"
+                               [selectedColumns]="sheetConfig.selected_columns"
+                               [db]="sheetConfig.db"
+                               (columnsSelected)="selectColumn($event)" />
+          }
+        </ng-template>
+      </div>
+    </div>
+  }
+
+</div>

@@ -1,0 +1,64 @@
+<div class="accordion" style="margin-bottom: 1em">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <ngb-progressbar
+        *ngIf="loading"
+        [animated]="true"
+        [height]="'5px'"
+        [striped]="true"
+        [type]="'info'"
+        [value]="100"
+      ></ngb-progressbar>
+      <button (click)="shown=!shown" [class.collapsed]="!shown" class="accordion-button" type="button">
+        Завантажити відповідь з військової частини
+      </button>
+    </h2>
+    <div *ngIf="shown" class="collapse-show">
+      <div *ngIf="shown" class="collapse-show">
+        <div class="form-group">
+
+          <app-file-upload
+            (fileAdded)="selectFiles($event)"
+            [id]="'militaryUnitResponseDocInput'"
+            [title]="'Оберіть або перетягніть файл'"
+          ></app-file-upload>
+
+          <div *ngIf="selectedFiles.length > 0" class="alert alert-primary">
+            <div class="row">
+              <div
+                *ngFor="let file of selectedFiles; let i=index"
+                class="input-group top-margin-sm text-12"
+              >
+                <span
+                  [style.border]="'1px solid #198754'"
+                  [title]="file.name"
+                  class="input-group-text"
+                  style="width: 93%; overflow: hidden"
+                >{{ file.name | shortText:70 }}</span>
+
+                <button
+                  (click)="removeFile(i)"
+                  class="btn"
+                  style="width: 7%"
+                >
+                  <span class="btn btn-close"></span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <button
+            (click)="uploadFiles()"
+            [disabled]="canUpload()"
+            class="btn btn-primary"
+          >Завантажити файли
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

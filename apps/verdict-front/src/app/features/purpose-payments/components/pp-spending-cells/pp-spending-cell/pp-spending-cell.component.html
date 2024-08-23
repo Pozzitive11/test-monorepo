@@ -1,0 +1,22 @@
+<div [placement]="'bottom-end'" ngbDropdown>
+  <button
+    (dblclick)="changeValue(undefined)"
+    [ngbTooltip]="value?.Name"
+    class="btn btn-secondary float-end text-11"
+    ngbDropdownToggle
+    type="button"
+  >
+    <span>{{ (value?.Name || '') | shortText: 30 }}</span>
+  </button>
+
+  <ul class="scrollable-drop-list" ngbDropdownMenu>
+    <li *ngFor="let spendingType of spendingTypesList$ | async">
+      <a
+        (click)="changeValue(spendingType)"
+        [ngbTooltip]="spendingType.Name"
+        class="pointer text-end"
+        ngbDropdownItem
+      >{{ spendingType.Name | shortText }}</a>
+    </li>
+  </ul>
+</div>

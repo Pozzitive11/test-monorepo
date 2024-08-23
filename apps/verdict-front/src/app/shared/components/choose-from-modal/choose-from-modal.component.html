@@ -1,0 +1,12 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ title }}</h4>
+  <button (click)="activeModal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+</div>
+
+<div class="modal-body my-2 text-center">
+  <button (click)="activeModal.close(option)"
+          *ngFor="let option of options"
+          class="btn btn-outline-primary mb-2">
+    {{ option }}
+  </button>
+</div>

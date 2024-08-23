@@ -1,0 +1,73 @@
+<div *ngIf="reportData.length > 0" class="row max-width-div max-height-div top-margin-sm">
+  <table class="table table-bordered table-responsive table-sm text-12">
+    <caption>{{ 'Сегментація за DPD' }}</caption>
+    <thead class="sticky-top">
+    <tr class="header-level">
+      <th
+        *ngFor="let column of header"
+        [style.vertical-align]="'middle'"
+        scope="col"
+      >
+          <span
+            (click)="hideAllSomething(column)"
+            [ngbTooltip]="getTooltip(column)"
+          >{{ column }}</span>
+        <span
+          (click)="changeSortType(column)"
+          *ngIf="!nonSortedColumns.includes(column)"
+          [class.bi-filter-left]="getSortType(column).none"
+          [class.bi-sort-down]="getSortType(column).down"
+          [class.bi-sort-up]="getSortType(column).up"
+          [style.font-size]="'25px'"
+          [style.vertical-align]="'middle'"
+          class="bi"
+        ></span>
+      </th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <ng-container *ngFor="let projectRow of shownData; let pr=index">
+      <ng-container *ngFor="let phoneRow of projectRow.phoneData; let ph=index">
+        <tr
+          *ngFor="let bucketRow of phoneRow.bucketData; let b=index"
+          [class.top-level-row-0]="projectRow.project.includes('Всього')"
+          [class.top-level-row-1]="phoneRow.PhonePresence.includes('Всього')"
+          [class.top-level-row-2]="bucketRow.bucket.includes('Всього')"
+          style="text-align: right"
+        >
+          <td
+            (click)="hideProjectRow(projectRow)"
+            *ngIf="b+ph===0"
+            [rowSpan]="countProjectLength(projectRow)"
+            style="text-align: left"
+          >{{ projectRow.project }}
+          </td>
+          <td
+            (click)="hidePhoneRow(phoneRow, projectRow)"
+            *ngIf="b===0"
+            [rowSpan]="phoneRow.bucketData.length"
+            style="text-align: left"
+          >{{ phoneRow.PhonePresence }}
+          </td>
+          <td style="text-align: left">{{ bucketRow.bucket | bucketPipe }}</td>
+
+          <td>{{ bucketRow.data.ContractCount | number:'1.0-0' }}</td>
+          <td>{{ bucketRow.data.ContractCountProjectPercent | number:'1.0-2' }}</td>
+          <td>{{ bucketRow.data.SumDelayBody | number:'1.0-2' }}</td>
+          <td>{{ bucketRow.data.Outstanding | number:'1.0-2' }}</td>
+          <td>{{ bucketRow.data.BalancePercent | number:'1.0-2' }}</td>
+          <td>{{ bucketRow.data.SumDelayBodyPercent | number:'1.0-2' }}</td>
+          <td>{{ bucketRow.data.DebtPartPercent | number:'1.0-2' }}</td>
+          <td>{{ bucketRow.data.BodyAvg | number:'1.0-2' }}</td>
+          <td>{{ bucketRow.data.OutstandingAvg | number:'1.0-2' }}</td>
+          <td>{{ bucketRow.data.DpdAvg | number:'1.0-0' }}</td>
+          <!--            <td>{{ bucketRow.data.Deviation | number:'1.0-2' }}</td>-->
+        </tr>
+      </ng-container>
+    </ng-container>
+    </tbody>
+
+  </table>
+</div>
+

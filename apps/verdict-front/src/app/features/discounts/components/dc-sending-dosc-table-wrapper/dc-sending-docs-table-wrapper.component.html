@@ -1,0 +1,46 @@
+<ngx-spinner
+  [fullScreen]="true"
+  bdColor="rgba(0, 0, 0, 0.8)"
+  color="#0d6efd"
+  size="medium"
+  type="ball-clip-rotate-multiple"
+>
+  <p style="color: #0d6efd"><strong>Завантаження...</strong></p>
+</ngx-spinner>
+
+<div class="container-fluid top-margin-sm">
+  <!--           ФІЛЬТРИ            -->
+  <div class="d-flex align-items-center justify-content-center">
+    <dc-sending-docs-table-filters></dc-sending-docs-table-filters>
+  </div>
+
+  <!--        ОСНОВНАЯ ТАБЛИЦА        -->
+  <div class="top-margin-sm fs-6">
+    <dc-sending-docs-table></dc-sending-docs-table>
+  </div>
+  <app-pagination></app-pagination>
+
+  <!-- <div class="row top-margin-sm alert alert-secondary" *ngIf="header.length === 0">
+    Інформація за обраними фільтрами відсутня
+  </div> -->
+</div>
+<dc-promotions-table-filters-modal [title]="'Керівництво по роботі з дашбордом'">
+  <h5>Етап 1: Завантаження Документів</h5>
+  <p>
+    Виберіть спосіб відправки документів із запропонованих опцій. Виділіть конкретні заяви для завантаження або оберіть
+    усі відразу. Натисніть кнопку "Завантажити документи", щоб отримати zip-архів із необхідними документами.
+  </p>
+
+  <h5>Етап 2: Підтвердження Відправки</h5>
+  <p>
+    Використовуйте фільтр для вибору методу відправки. Якщо вибрано спосіб відправки "Електронна пошта", достатньо лише
+    вказати дату відправки. Для інших способів відправки у розділі "Дата відправки" прикріпіть файл підтвердження
+    відправки, зазначивши тип документу і введіть дату відправки.
+  </p>
+
+  <h5>Етап 3: Перегляд Заяв</h5>
+  <p>
+    Перегляньте всі заяви, по яких були завантажені та підтверджені документи. Використовуйте цей дашборд для
+    ефективного управління процесом відправки та контролю за заявами.
+  </p>
+</dc-promotions-table-filters-modal>

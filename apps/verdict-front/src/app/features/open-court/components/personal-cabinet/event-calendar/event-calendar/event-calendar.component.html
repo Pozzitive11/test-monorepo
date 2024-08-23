@@ -1,0 +1,152 @@
+<ng-template #customCellTemplate let-day="day" let-locale="locale">
+  <div class="cal-cell-top">
+    <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{ day.badgeTotal }}</span>
+    <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+  </div>
+  <div class="cell-totals">
+    <span *ngIf="day.eventGroups.length > 0"></span>
+    <span *ngFor="let group of day.eventGroups" class="badge text-bg-{{ getBadgeClass(group[0]) }}">
+      {{ group[1].length }}
+    </span>
+  </div>
+</ng-template>
+
+<div class="row text-center">
+  <div class="col-md-4">
+    <div class="btn-group">
+      <div class="btn btn-primarys" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+           (viewDateChange)="closeOpenMonthViewDay()">
+        &lt;
+      </div>
+      <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
+        С
+      </div>
+      <div class="btn btn-primarys" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+           (viewDateChange)="closeOpenMonthViewDay()">
+        &gt;
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <h3 *ngIf="view === CalendarView.Day">{{ viewDate | customDate }}</h3>
+    <h3 *ngIf="view === CalendarView.Week">{{ viewDate | customWeekDate }}</h3>
+    <h3 *ngIf="view === CalendarView.Month">{{ viewDate | customMonthDate }}</h3>
+  </div>
+  <div class="col-md-4">
+    <div class="btn-group">
+      <div class="btn btn-primary" (click)="setView(CalendarView.Month)"
+           [ngClass]="{'btn-active': view === CalendarView.Month}">
+        Місяць
+      </div>
+      <div class="btn btn-primary" (click)="setView(CalendarView.Week)"
+           [ngClass]="{'btn-active': view === CalendarView.Week}">
+        Тиждень
+      </div>
+      <div class="btn btn-primary" (click)="setView(CalendarView.Day)"
+           [ngClass]="{'btn-active': view === CalendarView.Day}">
+        День
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+<div [ngSwitch]="view" class="calendar-container" #scrollContainer>
+  <mwl-calendar-month-view
+    *ngSwitchCase="CalendarView.Month"
+    [viewDate]="viewDate"
+    [events]="events"
+    [refresh]="refresh"
+    [cellTemplate]="customCellTemplate"
+    [activeDayIsOpen]="activeDayIsOpen"
+    (dayClicked)="dayClicked($event, p)"
+    (eventClicked)="handleEvent($event, id)"
+    (eventTimesChanged)="onEventTimesChanged($event)"
+    (beforeViewRender)="beforeMonthViewRender($event)"
+    >
+
+  </mwl-calendar-month-view>
+  <mwl-calendar-week-view
+    *ngSwitchCase="CalendarView.Week"
+    [viewDate]="viewDate"
+    [events]="events"
+    [refresh]="refresh"
+    (eventClicked)="handleEvent($event, id)"
+    (eventTimesChanged)="eventTimesChanged($event)"
+    [hourSegments]="2"
+    [hourSegmentHeight]="30">
+  </mwl-calendar-week-view>
+  <mwl-calendar-day-view
+    *ngSwitchCase="CalendarView.Day"
+    class="compact-day-view"
+    [viewDate]="viewDate"
+    [events]="events"
+    [refresh]="refresh"
+    (eventClicked)="handleEvent($event, id)"
+    (eventTimesChanged)="eventTimesChanged($event)"
+    [hourSegments]="2"
+    [hourSegmentHeight]="30">
+  </mwl-calendar-day-view>
+
+</div>
+<div *ngIf="!activeDayIsOpen" class="popover-trigger"
+     [ngbPopover]="popoverContent"
+     triggers="manual"
+     #p="ngbPopover"
+     [autoClose]="false">
+</div>
+
+
+<ng-template #popoverContent>
+  <div *ngIf="courtData.length" class="court-card-container">
+    <button class="close-button" aria-label="Close" (click)="closePopover(p)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <div *ngFor="let court of courtData; let i=index" class="court-card">
+      <div class="actions-container">
+
+        <!-- Выбор номера дела -->
+        <div class="form-group" *ngIf="i === 0">
+          <label for="selectCaseNumber" class="label-highlight">Оберіть номер справи:</label>
+          <select id="selectCaseNumber" class="form-select" [(ngModel)]="court.selectedCaseNumber">
+            <option value="" disabled selected>Оберіть номер справи</option>
+            <option *ngFor="let courtData of courtData" [value]="courtData.caseNumber">{{ courtData.caseNumber }}</option>
+          </select>
+        </div>
+
+        <!-- Выбор действия только после выбора номера дела -->
+        <div *ngIf="court.selectedCaseNumber" class="form-group">
+          <label for="selectAction{{i}}" class="label-highlight">Оберіть дію:</label>
+<select id="selectAction{{i}}" class="form-select" (change)="onActionChange($event, court)">
+  <option value="" disabled selected>Оберіть дію</option>
+  <ng-container *ngFor="let action of actions">
+    <ng-container *ngIf="action.id === 20 || action.id === 15">
+      <option [value]="action.id">{{ action.name }}</option>
+    </ng-container>
+  </ng-container>
+</select>
+
+          <!-- Если выбрано действие с id 20 -->
+          <div *ngIf="court.selectedAction && court.selectedAction.id === 20" class="form-group">
+            <label for="commentInput{{i}}" class="label-highlight">Введіть коментар:</label>
+            <textarea id="commentInput{{i}}" class="form-control" [(ngModel)]="court.commentInput"></textarea>
+            <button class="btn btn-primary mt-2" (click)="addComment(court)" [disabled]="!court.commentInput">Зберегти</button>
+          </div>
+
+
+        </div>
+
+        <!-- Если выбрано действие и это не действие с id 20 или 21 -->
+        <div *ngIf="court.selectedAction && court.selectedAction.id !== 20 && court.selectedAction.id !== 21">
+          <div class="form-group">
+            <label for="eventDate" class="label-highlight">Дата події:</label>
+            <input type="datetime-local" id="eventDate" [(ngModel)]="eventData.eventDate" class="form-control" />
+          </div>
+          <button class="btn btn-primary mt-2" (click)="createEvent(court)" [disabled]="!eventData.eventDate">Зберегти</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+

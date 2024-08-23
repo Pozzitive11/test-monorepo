@@ -1,0 +1,52 @@
+<div class="mb-3">
+  <ul class="nav nav-tabs" >
+    <li (click)="selectTab('downloadDocuments')" class="nav-item">
+      <span [class.active]="selectedTab === 'downloadDocuments'" class="nav-link fs-5 pointer">Скачати документи</span>
+    </li>
+    <li (click)="selectTab('confirmSending')" class="nav-item">
+      <span [class.active]="selectedTab === 'confirmSending'" class="nav-link fs-5 pointer">Підтвердити відправку</span>
+    </li>
+    <li (click)="selectTab('confirmed')" class="nav-item">
+      <span [class.active]="selectedTab === 'confirmed'" class="nav-link fs-5 pointer">Підтверджені</span>
+    </li>
+  </ul>
+
+  <ul class="col-md-12 text-center mt-4">
+    <div class="form-check form-check-inline">
+      <input
+        (change)="toggleFilter('Нова пошта')"
+        class="btn-check"
+        id="novaPoshta"
+        name="sendingWayFilter"
+        type="checkbox"
+        value="novaPoshta"
+      />
+
+      <label class="btn btn-rounded p-2" for="novaPoshta" style="background-color: #f7cabc">Нова пошта</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+      <input
+        (change)="toggleFilter('Укрпошта')"
+        class="btn-check"
+        id="ukrPoshta"
+        name="sendingWayFilter"
+        type="checkbox"
+        value="ukrPoshta"
+      />
+      <label class="btn btn-rounded p-2" for="ukrPoshta" style="background-color: #fffdb0">Укрпошта</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+      <input
+        (change)="toggleFilter('Електронна пошта')"
+        class="btn-check"
+        id="electrPoshta"
+        name="sendingWayFilter"
+        type="checkbox"
+        value="electrPoshta"
+      />
+      <label class="btn btn-rounded p-2" for="electrPoshta" style="background-color: #a0e6e6">Електронна пошта</label>
+    </div>
+  </ul>
+</div>

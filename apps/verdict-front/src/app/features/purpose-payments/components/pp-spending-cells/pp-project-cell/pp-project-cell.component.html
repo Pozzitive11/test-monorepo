@@ -1,0 +1,23 @@
+<div [placement]="'bottom-end'" ngbDropdown>
+  <button
+    (dblclick)="changeValue(undefined)"
+    [ngbTooltip]="value?.Name"
+    class="btn btn-secondary float-end text-11"
+    ngbDropdownToggle
+    type="button"
+  >
+    <span>{{ (value?.Name || '') | shortText: 30 }}</span>
+  </button>
+
+  <ul class="scrollable-drop-list" ngbDropdownMenu>
+    <li *ngFor="let project of projectList$ | async">
+      <a
+        (click)="changeValue(project)"
+        [ngbTooltip]="project.Name"
+        class="pointer text-end"
+        ngbDropdownItem
+      >{{ project.Name | shortText }}</a>
+    </li>
+  </ul>
+</div>
+

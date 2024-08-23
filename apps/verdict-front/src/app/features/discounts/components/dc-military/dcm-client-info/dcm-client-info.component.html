@@ -1,0 +1,123 @@
+<div *ngIf="data.length > 0" class="alert alert-info max-height-div">
+
+  <!--  ИНФОРМАЦИЯ ТУТ  -->
+  <div
+    *ngIf="data.length > 0"
+    class="row top-margin-sm"
+    style="border: #0f1c51 1px solid; border-radius: 5px; padding: 15px; margin: 10px"
+  >
+    <div class="col-6">
+      <div class="row">
+        <div>ІПН: <strong>{{ data[0]['ІПН'] }}</strong></div>
+
+        <div *ngFor="let key of INNCols" class="input-group top-margin-sm">
+          <span class="input-group-text" style="width: 45%">{{ key }}: </span>
+          <dcm-docs-cell
+            *ngIf="!dateCols.includes(key) && key !== 'Вид документу'"
+            [col]="key"
+            [dropdown]="getDropdown(key)"
+            [inn]="key"
+            [isEditable]="false"
+            [rows]="getIdsForINN()"
+            [value]="data[0][key]"
+            class="form-control"
+          >
+          </dcm-docs-cell>
+
+          <dcm-docs-date-cell
+            *ngIf="dateCols.includes(key)"
+            [col]="key"
+            [rows]="getIdsForINN()"
+            [value]="data[0][key] ? data[0][key] : null"
+            class="form-control"
+          ></dcm-docs-date-cell>
+        </div>
+
+        <div *ngIf="!!data[0][pathCol]" class="top-margin-sm input-group text-12">
+          <span class="input-group-text" style="width: 45%">{{ pathCol }}: </span>
+          <input
+            [title]="data[0][pathCol]"
+            [value]="data[0][pathCol]"
+            class="input-group-text"
+            disabled
+            style="width: 49%; overflow: hidden; text-align: left;"
+          >
+          <span
+            (click)="copy(data[0][pathCol], copyThing)"
+            class="input-group-text pointer"
+            style="width: 6%; overflow: hidden"
+          >
+            <i
+              #copyThing
+              (click)="openLocation(data[0][pathCol])"
+              [ngbTooltip]="'Копіювати'"
+              class="bi bi-clipboard2"
+              style="left: -40%; position: relative;"></i>
+          </span>
+        </div>
+
+        <dcm-docs-upload-cell
+          *ngIf="!data[0][pathCol]"
+          [INN]="data[0]['ІПН']"
+          class="top-margin-sm"
+        ></dcm-docs-upload-cell>
+
+      </div>
+    </div>
+
+    <div class="col-6 max-height-div-20">
+      <div
+        *ngFor="let row of data"
+        class="row top-margin-sm"
+        style="border: rgba(35,162,246) 1px solid; border-radius: 5px; padding: 10px; margin: 10px"
+      >
+        <div>
+          <div>Дата запиту: <strong>{{ row['Дата внесення'] }}</strong>
+            (<strong>{{ row['Канал надходження інформації'] }}</strong>)
+          </div>
+
+          <div class="input-group top-margin-sm">
+            <span class="input-group-text" style="width: 45%">Коментар: </span>
+            <dcm-docs-cell
+              [col]="'Коментар'"
+              [dropdown]="[]"
+              [isEditable]="false"
+              [rows]="[row['RequestId']]"
+              [value]="row['Коментар']"
+              class="form-control"
+            >
+            </dcm-docs-cell>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="!!getAllDocsTypesForINN().length" class="row">
+    <div class="col-12">
+      <div
+        class="row top-margin-sm"
+        style="border: rgba(35,162,246) 1px solid; border-radius: 5px; padding: 10px; margin: 10px"
+      >
+        <h4>Документи</h4>
+        <dcm-docs-type-cell
+          [col]="'Вид документу'"
+          [rows]="getIdsForINN()"
+          [value]="getAllDocsTypesForINN()"
+        ></dcm-docs-type-cell>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+

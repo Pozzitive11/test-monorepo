@@ -1,0 +1,135 @@
+<div class="container-fluid top-margin-sm">
+
+  <!--  ФИЛЬТРЫ ТУТ -->
+  <div class="row alert alert-info top-margin-sm">
+    <div class="row">
+      <div class="col-4">
+        <a (click)="switchReestrMode()" class="nav-link pointer">
+          <input
+            [checked]="isInvestProjectOnly"
+            class="form-check-input big-check"
+            type="checkbox"
+          >
+          Фільтр за інвест-портфелями
+        </a>
+        <div [class.disabled-table]="isInvestProjectOnly" class="row top-margin-sm">
+          <app-project-manager></app-project-manager>
+        </div>
+        <div [class.disabled-table]="isInvestProjectOnly" class="row top-margin-sm">
+          <app-project></app-project>
+        </div>
+
+        <hr>
+
+        <div [class.disabled-table]="!isInvestProjectOnly" class="row top-margin-sm">
+          <app-invest-project></app-invest-project>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="row">
+          <a
+            (click)="toggleIsActual()"
+            class="nav-link pointer"
+          >
+            <input
+              [checked]="isActual"
+              class="form-check-input big-check"
+              type="checkbox"
+            >
+            Актуальні реєстри
+          </a>
+        </div>
+        <div class="row top-margin-sm">
+          <app-reestr-type></app-reestr-type>
+        </div>
+        <div class="row top-margin-sm">
+          <app-reestr-status></app-reestr-status>
+        </div>
+        <div class="row top-margin-sm">
+          <app-reestr></app-reestr>
+        </div>
+      </div>
+    </div>
+
+    <div class="row top-margin-sm">
+      <div class="col-4">
+        <button
+          (click)="getData()"
+          [disabled]="!allFiltersSelected() || loading"
+          class="btn btn-success"
+        >
+          Завантажити звіт
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!--  ТАБЛИЦА С ОТЧЁТОМ ТУТ-->
+  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+  <div
+    *ngIf="!loading && reportData.length > 0"
+    class="row max-height-div"
+  >
+    <table class="table table-bordered table-responsive table-hover table-sm text-12">
+      <caption>Перетин ІПН</caption>
+      <thead class="sticky-top">
+      <tr class="header-level">
+        <th colspan="1" scope="col"></th>
+        <th class="text-center" colspan="5" scope="col">Кількість унікальних</th>
+        <th class="text-center" colspan="6" scope="col">Кількість суміжних ІПН</th>
+      </tr>
+      <tr class="header-level-1">
+        <th
+          *ngFor="let column of header; let c=index"
+          class="text-center"
+          scope="col"
+        >
+            <span
+              [ngbTooltip]="column.description"
+              [placement]="c===1 ? 'bottom': 'left-top'"
+              tooltipClass="full-front text-12"
+            >{{ column.column }}</span>
+        </th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr
+        *ngFor="let row of reportData"
+        [class.top-level-row-0]="row.ProjectName.includes('Всього')"
+        style="text-align: right"
+      >
+        <td
+          style="text-align: left"
+        >
+            <span
+              [ngbTooltip]="tooltipForTotals(row.ProjectName)"
+              placement="right">
+                              {{ row.ProjectName }}</span></td>
+        <td> {{ row.UniqueInnBought | number:'1.0-0' }}</td>
+        <td> {{ row.UniqueContractsBought | number:'1.0-0' }}</td>
+        <td> {{ row.UniqueInnToday | number:'1.0-0' }}</td>
+        <td> {{ row.UniqueContractsToday | number:'1.0-0' }}</td>
+        <td> {{ row.FullyUniqueInnToday | number:'1.0-0' }}</td>
+
+        <td> {{ row.InGroup | number:'1.0-0' }}</td>
+        <td> {{ row.FactoringNonCollateral | number:'1.0-0' }}</td>
+        <td> {{ row.FactoringCollateral | number:'1.0-0' }}</td>
+        <td> {{ row.Commission | number:'1.0-0' }}</td>
+        <td> {{ row.InSLPositive | number:'1.0-0' }}</td>
+        <td> {{ row.InSLNegative | number:'1.0-0' }}</td>
+      </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+</div>
+
+
+
+
+
+
+

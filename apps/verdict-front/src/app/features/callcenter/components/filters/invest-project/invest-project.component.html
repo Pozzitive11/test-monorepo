@@ -1,0 +1,75 @@
+<div class="row">
+  <div class="col-3">
+    <div
+      (clickOutside)="dropMenu.classList.remove('show')"
+      class="nav-item dropdown"
+    >
+      <button
+        (click)="toggleShow(dropMenu)"
+        (dblclick)="clearChosen(true)"
+        aria-expanded="false"
+        class="btn btn-outline-primary dropdown-toggle"
+        data-bs-toggle="dropdown"
+        id="navbarDropdown"
+        role="button"
+      >Обрати інвест-портфелі
+      </button>
+
+      <ul
+        #dropMenu
+        aria-labelledby="navbarDropdown"
+        class="dropdown-menu dropdown-menu-start"
+        style="z-index: 9999"
+      >
+        <li>
+
+          <div class="btn-group" role="group">
+            <button
+              (click)="clearChosen(false)"
+              class="btn btn-outline-success text-11 left-margin-sm"
+              type="button"
+            >
+              <span>Обрати всі</span>
+            </button>
+
+            <button
+              (click)="clearChosen(true)"
+              class="btn btn-outline-danger text-11 left-margin-sm"
+              type="button"
+            >
+              <span>Очистити</span>
+            </button>
+
+            <input
+              (dblclick)="textFilter=''; filterChanged()"
+              (ngModelChange)="filterChanged()"
+              [(ngModel)]="textFilter"
+              class="form-control input-group text-11"
+              placeholder="Фільтр"
+              style="width: 40%; margin-right: 10px"
+            >
+          </div>
+
+          <div class="col-auto left-margin-sm top-margin-sm"
+               style="overflow-y: scroll; max-height: 17rem; min-width: 300px">
+            <div *ngFor="let project of investProjectsFiltered" class="row-cols-auto">
+              <a
+                (click)="selectInvestProject(project)"
+                class="nav-link pointer"
+              >
+                <input
+                  [checked]="isSelected(project)"
+                  class="form-check-input big-check"
+                  type="checkbox"
+                >
+                {{ project.Name }}
+              </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+

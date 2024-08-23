@@ -1,0 +1,77 @@
+<div class="container py-4">
+  <div class="row mt-2">
+    <div class="d-flex justify-content-center mb-4">
+      <h2>Оновити користувача</h2>
+    </div>
+  </div>
+
+  <div class="row d-flex justify-content-center mb-4">
+    <div class="col-6">
+      <ng-select
+        class="pointer"
+        [items]="allUsers"
+        bindLabel="Login"
+        placeholder="Логін користувача"
+        [(ngModel)]="userLogin"
+        (change)="selectUser()"
+      >
+      </ng-select>
+    </div>
+  </div>
+
+  <div class="row d-flex mb-4">
+    <div class="d-flex justify-content-center align-items-center gap-3">
+      <div class="col-5">
+        <label class="mb-2">Змінити керівника: </label>
+        <ng-select
+          class="pointer"
+          [items]="leadsList"
+          bindLabel="FullName"
+          placeholder="Безпосередній керівник"
+          [(ngModel)]="userLead"
+        >
+        </ng-select>
+      </div>
+      <div class="mt-auto">
+        <button (click)="updateEmployee('lead')" [disabled]="!userLogin || !userLead" class="btn btn-primary">
+          Оновити
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row d-flex mb-5">
+    <div class="d-flex justify-content-center align-items-center gap-3">
+      <div class="col-5">
+        <label class="mb-2">Змінити права доступу: </label>
+        <ng-select class="pointer" [items]="rolesList" bindLabel="Name" placeholder="Роль" [(ngModel)]="userRole">
+        </ng-select>
+      </div>
+      <div class="mt-auto">
+        <button (click)="updateEmployee('role')" [disabled]="!userLogin || !userRole" class="btn btn-primary">
+          Оновити
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="row d-flex justify-content-center">
+    <div class="col-5">
+      <div class="form-check d-flex justify-content-center">
+        <button
+          [disabled]="selectedEmployee.length === 0"
+          class="btn btn-outline-primary"
+          (click)="updateEmployee('probation')"
+        >
+          <ng-container *ngIf="employeeProbation; else startProbation">Завершити випробувальний термін</ng-container>
+          <ng-template #startProbation>Почати випробувальний термін</ng-template>
+        </button>
+      </div>
+    </div>
+  </div> -->
+  <!-- <div class="container mt-5">
+      <div class="d-flex justify-content-center">
+        <button type="button" class="btn btn-primary" (click)="update()">Оновити</button>
+      </div>
+    </div> -->
+</div>

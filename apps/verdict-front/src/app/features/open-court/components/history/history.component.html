@@ -1,0 +1,18 @@
+<div class="notification-row">
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>Дата</th>
+        <th>Тип</th>
+        <th>Повідомлення</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let notification of notifications">
+        <td>{{ notification.eventDate }}</td>
+        <td>{{ notification.typeDescription }}</td>
+        <td>{{ notification.text }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

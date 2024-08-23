@@ -1,0 +1,12 @@
+<app-default-dropdown
+  (dblclick)="changeValue(undefined)"
+  (valueSelected)="changeValue($event)"
+  [btnClass]="'btn btn-secondary float-end'"
+  [fontSize]="11"
+  [cycled]="false"
+  [placement]="'bottom-end'"
+  [scrollable]="true"
+  [selectedValue]="value?.Name || 'Оберіть центр фінансування'"
+  [showTooltip]="true"
+  [valueList]="(businessList$ | async) || []"
+></app-default-dropdown>

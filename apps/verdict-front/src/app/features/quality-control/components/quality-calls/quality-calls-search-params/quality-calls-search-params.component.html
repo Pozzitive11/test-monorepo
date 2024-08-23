@@ -1,0 +1,104 @@
+<form
+  [formGroup]="searchParamsForm"
+  class="row row-cols-sm-auto d-flex gap-5 align-items-start"
+  (ngSubmit)="searchCalls()"
+>
+  <div class="d-flex flex-column gap-2">
+    <div class="col-12">
+      <div class="input-group pointer">
+        <input
+          class="form-control"
+          placeholder="yyyy-mm-dd"
+          name="dp"
+          [formControl]="startDateControl"
+          ngbDatepicker
+          #dStart="ngbDatepicker"
+        />
+        <button class="btn btn-outline-secondary bi bi-calendar3" (click)="dStart.toggle()" type="button"></button>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="input-group pointer">
+        <input
+          class="form-control"
+          placeholder="yyyy-mm-dd"
+          name="dp"
+          [formControl]="endDateControl"
+          ngbDatepicker
+          #dEnd="ngbDatepicker"
+        />
+        <button class="btn btn-outline-secondary bi bi-calendar3" (click)="dEnd.toggle()" type="button"></button>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex flex-column gap-2">
+    <div class="col-12">
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          id="firstName"
+          placeholder="Логін оператора"
+          [formControl]="operatorLoginControl"
+        />
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="form-group">
+        <input
+          type="number"
+          class="form-control"
+          min="1"
+          id="limit"
+          placeholder="Кількість записів"
+          [formControl]="limitControl"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="d-flex flex-column gap-2">
+    <div class="col-12">
+      <div class="form-group">
+        <input
+          type="number"
+          class="form-control"
+          id="minDuration"
+          placeholder="Мінімальна тривалість"
+          [formControl]="minDurationControl"
+        />
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="form-group">
+        <input
+          type="number"
+          class="form-control"
+          id="maxDuration"
+          placeholder="Максимальна тривалість"
+          [formControl]="maxDurationControl"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex flex-column gap-2 align-items-start justify-content-start">
+    <div class="col-12">
+      <div class="form-group">
+        <input
+          type="number"
+          class="form-control"
+          id="phone"
+          placeholder="Номер телефону"
+          [formControl]="phoneControl"
+        />
+      </div>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary" [disabled]="qualityCallsService.callListLoader">Пошук</button>
+
+  @if (qualityCallsService.callListLoader) {
+    <div class="spinner-grow text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  }
+</form>

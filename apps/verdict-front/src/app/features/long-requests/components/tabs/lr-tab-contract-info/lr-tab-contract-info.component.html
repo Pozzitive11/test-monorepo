@@ -1,0 +1,25 @@
+<div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-3 g-4 mt-3">
+
+  <div class="col">
+    <lr-contract-basic-info-card [contractId]="contractId"></lr-contract-basic-info-card>
+  </div>
+
+  <div class="col">
+    <lr-close-conditions-card
+      [contractId]="contractId"
+      [promotionId]="promotionId!"
+    ></lr-close-conditions-card>
+  </div>
+
+  <div class="col">
+    <lr-financial-info-card [contractId]="contractId"></lr-financial-info-card>
+  </div>
+
+  <div class="col">
+    <app-lr-client-objects-card
+      [contractId]="contractId"
+      [isMortgage]="true"
+    ></app-lr-client-objects-card>
+  </div>
+
+</div>

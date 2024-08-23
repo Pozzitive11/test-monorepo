@@ -1,0 +1,111 @@
+<div class="modal-header align-items-center">
+  <h5 class="modal-title">Редагування прав доступу</h5>
+
+  <div class="ms-auto">
+    <app-switch-checkbox [(value)]="editGroups">Редагувати групами</app-switch-checkbox>
+  </div>
+
+  <app-default-dropdown
+    [selectedValue]="sheetLabel()"
+    (selectedValueChange)="changeSheet($event)"
+    [valueList]="sheetsList()"
+    [scrollable]="true"
+    [placement]="'bottom-end'"
+    [boldValuesNum]="1"
+    class="ms-3"
+  />
+</div>
+
+<app-loading-bar [customType]="'inf-bar'" [loading]="loading()" />
+<div class="modal-body" [class.disabled-table]="loading()">
+  <ul class="list-group">
+    @if (!uid() && !groupName()) {
+      @for (access of superAccesses(); track access.userId) {
+        <li class="list-group-item">
+          <div class="input-group align-items-center">
+            @if (dataService.isAdmin() && access.userId !== 4 && access.userId !== user()?.id) {
+              <button (click)="removeAccess(access, true)"
+                      class="btn btn-outline-danger me-3 rounded-circle py-1 px-2"
+                      title="Видалити права доступу">
+                <i class="bi bi-x"></i>
+              </button>
+            }
+            <strong class="me-auto">
+              {{ userLabel(access) }}
+            </strong>
+
+            <app-default-dropdown
+              [selectedValue]="getAccessName(access.accessLevel)"
+              (selectedValueChange)="updateAccess(access, true, $event)"
+              [valueList]="superAccessLevels"
+              [scrollable]="true"
+              [placement]="'auto'"
+            />
+          </div>
+        </li>
+      }
+    } @else {
+      @for (access of sheetsRegularAccesses(); track access.userId) {
+        <li class="list-group-item">
+          <div class="input-group align-items-center">
+            @if (dataService.isAdmin() && access.userId !== 4 && access.userId !== user()?.id) {
+              <button (click)="removeAccess(access, false)"
+                      class="btn btn-outline-danger me-3 rounded-circle py-1 px-2"
+                      title="Видалити права доступу">
+                <i class="bi bi-x"></i>
+              </button>
+            }
+            <strong class="me-auto">
+              {{ userLabel(access) }}
+            </strong>
+
+            <app-default-dropdown
+              [selectedValue]="getAccessName(access.accessLevel)"
+              (selectedValueChange)="updateAccess(access, false, $event)"
+              [valueList]="regularAccessLevels"
+              [scrollable]="true"
+              [placement]="'auto'"
+            />
+          </div>
+        </li>
+      }
+    }
+
+    @for (access of newAccesses(); track access.userId) {
+      <li class="list-group-item">
+        <div class="input-group align-items-center">
+          <app-dropdown-searchable
+            [selectedValue]="userLabel(access)"
+            (selectedValueChange)="updateUserInAccess(access, $event)"
+            [valueList]="userList()"
+            [placement]="'right-top'"
+            [showButtonTooltip]="true"
+            [width]="'400px'"
+            [maxSymbols]="60"
+            class="me-auto"
+          />
+
+          <app-default-dropdown
+            [selectedValue]="getAccessName(access.accessLevel)"
+            (selectedValueChange)="updateAccess(access, true, $event)"
+            [valueList]="dataService.isAdmin() ? superAccessLevels.concat(regularAccessLevels) : regularAccessLevels"
+            [scrollable]="true"
+            [placement]="'auto'"
+          />
+        </div>
+      </li>
+    }
+
+    <li class="list-group-item">
+      <button (click)="addAccess()" class="btn btn-outline-success rounded-circle py-1 px-2"
+              title="Додати права доступу">
+        <i class="bi bi-plus"></i>
+      </button>
+    </li>
+  </ul>
+</div>
+
+<div class="modal-footer" [class.disabled-table]="loading()">
+  <button (click)="save()" class="btn btn-outline-primary" type="button">Зберегти</button>
+  <button (click)="dismiss()" class="btn btn-outline-secondary" type="button">Скасувати</button>
+</div>

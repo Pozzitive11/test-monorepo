@@ -1,0 +1,66 @@
+<div class="card">
+  <h5 (click)="cardBody.hidden=!cardBody.hidden" class="card-header pointer">
+    Перетин кордону
+    <span class="float-end">
+      <i [class.bi-chevron-down]="cardBody.hidden" [class.bi-chevron-up]="!cardBody.hidden" class="bi"></i>
+    </span>
+  </h5>
+  <ngb-progressbar
+    *ngIf="loading"
+    [animated]="true"
+    [height]="'3px'"
+    [striped]="true"
+    [type]="'secondary'"
+    [value]="100"
+  ></ngb-progressbar>
+
+  <div #cardBody [class.disabled-table]="loading" class="card-body">
+    <ul *ngIf="crossingTheBorders && crossingTheBorders.CrossingInfo.length" class="list-group list-group-flush">
+      <li class="list-group-item">
+        <strong>Дата останньої перевірки:</strong>
+        <span class="float-end">{{ (crossingTheBorders.LastCheckDate || '') | formatDate }}</span>
+      </li>
+      <li *ngIf="crossingTheBorders.LastCrossingDate" class="list-group-item">
+        <strong>Дата останнього перетину:</strong>
+        <span class="float-end">{{ crossingTheBorders.LastCrossingDate | formatDate }}</span>
+      </li>
+      <li *ngIf="crossingTheBorders.LastCrossingDirection" class="list-group-item">
+        <strong>Напрямок останнього перетину:</strong>
+        <span class="float-end">{{ crossingTheBorders.LastCrossingDirection }}</span>
+      </li>
+
+      <li *ngIf="crossingTheBorders.CrossingInfo[0].YearOfCrossing" class="list-group-item remove-padding">
+        <div class="card-body remove-padding">
+
+          <h5 (click)="crossingInfo.hidden=!crossingInfo.hidden" class="card-header pointer">
+            Перетинає:
+            <span class="float-end">
+              <i [class.bi-chevron-down]="crossingInfo.hidden" [class.bi-chevron-up]="!crossingInfo.hidden"
+                 class="bi"></i>
+            </span>
+          </h5>
+
+          <ul #crossingInfo class="list-group list-group-flush">
+            <li *ngFor="let crossing of crossingTheBorders.CrossingInfo" class="list-group-item">
+              <strong>{{ crossing.YearOfCrossing }}</strong>
+              <span class="float-end">{{ crossing.Description }}</span>
+            </li>
+          </ul>
+
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <strong *ngIf="!(crossingTheBorders && crossingTheBorders.CrossingInfo.length)" class="red-text">
+          {{ crossingTheBorders.CrossingInfo[0].Description }}
+        </strong>
+      </li>
+
+    </ul>
+
+    <strong *ngIf="!checkPresent()" class="red-text">
+      Перевірка відсутня
+    </strong>
+
+  </div>
+</div>

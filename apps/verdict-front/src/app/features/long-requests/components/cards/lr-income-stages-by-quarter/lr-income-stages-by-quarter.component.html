@@ -1,0 +1,49 @@
+<div *ngIf="incomeQuarterInfo.length" class="card">
+  <h5 (click)="cardBody.hidden=!cardBody.hidden" class="card-header pointer text-14">
+    Загальна сума нарахованого доходу <br />
+    ({{ incomeQuarter }}):
+    <span class="float-end">
+      {{ incomeQuarterSum() | currency: 'UAH': 'symbol':'1.0-2' }}
+      <i [class.bi-chevron-down]="cardBody.hidden" [class.bi-chevron-up]="!cardBody.hidden" class="bi"></i>
+    </span>
+  </h5>
+
+  <div #cardBody class="card-body p-0">
+    <ul class="list-group list-group-flush">
+      <li *ngFor="let quarterInfo of incomeQuarterInfo" class="list-group-item px-0">
+
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+
+            <li *ngIf="quarterInfo.SumEarned != undefined" class="list-group-item">
+              <strong>Сума нарахованого доходу:</strong>
+              <span class="float-end">{{ quarterInfo.SumEarned | number:'1.0-2' }}</span>
+            </li>
+
+            <li *ngIf="quarterInfo.Tax != undefined" class="list-group-item">
+              <strong>Сума утриманого податку:</strong>
+              <span class="float-end">{{ quarterInfo.Tax | number:'1.0-2' }}</span>
+            </li>
+
+            <!--            <li class="list-group-item" *ngIf="quarterInfo.Period != undefined">-->
+            <!--              <strong>Період нарахованого доходу:</strong>-->
+            <!--              <span class="float-end">{{ quarterInfo.Period }}</span>-->
+            <!--            </li>-->
+
+            <li *ngIf="quarterInfo.CompanyName != undefined" class="list-group-item">
+              <strong>Роботодавець:</strong>
+              <span class="float-end">
+                {{ quarterInfo.CompanyName }}
+                <ng-container *ngIf="quarterInfo.CompanyEDRPOU != undefined"> ({{ quarterInfo.CompanyEDRPOU }}
+                  )</ng-container>
+              </span>
+            </li>
+
+          </ul>
+        </div>
+
+      </li>
+    </ul>
+  </div>
+
+</div>

@@ -1,0 +1,216 @@
+<div class="modal-header">
+  <h4 class="modal-title">({{ data().col }})</h4>
+  <button (click)="activeModal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+</div>
+
+
+<div class="modal-body">
+
+  <!-- СОРТУВАННЯ -->
+  <div>
+    <h5 class="h5">Сортування</h5>
+
+    <div *ngIf="data().filterType === 'string' || data().filterType === 'mixed' || data().filterType === 'array'">
+
+      <i
+        (click)="selectSorting(data().sorting === true ? undefined : true)"
+        [style.color]="data().sorting === true ? '#4FAD18FF' : 'black'"
+        class="bi bi-sort-alpha-down pointer"
+        style="font-size: 40px"
+      ></i>
+
+      <i
+        (click)="selectSorting(data().sorting === false ? undefined : false)"
+        [style.color]="data().sorting === false ? '#4FAD18FF' : 'black'"
+        class="bi bi-sort-alpha-up pointer"
+        style="font-size: 40px"
+      ></i>
+
+    </div>
+
+    <div *ngIf="data().filterType==='number'">
+
+      <i
+        (click)="selectSorting(data().sorting === true ? undefined : true)"
+        [style.color]="data().sorting === true ? '#4FAD18FF' : 'black'"
+        class="bi bi-sort-numeric-down pointer"
+        style="font-size: 40px"
+      ></i>
+
+      <i
+        (click)="selectSorting(data().sorting === false ? undefined : false)"
+        [style.color]="data().sorting === false ? '#4FAD18FF' : 'black'"
+        class="bi bi-sort-numeric-up pointer"
+        style="font-size: 40px"
+      ></i>
+
+    </div>
+
+  </div>
+
+  <!-- ТЕКСТОВІ ФІЛЬТРИ -->
+  <div *ngIf="data().filterType==='string' || data().filterType === 'mixed' || data().filterType === 'array'">
+    <h5 class="h5">Текстові фільтри</h5>
+    <app-switch-checkbox
+      [(value)]="data().filter.not"
+      [id]="'notTextSwitch'"
+    >не
+    </app-switch-checkbox>
+
+    <!--  Пусте значення  -->
+    <app-switch-checkbox
+      (valueChange)="data().filter.empty=$event; selectFilter(filterTypes.empty, $event)"
+      [id]="'emptyTextSwitch'"
+      [value]="data().filter.empty"
+    >пусті значення
+    </app-switch-checkbox>
+
+    <ng-container *ngIf="!data().filter.empty">
+      <!--  Починається з  -->
+      <app-input-in-group
+        *ngIf="data().filterType !== 'array'"
+        (enterPressed)="activeModal.close(dataToSendBack())"
+        (valueChange)="data().filter.startsWith = $event ? $event : undefined; selectFilter(filterTypes.startsWith,$event)"
+        [typeOfInput]="'text'"
+        [value]="data().filter.startsWith || ''"
+        class="mb-2"
+      >
+        <span class="input-group-text">{{ data().filter.not ? 'не' : '' }} {{ filterTypes.startsWith }}</span>
+      </app-input-in-group>
+
+      <!--  Закінчується на  -->
+      <app-input-in-group
+        (enterPressed)="activeModal.close(dataToSendBack())"
+        (valueChange)="data().filter.endsWith = $event ? $event : undefined; selectFilter(filterTypes.endsWith,$event)"
+        *ngIf="data().filterType !== 'array'"
+        [typeOfInput]="'text'"
+        [value]="data().filter.endsWith || ''"
+        class="mb-2"
+      >
+        <span class="input-group-text">{{ data().filter.not ? 'не' : '' }} {{ filterTypes.endsWith }}</span>
+      </app-input-in-group>
+
+      <!--  Містить  -->
+      <app-input-in-group
+        (enterPressed)="activeModal.close(dataToSendBack())"
+        (valueChange)="data().filter.includes = $event ? $event : undefined; selectFilter(filterTypes.includes,$event)"
+        [typeOfInput]="'text'"
+        [value]="data().filter.includes || ''"
+        class="mb-2"
+      >
+        <span class="input-group-text">{{ data().filter.not ? 'не' : '' }} {{ filterTypes.includes }}</span>
+      </app-input-in-group>
+
+      <!--  Дорівнює  -->
+      <app-input-in-group
+        (enterPressed)="activeModal.close(dataToSendBack())"
+        (valueChange)="data().filter.eq = $event ? $event : undefined; selectFilter(filterTypes.eq,$event)"
+        [typeOfInput]="'text'"
+        [value]="data().filter.eq?.toString() || ''"
+      >
+        <span class="input-group-text">{{ data().filter.not ? 'не' : '' }} {{ filterTypes.eq }}</span>
+      </app-input-in-group>
+    </ng-container>
+
+  </div>
+
+  <!-- ЧИСЛОВІ ФІЛЬТРИ -->
+  <div
+    *ngIf="data().filterType==='number' || ((data().filterType === 'mixed' || data().filterType === 'array') && !data().filter.empty)">
+    <h5 class="h5">Числові фільтри</h5>
+    <app-switch-checkbox
+      (valueChange)="data().filter.not=$event"
+      *ngIf="data().filterType !== 'mixed'"
+      [id]="'notNumberSwitch'"
+      [value]="data().filter.not"
+    >не
+    </app-switch-checkbox>
+
+    <!--  Пусте значення  -->
+    <app-switch-checkbox
+      (valueChange)="data().filter.empty=$event; selectFilter(filterTypes.empty, $event)"
+      *ngIf="data().filterType !== 'mixed'"
+      [id]="'emptyNumberSwitch'"
+      [value]="data().filter.empty"
+    >пусті значення (або 0)
+    </app-switch-checkbox>
+
+    <ng-container *ngIf="!data().filter.empty">
+      <!--  Дорівнює  -->
+      <app-input-in-group
+        (enterPressed)="activeModal.close(dataToSendBack())"
+        (valueChangedNumber)="data().filter.eq = $event != undefined ? $event : undefined; selectFilter(filterTypes.eq,$event)"
+        *ngIf="data().filterType !== 'mixed'"
+        [typeOfInput]="'number'"
+        [value]="data().filter.eq?.toString() || ''"
+      >
+        <span class="input-group-text">{{ data().filter.not ? 'не' : '' }} {{ filterTypes.eq }}</span>
+      </app-input-in-group>
+
+      <!--  Менше  -->
+      <app-input-in-group
+        (enterPressed)="activeModal.close(dataToSendBack())"
+        (valueChangedNumber)="data().filter.less = $event != undefined ? $event : undefined; selectFilter(filterTypes.less,$event)"
+        [typeOfInput]="'number'"
+        [value]="data().filter.less?.toString() || ''"
+      >
+        <span class="input-group-text">{{ filterTypes.less }}</span>
+      </app-input-in-group>
+
+      <!--  Більше  -->
+      <app-input-in-group
+        (enterPressed)="activeModal.close(dataToSendBack())"
+        (valueChangedNumber)="data().filter.greater = $event != undefined ? $event : undefined; selectFilter(filterTypes.greater, $event)"
+        [typeOfInput]="'number'"
+        [value]="data().filter.greater?.toString() || ''"
+      >
+        <span class="input-group-text">{{ filterTypes.greater }}</span>
+      </app-input-in-group>
+
+      <!--  Менше або дорівнює  -->
+      <app-input-in-group
+        (enterPressed)="activeModal.close(dataToSendBack())"
+        (valueChangedNumber)="data().filter.le = $event != undefined ? $event : undefined; selectFilter(filterTypes.le,$event)"
+        [typeOfInput]="'number'"
+        [value]="data().filter.le?.toString() || ''"
+      >
+        <span class="input-group-text">{{ filterTypes.le }}</span>
+      </app-input-in-group>
+
+      <!--  Більше або дорівнює  -->
+      <app-input-in-group
+        (enterPressed)="activeModal.close(dataToSendBack())"
+        (valueChangedNumber)="data().filter.ge = $event != undefined ? $event : undefined; selectFilter(filterTypes.ge,$event)"
+        [typeOfInput]="'number'"
+        [value]="data().filter.ge?.toString() || ''"
+      >
+        <span class="input-group-text">{{ filterTypes.ge }}</span>
+      </app-input-in-group>
+
+    </ng-container>
+
+  </div>
+
+  <!--  SEARCHABLE LIST OF displayedValues -->
+  @if (values().length) {
+    <h5 class="h5">Вибір значень</h5>
+    <app-searchable-list
+      [list]="stringValues()"
+      [selectedValues]="selectedValues()"
+      (selectedValuesChange)="selectedValues.set($event)"
+      class="mt-3"
+    ></app-searchable-list>
+  }
+
+</div>
+
+
+<div class="modal-footer">
+  <button
+    (click)="activeModal.close(dataToSendBack())"
+    class="btn btn-outline-primary"
+    type="button"
+  >Зберегти
+  </button>
+</div>
+

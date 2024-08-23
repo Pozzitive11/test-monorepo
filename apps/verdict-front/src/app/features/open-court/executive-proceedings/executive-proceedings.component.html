@@ -1,0 +1,227 @@
+
+<div class="container my-4">
+  <div class="row">
+    <div class="col-auto">
+      <span class="search-label parties-search" [class.selected]="searchByExecutiveParties" (click)="toggleExecutiveSearchType()">
+        Пошук по сторонам
+      </span>
+    </div>
+    <div class="col-auto">
+      <div class="form-check form-switch mb-3">
+        <input class="form-check-input" type="checkbox" id="searchByExecutiveParties" [checked]="!searchByExecutiveParties"
+               (change)="toggleExecutiveSearchType()">
+        <label class="form-check-label" for="searchByExecutiveParties"></label>
+      </div>
+    </div>
+    <div class="col-auto">
+      <span class="search-label case-search" [class.selected]="!searchByExecutiveParties" (click)="toggleExecutiveSearchType()">
+        Пошук по номеру виконавчого провадження
+      </span>
+    </div>
+  </div>
+
+  <!-- Фильтры для поиска по сторонам для виконавчих проваджень -->
+  <div *ngIf="searchByExecutiveParties" class="col">
+    <div class="custom-dropdown">
+      <!-- Раздел для поисковой строки -->
+      <div class="search-container mb-3">
+        <input type="text"
+               class="search-input form-control"
+               placeholder="Введіть код/назву компанії або ПІБ фізичної особи"
+               [(ngModel)]="executiveParticipantSearchText"
+               [readonly]="executiveShowFilters"
+               [title]="executiveShowFilters ? 'Спершу вимкніть пошук за певною стороною' : ''"
+               (keyup.enter)="performExecutiveSearch()">
+      </div>
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="executiveShowFilters" [(ngModel)]="executiveShowFilters"
+               (change)="clearExecutiveParticipantSearch()">
+        <label class="form-check-label" for="executiveShowFilters">Додати сторону</label>
+      </div>
+
+      <!-- Dropdown menu -->
+      <div class="dropdown-menu" [class.show]="executiveShowFilters">
+        <!-- Participant filters -->
+        <div *ngFor="let filter of executiveParticipantFilters; let i = index" class="participant-filter">
+          <!-- Role selector (Creditor or Debtor) -->
+          <select class="form-select" [(ngModel)]="filter.role">
+            <option *ngFor="let option of executiveFilterOptions" [ngValue]="option.key">{{ option.name }}</option>
+          </select>
+
+          <!-- Criteria selector -->
+          <select class="form-select" [(ngModel)]="filter.searchBy"
+                  (ngModelChange)="onExecutiveSearchTypeChange(i, $event)">
+            <option value="name">ЄДРПОУ/Назвою/ПІБ</option>
+            <option value="type">ТИП</option>
+          </select>
+
+          <!-- Search bar or dropdown -->
+          <ng-container *ngIf="filter.searchBy === 'name'">
+            <input type="text" class="form-control search-input" [(ngModel)]="filter.value"
+                   placeholder="Введіть ЄДРПОУ/Назву/ПІБ">
+          </ng-container>
+          <ng-container *ngIf="filter.searchBy === 'type'">
+            <select class="form-select" [(ngModel)]="filter.value">
+              <option value="" disabled selected hidden>Оберіть тип учасника</option>
+              <option *ngFor="let type of executiveParticipantTypes" [ngValue]="type.id.toString()">{{ type.name }}</option>
+            </select>
+          </ng-container>
+
+          <!-- Remove button -->
+          <button class="btn-remove" (click)="removeExecutiveParticipantFilter(i)"> ✕ Видалити сторону</button>
+        </div>
+
+        <!-- Actions -->
+        <div class="filter-actions">
+          <!-- Add button -->
+          <button class="btn-add" (click)="addExecutiveParticipantFilter()">+ Додати сторону</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Поисковая строка для поиска по номеру виконавчого впровадження -->
+  <div *ngIf="!searchByExecutiveParties" class="search-container mb-3">
+    <input type="text"
+           id="vp_ordernum"
+           [(ngModel)]="vp_ordernum"
+           name="vp_ordernum"
+           class="search-input form-control"
+           placeholder="Введіть номер виконавчого впровадження"
+           (input)="onVpOrderNumInput()">
+  </div>
+</div>
+
+<!-- Фильтры -->
+<div class="container my-4">
+  <div class="row">
+    <div class="col">
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" (click)="toggleDropdown('dvs')">
+          ДВС / Приватний виконавець
+        </button>
+        <div class="dropdown-menu" [class.show]="dropdowns['dvs']">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="entityType" id="dvsRadio" [(ngModel)]="selectedFilter" value="dvs">
+            <label class="form-check-label" for="dvsRadio">
+              Орган ДВС
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="entityType" id="privateRadio" [(ngModel)]="selectedFilter" value="private">
+            <label class="form-check-label" for="privateRadio">
+              Приватний виконавець
+            </label>
+          </div>
+          <input *ngIf="selectedFilter === 'dvs'" type="text" class="form-control" placeholder="Пошук органа ДВС" [(ngModel)]="dvsSearch" (input)="onDvsSearchInput()">
+          <input *ngIf="selectedFilter === 'private'" type="text" class="form-control" placeholder="Пошук приватного виконавця" [(ngModel)]="privateAgentsSearch" (input)="onPrivateAgentsSearchInput()">
+          <div *ngIf="selectedFilter === 'dvs'" class="court-list">
+            <div *ngFor="let dvs of filteredDvsList" (click)="selectDvs(dvs)" class="dropdown-item">
+              {{ dvs.Name }}
+            </div>
+          </div>
+          <div *ngIf="selectedFilter === 'private'" class="court-list">
+            <div *ngFor="let agent of filteredPrivateAgentsList" (click)="selectPrivateAgent(agent)" class="dropdown-item">
+              {{ agent.FIO }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col">
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button">
+          Виконавець
+        </button>
+        <div class="dropdown-menu">
+          <input type="text" class="form-control" placeholder="Пошук виконавця">
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button">
+          Регіон
+        </button>
+        <div class="dropdown-menu">
+          <input type="text" class="form-control" placeholder="Пошук регіону">
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" (click)="toggleDropdown('dates')">
+          Дата відкриття
+        </button>
+        <div class="dropdown-menu" [class.show]="dropdowns['dates']">
+          <input class="form-control" type="date">
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" (click)="toggleDropdown('status')">
+          Статус
+        </button>
+        <div class="dropdown-menu" [class.show]="dropdowns['status']">
+          <select class="form-select">
+            <option value="unset">Усі</option>
+            <option value="completed">Завершено</option>
+            <option value="opened">Відкрито</option>
+            <option value="enforcement">Примусове виконання</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="selected-filters mt-3">
+    <!-- Фильтр по номерам виконавчих проваджень -->
+    <div *ngIf="vpOrderNums.length > 0" class="badge bg-secondary">
+      № ВП:
+      <span *ngFor="let num of vpOrderNums; let i = index">
+        {{ num }}
+        <span class="ms-2 cursor-pointer" (click)="removeVpOrderNumFilter(num)">&times;</span>
+      </span>
+    </div>
+  
+    <!-- Фильтр по организациям -->
+    <div *ngIf="selectedOrgId || selectedOrgType" class="badge bg-secondary">
+      <!-- Фильтр по организации -->
+      <ng-container *ngIf="selectedOrgId">
+        Організація: {{ truncateText(getOrgNameById(selectedOrgId)) }}
+        <span class="ms-2 cursor-pointer" (click)="removeOrgNameIdFilter()">&times;</span>
+      </ng-container>
+      
+      <!-- Фильтр по типу організації -->
+      <ng-container *ngIf="selectedOrgType">
+        <ng-container *ngIf="selectedOrgId">, </ng-container> <!-- Запятая между фильтрами, если выбран и тип -->
+        Тип організації: {{ truncateText(getOrgNameTypeName(selectedOrgType)) }}
+        <span class="ms-2 cursor-pointer" (click)="removeOrgNameTypeFilter()">&times;</span>
+      </ng-container>
+    </div>
+  </div>
+</div>
+  <div class="my-3 d-flex justify-content-center">
+    <button (click)="searchExecutiveData()" class="btn btn-primary">Пошук</button>
+  </div>
+  
+    <!-- Спиннер загрузки -->
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#0d6efd" type="ball-clip-rotate-multiple"
+             [fullScreen]="true">
+  <p style="color: #0d6efd"><strong>Обробка...</strong></p>
+</ngx-spinner>
+
+
+  
+<div class="container card-container">
+    <div class="row" #cardRow>
+      <ng-container *ngFor="let executiveCard of executiveData">
+        <div class="col-md-4">
+          <app-executive-cards [executiveData]="executiveCard"></app-executive-cards>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  
+

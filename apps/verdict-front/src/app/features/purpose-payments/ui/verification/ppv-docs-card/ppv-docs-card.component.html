@@ -1,0 +1,73 @@
+<div class="card">
+  <div (click)="cardBody.hidden=!cardBody.hidden" class="card-header card-title h6 pointer">
+    {{ title }} <i *ngIf="tooltip" [ngbTooltip]="tooltip" class="bi bi-question-circle ms-1"></i>
+
+    <i [class.bi-chevron-down]="cardBody.hidden"
+       [class.bi-chevron-up]="!cardBody.hidden"
+       class="bi float-end"
+    ></i>
+  </div>
+
+  <div #cardBody class="card-body">
+
+    <table class="table-sm table table-bordered table-hover text-13">
+      <thead>
+      <tr>
+        <td class="text-center"><strong>Період</strong></td>
+        <td class="text-center"><strong>Кількість</strong></td>
+        <td class="text-center"><strong>Сума</strong></td>
+        <td class="text-center"><strong>Загальна кількість</strong></td>
+        <td class="text-center"><strong>Загальна сума</strong></td>
+        <td class="text-center"><strong>Відсоток від загальної кількості</strong></td>
+        <td class="text-center"><strong>Відсоток від загальної суми</strong></td>
+      </tr>
+      </thead>
+
+      <tbody>
+      <ng-container *ngFor="let info of verificationData; let i = index">
+        <tr #trInfo
+            (click)="onPeriodSelect.emit(info.Period)"
+            (mousedown)="trInfo.classList.add('active')"
+            (mouseleave)="trInfo.classList.remove('active')"
+            (mouseup)="trInfo.classList.remove('active')"
+            *ngIf="info !== null"
+            class="pointer">
+          <td>{{ info.Period | formatDate }}</td>
+          <td class="text-end">{{ info.PaymentsCount | number:'1.0-0' }}</td>
+          <td class="text-end">{{ info.PaymentsSum | currency:'UAH':'symbol':'1.0-2' }}</td>
+          <td class="text-end">{{ totalData[i].PaymentsCount | number:'1.0-0' }}</td>
+          <td class="text-end">{{ totalData[i].PaymentsSum | currency:'UAH':'symbol':'1.0-2' }}</td>
+          <td class="text-end">
+            <ng-container *ngIf="totalData[i].PaymentsCount">
+              {{ (info.PaymentsCount / totalData[i].PaymentsCount * 100) | formatAnyValue:null:true }}
+            </ng-container>
+          </td>
+          <td class="text-end">
+            <ng-container *ngIf="totalData[i].PaymentsSum">
+              {{ (info.PaymentsSum / totalData[i].PaymentsSum * 100) | formatAnyValue:null:true }}
+            </ng-container>
+          </td>
+        </tr>
+      </ng-container>
+
+      <tr #trTotal
+          (click)="onPeriodSelect.emit(null)"
+          (mousedown)="trTotal.classList.add('active')"
+          (mouseleave)="trTotal.classList.remove('active')"
+          (mouseup)="trTotal.classList.remove('active')"
+          class="pointer">
+        <td><strong>Всього</strong></td>
+        <td class="text-end"><strong>{{ totalVerificationCount | number:'1.0-0' }}</strong></td>
+        <td class="text-end"><strong>{{ totalVerificationSum | currency:'UAH':'symbol':'1.0-2' }}</strong></td>
+        <td class="text-end"><strong>{{ totalPaymentsCount | number:'1.0-0' }}</strong></td>
+        <td class="text-end"><strong>{{ totalPaymentsSum | currency:'UAH':'symbol':'1.0-2' }}</strong></td>
+        <td class="text-end">
+          <strong>{{ totalVerificationCount / totalPaymentsCount * 100 | formatAnyValue:null:true }}</strong></td>
+        <td class="text-end">
+          <strong>{{ totalVerificationSum / totalPaymentsSum * 100 | formatAnyValue:null:true }}</strong></td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

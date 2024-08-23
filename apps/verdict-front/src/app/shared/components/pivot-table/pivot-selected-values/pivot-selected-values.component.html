@@ -1,0 +1,295 @@
+<div class="row">
+  <div class="col-12 col-sm-4 col-lg-3">
+    <div class="row mt-3">
+      <div class="col-12">
+        <div class="mb-1">Наявні стовпці</div>
+
+        <div #columns="cdkDropList"
+             [cdkContextMenuTriggerFor]="context_menu"
+             [cdkDropListConnectedTo]="[selectValue, selectIndex, selectFilters, selectTabs]"
+             [cdkDropListData]="tableColumns()"
+             cdkDropList
+             class="example-list"
+             id="columns"
+        >
+
+          @for (column of tableColumns(); track column) {
+            <div
+              (click)="toggleColumnCheck(column)"
+              (contextmenu)="currentContextElement = column"
+              cdkDrag
+              class="example-box d-block"
+            >
+              <div *cdkDragPlaceholder class="example-custom-placeholder"></div>
+              @if (checkedColumns.length) {
+                <input
+                  [checked]="checkedColumns.includes(column)"
+                  class="big-check pointer d-inline me-2"
+                  type="checkbox"
+                >
+              }
+              <span>{{ column }}</span>
+            </div>
+          }
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ----------------------------- БЛОКИ ВЫБРАННОГО ----------------------------- -->
+
+  <div class="col-12 col-sm-8 col-lg-9">
+    <div class="row">
+      <!-- ----------------------------- ФІЛЬТРИ ----------------------------- -->
+      <div class="col-12 col-sm-6 col-lg-4 mt-3">
+        <div class="mb-1">Фільтри</div>
+
+        <div
+          #selectFilters="cdkDropList"
+          (cdkDropListDropped)="drop($event, selectedFilters)"
+          [cdkDropListConnectedTo]="[selectIndex, selectValue]"
+          [cdkDropListData]="selectedFilters()"
+          cdkDropList
+          class="example-list"
+          id="selectFilters"
+        >
+          @for (column of selectedFilters(); track column; let i = $index) {
+            <div (dblclick)="removeElement(i, selectedFilters)" cdkDrag class="example-box">
+              <div *cdkDragPlaceholder class="example-custom-placeholder"></div>
+              {{ column }}
+
+              <div class="float-end">
+              <span (click)="openFilter(column)" [class.text-bg-success]="filterIsApplied(column)"
+                    class="badge text-bg-primary pointer">
+                <i class="bi bi-filter"></i>
+              </span>
+                <span (click)="clearFilter(column)" *ngIf="filterIsApplied(column)"
+                      class="badge text-bg-danger pointer ms-1">
+                <i class="bi bi-arrow-counterclockwise"></i>
+              </span>
+                <span (click)="removeElement(i, selectedFilters); clearFilter(column)"
+                      class="badge text-bg-danger pointer ms-1">
+                <i class="bi bi-x"></i>
+              </span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- ----------------------------- РЯДКИ ----------------------------- -->
+      <div class="col-12 col-sm-6 col-lg-4 mt-3">
+        <div class="mb-1">Рядки</div>
+
+        <div
+          #selectIndex="cdkDropList"
+          (cdkDropListDropped)="drop($event, selectedIndex)"
+          [cdkDropListConnectedTo]="[selectFilters, selectValue]"
+          [cdkDropListData]="selectedIndex()"
+          cdkDropList
+          class="example-list"
+          id="selectIndex"
+        >
+          @for (column of selectedIndex(); track column; let i = $index) {
+            <div (dblclick)="removeElement(i, selectedIndex)" cdkDrag class="example-box">
+              <div *cdkDragPlaceholder class="example-custom-placeholder"></div>
+              {{ column }}
+
+              <span (click)="removeElement(i, selectedIndex)" class="badge text-bg-danger pointer">
+              <i class="bi bi-x"></i>
+            </span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- ----------------------------- СТОВПЦІ ----------------------------- -->
+      <div class="col-12 col-sm-6 col-lg-4 mt-3 disabled-table md-hidden">
+        <div class="mb-1">Стовпці</div>
+
+        <div
+          cdkDropList
+          class="example-list"
+        >
+          <div cdkDrag class="example-box">
+            <div *cdkDragPlaceholder class="example-custom-placeholder"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ----------------------------- ЗНАЧЕННЯ ----------------------------- -->
+      <div class="col-12 col-sm-6 col-lg-4 mt-3">
+        <div class="mb-1">Значення</div>
+
+        <div
+          #selectValue="cdkDropList"
+          (cdkDropListDropped)="drop($event, selectedValues)"
+          [cdkDropListConnectedTo]="[]"
+          [cdkDropListData]="selectedValues()"
+          cdkDropList
+          class="example-list"
+          id="selectValue"
+        >
+
+          @for (column of selectedValues(); track column; let i = $index) {
+            <div (dblclick)="removeElement(i, selectedValues, true)" cdkDrag class="example-box">
+              <div *cdkDragPlaceholder class="example-custom-placeholder"></div>
+
+              {{ column }}
+              <span (click)="removeElement(i, selectedValues, true)" class="badge text-bg-danger pointer">
+                <i class="bi bi-x"></i>
+              </span>
+            </div>
+          }
+
+        </div>
+      </div>
+
+      <!-- ----------------------------- ФУНКЦІЇ ЗВЕДЕННЯ ----------------------------- -->
+      <div class="col-12 col-sm-6 col-lg-4 mt-3">
+        <div class="mb-1">Обрані функції зведення</div>
+
+        <div
+          #selectAggFunction="cdkDropList"
+          (cdkDropListDropped)="drop($event, selectedAggFunctions)"
+          [cdkDropListData]="selectedAggFunctions()"
+          cdkDropList
+          class="example-list"
+          id="selectAggFunction"
+        >
+
+          @for (aggFunc of selectedAggFunctions(); track aggFunc; let i = $index) {
+            <div (dblclick)="removeElement(i, selectedAggFunctions)" cdkDrag class="example-box">
+              <div *cdkDragPlaceholder class="example-custom-placeholder"></div>
+
+              {{ aggFunctionsDescriptionsMap(aggFunc) }}
+              <strong (click)="replaceFunction(i, functionEdit)" class="badge text-bg-primary pointer">
+                <i class="bi bi-arrow-counterclockwise"></i>
+              </strong>
+            </div>
+          }
+
+        </div>
+      </div>
+
+      <!-- ----------------------------- НАЗВИ ДЛЯ СТОВПЦІВ ----------------------------- -->
+      <div class="col-12 col-sm-6 col-lg-4 mt-3">
+        <div class="mb-1">Назви для стовпців</div>
+
+        <div class="cdk-drop-list example-list" id="selectAliases">
+          @for (alias of selectedAliases(); track alias; let i = $index) {
+            <div class="cdk-drag example-box">
+              {{ alias }}
+              <strong (click)="editAlias(i, alias, aliasEdit)" class="badge text-bg-success pointer">
+                <i class="bi bi-pencil"></i>
+              </strong>
+            </div>
+          }
+
+        </div>
+      </div>
+
+      <!-- ----------------------------- ВКЛАДКИ ----------------------------- -->
+      <div class="col-12 col-sm-6 col-lg-4 mt-3">
+        <div class="mb-1">Вкладки</div>
+
+        <div
+          #selectTabs="cdkDropList"
+          (cdkDropListDropped)="drop($event, selectedTabs)"
+          [cdkDropListConnectedTo]="[]"
+          [cdkDropListData]="selectedTabs()"
+          cdkDropList
+          class="example-list"
+          id="selectTabs"
+        >
+
+          @for (tab of selectedTabs(); track tab; let i = $index) {
+            <div (dblclick)="removeElement(i, selectedTabs)" cdkDrag class="example-box">
+              <div *cdkDragPlaceholder class="example-custom-placeholder"></div>
+
+              {{ tab }}
+              <span (click)="removeElement(i, selectedTabs)" class="badge text-bg-danger pointer">
+                <i class="bi bi-x"></i>
+              </span>
+            </div>
+          }
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+@if (showRedZoneSlider()) {
+  <div class="input-range-wrapper">
+    <label class="form-label" for="rangeInput">К-ть днів в RedZone</label>
+    <div class="input-range" style="display: flex; justify-content: space-between;">
+      <input (change)="rangeChange($event)" [(ngModel)]="rangeValue" class="form-range" id="rangeInput" max="30" min="1"
+             step="1"
+             style="width: 95%;" type="range">
+      <span>
+      {{ rangeValue }}
+    </span>
+    </div>
+  </div>
+}
+
+<div class="row mt-3">
+  <div class="col">
+    <button (click)="updatePivot()" class="btn btn-outline-primary">Оновити зведену</button>
+  </div>
+</div>
+
+
+<ng-template #aliasEdit let-modalAlias>
+  <div class="modal-header">
+    <h4 class="modal-title">Змінити назву стовпця</h4>
+    <button (click)="modalAlias.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+  </div>
+
+  <div class="modal-body">
+    <app-input-in-group [(value)]="aliasNameInEdit" [typeOfInput]="'text'">
+      <span>Нова назва: </span>
+    </app-input-in-group>
+  </div>
+
+  <div class="modal-footer">
+    <button (click)="modalAlias.close()" class="btn btn-outline-primary" type="button">Зберегти</button>
+    <button (click)="modalAlias.dismiss()" class="btn btn-outline-secondary" type="button">Відмінити</button>
+  </div>
+</ng-template>
+
+
+<ng-template #functionEdit let-modalFunction>
+  <div class="modal-header">
+    <h4 class="modal-title">Фільтр</h4>
+    <button (click)="modalFunction.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+  </div>
+
+  <div class="modal-body">
+    <app-searchable-list
+      (valueSelected)="modalFunction.close($event)"
+      [list]="aggFunctionsDescriptions()"
+      [multiple]="false"
+    />
+  </div>
+
+  <div class="modal-footer">
+    <button (click)="modalFunction.dismiss()" class="btn btn-outline-secondary" type="button">Відмінити</button>
+  </div>
+</ng-template>
+
+
+<ng-template #context_menu>
+  <div cdkMenu class="context-menu">
+    <button (click)="addCheckedTo('filter')" cdkMenuItem class="context-menu-item">Додати в фільтри</button>
+    <button (click)="addCheckedTo('index')" cdkMenuItem class="context-menu-item">Додати в рядки</button>
+    <button (click)="addCheckedTo('value')" cdkMenuItem class="context-menu-item">Додати в значення</button>
+    <button (click)="addCheckedTo('tabs')" cdkMenuItem class="context-menu-item">Додати у вкладки</button>
+  </div>
+</ng-template>
+
+
+

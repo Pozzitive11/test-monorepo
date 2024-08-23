@@ -1,0 +1,66 @@
+<div *ngIf="!!carObj" class="card my-2">
+
+  <h5 (click)="epInfo.hidden=!epInfo.hidden" class="card-header pointer">
+    <span class="mb-2 text-18">{{ carObj.CarType }}</span>
+    <span class="float-end">
+      <i [class.bi-chevron-down]="epInfo.hidden" [class.bi-chevron-up]="!epInfo.hidden" class="bi"></i>
+    </span>
+  </h5>
+
+  <div #epInfo class="card-body">
+    <ul *ngIf="!!inventoryObject" class="list-group list-group-flush">
+
+      <li class="list-group-item">
+        <strong>Напрям:</strong>
+        <span class="float-end">{{ inventoryObject.Department }}</span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>Власник:</strong>
+        <span class="float-end">{{ inventoryObject.ClientName }}</span>
+      </li>
+
+      <li (click)="shortDescription=!shortDescription" class="list-group-item pointer">
+        <strong>Опис майна:</strong>
+        <span class="float-end">{{ carObj.CarDescription }}</span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>Тип майна по відношенню до НКС:</strong>
+        <span class="float-end">{{ inventoryObject.PropertyToContractType }}</span>
+      </li>
+
+      <li *ngIf="inventoryObject.PropertyInQueue || !inventoryObject.InventoryIsDone" class="list-group-item">
+        <strong *ngIf="inventoryObject.PropertyInQueue" class="text-success">
+          Розібрано
+        </strong>
+        <strong *ngIf="!inventoryObject.PropertyInQueue" class="text-danger float-end">
+          Не розібрано
+        </strong>
+      </li>
+
+      <li *ngIf="inventoryObject.ProcessingStatus || inventoryObject.StatusDate" class="list-group-item">
+        <strong>Статус по опрацюванню:</strong>
+        <span class="float-end">{{ inventoryObject.ProcessingStatus }}</span>
+      </li>
+
+      <li *ngIf="inventoryObject.StatusDate" class="list-group-item">
+        <strong>Дата переходу в статус:</strong>
+        <span class="float-end">{{ inventoryObject.StatusDate | formatDate:false }}</span>
+      </li>
+
+      <li *ngIf="inventoryObject.InventoryIsDone != undefined" class="list-group-item">
+        <strong *ngIf="inventoryObject.InventoryIsDone" class="text-success">
+          Описано
+        </strong>
+        <strong *ngIf="!inventoryObject.InventoryIsDone" class="text-danger float-end">
+          Не описано
+        </strong>
+      </li>
+
+      <lr-inventory-auction-card [property]="inventoryObject"></lr-inventory-auction-card>
+
+    </ul>
+  </div>
+</div>
+

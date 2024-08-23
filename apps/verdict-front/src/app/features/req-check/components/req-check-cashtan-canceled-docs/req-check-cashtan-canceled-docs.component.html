@@ -1,0 +1,15 @@
+<div *ngIf="elementService.cashCancelledDocs" class="row mb-0 mt-3">
+  <div *ngIf="elementService.cashCancelledDocs.found  === 0"
+       class="col-md-12 text-center border p-2 rounded text-success">
+    <label class="status-label custom-bg-a2e8a3">Паспорт не знайдено в розшуку МВС або не анульований</label>
+  </div>
+  <div *ngIf="elementService.cashCancelledDocs.found === 1 || elementService.cashCancelledDocs.found === 2"
+       class="col-md-12 text-center border p-2 rounded text-danger">
+    <label class="status-label custom-bg-fcbdbd">Паспорт в розшуку або анульований</label>
+  </div>
+  <div *ngIf="elementService.cashCancelledDocs.found <= -1 "
+       class="col-md-12 text-center border p-2 rounded text-danger">
+    <label class="status-label custom-bg-fcbdbdOrange">Помилка роботи зовнішнього сервісу(Виконайте повторний запит УБКІ
+      через 1-2хв.)</label>
+  </div>
+</div>

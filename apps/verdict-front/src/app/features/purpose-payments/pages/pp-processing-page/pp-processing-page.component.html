@@ -1,0 +1,103 @@
+<div class="container-fluid">
+  <h4 class="h4 mb-2 top-margin-sm">Обробка призначень платежів</h4>
+
+  <div class="row">
+    <div class="col-xxl-4 alert alert-dark">
+      <div class="alert alert-secondary">
+        <p class="alert-link" style="text-align: center;">Необхідний формат для обробки:</p>
+        <ul>
+          <li class="alert-link">Файл *.xlsx</li>
+          <li>
+            <p class="alert-link">Необхідні стовпці:</p>
+            <ul>
+              <li>Назначение платежа</li>
+              <li>Ид.Код, при відсутності - використовується код 36799749 (Вердикт Капітал)</li>
+              <li>Наш счет</li>
+              <li>Наименование контр.</li>
+              <li>Код контр.</li>
+              <li>Сумма</li>
+            </ul>
+          </li>
+        </ul>
+        <br>
+      </div>
+    </div>
+
+    <div class="col-xxl-1"></div>
+    <div *ngIf="!waiting" class="col-xxl-4">
+      <p><strong>Завантажити файл для обробки:</strong></p>
+      <app-file-upload
+        (fileAdded)="fileList = $event"
+        *ngIf="!disabled"
+        [accept]="['.xlsx', '.xls']"
+        [multiple]="false"
+      ></app-file-upload>
+
+      <div *ngIf="fileList!=null && !disabled" class="row">
+        <p><strong>Файл:</strong> {{ fileList[0].name }}</p>
+        <div class="btn-group dropdown top-margin-sm" ngbDropdown role="group">
+          <span class="input-group-text text-12" style="width: 40%">Тип даних для обробки:</span>
+
+          <button
+            class="btn btn-primary text-12"
+            ngbDropdownToggle
+            style="width: 25%"
+            type="button"
+          >
+            <span>{{ currentType }}</span>
+            <span class="caret left-margin-sm"></span>
+          </button>
+          <ul class="dropdown-menu" ngbDropdownMenu>
+            <li *ngFor="let type of types">
+              <a (mousedown)="updateCurrentType(type)" class="dropdown-item pointer" ngbDropdownItem>{{ type }}</a>
+            </li>
+          </ul>
+
+          <button (click)="startProcessing()" class="btn btn-success text-12" style="width: 35%">
+            Почати обробку
+          </button>
+        </div>
+
+      </div>
+
+      <br>
+      <div *ngIf="disabled || !!progressInfo" class="form-group">
+        <div>
+          Статус обробки:
+          {{ progressInfo?.status }}
+        </div>
+
+        <div>
+          {{ progressInfo?.progress_info }}
+        </div>
+
+        <div *ngFor="let info of progressInfo?.info_list" class="alert alert-info">
+          {{ info }}
+        </div>
+
+        <div *ngFor="let error of progressInfo?.errors_list" class="alert alert-danger">
+          {{ error }}
+        </div>
+
+        <div>
+          <ngb-progressbar
+            [striped]="true"
+            [type]="'success'"
+            [value]="progressInfo ? progressInfo.progress_percent : 20"
+          ></ngb-progressbar>
+        </div>
+
+        <div *ngIf="progressInfo ? progressInfo.end_file !== '' : false" class="alert alert-success">
+          <button (click)="requestFile()" class="btn btn-success">Скачати ({{ progressInfo?.end_file }})</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="waiting" class="col-xxl-4">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+  </div>
+
+
+</div>
+

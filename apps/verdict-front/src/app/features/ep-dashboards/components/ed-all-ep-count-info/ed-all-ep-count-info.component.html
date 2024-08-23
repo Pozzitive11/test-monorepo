@@ -1,0 +1,753 @@
+<div class="row">
+  <div class="col-4">
+    <nav class="nav flex-column">
+      <a class="nav-link d-flex" role="button">
+        Всього перевірених ВП
+        <span *ngIf="allEP.count !== undefined || allEP.count === 0; else loadingSpinner"
+              class="badge bg-black bg-hover-info ms-auto">
+          {{ allEP.count | number: "1.0-0" }}
+        </span>
+        <i
+          (click)="allEP.show = !allEP.show"
+          [class.bi-chevron-down]="!allEP.show"
+          [class.bi-chevron-up]="allEP.show"
+          class="bi ms-2"
+        ></i>
+      </a>
+
+      <nav *ngIf="allEP.show" class="nav nav-pills flex-column ms-3">
+        <a class="nav-link d-flex" role="button">
+          <i
+            class="fa-solid fa-arrow-right"
+            style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+          ></i>
+          Буфер
+          <span *ngIf="allEP.buffer.count !== undefined ; else loadingSpinner"
+                class="badge bg-black bg-hover-info ms-auto">
+            {{ allEP.buffer.count | number: "1.0-0" }}
+          </span>
+          <i
+            [class.bi-chevron-down]="!allEP.buffer.show"
+            [class.bi-chevron-up]="allEP.buffer.show"
+            class="bi ms-2"
+            style="color: white"
+          ></i>
+        </a>
+      </nav>
+
+      <nav *ngIf="allEP.show" class="nav nav-pills flex-column ms-3">
+        <a class="nav-link d-flex" role="button">
+          <i
+            class="fa-solid fa-arrow-right"
+            style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+          ></i>
+          Відкриті ВП
+          <span *ngIf="allEP.openedEP.count !== undefined ; else loadingSpinner"
+                class="badge bg-black bg-hover-info ms-auto">
+            {{ allEP.openedEP.count | number: "1.0-0" }}
+          </span>
+          <i
+            (click)="allEP.openedEP.show = !allEP.openedEP.show"
+            [class.bi-chevron-down]="!allEP.openedEP.show"
+            [class.bi-chevron-up]="allEP.openedEP.show"
+            class="bi ms-2"
+          ></i>
+        </a>
+
+        <nav *ngIf="allEP.openedEP.show" class="nav nav-pills flex-column ms-3">
+          <a class="nav-link d-flex" role="button">
+            <i
+              class="fa-solid fa-arrow-right"
+              style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+            ></i>
+            Не наші ВП
+            <span
+              *ngIf="allEP.openedEP.active_not_oursEP.count !== undefined ; else loadingSpinner"
+              class="badge bg-black bg-hover-info ms-auto"
+            >
+              {{ allEP.openedEP.active_not_oursEP.count | number: "1.0-0" }}
+            </span>
+            <i
+              [class.bi-chevron-down]="!allEP.openedEP.active_not_oursEP.show"
+              [class.bi-chevron-up]="allEP.openedEP.active_not_oursEP.show"
+              class="bi ms-2"
+              style="color: white"
+            ></i>
+          </a>
+
+          <!--<ng-container *ngTemplateOutlet="bufferInfo"></ng-container>-->
+        </nav>
+
+        <nav *ngIf="allEP.openedEP.show" class="nav nav-pills flex-column ms-3">
+          <a class="nav-link d-flex" role="button">
+            <i
+              class="fa-solid fa-arrow-right"
+              style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+            ></i>
+            ВП наших компаній
+            <span
+              *ngIf="allEP.openedEP.active_oursEP.count !== undefined ; else loadingSpinner"
+              class="badge bg-black bg-hover-info ms-auto"
+            >
+              {{ allEP.openedEP.active_oursEP.count | number: "1.0-0" }}
+            </span>
+            <i
+              (click)="allEP.openedEP.active_oursEP.show = !allEP.openedEP.active_oursEP.show"
+              [class.bi-chevron-down]="!allEP.openedEP.active_oursEP.show"
+              [class.bi-chevron-up]="allEP.openedEP.active_oursEP.show"
+              class="bi ms-2"
+            ></i>
+          </a>
+
+          <ng-container *ngTemplateOutlet="vpintro"></ng-container>
+        </nav>
+
+        <nav *ngIf="allEP.openedEP.show" class="nav nav-pills flex-column ms-3">
+          <a class="nav-link d-flex" role="button">
+            <i
+              class="fa-solid fa-arrow-right"
+              style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+            ></i>
+            ВП попереднього кредитора
+            <span
+              *ngIf="allEP.openedEP.active_previous_creditorEP.count !== undefined ; else loadingSpinner"
+              class="badge bg-black bg-hover-info ms-auto"
+            >
+              {{ allEP.openedEP.active_previous_creditorEP.count | number: "1.0-0" }}
+            </span>
+            <i
+              (click)="allEP.openedEP.active_previous_creditorEP.show = !allEP.openedEP.active_previous_creditorEP.show"
+              [class.bi-chevron-down]="!allEP.openedEP.active_previous_creditorEP.show"
+              [class.bi-chevron-up]="allEP.openedEP.active_previous_creditorEP.show"
+              class="bi ms-2"
+            ></i>
+          </a>
+          <nav *ngIf="allEP.openedEP.active_previous_creditorEP.show" class="nav nav-pills flex-column ms-3">
+            <a class="nav-link d-flex" role="button">
+              <i
+                class="fa-solid fa-arrow-right"
+                style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+              ></i>
+              Після відступлення
+              <span
+                *ngIf="allEP.openedEP.active_previous_creditorEP.active_after_assignmentEP.count !== undefined ; else loadingSpinner"
+                class="badge bg-black bg-hover-info ms-auto"
+              >
+                {{ allEP.openedEP.active_previous_creditorEP.active_after_assignmentEP.count | number: "1.0-0" }}
+              </span>
+              <i
+                [class.bi-chevron-down]="!allEP.openedEP.active_previous_creditorEP.active_after_assignmentEP.show"
+                [class.bi-chevron-up]="allEP.openedEP.active_previous_creditorEP.active_after_assignmentEP.show"
+                class="bi ms-2"
+                style="color: white"
+              ></i>
+            </a>
+
+            <a class="nav-link d-flex" role="button">
+              <i
+                class="fa-solid fa-arrow-right"
+                style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+              ></i>
+              До відступлення
+              <span
+                *ngIf="allEP.openedEP.active_previous_creditorEP.active_before_assignmentEP.count !== undefined ; else loadingSpinner"
+                class="badge bg-black bg-hover-info ms-auto"
+              >
+                {{ allEP.openedEP.active_previous_creditorEP.active_before_assignmentEP.count | number: "1.0-0" }}
+              </span>
+              <i
+                [class.bi-chevron-down]="!allEP.openedEP.active_previous_creditorEP.active_before_assignmentEP.show"
+                [class.bi-chevron-up]="allEP.openedEP.active_previous_creditorEP.active_before_assignmentEP.show"
+                class="bi ms-2"
+                style="color: white"
+              ></i>
+            </a>
+          </nav>
+
+          <!--<ng-container *ngTemplateOutlet="bufferInfo"></ng-container>-->
+        </nav>
+
+        <nav *ngIf="allEP.openedEP.show" class="nav nav-pills flex-column ms-3">
+          <a class="nav-link d-flex" role="button">
+            <i
+              class="fa-solid fa-arrow-right"
+              style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+            ></i>
+            ВП по нашому боржнику
+            <span
+              *ngIf="allEP.openedEP.active_our_debtorEP.count !== undefined ; else loadingSpinner"
+              class="badge bg-black bg-hover-info ms-auto"
+            >
+              {{ allEP.openedEP.active_our_debtorEP.count | number: "1.0-0" }}
+            </span>
+            <i
+              [class.bi-chevron-down]="!allEP.openedEP.active_our_debtorEP.show"
+              [class.bi-chevron-up]="allEP.openedEP.active_our_debtorEP.show"
+              class="bi ms-2"
+              style="color: white"
+            ></i>
+          </a>
+
+          <!--<ng-container *ngTemplateOutlet="bufferInfo"></ng-container>-->
+        </nav>
+
+        <nav *ngIf="allEP.openedEP.show" class="nav nav-pills flex-column ms-3">
+          <a class="nav-link d-flex" role="button">
+            <i
+              class="fa-solid fa-arrow-right"
+              style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+            ></i>
+            Інші ВП
+            <span
+              *ngIf="allEP.openedEP.active_otherEP.count !== undefined ; else loadingSpinner"
+              class="badge bg-black bg-hover-info ms-auto"
+            >
+              {{ allEP.openedEP.active_otherEP.count | number: "1.0-0" }}
+            </span>
+            <i
+              [class.bi-chevron-down]="!allEP.openedEP.active_otherEP.show"
+              [class.bi-chevron-up]="allEP.openedEP.active_otherEP.show"
+              class="bi ms-2"
+              style="color: white"
+            ></i>
+          </a>
+
+          <!--<ng-container *ngTemplateOutlet="bufferInfo"></ng-container>-->
+        </nav>
+      </nav>
+
+      <nav *ngIf="allEP.show" class="nav nav-pills flex-column ms-3">
+        <a class="nav-link d-flex" role="button">
+          <i
+            class="fa-solid fa-arrow-right"
+            style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+          ></i>
+          Завершені ВП
+          <span *ngIf="allEP.closed.count !== undefined ; else loadingSpinner"
+                class="badge bg-black bg-hover-info ms-auto">
+            {{ allEP.closed.count | number: "1.0-0" }}
+          </span>
+          <i
+            (click)="allEP.closed.show = !allEP.closed.show"
+            [class.bi-chevron-down]="!allEP.closed.show"
+            [class.bi-chevron-up]="allEP.closed.show"
+            class="bi ms-2"
+          ></i>
+        </a>
+
+        <nav *ngIf="allEP.closed.show" class="nav nav-pills flex-column ms-3">
+          <a class="nav-link d-flex" role="button">
+            <i
+              class="fa-solid fa-arrow-right"
+              style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+            ></i>
+            Не наші ВП
+            <span
+              *ngIf="allEP.closed.closed_not_oursEP.count !== undefined ; else loadingSpinner"
+              class="badge bg-black bg-hover-info ms-auto"
+            >
+            {{ allEP.closed.closed_not_oursEP.count | number: "1.0-0" }}
+          </span>
+            <i
+              [class.bi-chevron-down]="!allEP.closed.closed_not_oursEP.show"
+              [class.bi-chevron-up]="allEP.closed.closed_not_oursEP.show"
+              class="bi ms-2"
+              style="color: white"
+            ></i>
+          </a>
+
+          <!--<ng-container *ngTemplateOutlet="bufferInfo"></ng-container>-->
+        </nav>
+
+        <nav *ngIf="allEP.closed.show" class="nav nav-pills flex-column ms-3">
+          <a class="nav-link d-flex" role="button">
+            <i
+              class="fa-solid fa-arrow-right"
+              style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+            ></i>
+            ВП наших компаній
+            <span
+              *ngIf="allEP.closed.closed_oursEP.count !== undefined ; else loadingSpinner"
+              class="badge bg-black bg-hover-info ms-auto"
+            >
+            {{ allEP.closed.closed_oursEP.count | number: "1.0-0" }}
+          </span>
+            <i
+              (click)="allEP.closed.closed_oursEP.show = !allEP.closed.closed_oursEP.show"
+              [class.bi-chevron-down]="!allEP.closed.closed_oursEP.show"
+              [class.bi-chevron-up]="allEP.closed.closed_oursEP.show"
+              class="bi ms-2"
+            ></i>
+          </a>
+
+          <ng-container *ngTemplateOutlet="vpclosed"></ng-container>
+        </nav>
+
+        <nav *ngIf="allEP.closed.show" class="nav nav-pills flex-column ms-3">
+          <a class="nav-link d-flex" role="button">
+            <i
+              class="fa-solid fa-arrow-right"
+              style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+            ></i>
+            ВП попереднього кредитора
+            <span
+              *ngIf="allEP.closed.closed_previous_creditorEP.count !== undefined ; else loadingSpinner"
+              class="badge bg-black bg-hover-info ms-auto"
+            >
+            {{ allEP.closed.closed_previous_creditorEP.count | number: "1.0-0" }}
+          </span>
+            <i
+              (click)="allEP.closed.closed_previous_creditorEP.show = !allEP.closed.closed_previous_creditorEP.show"
+              [class.bi-chevron-down]="!allEP.closed.closed_previous_creditorEP.show"
+              [class.bi-chevron-up]="allEP.closed.closed_previous_creditorEP.show"
+              class="bi ms-2"
+            ></i>
+          </a>
+          <nav *ngIf="allEP.closed.closed_previous_creditorEP.show" class="nav nav-pills flex-column ms-3">
+            <a class="nav-link d-flex" role="button">
+              <i
+                class="fa-solid fa-arrow-right"
+                style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+              ></i>
+              Після відступлення
+              <span
+                *ngIf="allEP.closed.closed_previous_creditorEP.closed_after_assignmentEP.count !== undefined ; else loadingSpinner"
+                class="badge bg-black bg-hover-info ms-auto"
+              >
+              {{ allEP.closed.closed_previous_creditorEP.closed_after_assignmentEP.count | number: "1.0-0" }}
+            </span>
+              <i
+                [class.bi-chevron-down]="!allEP.closed.closed_previous_creditorEP.closed_after_assignmentEP.show"
+                [class.bi-chevron-up]="allEP.closed.closed_previous_creditorEP.closed_after_assignmentEP.show"
+                class="bi ms-2"
+                style="color: white"
+              ></i>
+            </a>
+
+            <a class="nav-link d-flex" role="button">
+              <i
+                class="fa-solid fa-arrow-right"
+                style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+              ></i>
+              До відступлення
+              <span
+                *ngIf="allEP.closed.closed_previous_creditorEP.closed_before_assignmentEP.count !== undefined ; else loadingSpinner"
+                class="badge bg-black bg-hover-info ms-auto"
+              >
+              {{ allEP.closed.closed_previous_creditorEP.closed_before_assignmentEP.count | number: "1.0-0" }}
+            </span>
+              <i
+                [class.bi-chevron-down]="!allEP.closed.closed_previous_creditorEP.closed_before_assignmentEP.show"
+                [class.bi-chevron-up]="allEP.closed.closed_previous_creditorEP.closed_before_assignmentEP.show"
+                class="bi ms-2"
+                style="color: white"
+              ></i>
+            </a>
+          </nav>
+
+          <!--<ng-container *ngTemplateOutlet="bufferInfo"></ng-container>-->
+        </nav>
+
+        <nav *ngIf="allEP.closed.show" class="nav nav-pills flex-column ms-3">
+          <a class="nav-link d-flex" role="button">
+            <i
+              class="fa-solid fa-arrow-right"
+              style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+            ></i>
+            ВП по нашому боржнику
+            <span
+              *ngIf="allEP.closed.closed_our_debtorEP.count !== undefined ; else loadingSpinner"
+              class="badge bg-black bg-hover-info ms-auto"
+            >
+            {{ allEP.closed.closed_our_debtorEP.count | number: "1.0-0" }}
+          </span>
+            <i
+              [class.bi-chevron-down]="!allEP.closed.closed_our_debtorEP.show"
+              [class.bi-chevron-up]="allEP.closed.closed_our_debtorEP.show"
+              class="bi ms-2"
+              style="color: white"
+            ></i>
+          </a>
+
+          <!--<ng-container *ngTemplateOutlet="bufferInfo"></ng-container>-->
+        </nav>
+
+        <nav *ngIf="allEP.closed.show" class="nav nav-pills flex-column ms-3">
+          <a class="nav-link d-flex" role="button">
+            <i
+              class="fa-solid fa-arrow-right"
+              style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+            ></i>
+            Інші ВП
+            <span
+              *ngIf="allEP.closed.closed_otherEP.count !== undefined ; else loadingSpinner"
+              class="badge bg-black bg-hover-info ms-auto"
+            >
+            {{ allEP.closed.closed_otherEP.count | number: "1.0-0" }}
+          </span>
+            <i
+              [class.bi-chevron-down]="!allEP.closed.closed_otherEP.show"
+              [class.bi-chevron-up]="allEP.closed.closed_otherEP.show"
+              class="bi ms-2"
+              style="color: white"
+            ></i>
+          </a>
+
+          <!--<ng-container *ngTemplateOutlet="bufferInfo"></ng-container>-->
+        </nav>
+      </nav>
+    </nav>
+  </div>
+
+  <!--   СПІНЕР    -->
+
+  <ng-template #loadingSpinner>
+    <span class="badge ms-auto">
+      <app-loading-spinner [size]="20" [spinnerClass]="'loader-spinner'"></app-loading-spinner>
+    </span>
+  </ng-template>
+
+  <!--   ВІДОБРАЖЕННЯ ВП НАШИХ КОМПАНІЙ    -->
+  <ng-template #vpintro>
+    <nav *ngIf="allEP.openedEP.active_oursEP.show" class="nav nav-pills flex-column ms-3">
+      <a class="nav-link d-flex" role="button">
+        <i
+          class="fa-solid fa-arrow-right"
+          style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+        ></i>
+        ЗВП
+        <span
+          *ngIf="allEP.openedEP.active_oursEP.active_zvpEP.count !== undefined || allEP.openedEP.active_oursEP.active_zvpEP.count === 0; else loadingSpinner"
+          class="badge bg-black bg-hover-info ms-auto"
+        >
+          {{ allEP.openedEP.active_oursEP.active_zvpEP.count | number: "1.0-0" }}
+        </span>
+        <i
+          [class.bi-chevron-down]="!allEP.openedEP.active_oursEP.active_zvpEP.show"
+          [class.bi-chevron-up]="allEP.openedEP.active_oursEP.active_zvpEP.show"
+          class="bi ms-2"
+          style="color: white"
+        ></i>
+      </a>
+      <a class="nav-link d-flex" role="button">
+        <i
+          class="fa-solid fa-arrow-right"
+          style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+        ></i>
+        Реалізація майна
+        <span
+          *ngIf="allEP.openedEP.active_oursEP.active_property_realizationEP.count !== undefined ; else loadingSpinner"
+          class="badge bg-black bg-hover-info ms-auto"
+        >
+          {{ allEP.openedEP.active_oursEP.active_property_realizationEP.count | number: "1.0-0" }}
+        </span>
+        <i
+          (click)="
+            allEP.openedEP.active_oursEP.active_property_realizationEP.show =
+              !allEP.openedEP.active_oursEP.active_property_realizationEP.show
+          "
+          [class.bi-chevron-down]="!allEP.openedEP.active_oursEP.active_property_realizationEP.show"
+          [class.bi-chevron-up]="allEP.openedEP.active_oursEP.active_property_realizationEP.show"
+          class="bi ms-2"
+        ></i>
+      </a>
+      <nav *ngIf="allEP.openedEP.active_oursEP.active_property_realizationEP.show"
+           class="nav nav-pills flex-column ms-3">
+        <a class="nav-link d-flex" role="button">
+          <i
+            class="fa-solid fa-arrow-right"
+            style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+          ></i>
+          Опис майна
+          <span
+            *ngIf="allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.count !== undefined ; else loadingSpinner"
+            class="badge bg-black bg-hover-info ms-auto"
+          >
+            {{ allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.count | number: "1.0-0" }}
+          </span>
+          <i
+            (click)="
+            allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.show =
+              !allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.show
+          "
+            [class.bi-chevron-down]="!allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.show"
+            [class.bi-chevron-up]="allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.show"
+            class="bi ms-2"
+          ></i>
+        </a>
+        <nav *ngIf="allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.show"
+             class="nav nav-pills flex-column ms-3">
+          <a class="nav-link d-flex" role="button">
+            <i
+              class="fa-solid fa-arrow-right"
+              style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+            ></i>
+            Черга майна на опрацювання
+            <span
+              *ngIf="allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.active_queue_property.count !== undefined ; else loadingSpinner"
+              class="badge bg-black bg-hover-info ms-auto"
+            >
+              {{ allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.active_queue_property.count | number: "1.0-0" }}
+            </span>
+            <i
+              [class.bi-chevron-down]="!allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.active_queue_property.show"
+              [class.bi-chevron-up]="allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.active_queue_property.show"
+              class="bi ms-2"
+              style="color: white"
+
+            ></i>
+          </a>
+          <a class="nav-link d-flex" role="button">
+            <i
+              class="fa-solid fa-arrow-right"
+              style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+            ></i>
+            Черга на опис нерухомостi
+            <span
+              *ngIf="allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.active_queue_real_estate.count !== undefined ; else loadingSpinner"
+              class="badge bg-black bg-hover-info ms-auto"
+            >
+              {{ allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.active_queue_real_estate.count | number: "1.0-0" }}
+            </span>
+            <i
+              [class.bi-chevron-down]="!allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.active_queue_real_estate.show"
+              [class.bi-chevron-up]="allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.active_queue_real_estate.show"
+              class="bi ms-2"
+              style="color: white"
+
+            ></i>
+          </a>
+          <a class="nav-link d-flex" role="button">
+            <i
+              class="fa-solid fa-arrow-right"
+              style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+            ></i>
+            Черга на опис авто
+            <span
+              *ngIf="allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.active_queue_auto.count !== undefined || allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.active_queue_auto.count === 0; else loadingSpinner"
+              class="badge bg-black bg-hover-info ms-auto"
+            >
+              {{ allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.active_queue_auto.count | number: "1.0-0" }}
+            </span>
+            <i
+              [class.bi-chevron-down]="!allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.active_queue_auto.show"
+              [class.bi-chevron-up]="allEP.openedEP.active_oursEP.active_property_realizationEP.active_property_estateEP.active_queue_auto.show"
+              class="bi ms-2"
+              style="color: white"
+
+            ></i>
+          </a>
+        </nav>
+        <a class="nav-link d-flex" role="button">
+          <i
+            class="fa-solid fa-arrow-right"
+            style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+          ></i>
+          Торги
+          <span
+            *ngIf="allEP.openedEP.active_oursEP.active_property_realizationEP.active_auctionEP.count !== undefined ; else loadingSpinner"
+            class="badge bg-black bg-hover-info ms-auto"
+          >
+            {{ allEP.openedEP.active_oursEP.active_property_realizationEP.active_auctionEP.count | number: "1.0-0" }}
+          </span>
+          <i
+            [class.bi-chevron-down]="!allEP.openedEP.active_oursEP.active_property_realizationEP.active_auctionEP.show"
+            [class.bi-chevron-up]="allEP.openedEP.active_oursEP.active_property_realizationEP.active_auctionEP.show"
+            class="bi ms-2"
+            style="color: white"
+          ></i>
+        </a>
+      </nav>
+      <a class="nav-link d-flex" role="button">
+        <i
+          class="fa-solid fa-arrow-right"
+          style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+        ></i>
+        ВП наших компаній
+        <span
+          *ngIf="allEP.openedEP.active_oursEP.acive_VP_MinusEP !== undefined ; else loadingSpinner"
+          class="badge bg-black bg-hover-info ms-auto"
+        >
+          {{ allEP.openedEP.active_oursEP.acive_VP_MinusEP | number: "1.0-0" }}
+        </span>
+        <i
+          [class.bi-chevron-down]="!allEP.openedEP.active_oursEP.active_property_realizationEP.show"
+          [class.bi-chevron-up]="allEP.openedEP.active_oursEP.active_property_realizationEP.show"
+          class="bi ms-2"
+          style="color: white"
+        ></i>
+      </a>
+    </nav>
+  </ng-template>
+
+  <ng-template #vpclosed>
+    <nav *ngIf="allEP.closed.closed_oursEP.show" class="nav nav-pills flex-column ms-3">
+      <a class="nav-link d-flex" role="button">
+        <i
+          class="fa-solid fa-arrow-right"
+          style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+        ></i>
+        ЗВП
+        <span
+          *ngIf="allEP.closed.closed_oursEP.closed_zvpEP.count !== undefined || allEP.closed.closed_oursEP.closed_zvpEP.count === 0; else loadingSpinner"
+          class="badge bg-black bg-hover-info ms-auto"
+        >
+          {{ allEP.closed.closed_oursEP.closed_zvpEP.count | number: "1.0-0" }}
+        </span>
+        <i
+          [class.bi-chevron-down]="!allEP.closed.closed_oursEP.closed_zvpEP.show"
+          [class.bi-chevron-up]="allEP.closed.closed_oursEP.closed_zvpEP.show"
+          class="bi ms-2"
+          style="color: white"
+        ></i>
+      </a>
+      <a class="nav-link d-flex" role="button">
+        <i
+          class="fa-solid fa-arrow-right"
+          style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+        ></i>
+        Реалізація майна
+        <span
+          *ngIf="allEP.closed.closed_oursEP.closed_property_realizationEP.count !== undefined ; else loadingSpinner"
+          class="badge bg-black bg-hover-info ms-auto"
+        >
+          {{ allEP.closed.closed_oursEP.closed_property_realizationEP.count | number: "1.0-0" }}
+        </span>
+        <i
+          (click)="
+            allEP.closed.closed_oursEP.closed_property_realizationEP.show =
+              !allEP.closed.closed_oursEP.closed_property_realizationEP.show
+          "
+          [class.bi-chevron-down]="!allEP.closed.closed_oursEP.closed_property_realizationEP.show"
+          [class.bi-chevron-up]="allEP.closed.closed_oursEP.closed_property_realizationEP.show"
+          class="bi ms-2"
+        ></i>
+      </a>
+      <nav *ngIf="allEP.closed.closed_oursEP.closed_property_realizationEP.show" class="nav nav-pills flex-column ms-3">
+        <a class="nav-link d-flex" role="button">
+          <i
+            class="fa-solid fa-arrow-right"
+            style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+          ></i>
+          Опис майна
+          <span
+            *ngIf="allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.count !== undefined ; else loadingSpinner"
+            class="badge bg-black bg-hover-info ms-auto"
+          >
+            {{ allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.count | number: "1.0-0" }}
+          </span>
+          <i
+            (click)="
+            allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.show =
+              !allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.show
+          "
+            [class.bi-chevron-down]="!allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.show"
+            [class.bi-chevron-up]="allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.show"
+            class="bi ms-2"
+          ></i>
+        </a>
+        <nav *ngIf="allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.show"
+             class="nav nav-pills flex-column ms-3">
+          <a class="nav-link d-flex" role="button">
+            <i
+              class="fa-solid fa-arrow-right"
+              style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+            ></i>
+            Черга майна на опрацювання
+            <span
+              *ngIf="allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.closed_queue_property.count !== undefined ; else loadingSpinner"
+              class="badge bg-black bg-hover-info ms-auto"
+            >
+              {{ allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.closed_queue_property.count | number: "1.0-0" }}
+            </span>
+            <i
+              [class.bi-chevron-down]="!allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.closed_queue_property.show"
+              [class.bi-chevron-up]="allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.closed_queue_property.show"
+              class="bi ms-2"
+              style="color: white"
+
+            ></i>
+          </a>
+          <a class="nav-link d-flex" role="button">
+            <i
+              class="fa-solid fa-arrow-right"
+              style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+            ></i>
+            Черга на опис нерухомостi
+            <span
+              *ngIf="allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.closed_queue_real_estate.count !== undefined ; else loadingSpinner"
+              class="badge bg-black bg-hover-info ms-auto"
+            >
+              {{ allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.closed_queue_real_estate.count | number: "1.0-0" }}
+            </span>
+            <i
+              [class.bi-chevron-down]="!allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.closed_queue_real_estate.show"
+              [class.bi-chevron-up]="allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.closed_queue_real_estate.show"
+              class="bi ms-2"
+              style="color: white"
+
+            ></i>
+          </a>
+          <a class="nav-link d-flex" role="button">
+            <i
+              class="fa-solid fa-arrow-right"
+              style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+            ></i>
+            Черга на опис авто
+            <span
+              *ngIf="allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.closed_queue_auto.count !== undefined || allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.closed_queue_auto.count === 0; else loadingSpinner"
+              class="badge bg-black bg-hover-info ms-auto"
+            >
+              {{ allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.closed_queue_auto.count | number: "1.0-0" }}
+            </span>
+            <i
+              [class.bi-chevron-down]="!allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.closed_queue_auto.show"
+              [class.bi-chevron-up]="allEP.closed.closed_oursEP.closed_property_realizationEP.closed_property_estateEP.closed_queue_auto.show"
+              class="bi ms-2"
+              style="color: white"
+
+            ></i>
+          </a>
+        </nav>
+        <a class="nav-link d-flex" role="button">
+          <i
+            class="fa-solid fa-arrow-right"
+            style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+          ></i>
+          Торги
+          <span
+            *ngIf="allEP.closed.closed_oursEP.closed_property_realizationEP.closed_auctionEP.count !== undefined ; else loadingSpinner"
+            class="badge bg-black bg-hover-info ms-auto"
+          >
+            {{ allEP.closed.closed_oursEP.closed_property_realizationEP.closed_auctionEP.count | number: "1.0-0" }}
+          </span>
+          <i
+            [class.bi-chevron-down]="!allEP.closed.closed_oursEP.closed_property_realizationEP.closed_auctionEP.show"
+            [class.bi-chevron-up]="allEP.closed.closed_oursEP.closed_property_realizationEP.closed_auctionEP.show"
+            class="bi ms-2"
+            style="color: white"
+          ></i>
+        </a>
+      </nav>
+      <a class="nav-link d-flex" role="button">
+        <i
+          class="fa-solid fa-arrow-right"
+          style="color: #1277da; position: flex; margin-left: -33px; padding-right: 20px;padding-top: 4px;"
+        ></i>
+        ВП наших компаній
+        <span
+          *ngIf="allEP.closed.closed_oursEP.closed_VP_MinusEP !== undefined ; else loadingSpinner"
+          class="badge bg-black bg-hover-info ms-auto"
+        >
+          {{ allEP.closed.closed_oursEP.closed_VP_MinusEP | number: "1.0-0" }}
+        </span>
+        <i
+          [class.bi-chevron-down]="!allEP.closed.closed_oursEP.closed_property_realizationEP.show"
+          [class.bi-chevron-up]="allEP.closed.closed_oursEP.closed_property_realizationEP.show"
+          class="bi ms-2"
+          style="color: white"
+        ></i>
+      </a>
+    </nav>
+  </ng-template>
+</div>

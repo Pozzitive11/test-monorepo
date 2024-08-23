@@ -1,0 +1,147 @@
+<div class="container-fluid top-margin-sm">
+
+  <!--  ФИЛЬТРЫ ТУТ -->
+  <div class="row alert alert-info top-margin-sm">
+    <div class="col-4">
+      <a (click)="switchReestrMode()" class="nav-link pointer">
+        <input
+          [checked]="isInvestProjectOnly"
+          class="form-check-input big-check"
+          type="checkbox"
+        >
+        Фільтр за інвест-портфелями
+      </a>
+      <div [class.disabled-table]="isInvestProjectOnly" class="row top-margin-sm">
+        <app-project-manager></app-project-manager>
+      </div>
+      <div [class.disabled-table]="isInvestProjectOnly" class="row top-margin-sm">
+        <app-project></app-project>
+      </div>
+
+      <hr>
+
+      <div [class.disabled-table]="!isInvestProjectOnly" class="row top-margin-sm">
+        <app-invest-project></app-invest-project>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="row">
+        <a
+          (click)="toggleIsActual()"
+          class="nav-link pointer"
+        >
+          <input
+            [checked]="isActual"
+            class="form-check-input big-check"
+            type="checkbox"
+          >
+          Актуальні реєстри
+        </a>
+      </div>
+      <div class="row top-margin-sm">
+        <app-reestr-type></app-reestr-type>
+      </div>
+      <div class="row top-margin-sm">
+        <app-reestr-status></app-reestr-status>
+      </div>
+      <div class="row top-margin-sm">
+        <app-reestr></app-reestr>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-3 top-margin-sm">
+        <a (click)="isTotal=!isTotal; hiddenRows=[]; hiddenPositions=[]" class="nav-link pointer">
+          <input
+            [checked]="!isTotal"
+            class="form-check-input big-check"
+            type="checkbox"
+          >
+          Розділити по проєктах
+        </a>
+      </div>
+    </div>
+
+    <div class="col-4 top-margin-sm">
+      <button
+        (click)="getData()"
+        [disabled]="!allFiltersSelected() && !loading"
+        class="btn btn-success"
+      >
+        Завантажити звіт
+      </button>
+    </div>
+  </div>
+
+
+  <app-cc-segments-rpc-nc-total-info-box>
+  </app-cc-segments-rpc-nc-total-info-box>
+
+
+  <!--  ТАБЛИЦА С ОТЧЁТОМ ТУТ -->
+  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+  <ngb-progressbar
+    *ngIf="updating"
+    [animated]="true"
+    [height]="'7px'"
+    [striped]="true"
+    [type]="'info'"
+    [value]="100"
+  ></ngb-progressbar>
+  <div
+    *ngIf="!loading && segments.length > 0"
+    [class.disabled-table]="updating"
+    class="row max-height-div"
+  >
+    <table class="table table-bordered table-responsive table-hover table-sm text-12">
+      <caption>Сегменти RPC і NC</caption>
+      <thead class="sticky-top">
+      <tr class="header-level">
+        <th scope="col">
+          Позиція
+        </th>
+        <th *ngFor="let region_type of header" scope="col">
+          {{ region_type }}
+        </th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr
+        *ngFor="let row of (isTotal ? segmentsTotal : segments)"
+        [className]="row.level < maxLevel ? 'top-level-row-' + row.level : ''"
+        [hidden]="isRowHidden(row.position, row.project)"
+        style="text-align: right"
+      >
+        <td
+          (click)="toggleRow(row.project, row.position, row.level)"
+          [class.pointer]="hasUnderLevel(row)"
+          [style]="getMargin(row.level)"
+          style="text-align: left"
+        >
+          <b *ngIf="isPositionHidden(row.project, row.position) && hasUnderLevel(row)">[+]</b>
+          <b *ngIf="!isPositionHidden(row.project, row.position) && hasUnderLevel(row)">[-]</b>
+          {{ row.position }}
+        </td>
+        <td
+          (click)="getInfoFile(row, header[i])"
+          *ngFor="let data of row.data; let i=index"
+          [class.pointer]="i<row.data.length-1"
+        >
+          {{ data.count | number:'1.0-2' }}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+

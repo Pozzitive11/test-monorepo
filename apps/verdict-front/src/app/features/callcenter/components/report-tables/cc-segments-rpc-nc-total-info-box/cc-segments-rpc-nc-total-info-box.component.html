@@ -1,0 +1,145 @@
+<!--<div>-->
+<!--  -->
+<!--</div>-->
+<div [class.disabled-table]="updating" class="row alert alert-success top-margin-sm">
+  <ngb-progressbar
+    *ngIf="updating"
+    [animated]="true"
+    [height]="'3px'"
+    [striped]="true"
+    [type]="'success'"
+    [value]="100"
+  ></ngb-progressbar>
+  <br>
+
+  <h5 class="card-title">Середні
+    показники{{ totalInfo.length > 0 ? ' (станом на ' + totalInfo[0].UpdateDate + ')' : '' }}</h5>
+  <div class="col-auto input-group-text top-margin-sm">
+    <div
+      (clickOutside)="updateTotalInfoFromOutsideClick(dropMenu)"
+      class="nav-item dropdown"
+      clickOutside
+    >
+      <button
+        (click)="toggleShow(dropMenu)"
+        (dblclick)="clearChosen(true, 'reestrStatus')"
+        aria-expanded="false"
+        class="btn btn-outline-success dropdown-toggle text-12"
+        data-bs-toggle="dropdown"
+        id="navbarDropdown"
+        role="button"
+      >Статуси
+      </button>
+
+      <ul
+        #dropMenu
+        aria-labelledby="navbarDropdown"
+        class="dropdown-menu dropdown-menu-start"
+        style="z-index: 9999"
+      >
+        <li>
+
+          <button
+            (click)="clearChosen(false, 'reestrStatus')"
+            class="btn btn-outline-success text-11 left-margin-sm"
+            type="button"
+          >
+            <span>Обрати всі</span>
+          </button>
+
+          <button
+            (click)="clearChosen(true, 'reestrStatus')"
+            class="btn btn-outline-danger text-11 left-margin-sm"
+            type="button"
+          >
+            <span>Очистити</span>
+          </button>
+
+          <div class="col-auto left-margin-sm top-margin-sm"
+               style="overflow-y: scroll; max-height: 17rem; min-width: 300px">
+            <div *ngFor="let reestrStatus of reestrStatuses" class="row-cols-auto">
+              <a
+                (click)="selectValue(reestrStatus, 'reestrStatus')"
+                class="nav-link pointer"
+              >
+                <input
+                  [checked]="isSelected(reestrStatus, 'reestrStatus')"
+                  class="form-check-input big-check"
+                  type="checkbox"
+                >
+                {{ reestrStatus.Name }}
+              </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div
+      (clickOutside)="updateTotalInfoFromOutsideClick(dropMenu2)"
+      class="nav-item dropdown left-margin-sm"
+      clickOutside
+    >
+      <button
+        (click)="toggleShow(dropMenu2)"
+        (dblclick)="clearChosen(true, 'reestrType')"
+        aria-expanded="false"
+        class="btn btn-outline-success dropdown-toggle text-12"
+        data-bs-toggle="dropdown"
+        id="navbarDropdown2"
+        role="button"
+      >Типи реєстрів
+      </button>
+
+      <ul
+        #dropMenu2
+        aria-labelledby="navbarDropdown2"
+        class="dropdown-menu dropdown-menu-start"
+        style="z-index: 9999"
+      >
+        <li>
+
+          <button
+            (click)="clearChosen(false, 'reestrType')"
+            class="btn btn-outline-success text-11 left-margin-sm"
+            type="button"
+          >
+            <span>Обрати всі</span>
+          </button>
+
+          <button
+            (click)="clearChosen(true, 'reestrType')"
+            class="btn btn-outline-danger text-11 left-margin-sm"
+            type="button"
+          >
+            <span>Очистити</span>
+          </button>
+
+          <div class="col-auto left-margin-sm top-margin-sm"
+               style="overflow-y: scroll; max-height: 17rem; min-width: 300px">
+            <div *ngFor="let reestrType of reestrTypes" class="row-cols-auto">
+              <a
+                (click)="selectValue(reestrType, 'reestrType')"
+                class="nav-link pointer"
+              >
+                <input
+                  [checked]="isSelected(reestrType, 'reestrType')"
+                  class="form-check-input big-check"
+                  type="checkbox"
+                >
+                {{ reestrType.Name }}
+              </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-auto input-group-text left-margin-sm top-margin-sm">
+    <p class="card-title">Середня величина відустності актуальних телефонів по НКС:
+      <b class="card-title left-margin-sm">{{ totalInfoPercent | number:'1.0-2' }}</b> %</p>
+  </div>
+</div>
+
+

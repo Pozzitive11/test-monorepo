@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+
+.col-md-3 {
+  flex: 0 0 25%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Стили для зеленой границы */
+.bordered-block.green-border {
+  border: 5px solid #00b300;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+/* Стили для красной границы */
+.bordered-block.red-border {
+  border: 5px solid #e60000;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+
+.firstLabel {
+  color: #07123C;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: Geologica;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+#ipn {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#fio {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  margin-top: 30px;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.center-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  margin-top: 50px;
+  border: 2px solid black;
+  border-radius: 20px;
+}
+
+h2 {
+  font-family: Geologica;
+  font-size: 24px;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  width: 102%;
+  border-bottom: 2px solid black;
+}
+
+.blockPerson {
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.status-label {
+  display: block;
+  padding: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.green {
+  background-color: #a2e8a3;
+  color: #007f00;
+}
+
+.red {
+  background-color: #fcbdbd;
+  color: #b70000;
+}
+
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+
+}
+
+
+th {
+  background-color: #f2f2f2;
+  color: #333;
+  font-weight: bold;
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+
+td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+
+tr.even {
+  background-color: #f9f9f9;
+}
+
+
+a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+
+a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+.status-label {
+  display: block;
+  padding: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.custom-bg-fcbdbd {
+  background-color: #fcbdbd;
+}
+
+.custom-bg-a2e8a3 {
+  background-color: #a2e8a3;
+}
+
+.custom-bg-fcbdbdOrange {
+  background-color: orange;
+}
+
+
+

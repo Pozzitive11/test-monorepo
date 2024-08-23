@@ -1,0 +1,59 @@
+<h5 class="h5">
+  <ng-container *ngIf="title">{{ title }}</ng-container>
+
+  <!--  APPLY FILTERS BUTTON  -->
+  <span class="float-end">
+    <button
+      (click)="applyFilters()"
+      class="btn btn-outline-success btn-sm"
+    >Згорнути</button>
+  </span>
+</h5>
+
+
+<app-switch-checkbox
+  [(value)]="filter.not"
+  [id]="'notTextSwitch'"
+>не
+</app-switch-checkbox>
+
+
+<!--  Дорівнює  -->
+<app-input-in-group
+  (valueChange)="filter.eq = $event ? $event : undefined; selectFilter()"
+  [typeOfInput]="'text'"
+  [value]="filter.eq ? filter.eq : ''"
+>
+  <span class="input-group-text">{{ filter.not ? 'не' : '' }} {{ filterTypes.eq }}</span>
+</app-input-in-group>
+
+<!--  Починається з  -->
+<app-input-in-group
+  (valueChange)="filter.startsWith = $event ? $event : undefined; selectFilter()"
+  [typeOfInput]="'text'"
+  [value]="filter.startsWith ? filter.startsWith : ''"
+  class="mb-2"
+>
+  <span class="input-group-text">{{ filter.not ? 'не' : '' }} {{ filterTypes.startsWith }}</span>
+</app-input-in-group>
+
+<!--  Закінчується на  -->
+<app-input-in-group
+  (valueChange)="filter.endsWith = $event ? $event : undefined; selectFilter()"
+  [typeOfInput]="'text'"
+  [value]="filter.endsWith ? filter.endsWith : ''"
+  class="mb-2"
+>
+  <span class="input-group-text">{{ filter.not ? 'не' : '' }} {{ filterTypes.endsWith }}</span>
+</app-input-in-group>
+
+<!--  Містить  -->
+<app-input-in-group
+  (valueChange)="filter.includes = $event ? $event : undefined; selectFilter()"
+  [typeOfInput]="'text'"
+  [value]="filter.includes ? filter.includes : ''"
+  class="mb-2"
+>
+  <span class="input-group-text">{{ filter.not ? 'не' : '' }} {{ filterTypes.includes }}</span>
+</app-input-in-group>
+

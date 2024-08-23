@@ -1,0 +1,69 @@
+<app-loading-bar [customType]="'inf-bar'" [loading]="loading()" />
+
+<ng-container (mouseleave)="selecting.set(false); onItemSelect()"
+              *ngIf="list().length > 0"
+              [class.disabled-table]="loading()">
+  <div class="input-group">
+    <!--  Toggle all button  -->
+    <span (click)="toggleAll()"
+          *ngIf="multiple()"
+          [class.text-bg-success]="allIsSelected()"
+          class="input-group-text pointer success-hover">
+      <i class="bi bi-check2-all"></i>
+    </span>
+
+    <!--  Search icon  -->
+    <span class="input-group-text">
+      <i class="bi bi-search"></i>
+    </span>
+
+    <!--  Search input  -->
+    <input
+      [(ngModel)]="searchText"
+      aria-label="Search"
+      class="form-control"
+      placeholder="Пошук..."
+      type="text">
+  </div>
+
+  <!--  Element that scrolls up the list while mouse hovering  -->
+  <div
+    [hidden]="scrollingList.scrollTop === 0"
+    [scrollDirection]="'up'"
+    [scrollElement]="scrollingList"
+    class="border-primary border border-1 w-100 text-center rounded"
+    scrollOnHover>
+    <i class="bi bi-chevron-up text-primary"></i>
+  </div>
+
+  <!--  List of items  -->
+  <ul #scrollingList
+      (scrollingFinished)="onShowMore()"
+      class="list-group"
+      scrollTracker>
+    @for (item of filteredList() | filterList:shownIndexRange(); track item; let i = $index) {
+      <li
+        (mousedown)="startSelecting(i, item)"
+        (mouseover)="hoveredItemIndex.set(selecting() ? i: -1)"
+        (mouseup)="selecting.set(false); onItemSelect()"
+        [class.active]="selectedValues().includes(item)"
+        [class.bg-danger]="selectedValues().includes(item) && selectingMode() === 'remove' && itemInSelectedRange(i)"
+        [class.bg-info]="!selectedValues().includes(item) && selectingMode() === 'add' && itemInSelectedRange(i)"
+        class="list-group-item pointer"
+      >
+        <span [title]="item" class="not-selectable-text">{{ item | shortText:maxSymbols() }}</span>
+      </li>
+    }
+  </ul>
+
+  <!--  Element that scrolls down the list while mouse hovering  -->
+  <div
+    [hidden]="scrollingList.scrollTop === scrollingList.scrollHeight - scrollingList.clientHeight"
+    [scrollDirection]="'down'"
+    [scrollElement]="scrollingList"
+    class="border-primary border border-1 w-100 text-center rounded"
+    scrollOnHover>
+    <i class="bi bi-chevron-down text-primary"></i>
+  </div>
+</ng-container>
+

@@ -1,0 +1,98 @@
+<!--<h5 class="h5" *ngIf="asepUserFiles.length">Файли з АСВП-бота</h5>-->
+
+<div
+  [class.row-cols-1]="!main"
+  [class.row-cols-lg-4]="main"
+  [class.row-cols-md-3]="main"
+  [class.row-cols-sm-1]="main"
+  class="row g-3 top-margin-sm"
+>
+  <div *ngFor="let file of asepUserFiles" class="col">
+    <div class="card top-margin-sm">
+      <h5 (click)="cardBody.hidden=!cardBody.hidden" class="card-header pointer text-13">
+        {{ file.Filename }} (<strong>{{ file.Status }}</strong>)
+        <span class="float-end">
+        <i [class.bi-chevron-down]="cardBody.hidden" [class.bi-chevron-up]="!cardBody.hidden" class="bi"></i>
+      </span>
+      </h5>
+
+      <div #cardBody [class.disabled-table]="loading" [hidden]="!open" class="card-body">
+        <ul class="list-group list-group-flush">
+
+          <li *ngIf="file.Status === fileStatuses.inProgress" class="list-group-item">
+            <p class="alert alert-info">
+              <strong>{{ file.Percent | number:'1.0-2' }} %</strong>.
+              Залишилось ~{{ calculateLeftTime(file.SecondsLeft) }}
+            </p>
+
+            <ngb-progressbar
+              [animated]="true"
+              [height]="'7px'"
+              [showValue]="false"
+              [striped]="false"
+              [type]="'primary'"
+              [value]="file.Percent"
+            ></ngb-progressbar>
+          </li>
+
+          <li class="list-group-item">
+            <div class="row" role="group" style="width: 100%; gap: 5px">
+              <button
+                (click)="download(file.Filename)"
+                *ngIf="file.Status === fileStatuses.processed"
+                class="btn btn-outline-success"
+              >
+                Скачати результат
+              </button>
+              <button
+                (click)="navigateToFileProcessing(file.Filename)"
+                *ngIf="file.Status === fileStatuses.uploaded || file.Status === fileStatuses.inProgress"
+                class="btn btn-outline-primary"
+              >
+                Перейти до обробки
+              </button>
+              <button
+                (click)="download(file.Filename)"
+                *ngIf="file.Status !== fileStatuses.processed"
+                class="btn btn-outline-info"
+              >
+                Скачати оригінал
+              </button>
+              <button
+                (click)="confirmDelete(deleteConfirm, file.Filename)"
+                *ngIf="file.Status !== fileStatuses.inProgress"
+                class="btn btn-outline-danger"
+              >
+                Видалити файл
+              </button>
+              <button
+                (click)="stopProcessing(file.Filename)"
+                *ngIf="file.Status === fileStatuses.inProgress"
+                class="btn btn-outline-danger"
+              >
+                Зупинити виконання
+              </button>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<ng-template #deleteConfirm let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Точно видалити цей файл?</h4>
+    <button (click)="modal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+  </div>
+  <div class="modal-body">
+    <h5 class="h5 text-danger">{{ filenameToDelete }}</h5>
+  </div>
+  <div class="modal-footer">
+    <button (click)="modal.close()" class="btn btn-outline-danger" type="button">Підтвердити</button>
+    <button (click)="modal.dismiss()" class="btn btn-outline-secondary" type="button">Відмінити</button>
+  </div>
+</ng-template>
+

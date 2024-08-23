@@ -1,0 +1,69 @@
+<body>
+<div class="container">
+  <div class="form-container bg form">
+    <div class="form-title">Формування реестру</div>
+    <div class="form-text">
+      <p>Ваш логін: {{ session_id }}</p>
+    </div>
+    <div class="form-text">
+      <p>Введіть назву реєстру: <input [(ngModel)]="reestr"></p>
+      <p>Відправник:
+        <select [(ngModel)]="selectedOption">
+          <option *ngFor="let sender of senders" [value]="sender">{{ sender }}</option>
+        </select>
+      </p>
+      <label class="checkbox">Опис</label> <input [(ngModel)]="description" type="checkbox">
+      <label class="checkbox">Позов</label> <input [(ngModel)]="claim" type="checkbox">
+    </div>
+    <div class="form-file">
+      <label class="custom-file-upload">
+        <span>Загрузити файл</span>
+        <input (change)="onFileSelected($event)" type="file">
+      </label>
+      <label class="option"> {{ userFile }} </label>
+    </div>
+    <div *ngIf="fileError" class="error-message">{{ fileError }}</div>
+    <div class="form-button">
+      <button (click)="upload_address()" [disabled]="isdisabled" class="form-button-first">Сформувати</button>
+    </div>
+  </div>
+
+  <div class="progress-container bg form">
+    <div class="form-title">Прогрес формування</div>
+    <div class="form-file">
+      <p>Ваш файл: <label>{{ displayFileName }}</label></p>
+    </div>
+    <div class="form-file">
+      <p>Загальна інформація: <label>{{ displayinfoAboutreestr }}</label></p>
+    </div>
+    <div class="form-file">
+      <p>Деталі: </p>
+      <label>{{ displayinfo }}</label>
+    </div>
+    <div style="padding: 20px;">
+      <p>Прогрес:</p>
+      <ng-container *ngIf="address_in_work">
+        <ngb-progressbar
+          [animated]="true"
+          [height]="'8px'"
+          [max]="100"
+          [striped]="true"
+          [value]="address_in_work.progress"
+          type="primary">
+        </ngb-progressbar>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<div class="delete-container bg form">
+  <div class="form-title">Видалення реестрів</div>
+  <div class="form-text">
+    <p>Введіть реестри (через кому):</p>
+    <input [(ngModel)]="delReestr">
+  </div>
+  <div class="form-button">
+    <button (click)="splitInputText();deleteReestrGroup()" class="form-button-first">Видалити</button>
+  </div>
+</div>
+</body>

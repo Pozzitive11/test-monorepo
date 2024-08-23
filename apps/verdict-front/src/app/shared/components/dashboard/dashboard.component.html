@@ -1,0 +1,26 @@
+<div class="container py-5">
+  <div class="login mb-3">
+    <p>Вітаємо, {{ session_id }}</p>
+  </div>
+  <hr class="pb-3" />
+  <div class="row row-cols-1 row-cols-md-2 align-items-center justify-content-center g-3">
+    <div class="btn-group dropend" ngbDropdown *ngFor="let application of applications">
+      <button
+        aria-expanded="false"
+        class="btn btn-dashboard dropdown-toggle"
+        data-bs-toggle="dropdown"
+        ngbDropdownToggle
+        type="button"
+      >
+        {{ application.title }}
+      </button>
+      <ul class="dropdown-menu p-2 pointer" ngbDropdownMenu>
+        <li *ngFor="let link of application.links">
+          <a class="dropdown-item" ngbDropdownItem [href]="link.url">
+            {{ link.name }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

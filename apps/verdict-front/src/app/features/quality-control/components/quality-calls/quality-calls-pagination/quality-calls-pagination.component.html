@@ -1,0 +1,31 @@
+<div class="d-flex justify-content-center p-2">
+  <ngb-pagination
+    (pageChange)="qualityCallsPaginationService.selectPage($event)"
+    [(page)]="qualityCallsPaginationService.page"
+    [boundaryLinks]="true"
+    [collectionSize]="collectionSize"
+  >
+    <ng-template let-page let-pages="pages" ngbPaginationPages>
+      <li *ngIf="pages.length > 0" class="ngb-custom-pages-item">
+        <div class="mb-3 d-flex flex-nowrap px-2">
+          <label class="col-form-label me-2 ms-1" for="paginationInput" id="paginationInputLabel">Page</label>
+          <input
+            #i
+            (blur)="qualityCallsPaginationService.selectPage(i.value)"
+            (input)="qualityCallsPaginationService.formatInput($any($event).target)"
+            (keyup.enter)="qualityCallsPaginationService.selectPage(i.value)"
+            [value]="qualityCallsPaginationService.page"
+            aria-labelledby="paginationInputLabel paginationDescription"
+            class="form-control custom-pages-input"
+            id="paginationInput"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            style="width: 2.5rem"
+            type="text"
+          />
+          <span class="col-form-label text-nowrap px-2" id="paginationDescription"> of {{ pages.length }}</span>
+        </div>
+      </li>
+    </ng-template>
+  </ngb-pagination>
+</div>

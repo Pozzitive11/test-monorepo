@@ -1,0 +1,21 @@
+<!--style="margin-right: 10px"-->
+<div class="d-inline-flex">
+  <input
+    (blur)="filterChanged()"
+    (dblclick)="filter=''"
+    (keyup.enter)="filterChanged()"
+    [(ngModel)]="filter"
+    class="form-control input-group text-11"
+    placeholder="Фільтр"
+  >
+  <button
+    (click)="close()"
+    *ngIf="isOnlyFilter() || filter !== ''"
+    aria-label="Close"
+    class="btn-close"
+    type="button"
+  >
+  </button>
+</div>
+<i (click)="addFilter()" *ngIf="isLastFilter()" class="bi bi-plus-circle pointer left-margin-sm"></i>
+

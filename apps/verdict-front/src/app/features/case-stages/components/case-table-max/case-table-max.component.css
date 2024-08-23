@@ -1,0 +1,16 @@
+.head {
+  border: 5px black solid;
+  text-align: center;
+  background-color: #b6effb;
+  height: 30px;
+}
+
+.bodys {
+  border: 1px black solid;
+}
+
+.bodys1 {
+  text-align: center;
+  border: 1px black solid;
+  height: 40px;
+}

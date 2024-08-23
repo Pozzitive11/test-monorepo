@@ -1,0 +1,627 @@
+<div class="modal-header">
+  <h4 class="modal-title">Номер справи: {{ fullCourtData.caseNumber }}</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss()"></button>
+</div>
+<div class="nav-switches">
+  <ul class="nav nav-tabs">
+    <li class="nav-item" (click)="switchToMainTab()" [ngClass]="{ 'selected-tab': activeTab === 'main' }">
+      <a class="nav-link" [ngClass]="{ 'active': activeTab === 'main' }">Основна інформація</a>
+    </li>
+    <li class="nav-item" (click)="switchToInstancesTab()" [ngClass]="{ 'selected-tab': activeTab === 'instances' }">
+      <a class="nav-link" [ngClass]="{ 'active': activeTab === 'instances' }">Інстанції</a>
+    </li>
+    <li class="nav-item" (click)="switchToHistoryTab()" [ngClass]="{ 'selected-tab': activeTab === 'history' }">
+      <a class="nav-link" [ngClass]="{ 'active': activeTab === 'history' }">Історія справи</a>
+    </li>
+  </ul>
+</div>
+
+
+<div class="grid-container scrollable" *ngIf="activeTab === 'main'">
+  <!-- Кубик с информацией о регионе, суде и судье -->
+  <div class="info-block"
+       *ngIf="fullCourtData && (fullCourtData.region || fullCourtData.courtName || fullCourtData.judge)">
+    <div *ngIf="fullCourtData.region" class="court-container">
+      <span class="highlight">
+        <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip0_2_1359)">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.4037 20.1751C15.8433 16.442 18.7808 13.254 18.7808 9.46468C18.7808 5.16839 15.298 1.68555 11.0018 1.68555C6.7055 1.68555 3.22266 5.16839 3.22266 9.46468C3.22266 12.9451 6.2576 16.3454 9.08738 19.5158C9.75071 20.259 10.4027 20.9896 11.0018 21.7056C11.4742 21.1838 11.9435 20.6746 12.4037 20.1751ZM11.0038 11.3192C12.0836 11.3192 12.959 10.4439 12.959 9.36412C12.959 8.28435 12.0836 7.40904 11.0038 7.40904C9.9241 7.40904 9.04878 8.28435 9.04878 9.36412C9.04878 10.4439 9.9241 11.3192 11.0038 11.3192Z" stroke="#2F49D1" stroke-width="1.5" />
+          </g>
+          <defs>
+            <clipPath id="clip0_2_1359">
+              <rect width="22" height="22" fill="white" transform="translate(0 0.84375)" />
+            </clipPath>
+          </defs>
+        </svg>
+      </span>
+      <div class="court-details">
+        <span class="highlights">Регіон</span>
+        <span class="court-name">{{ fullCourtData.region }}</span>
+      </div>
+    </div>
+    <div *ngIf="fullCourtData.courtName" class="court-container">
+      <span class="highlight">
+        <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.94616 5.00742H19.0376M10.9922 5.00742V19.3288M6.00425 22.0645H15.981L14.2109 19.6507H7.6134L6.00425 22.0645ZM12.5041 3.09314C12.5041 3.93741 11.8197 4.62183 10.9754 4.62183C10.1311 4.62183 9.44672 3.93741 9.44672 3.09314C9.44672 2.24887 10.1311 1.56445 10.9754 1.56445C11.8197 1.56445 12.5041 2.24887 12.5041 3.09314ZM6.92118 11.9107C6.92118 13.3428 5.76259 14.5175 4.31436 14.5175C2.86613 14.5175 1.72363 13.3428 1.72363 11.9107L4.33045 5.00742L6.92118 11.9107ZM20.2774 11.9107C20.2774 13.3428 19.1188 14.5175 17.6706 14.5175C16.2223 14.5175 15.0638 13.3589 15.0638 11.9107L17.6706 5.00742L20.2774 11.9107Z" stroke="#2F49D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </span>
+      <div class="court-details">
+        <span class="highlights">Суд</span>
+        <span class="court-name">{{ fullCourtData.courtName }}</span>
+      </div>
+    </div>
+    <div *ngIf="fullCourtData.judge" class="court-container">
+      <span class="highlight">
+        <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.8044 20.4235L19.0386 21.6577C19.5622 22.1439 20.385 22.1439 20.8712 21.6203C21.3574 21.1341 21.3948 20.3113 20.8712 19.7877L19.6744 18.5909M17.8044 20.4235L19.6744 18.5909M17.8044 20.4235L11.5181 14.0998M19.6744 18.5909L13.3507 12.2672M1.83148 10.6216L1.36046 11.0926C0.546515 11.9066 0.546515 13.2262 1.36046 14.0402L3.49931 16.179C4.31326 16.993 5.63291 16.993 6.44685 16.179L6.91788 15.708M14.9963 7.92881L15.6169 7.30818C16.4308 6.49424 16.4308 5.17458 15.6169 4.36064L13.478 2.22178C12.6641 1.40784 11.3444 1.40784 10.5305 2.22178L9.90988 2.84241M6.24062 3.74407L2.94689 7.03781C1.73014 8.25455 1.72538 10.2258 2.93623 11.4484L6.25133 14.7957C7.46633 16.0225 9.44579 16.0321 10.6726 14.8171L13.9984 11.5232C15.2294 10.3041 15.2342 8.31633 14.0091 7.09125L10.6619 3.74407C9.44102 2.52316 7.46154 2.52316 6.24062 3.74407Z" stroke="#2F49D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </span>
+      <div class="court-details">
+        <span class="highlights">Судді</span>
+        <span class="court-name">{{ fullCourtData.judge }}</span>
+        </div>
+    </div>
+  </div>
+  <div class="info-block" *ngIf="fullCourtData && (fullCourtData.description || fullCourtData.caseProc)">
+    <div *ngIf="fullCourtData.description" class="court-container">
+      <span class="highlight">
+        <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3.17573 1.97746H7.19247C7.77824 1.97746 8.28033 2.14482 8.69874 2.56323C9.11715 2.98164 9.3682 3.48374 9.3682 4.06951V8.08625C9.3682 8.67202 9.11715 9.25779 8.69874 9.59252C8.28033 10.0109 7.77824 10.262 7.19247 10.262H3.17573C2.58996 10.262 2.00418 10.0109 1.66946 9.59252C1.33473 9.17411 1 8.7557 1 8.16993V4.15319C1 3.48374 1.16736 2.98164 1.58577 2.56323C2.00418 2.14482 2.50628 1.89378 3.17573 1.97746ZM16.8159 13.3582C17.9874 13.3582 18.9916 13.8603 19.7448 14.6134C20.4979 15.3666 21 16.4544 21 17.5423C21 18.7139 20.4979 19.718 19.7448 20.4712C18.9916 21.2243 17.9038 21.7264 16.8159 21.7264C15.6444 21.7264 14.6402 21.2243 13.887 20.4712C13.1339 19.718 12.6318 18.6302 12.6318 17.5423C12.6318 16.3708 13.1339 15.3666 13.887 14.6134C14.6402 13.8603 15.6444 13.3582 16.8159 13.3582ZM3.17573 13.3582H7.19247C7.77824 13.3582 8.36402 13.6093 8.69874 14.0277C9.03347 14.4461 9.3682 14.9482 9.3682 15.5339V19.5507C9.3682 20.1365 9.11715 20.7222 8.69874 21.057C8.28033 21.4754 7.77824 21.7264 7.19247 21.7264H3.17573C2.58996 21.7264 2.00418 21.4754 1.66946 21.057C1.33473 20.6385 1 20.1365 1 19.5507V15.5339C1 14.9482 1.25105 14.3624 1.66946 14.0277C2.00418 13.6093 2.50628 13.3582 3.17573 13.3582ZM14.8075 1.97746H18.8243C19.41 1.97746 19.9958 2.22851 20.3305 2.64692C20.749 3.06533 21 3.56742 21 4.15319V8.16993C21 8.7557 20.749 9.34148 20.3305 9.6762C19.9121 10.0946 19.41 10.3457 18.8243 10.3457H14.8075C14.2218 10.3457 13.636 10.0946 13.3013 9.6762C12.9665 9.25779 12.6318 8.7557 12.6318 8.16993V4.15319C12.6318 3.56742 12.8828 2.98164 13.3013 2.64692C13.636 2.14482 14.2218 1.97746 14.8075 1.97746Z" stroke="#2F49D1" stroke-width="1.5" stroke-miterlimit="10" />
+        </svg>
+      </span>
+      <div class="court-details">
+        <span class="highlights">Категорія справи</span>
+        <span class="court-name">{{ fullCourtData.description }}</span>
+        </div>
+    </div>
+    <div *ngIf="fullCourtData.caseProc" class="court-container">
+      <span class="highlight">
+        <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8.08852 5.16517V2.77783H13.9201V5.16517M9.11906 13.1928C5.93361 12.5512 2.72831 10.2124 1.51947 5.45946C1.57408 5.44172 1.63266 5.44148 1.67863 5.43424H20.313C20.3844 5.43424 20.4493 5.44778 20.5141 5.46785C19.6661 9.70252 15.8636 12.8681 12.8812 13.218M20.7571 5.60228C20.9055 5.72969 21 5.91988 21 6.13178V20.2031C21 20.5877 20.6945 20.9093 20.313 20.9093H1.67863C1.30828 20.9093 1 20.5879 1 20.2031V6.13178C1 5.90682 1.10525 5.70378 1.26814 5.57707M9.88147 11.1333H12.1185C12.386 11.1333 12.6128 11.3578 12.6128 11.6376V14.7225C12.6128 15.0025 12.386 15.2268 12.1185 15.2268H9.88147C9.60237 15.2268 9.3872 15.0049 9.3872 14.7225V11.6376C9.3872 11.3552 9.60237 11.1333 9.88147 11.1333Z" stroke="#2F49D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </span>
+      <div class="court-details">
+        <span class="highlights">Номер провадження</span>
+        <span class="court-name">{{ fullCourtData.caseProc }}</span>
+        </div>
+    </div>
+  </div>
+ 
+
+  <div class="info-block" *ngIf="fullCourtData && fullCourtData.plaintiff?.length">
+    <div class="court-container">
+      <span class="highlight">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="rgb(47, 73, 209)" fill="none">
+          <path d="M16.9961 9.01264H17.0042M17.0045 7.00903V4.50451M22 6.792C22 9.43833 19.7593 11.584 16.9961 11.584C16.6711 11.5844 16.3472 11.5543 16.028 11.4943C15.7983 11.4511 15.6835 11.4296 15.6033 11.4418C15.523 11.454 15.4094 11.5145 15.1822 11.6356C14.5393 11.9778 13.7896 12.0987 13.0686 11.9645C13.3426 11.627 13.5298 11.2222 13.6123 10.7882C13.6624 10.5228 13.5384 10.2649 13.3526 10.0762C12.5093 9.21878 11.9922 8.06347 11.9922 6.792C11.9922 4.14565 14.2328 2 16.9961 2C19.7593 2 22 4.14565 22 6.792Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M7.50189 22H4.71817C4.39488 22 4.07021 21.9545 3.77327 21.8269C2.80666 21.4116 2.31624 20.8633 2.08769 20.5202C1.95764 20.325 1.97617 20.0764 2.11726 19.889C3.23716 18.4015 5.8337 17.503 7.50189 17.5029M7.50665 22H10.2904C10.6137 22 10.9383 21.9545 11.2353 21.8269C12.2019 21.4116 12.6923 20.8633 12.9209 20.5202C13.0509 20.325 13.0324 20.0764 12.8913 19.889C11.7714 18.4015 9.17484 17.503 7.50665 17.5029M10.2854 12.2888C10.2854 13.8201 9.0413 15.0614 7.50665 15.0614C5.97199 15.0614 4.72791 13.8201 4.72791 12.2888C4.72791 10.7575 5.97199 9.51611 7.50665 9.51611C9.0413 9.51611 10.2854 10.7575 10.2854 12.2888Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </span>
+      <div class="court-details">
+        <span class="highlights">Позивач:</span>
+      <ng-container *ngFor="let plaintiff of fullCourtData.plaintiff; let i = index">
+        <div class="participant-info">
+          <span class="participant-name court-name" (click)="setSearchString(plaintiff.NAME)"
+                title="Натисніть щоб виконати пошук"> Назва: {{ plaintiff.NAME }}</span>
+          <span *ngIf="plaintiff.TYPE" class="court-name">Тип: {{ plaintiff.TYPE }} </span>
+          <span *ngIf="plaintiff.EDRPOU" class="court-name">Код: {{ plaintiff.EDRPOU }} </span>
+        </div>
+        <hr class="info-divider" *ngIf="i !== fullCourtData.plaintiff.length - 1">
+        <!-- Разделитель между блоками позивачей -->
+      </ng-container>
+    </div>
+    </div>
+    </div>
+    <div class="info-block" *ngIf="fullCourtData && fullCourtData.defendant?.length">
+    <div class="court-container">
+      <span class="highlight">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="rgb(47, 73, 209)" fill="none">
+          <path d="M5 9.08333C5 7.91667 6 7.5 6.5 7.5C7.49411 7.5 8 8.25383 8 9.08333C8 11.0163 6.65685 12 5 12C3.34315 12 2 10.433 2 8.5C2 6.567 3.34315 5 5 5H19C20.6569 5 22 6.567 22 8.5C22 10.433 20.6569 12 19 12C17.3431 12 16 11.0163 16 9.08333C16 8.25383 16.5059 7.5 17.5 7.5C18 7.5 19 7.91667 19 9.08333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          <path d="M3 20C3 19.4477 3.44772 19 4 19H20C20.5523 19 21 19.4477 21 20V21C21 21.5523 20.5523 22 20 22H4C3.44772 22 3 21.5523 3 21V20Z" stroke="currentColor" stroke-width="1.5" />
+          <path d="M13 9H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          <path d="M9.5 19L9.5 15M14.5 19L14.5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          <path d="M19 5C19 3.58579 19 2.87868 18.5607 2.43934C18.1213 2 17.4142 2 16 2H8C6.58579 2 5.87868 2 5.43934 2.43934C5 2.87868 5 3.58579 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          <path d="M5 12V19H19V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+      </span>
+      <div class="court-details">
+        <span class="highlights">Відповідач:</span>
+      <ng-container *ngFor="let defendant of fullCourtData.defendant; let i = index">
+        <div class="participant-info">
+        <span class="participant-name court-name" (click)="setSearchString(defendant.NAME)"
+              title="Натисніть щоб виконати пошук"> Назва: {{ defendant.NAME }}</span>
+          <span *ngIf="defendant.TYPE" class="court-name">Тип: {{ defendant.TYPE }}</span>
+          <span *ngIf="defendant.EDRPOU" class="court-name">Код: {{ defendant.EDRPOU }}</span>
+        </div>
+        <hr class="info-divider" *ngIf="i !== fullCourtData.defendant.length - 1">
+        <!-- Разделитель между блоками відповідачей -->
+      </ng-container>
+    </div>
+    </div>
+  </div>
+  <div class="info-block" *ngIf="fullCourtData && fullCourtData.thirdPerson?.length">
+    <div class="court-container">
+      <span class="highlight"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#4a90e2" fill="none">
+        <path d="M6.57757 15.4816C5.1628 16.324 1.45336 18.0441 3.71266 20.1966C4.81631 21.248 6.04549 22 7.59087 22H16.4091C17.9545 22 19.1837 21.248 20.2873 20.1966C22.5466 18.0441 18.8372 16.324 17.4224 15.4816C14.1048 13.5061 9.89519 13.5061 6.57757 15.4816Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M16.5 6.5C16.5 8.98528 14.4853 11 12 11C9.51472 11 7.5 8.98528 7.5 6.5C7.5 4.01472 9.51472 2 12 2C14.4853 2 16.5 4.01472 16.5 6.5Z" stroke="currentColor" stroke-width="1.5" />
+    </svg>
+  </span>
+  <div class="court-details">
+    <span class="highlights">Третя особа:</span>
+      <ng-container *ngFor="let thirdPerson of fullCourtData.thirdPerson; let i = index">
+        <div class="participant-info">
+        <span class="participant-name court-name" (click)="setSearchString(thirdPerson.NAME)"
+              title="Натисніть щоб виконати пошук"> Назва: {{ thirdPerson.NAME }}</span>
+          <span *ngIf="thirdPerson.TYPE" class="court-name">Тип: {{ thirdPerson.TYPE }}</span>
+          <span *ngIf="thirdPerson.EDRPOU" class="court-name">Код: {{ thirdPerson.EDRPOU }}</span>
+        </div>
+        <hr class="info-divider" *ngIf="i !== fullCourtData.thirdPerson.length - 1">
+        <!-- Разделитель между блоками третьих лиц -->
+      </ng-container>
+    </div>
+    </div>
+  </div>
+  <div class="info-block"
+  *ngIf="fullCourtData && (fullCourtData.stageName || fullCourtData.caseType || fullCourtData.judgmentName)">
+<div *ngIf="fullCourtData.stageName" class="court-container">
+ <span class="highlight"> <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <g clip-path="url(#clip0_3_1375)">
+     <circle cx="11" cy="11.8438" r="10" stroke="#2F49D1" stroke-width="1.5" />
+     <path d="M11.4537 6.76562C12.1724 6.76562 12.7549 7.34893 12.7549 8.06857C12.7549 8.78821 12.1724 9.37151 11.4537 9.37151C10.735 9.37151 10.1524 8.78821 10.1524 8.06857C10.1524 7.34893 10.7346 6.76562 11.4537 6.76562ZM11.0199 9.97939C12.3211 9.97939 12.6366 10.7482 12.4908 11.6965L11.8874 15.6251C11.8874 15.6251 12.3211 15.6251 13.1886 15.1908C13.1886 15.1908 12.7549 16.9281 11.0199 16.9281C9.71867 16.9281 9.40321 16.1592 9.54905 15.2109L10.1528 11.282C10.1528 11.282 9.71904 11.282 8.85156 11.7163C8.85156 11.7163 9.28493 9.97939 11.0199 9.97939Z" fill="#2F49D1" />
+   </g>
+   <defs>
+     <clipPath id="clip0_3_1375">
+       <rect width="22" height="22" fill="white" transform="translate(0 0.84375)" />
+     </clipPath>
+   </defs>
+ </svg>
+</span>
+<div class="court-details">
+<span class="highlights">Статус</span>
+<span class="court-name">{{ fullCourtData.stageName }}</span>
+</div>
+</div>
+<div *ngIf="fullCourtData.caseType" class="court-container">
+ <span class="highlight">
+   <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+     <path d="M11 5.44922H17.75C18.3 5.44922 18.75 5.89922 18.75 6.44922V13.6992M11 5.44922H4.25C3.7 5.44922 3.25 5.89922 3.25 6.44922V13.6992M11 5.44922V15.4492M18.75 12.4492V12.1819M18.75 12.1819H14.2673C11.2813 12.1819 11 14.5992 11 15.4492M18.75 12.1819V14.4492C18.75 14.9992 18.3 15.4492 17.75 15.4492H11M11 15.4492C11 14.6242 10.729 12.1819 7.7327 12.1819H3.25M11 15.4492H4.25C3.7 15.4492 3.25 14.9992 3.25 14.4492V12.1819M3.25 12.1819V12.4492M20.25 2.69922C20.8 2.69922 21.25 3.14922 21.25 3.69922V17.1992C21.25 17.7492 20.8 18.1992 20.25 18.1992H4.75C4.65 18.1992 4.55 18.2242 4.45 18.2992L2.25 19.9492V18.6992C2.25 18.4242 2.025 18.1992 1.75 18.1992C1.2 18.1992 0.75 17.7492 0.75 17.1992V3.69922C0.75 3.14922 1.2 2.69922 1.75 2.69922H20.25Z" stroke="#2F49D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+   </svg>
+ </span>
+ <div class="court-details">
+   <span class="highlights">Предмет позову:</span>
+   <span class="court-name">{{ fullCourtData.caseType }}</span>
+ </div>
+</div>
+<div *ngIf="fullCourtData.judgmentName" class="court-container">
+ <span class="highlight">
+   <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+     <g clip-path="url(#clip0_3_1377)">
+       <path d="M4.90206 16.8953L5.00515 4.62725C5.00515 3.9056 5.62371 3.39014 6.24227 3.39014H19.0258M19.0258 3.39014C18.8196 3.80251 18.7165 4.31797 18.7165 4.83344V18.1324C18.7165 19.2664 17.7887 20.2974 16.5515 20.2974H13.6649M19.0258 3.39014H19.9536C20.7784 3.39014 21.5 4.00869 21.5 4.93653V7.51385H18.7165M7.57955 6.06947H12.0125M7.57955 9.05953H15.6208M7.57955 12.1526H15.6208M3.56186 20.0912C2.42783 20.0912 1.5 19.1633 1.5 18.0293V16.8953H12.9433V18.0293C12.9433 18.751 13.1495 19.5757 13.6649 20.1943H3.56186V20.0912Z" stroke="#2F49D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+     </g>
+     <defs>
+       <clipPath id="clip0_3_1377">
+         <rect width="22" height="22" fill="white" transform="translate(0.5 0.84375)" />
+       </clipPath>
+     </defs>
+   </svg>
+</span>
+<div class="court-details">
+<span class="highlights">Тип судочинства:</span>
+<span class="court-name">{{ fullCourtData.judgmentName }}</span>
+</div>
+</div>
+</div>
+<div class="info-block" *ngIf="fullCourtData.sumClaim">
+
+ 
+ 
+ <div class="court-container" *ngIf="fullCourtData.sumClaim.isMaterial !== null && fullCourtData.sumClaim.isMaterial !== undefined">
+  <span class="highlight">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#2f49d1" fill="none">
+      <path d="M19.3333 14L20.1565 14.7579C20.3357 14.934 20.4253 15.0221 20.3938 15.0969C20.3622 15.1717 20.2355 15.1717 19.9821 15.1717H16.8777C15.2884 15.1717 14 16.438 14 18C14 18.3521 14.0655 18.6891 14.185 19M16.6667 22L15.8435 21.2421C15.6643 21.066 15.5747 20.9779 15.6062 20.9031C15.6378 20.8283 15.7645 20.8283 16.0179 20.8283H19.1223C20.7116 20.8283 22 19.562 22 18C22 17.6479 21.9345 17.3109 21.815 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M21.9913 11.5C22 10.8993 22 10.7355 22 10C22 6.22876 22 4.34315 20.8284 3.17157C19.6569 2 17.7712 2 14 2H10C6.22876 2 4.34315 2 3.17157 3.17157C2 4.34315 2 6.22876 2 10C2 13.7712 2 15.6569 3.17157 16.8284C4.34315 18 6.22876 18 10 18H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      <path d="M18.5 10H18.491" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M5.5 10H5.49102" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M14.5 10C14.5 11.3807 13.3807 12.5 12 12.5C10.6193 12.5 9.5 11.3807 9.5 10C9.5 8.61929 10.6193 7.5 12 7.5C13.3807 7.5 14.5 8.61929 14.5 10Z" stroke="currentColor" stroke-width="1.5" />
+  </svg>
+ </span>
+ <div class="court-details">
+  <span class="highlights">Матеріальний спір</span>
+  <span class="court-name">{{ fullCourtData.sumClaim.isMaterial ? 'так' : 'ні' }}</span>
+  </div>
+ </div>
+ 
+
+ <div class="court-container" *ngIf="fullCourtData.sumClaim.sumClaim !== null && fullCourtData.sumClaim.sumClaim !== undefined">
+    <span class="highlight">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#2f49d1" fill="none">
+        <path d="M18 5.44232C18 5.44232 20 4.43881 21.241 5.45484C21.443 5.6182 21.6952 5.94158 21.8059 6.1793C22 6.59611 22 7.0003 22 7.80867V18.8176C22 19.8241 20.96 20.5154 20 20.2907C19.0803 20.0754 18.0659 19.9561 17 19.9561C15.0829 19.9561 13.3325 20.342 12 20.9781C10.6675 21.6141 8.91707 22.0001 7 22.0001C5.93408 22.0001 4.91969 21.8808 4 21.6655C3.4088 21.5271 3.11319 21.4579 2.75898 21.1715C2.55696 21.0081 2.30483 20.6847 2.19412 20.447C2 20.0302 2 19.626 2 18.8176V7.80867C2 6.80219 3.04003 6.1109 4 6.33561C4.77473 6.51696 5.61667 6.63021 6.5 6.6614" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        <path d="M14.5 13.5C14.5 14.8807 13.3807 16 12 16C10.6193 16 9.5 14.8807 9.5 13.5C9.5 12.1193 10.6193 11 12 11C13.3807 11 14.5 12.1193 14.5 13.5Z" stroke="currentColor" stroke-width="1.5" />
+        <path d="M5.5 14.5L5.5 14.509" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M18.5 12.4922L18.5 12.5012" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M9.5 5.5C9.99153 6.0057 11.2998 8 12 8M14.5 5.5C14.0085 6.0057 12.7002 8 12 8M12 8V2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+   </span>
+   <div class="court-details">
+    <span class="highlights">Загальна сума стягнення</span>
+    <span class="court-name">{{ fullCourtData.sumClaim.sumClaim }} {{ currencySymbols[fullCourtData.sumClaim.currencyId] }}</span>
+    </div>
+ </div>
+ 
+
+ <div class="court-container" *ngIf="fullCourtData.sumClaim.body !== null || fullCourtData.sumClaim.interest !== null || fullCourtData.sumClaim.fine !== null || fullCourtData.sumClaim.commission !== null">
+  <span class="highlight">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#2f49d1" fill="none">
+      <path d="M19.5 16V12.0059C19.5 10.5195 19.5 9.77627 19.2444 9.09603C18.9888 8.4158 18.4994 7.85648 17.5206 6.73784L16 5H8L6.47939 6.73784C5.50058 7.85648 5.01118 8.4158 4.75559 9.09603C4.5 9.77627 4.5 10.5195 4.5 12.0059V16C4.5 18.8284 4.5 20.2426 5.37868 21.1213C6.25736 22 7.67157 22 10.5 22H13.5C16.3284 22 17.7426 22 18.6213 21.1213C19.5 20.2426 19.5 18.8284 19.5 16Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M9.5 15.6831C9.5 16.9125 11.3539 17.9204 13.1325 17.3553C14.9112 16.7901 14.6497 15.1248 14.0463 14.4708C13.4429 13.8169 12.555 13.9265 11.5399 13.8751C9.25873 13.7594 9.09769 11.5722 10.9447 10.7069C12.2997 10.072 14.0379 10.8862 14.2381 12M11.971 9.5V10.4777M11.971 17.7204V18.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M7.5 2H16.5C16.9659 2 17.1989 2 17.3827 2.07612C17.6277 2.17761 17.8224 2.37229 17.9239 2.61732C18 2.80109 18 3.03406 18 3.5C18 3.96594 18 4.19891 17.9239 4.38268C17.8224 4.62771 17.6277 4.82239 17.3827 4.92388C17.1989 5 16.9659 5 16.5 5H7.5C7.03406 5 6.80109 5 6.61732 4.92388C6.37229 4.82239 6.17761 4.62771 6.07612 4.38268C6 4.19891 6 3.96594 6 3.5C6 3.03406 6 2.80109 6.07612 2.61732C6.17761 2.37229 6.37229 2.17761 6.61732 2.07612C6.80109 2 7.03406 2 7.5 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+ </span>
+ <div class="court-details">
+  <span class="highlights">Складові загальної суми</span>
+  <ul class="court-name">
+    <li *ngIf="fullCourtData.sumClaim.body !== null">Тіло боргу: {{ fullCourtData.sumClaim.body }}</li>
+    <li *ngIf="fullCourtData.sumClaim.interest !== null">Відсотки: {{ fullCourtData.sumClaim.interest }}</li>
+    <li *ngIf="fullCourtData.sumClaim.fine !== null">Штрафи: {{ fullCourtData.sumClaim.fine }}</li>
+    <li *ngIf="fullCourtData.sumClaim.commission !== null">Комісія: {{ fullCourtData.sumClaim.commission }}</li>
+  </ul>
+ </div>
+ </div>
+
+ <div class="court-container" *ngIf="fullCourtData.sumClaim.courtFee !== null && fullCourtData.sumClaim.courtFee !== undefined">
+  <span class="highlight">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#2f49d1" fill="none">
+      <path d="M19.7453 13C20.5362 11.8662 21 10.4872 21 9C21 5.13401 17.866 2 14 2C10.134 2 7 5.134 7 9C7 10.0736 7.24169 11.0907 7.67363 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M14 6C12.8954 6 12 6.67157 12 7.5C12 8.32843 12.8954 9 14 9C15.1046 9 16 9.67157 16 10.5C16 11.3284 15.1046 12 14 12M14 6C14.8708 6 15.6116 6.4174 15.8862 7M14 6V5M14 12C13.1292 12 12.3884 11.5826 12.1138 11M14 12V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      <path d="M3 14H5.39482C5.68897 14 5.97908 14.0663 6.24217 14.1936L8.28415 15.1816C8.54724 15.3089 8.83735 15.3751 9.1315 15.3751H10.1741C11.1825 15.3751 12 16.1662 12 17.142C12 17.1814 11.973 17.2161 11.9338 17.2269L9.39287 17.9295C8.93707 18.0555 8.449 18.0116 8.025 17.8064L5.84211 16.7503M12 16.5L16.5928 15.0889C17.407 14.8352 18.2871 15.136 18.7971 15.8423C19.1659 16.3529 19.0157 17.0842 18.4785 17.3942L10.9629 21.7305C10.4849 22.0063 9.92094 22.0736 9.39516 21.9176L3 20.0199" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+ </span>
+ <div class="court-details">
+  <span class="highlights">Судовий збір</span>
+  <span class="court-name">{{ fullCourtData.sumClaim.courtFee }} {{ currencySymbols[fullCourtData.sumClaim.currencyId] }}</span>
+  </div>
+ </div>
+ 
+ <div class="court-container" *ngIf="fullCourtData.sumClaim.lawyerService !== null && fullCourtData.sumClaim.lawyerService !== undefined">
+  <span class="highlight">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#2f49d1" fill="none">
+      <path d="M15 15C15 15.8284 15.6716 16.5 16.5 16.5C17.3284 16.5 18 15.8284 18 15C18 14.1716 17.3284 13.5 16.5 13.5C15.6716 13.5 15 14.1716 15 15Z" stroke="currentColor" stroke-width="1.5" />
+      <path d="M15.0038 7.80257C9.57619 7.42647 5.1047 6.62109 3 5.99976V15.0612C3 17.0556 3 18.0528 3.61958 18.8661C4.23916 19.6794 5.08923 19.9091 6.78937 20.3685C9.53623 21.1107 12.4235 21.5527 15.0106 21.8055C17.6919 22.0675 19.0325 22.1985 20.0163 21.2995C21 20.4005 21 18.9564 21 16.068V14.0544C21 11.2495 21 9.84706 20.1929 8.97664C19.3859 8.10622 17.9252 8.005 15.0038 7.80257Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M17.6258 8C18.0035 6.57673 18.3453 3.98822 17.327 2.70292C16.6816 1.88827 15.7223 1.96654 14.7818 2.04926C9.83791 2.48406 6.34544 3.36731 4.39301 3.96737C3.55348 4.2254 3 5.04522 3 5.96044" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+    </svg>
+ </span>
+ <div class="court-details">
+  <span class="highlights">Витрати на юридичну допомогу</span>
+  <span class="court-name">{{ fullCourtData.sumClaim.lawyerService }} {{ currencySymbols[fullCourtData.sumClaim.currencyId] }}</span>
+  </div>
+ </div>
+
+ <div class="court-container" *ngIf="fullCourtData.sumClaim.moralDamage !== null && fullCourtData.sumClaim.moralDamage !== undefined">
+  <span class="highlight">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#2f49d1" fill="none">
+      <path d="M3.3457 16.1976L16.1747 3.36866M18.6316 11.0556L16.4321 13.2551M14.5549 15.1099L13.5762 16.0886" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      <path d="M3.17467 16.1411C1.60844 14.5749 1.60844 12.0355 3.17467 10.4693L10.4693 3.17467C12.0355 1.60844 14.5749 1.60844 16.1411 3.17467L20.8253 7.85891C22.3916 9.42514 22.3916 11.9645 20.8253 13.5307L13.5307 20.8253C11.9645 22.3916 9.42514 22.3916 7.85891 20.8253L3.17467 16.1411Z" stroke="currentColor" stroke-width="1.5" />
+      <path d="M4 22H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    </svg>
+ </span>
+ <div class="court-details">
+  <span class="highlights">Моральна шкода</span>
+  <span class="court-name">{{ fullCourtData.sumClaim.moralDamage }} {{ currencySymbols[fullCourtData.sumClaim.currencyId] }}</span>
+  </div>
+ </div>
+</div>
+<div class="info-block" *ngIf="fullCourtData && (fullCourtData.dateStart || fullCourtData.courtHearingDate || fullCourtData.lastDate)">
+    <div class="court-container" *ngIf="fullCourtData.dateStart">
+      <span class="highlight">
+        <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip0_3_1382)">
+            <path d="M5.85916 13.9709C7.34262 13.5753 8.72717 13.4764 9.91394 13.872C11.793 14.3664 13.1775 15.1576 14.3643 15.9488C16.4411 17.2345 18.0235 18.1245 20.7926 16.9378V4.57564M3.28629 2.79496C3.38519 2.69606 6.64879 0.619221 10.0113 1.50929C11.8903 2.00378 13.2749 2.79496 14.4617 3.58613C16.6374 4.87179 17.9231 6.05856 20.89 4.5751M3.28629 11.0042C3.38519 10.9053 6.64879 8.82845 10.0113 9.71852C11.8903 10.213 13.2749 11.0042 14.4617 11.7954C16.6374 13.081 17.7963 14.1598 20.7633 12.7752M3.28629 6.94786C3.38519 6.84896 6.64879 4.77212 10.0113 5.6622C11.8903 6.15668 13.2749 6.94786 14.4617 7.73904C16.6374 9.0247 17.6109 10.1112 20.5778 8.72661M8.42817 1.90426V13.5741M12.979 3.09218V15.0587M17.5298 5.44099V17.3334M1.11133 21.2881H3.08927V2.39875C3.08927 1.90426 2.69368 1.40978 2.1003 1.40978C1.50692 1.40978 1.11133 1.80536 1.11133 2.39875V21.2881Z" stroke="#2F49D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+          </g>
+          <defs>
+            <clipPath id="clip0_3_1382">
+              <rect width="22" height="22" fill="white" transform="translate(0 0.288086)" />
+            </clipPath>
+          </defs>
+        </svg>
+     </span>
+     <div class="court-details">
+      <span class="highlights">Дата початку розгляду</span>
+      <span class="court-name">{{ fullCourtData.dateStart }}</span>
+      </div>
+    </div>
+    <div class="court-container" *ngIf="fullCourtData.courtHearingDate">
+      <span class="highlight">
+        <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15.72 10.1238V19.4038M12.68 10.1238V19.4038M9.32 19.4038V10.1238M3.4 19.4038V10.1238M6.28 10.1238V19.4038M18.6 10.1238V19.4038M1 7.24379L11 1.88379L21 7.24379V9.80379H1V7.24379ZM21 20.6038V21.8038H1V20.6038C1 19.9638 1.56 19.4038 2.2 19.4038H19.8C20.44 19.4038 21 19.9638 21 20.6038Z" stroke="#2F49D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+     </span>
+     <div class="court-details">
+      <span class="highlights">Дата судового засідання</span>
+      <span class="court-name">{{ fullCourtData.courtHearingDate }}</span>
+      </div>
+    </div>
+    <div class="court-container" *ngIf="fullCourtData.lastDate">
+      <span class="highlight">
+        <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15.72 10.1238V19.4038M12.68 10.1238V19.4038M9.32 19.4038V10.1238M3.4 19.4038V10.1238M6.28 10.1238V19.4038M18.6 10.1238V19.4038M1 7.24379L11 1.88379L21 7.24379V9.80379H1V7.24379ZM21 20.6038V21.8038H1V20.6038C1 19.9638 1.56 19.4038 2.2 19.4038H19.8C20.44 19.4038 21 19.9638 21 20.6038Z" stroke="#2F49D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+     </span>
+     <div class="court-details">
+      <span class="highlights">Дата останньої події</span>
+      <span class="court-name">{{ fullCourtData.lastDate }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+ 
+
+<div class="card-footer"  *ngIf="activeTab === 'main'">
+  <button class="btn-add" (click)="togglePopover()">
+    <i class="fas fa-plus"></i> Слідкувати за справою
+  </button>
+  
+  <div #popover="bs-popover" [popover]="popoverContent" placement="top" triggers="manual" containerClass="custom-popover-container"></div>
+  
+  <ng-template #popoverContent>
+    <app-confirmation-popover
+      [showButtons]="showButtons"
+      [title]="popoverTitle"
+      [message]="popoverMessage"
+      (confirmed)="handlePopoverConfirmed($event)">
+    </app-confirmation-popover>
+  </ng-template>
+</div>
+<div class="tab-content">
+  
+  <ng-container *ngIf="activeTab === 'history'">
+    <app-history [caseNumberId]="caseNumberId"></app-history>
+  </ng-container>
+</div>
+
+
+<div class="instances-tab" *ngIf="activeTab === 'instances'">
+ 
+  <div class="view-switcher d-flex align-items-center  mb-2 mb-md-0">
+    <span (click)="switchTableView(false)" [class.active]="!tableView">
+      <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0.5" y="0.078125" width="3" height="16" rx="1.5" fill="#171717" />
+        <rect x="6.5" y="0.078125" width="3" height="16" rx="1.5" fill="#171717" />
+        <rect x="12.5" y="0.078125" width="3" height="16" rx="1.5" fill="#171717" />
+      </svg>
+    </span>
+    <span (click)="switchTableView(true)" [class.active]="tableView">
+      <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_2_835)">
+          <path d="M6.5 15.5781C5.67157 15.5781 5 14.9066 5 14.0781C5 13.2497 5.67157 12.5781 6.5 12.5781H14.5C15.3284 12.5781 16 13.2497 16 14.0781C16 14.9066 15.3284 15.5781 14.5 15.5781H6.5Z" fill="#171717" fill-opacity="0.4" />
+          <path d="M1.5 15.5781C0.671573 15.5781 8.39111e-08 14.9066 4.76994e-08 14.0781C1.14877e-08 13.2497 0.671573 12.5781 1.5 12.5781C2.32843 12.5781 3 13.2497 3 14.0781C3 14.9066 2.32843 15.5781 1.5 15.5781Z" fill="#171717" fill-opacity="0.4" />
+          <path d="M6.5 9.57812C5.67157 9.57812 5 8.90655 5 8.07813C5 7.2497 5.67157 6.57813 6.5 6.57813L14.5 6.57812C15.3284 6.57812 16 7.2497 16 8.07812C16 8.90655 15.3284 9.57812 14.5 9.57812H6.5Z" fill="#171717" fill-opacity="0.4" />
+          <path d="M1.5 9.57813C0.671573 9.57813 2.9848e-07 8.90655 2.62268e-07 8.07813C2.26057e-07 7.2497 0.671573 6.57813 1.5 6.57813C2.32843 6.57813 3 7.2497 3 8.07813C3 8.90655 2.32843 9.57813 1.5 9.57813Z" fill="#171717" fill-opacity="0.4" />
+          <path d="M6.5 3.57813C5.67157 3.57813 5 2.90655 5 2.07813C5 1.2497 5.67157 0.578125 6.5 0.578125L14.5 0.578125C15.3284 0.578125 16 1.2497 16 2.07812C16 2.90655 15.3284 3.57812 14.5 3.57812L6.5 3.57813Z" fill="#171717" fill-opacity="0.4" />
+          <path d="M1.5 3.57813C0.671573 3.57813 3.62117e-08 2.90655 0 2.07813C-3.62117e-08 1.2497 0.671573 0.578126 1.5 0.578126C2.32843 0.578126 3 1.2497 3 2.07813C3 2.90655 2.32843 3.57813 1.5 3.57813Z" fill="#171717" fill-opacity="0.4" />
+        </g>
+        <defs>
+          <clipPath id="clip0_2_835">
+            <rect width="16" height="16" fill="white" transform="translate(0 16.0781) rotate(-90)" />
+          </clipPath>
+        </defs>
+      </svg>
+    </span>
+  </div>
+ 
+ 
+
+  <div *ngIf="selectedStage">
+    <div *ngIf="tableView; else cardView">
+      <!-- Проход по каждой инстанции и создание аккордеона -->
+      <div class="accordion">
+        <div *ngFor="let stage of getStagesAsArray()">
+          <div class="accordion-item" style="margin-top: 5px;">
+            <button class="accordion-header" (click)="toggleTable(stage.stageName)">
+              {{ stage.stageName }}
+              <i class="fa-solid fa-plus" *ngIf="!isTableOpen(stage.stageName)"></i>
+              <i class="fa-solid fa-minus" *ngIf="isTableOpen(stage.stageName)"></i>  
+            </button>
+            <div class="accordion-content" *ngIf="isTableOpen(stage.stageName)">
+              <!-- Таблица с данными для инстанции -->
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="blue-header">Назва Суду</th>
+                    <th class="blue-header">Тип документу</th>
+                    <th class="blue-header">
+                      Дата отримання
+                      <span (click)="toggleSortDirection()">
+                        <i class="fa-solid fa-arrow-down-short-wide" *ngIf="!ascendingSort" style="margin: 5px;"></i>
+                        <i class="fa-solid fa-arrow-up-wide-short" *ngIf="ascendingSort" style="margin: 5px;"></i>
+                      </span>
+                    </th>
+                    <th class="blue-header">
+                      Дата публікації
+                      <span (click)="toggleSortDirection()">
+                        <i class="fa-solid fa-arrow-down-short-wide" *ngIf="!ascendingSort" style="margin: 5px;"></i>
+                        <i class="fa-solid fa-arrow-up-wide-short" *ngIf="ascendingSort" style="margin: 5px;"></i>
+                      </span>
+                    </th>
+                    <th class="blue-header">
+                      Дата винесення рішення
+                      <span (click)="toggleSortDirection()">
+                        <i class="fa-solid fa-arrow-down-short-wide" *ngIf="!ascendingSort" style="margin: 5px;"></i>
+                        <i class="fa-solid fa-arrow-up-wide-short" *ngIf="ascendingSort" style="margin: 5px;"></i>
+                      </span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let decision of stage.decisions; let j = index">
+                    <tr>
+                      <td [class]="j % 2 === 0 ? 'even-cell' : 'odd-cell'">{{ stage.court_name }}</td>
+                      <td [class]="j % 2 === 0 ? 'even-cell' : 'odd-cell'" (click)="openDocumentInNewTab(decision.document_type, decision.document_text)" class="pointer-cursor link-style">{{ decision.document_type }}</td>
+                      <td [class]="j % 2 === 0 ? 'even-cell' : 'odd-cell'">{{ decision.receipt_date }}</td>
+                      <td [class]="j % 2 === 0 ? 'even-cell' : 'odd-cell'">{{ decision.date_publ }}</td>
+                      <td [class]="j % 2 === 0 ? 'even-cell' : 'odd-cell'">{{ decision.adjudication_date }}</td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <ng-template #cardView>
+    <div *ngIf="fullCourtData">
+      <div class="decision-container">
+        <ng-container *ngFor="let key of getStageKeys()">
+          <div class="instance-container">
+            <div class="header-container">
+            <div class="court-container">
+              <span class="highlight">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18.3291 1.87451H4.52976C3.86205 1.87451 3.19434 2.43094 3.19434 3.20994V7.99444M18.3291 1.87451C18.1066 2.31965 17.9953 2.87608 17.9953 3.43251V17.7883C17.9953 19.0125 16.9937 20.1253 15.6583 20.1253H6.13846C4.51253 20.1253 3.19446 18.8072 3.19446 17.1813V14.8944M18.3291 1.87451H19.3307C20.221 1.87451 21 2.54222 21 3.54379V6.32593H17.9953M10.0215 4.76677H14.6536M11.8613 7.99444H14.6536M11.8613 11.3333H14.6536M1.47859 11.2979C0.840469 11.936 0.840469 12.9706 1.47859 13.6087L2.18962 14.3197C2.82775 14.9579 3.86236 14.9579 4.50048 14.3198M9.29995 9.69804C9.98716 9.01083 9.98716 7.89664 9.29995 7.20943L8.76667 6.67616C8.07946 5.98894 6.96527 5.98894 6.27806 6.67616M7.72234 12.8088L6.10874 14.4069C5.72366 14.7883 5.10232 14.7853 4.72094 14.4002L1.52144 11.1696C1.14136 10.7859 1.14286 10.1671 1.52478 9.78517L4.71758 6.59237C5.10082 6.20914 5.72216 6.20914 6.1054 6.59237L9.33593 9.8229C9.72047 10.2074 9.71897 10.8314 9.33257 11.2141L7.72234 12.8088ZM7.72234 12.8088L12.2588 17.3453" stroke="#2F49D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+             </span>
+             <div class="court-details">
+              <span class="highlights">Інстанція</span>
+              <span class="court-name">{{ getStageName(key) }}</span>
+              </div>
+            </div>
+            <div *ngIf="fullCourtData.stages[key]?.court_name" class="court-container">
+              <span class="highlight">
+                <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M15.72 10.1238V19.4038M12.68 10.1238V19.4038M9.32 19.4038V10.1238M3.4 19.4038V10.1238M6.28 10.1238V19.4038M18.6 10.1238V19.4038M1 7.24379L11 1.88379L21 7.24379V9.80379H1V7.24379ZM21 20.6038V21.8038H1V20.6038C1 19.9638 1.56 19.4038 2.2 19.4038H19.8C20.44 19.4038 21 19.9638 21 20.6038Z" stroke="#2F49D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+             </span>
+             <div class="court-details">
+              <span class="highlights">Назва Суду</span>
+              <span class="court-name">{{ fullCourtData.stages[key].court_name }}</span>
+              </div>
+            </div>
+            <div *ngIf="fullCourtData.stages[key]?.claim_result" class="court-container">
+              <span class="highlight">
+                <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M17.8044 20.4235L19.0386 21.6577C19.5622 22.1439 20.385 22.1439 20.8712 21.6203C21.3574 21.1341 21.3948 20.3113 20.8712 19.7877L19.6744 18.5909M17.8044 20.4235L19.6744 18.5909M17.8044 20.4235L11.5181 14.0998M19.6744 18.5909L13.3507 12.2672M1.83148 10.6216L1.36046 11.0926C0.546515 11.9066 0.546515 13.2262 1.36046 14.0402L3.49931 16.179C4.31326 16.993 5.63291 16.993 6.44685 16.179L6.91788 15.708M14.9963 7.92881L15.6169 7.30818C16.4308 6.49424 16.4308 5.17458 15.6169 4.36064L13.478 2.22178C12.6641 1.40784 11.3444 1.40784 10.5305 2.22178L9.90988 2.84241M6.24062 3.74407L2.94689 7.03781C1.73014 8.25455 1.72538 10.2258 2.93623 11.4484L6.25133 14.7957C7.46633 16.0225 9.44579 16.0321 10.6726 14.8171L13.9984 11.5232C15.2294 10.3041 15.2342 8.31633 14.0091 7.09125L10.6619 3.74407C9.44102 2.52316 7.46154 2.52316 6.24062 3.74407Z" stroke="#2F49D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+             </span>
+             <div class="court-details">
+              <span class="highlights">Результат позову</span>
+              <span class="court-name">{{ fullCourtData.stages[key].claim_result }}</span>
+              </div>
+            </div>
+          </div>
+           
+            <!-- Отображение решений -->
+            <div class="grid-container">
+              <ng-container *ngFor="let decision of fullCourtData.stages[key]?.decisions">
+                <div class="decision-block" *ngIf="decision">
+                  <div class="decision-header" *ngIf="decision.judgment_forms_name"
+                  (click)="onDocumentClick(decision.judgment_forms_name, decision.doc_text_id)">
+                 {{ decision.judgment_forms_name }}
+                  </div>             
+                  <div *ngIf="decision.receipt_date" class="court-container">
+                    <span class="highlight">
+                      <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_4_1441)">
+                          <path d="M5.09441 11.6044C5.50862 11.6044 5.84441 11.2686 5.84441 10.8544C5.84441 10.4402 5.50862 10.1044 5.09441 10.1044V11.6044ZM16.8448 10.1044C16.4306 10.1044 16.0948 10.4402 16.0948 10.8544C16.0948 11.2686 16.4306 11.6044 16.8448 11.6044V10.1044ZM21.0965 13.4632C21.4613 13.267 21.598 12.8123 21.4018 12.4475C21.2057 12.0826 20.7509 11.9459 20.3861 12.1421L21.0965 13.4632ZM11.0609 18.0081L10.7092 18.6705C10.9303 18.788 11.1956 18.7873 11.4161 18.6687L11.0609 18.0081ZM1.61056 12.1403C1.24473 11.946 0.790674 12.0851 0.596399 12.4509C0.402124 12.8167 0.541195 13.2708 0.907023 13.465L1.61056 12.1403ZM11.75 1.84375C11.75 1.42954 11.4143 1.09375 11 1.09375C10.5858 1.09375 10.25 1.42954 10.25 1.84375H11.75ZM10.4697 12.3589C10.7626 12.6518 11.2375 12.6518 11.5304 12.3589L16.3033 7.58589C16.5962 7.29299 16.5962 6.81812 16.3033 6.52523C16.0104 6.23234 15.5356 6.23234 15.2427 6.52523L11 10.7679L6.7574 6.52523C6.4645 6.23234 5.98963 6.23234 5.69674 6.52523C5.40384 6.81812 5.40384 7.29299 5.69674 7.58589L10.4697 12.3589ZM18.793 11.6044C19.6097 11.6044 19.9913 12.1182 19.9913 12.4243H21.4913C21.4913 11.0035 20.1195 10.1044 18.793 10.1044V11.6044ZM19.9913 12.4243V20.2738H21.4913V12.4243H19.9913ZM19.9913 20.2738C19.9913 20.58 19.6097 21.0938 18.793 21.0938V22.5938C20.1195 22.5938 21.4913 21.6946 21.4913 20.2738H19.9913ZM18.793 21.0938H3.20704V22.5938H18.793V21.0938ZM3.20704 21.0938C2.39039 21.0938 2.00879 20.58 2.00879 20.2738H0.508789C0.508789 21.6946 1.88061 22.5938 3.20704 22.5938V21.0938ZM2.00879 20.2738V12.4243H0.508789V20.2738H2.00879ZM2.00879 12.4243C2.00879 12.1182 2.39039 11.6044 3.20704 11.6044V10.1044C1.88061 10.1044 0.508789 11.0035 0.508789 12.4243H2.00879ZM3.20704 11.6044H5.09441V10.1044H3.20704V11.6044ZM16.8448 11.6044H18.793V10.1044H16.8448V11.6044ZM20.3861 12.1421L10.7057 17.3476L11.4161 18.6687L21.0965 13.4632L20.3861 12.1421ZM11.4127 17.3457L1.61056 12.1403L0.907023 13.465L10.7092 18.6705L11.4127 17.3457ZM10.25 1.84375V11.8285H11.75V1.84375H10.25Z" fill="#2F49D1" />
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_4_1441">
+                            <rect width="22" height="22" fill="white" transform="translate(0 0.84375)" />
+                          </clipPath>
+                        </defs>
+                      </svg>
+                   </span>
+                   <div class="court-details">
+                    <span class="highlights">Дата отримання</span>
+                    <span class="court-name">{{ decision.receipt_date }}</span>
+                    </div>
+                  </div>
+                 
+                  <div *ngIf="decision.date_publ" class="court-container">
+                    <span class="highlight">
+                      <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_4_1435)">
+                          <path d="M4.90206 16.8953L5.00515 4.62725C5.00515 3.9056 5.62371 3.39014 6.24227 3.39014H19.0258M19.0258 3.39014C18.8196 3.80251 18.7165 4.31797 18.7165 4.83344V18.1324C18.7165 19.2664 17.7887 20.2974 16.5515 20.2974H13.6649M19.0258 3.39014H19.9536C20.7784 3.39014 21.5 4.00869 21.5 4.93653V7.51385H18.7165M7.57955 6.06947H12.0125M7.57955 9.05953H15.6208M7.57955 12.1526H15.6208M3.56186 20.0912C2.42783 20.0912 1.5 19.1633 1.5 18.0293V16.8953H12.9433V18.0293C12.9433 18.751 13.1495 19.5757 13.6649 20.1943H3.56186V20.0912Z" stroke="#2F49D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_4_1435">
+                            <rect width="22" height="22" fill="white" transform="translate(0.5 0.84375)" />
+                          </clipPath>
+                        </defs>
+                      </svg>
+                   </span>
+                   <div class="court-details">
+                    <span class="highlights">Дата публікації</span>
+                    <span class="court-name">{{ decision.date_publ }}</span>
+                    </div>
+                  </div>
+                  <div *ngIf="decision.adjudication_date" class="court-container">
+                    <span class="highlight">
+                      <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.8044 20.4235L19.0386 21.6577C19.5622 22.1439 20.385 22.1439 20.8712 21.6203C21.3574 21.1341 21.3948 20.3113 20.8712 19.7877L19.6744 18.5909M17.8044 20.4235L19.6744 18.5909M17.8044 20.4235L11.5181 14.0998M19.6744 18.5909L13.3507 12.2672M1.83148 10.6216L1.36046 11.0926C0.546515 11.9066 0.546515 13.2262 1.36046 14.0402L3.49931 16.179C4.31326 16.993 5.63291 16.993 6.44685 16.179L6.91788 15.708M14.9963 7.92881L15.6169 7.30818C16.4308 6.49424 16.4308 5.17458 15.6169 4.36064L13.478 2.22178C12.6641 1.40784 11.3444 1.40784 10.5305 2.22178L9.90988 2.84241M6.24062 3.74407L2.94689 7.03781C1.73014 8.25455 1.72538 10.2258 2.93623 11.4484L6.25133 14.7957C7.46633 16.0225 9.44579 16.0321 10.6726 14.8171L13.9984 11.5232C15.2294 10.3041 15.2342 8.31633 14.0091 7.09125L10.6619 3.74407C9.44102 2.52316 7.46154 2.52316 6.24062 3.74407Z" stroke="#2F49D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                   </span>
+                   <div class="court-details">
+                    <span class="highlights">Дата винесення рішення</span>
+                    <span class="court-name">{{ decision.adjudication_date }}</span>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+            <hr style="border-color: darkblue;">
+            <!-- Отображение файлов под решениями -->
+            <div *ngIf="fullCourtData.stages[key]?.files?.length" class="grid-container">
+              <ng-container *ngFor="let file of fullCourtData.stages[key].files">
+                <div class="decision-block">
+                  <div class="decision-header" *ngIf="file.judgmentFormId"
+                       >
+                       {{ getJudgmentTypeName(file.judgmentFormId) }}
+                  </div>
+                  <div class="court-container">
+                    <span class="highlight">
+                      <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_4_1441)">
+                          <path d="M5.09441 11.6044C5.50862 11.6044 5.84441 11.2686 5.84441 10.8544C5.84441 10.4402 5.50862 10.1044 5.09441 10.1044V11.6044ZM16.8448 10.1044C16.4306 10.1044 16.0948 10.4402 16.0948 10.8544C16.0948 11.2686 16.4306 11.6044 16.8448 11.6044V10.1044ZM21.0965 13.4632C21.4613 13.267 21.598 12.8123 21.4018 12.4475C21.2057 12.0826 20.7509 11.9459 20.3861 12.1421L21.0965 13.4632ZM11.0609 18.0081L10.7092 18.6705C10.9303 18.788 11.1956 18.7873 11.4161 18.6687L11.0609 18.0081ZM1.61056 12.1403C1.24473 11.946 0.790674 12.0851 0.596399 12.4509C0.402124 12.8167 0.541195 13.2708 0.907023 13.465L1.61056 12.1403ZM11.75 1.84375C11.75 1.42954 11.4143 1.09375 11 1.09375C10.5858 1.09375 10.25 1.42954 10.25 1.84375H11.75ZM10.4697 12.3589C10.7626 12.6518 11.2375 12.6518 11.5304 12.3589L16.3033 7.58589C16.5962 7.29299 16.5962 6.81812 16.3033 6.52523C16.0104 6.23234 15.5356 6.23234 15.2427 6.52523L11 10.7679L6.7574 6.52523C6.4645 6.23234 5.98963 6.23234 5.69674 6.52523C5.40384 6.81812 5.40384 7.29299 5.69674 7.58589L10.4697 12.3589ZM18.793 11.6044C19.6097 11.6044 19.9913 12.1182 19.9913 12.4243H21.4913C21.4913 11.0035 20.1195 10.1044 18.793 10.1044V11.6044ZM19.9913 12.4243V20.2738H21.4913V12.4243H19.9913ZM19.9913 20.2738C19.9913 20.58 19.6097 21.0938 18.793 21.0938V22.5938C20.1195 22.5938 21.4913 21.6946 21.4913 20.2738H19.9913ZM18.793 21.0938H3.20704V22.5938H18.793V21.0938ZM3.20704 21.0938C2.39039 21.0938 2.00879 20.58 2.00879 20.2738H0.508789C0.508789 21.6946 1.88061 22.5938 3.20704 22.5938V21.0938ZM2.00879 20.2738V12.4243H0.508789V20.2738H2.00879ZM2.00879 12.4243C2.00879 12.1182 2.39039 11.6044 3.20704 11.6044V10.1044C1.88061 10.1044 0.508789 11.0035 0.508789 12.4243H2.00879ZM3.20704 11.6044H5.09441V10.1044H3.20704V11.6044ZM16.8448 11.6044H18.793V10.1044H16.8448V11.6044ZM20.3861 12.1421L10.7057 17.3476L11.4161 18.6687L21.0965 13.4632L20.3861 12.1421ZM11.4127 17.3457L1.61056 12.1403L0.907023 13.465L10.7092 18.6705L11.4127 17.3457ZM10.25 1.84375V11.8285H11.75V1.84375H10.25Z" fill="#2F49D1" />
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_4_1441">
+                            <rect width="22" height="22" fill="white" transform="translate(0 0.84375)" />
+                          </clipPath>
+                        </defs>
+                      </svg>
+                   </span>
+                   <div class="court-details">
+                    <span class="highlights">Дата отримання</span>
+                    <span class="court-name">{{ file.createdAt }}</span>
+                    </div>
+                  </div>
+                  <div class="court-container">
+                    <span class="highlight">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#2f49d1" fill="none">
+                        <path d="M20.5 16.9286V10C20.5 6.22876 20.5 4.34315 19.3284 3.17157C18.1569 2 16.2712 2 12.5 2H11.5C7.72876 2 5.84315 2 4.67157 3.17157C3.5 4.34315 3.5 6.22876 3.5 10V19.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M20.5 17H6C4.61929 17 3.5 18.1193 3.5 19.5C3.5 20.8807 4.61929 22 6 22H20.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M20.5 22C19.1193 22 18 20.8807 18 19.5C18 18.1193 19.1193 17 20.5 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M15 7L9 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M12 11L9 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                   </span>
+                   <div class="court-details">
+                    <span class="highlights">Назва</span>
+                    <span class="court-name">{{ file.fileName }}</span>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </ng-template>
+  
+  
+  
+  </div>

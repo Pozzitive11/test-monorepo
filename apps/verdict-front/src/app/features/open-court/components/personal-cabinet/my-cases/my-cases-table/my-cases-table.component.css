@@ -1,0 +1,737 @@
+.info-banner {
+  background-color: #ffffcc;
+  color: #333;
+  padding: 15px;
+  margin-bottom: 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  position: relative;
+}
+
+.notification-wrapper {
+  display: flex;
+  margin-top: 10px;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.mat-accordion {
+  width: 100%;
+}
+
+.card-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+
+}
+
+
+.notification-button,
+.edit-button,
+.info-button,
+.tag-edit-button {
+  background-color: #fff; /* Белый цвет фона */
+  color: #333; /* Цвет текста */
+  border: 1px solid #ccc; /* Серая граница */
+  border-radius: 5px; /* Закругление углов */
+  padding: 8px 15px; /* Внутренний отступ */
+  cursor: pointer; /* Изменение курсора при наведении */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Плавные изменения при наведении */
+}
+
+
+.info-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.info-content p.welcome {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+
+.notification-row {
+  margin-top: 10px;
+}
+
+.notification-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.notification-button, .edit-button, .info-button, .tag-edit-button {
+  margin-left: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #007bff;
+}
+
+.tag-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #007bff;
+}
+
+.notification-button:hover, .edit-button:hover, .info-button:hover, .tag-edit-button:hover {
+  color: #0056b3;
+}
+
+.bold-text {
+  font-weight: bold;
+}
+
+.plaintiff-info, .defendant-info {
+  margin-bottom: 5px;
+}
+
+.notification-row {
+  margin: 20px 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+}
+
+th, td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  background-color: #0056b3;
+  color: white;
+  cursor: pointer;
+  position: relative;
+}
+
+th span {
+  margin-left: 10px;
+  font-size: 0.8em;
+}
+
+tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+th.sortable:after {
+  content: " ";
+  display: inline-block;
+  margin-left: 10px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 6px 0 6px;
+  border-color: #fff transparent transparent transparent;
+}
+
+th.sortable.asc:after {
+  border-width: 0 6px 6px 6px;
+  border-color: transparent transparent #fff transparent;
+}
+
+th.sortable.desc:after {
+  border-width: 6px 6px 0 6px;
+  border-color: #fff transparent transparent transparent;
+}
+
+
+.actions-container {
+  margin-top: 10px;
+}
+
+.action-button {
+  display: block;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.action-button:hover {
+  background-color: #0056b3;
+}
+
+.form-group {
+  margin-top: 10px;
+}
+
+.label-highlight {
+  font-weight: bold;
+}
+
+.custom-upload input[type="file"] {
+  display: none;
+}
+
+.custom-upload .label-highlight {
+  cursor: pointer;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+}
+
+.custom-upload .label-highlight:hover {
+  background-color: #e9ecef;
+}
+
+.custom-upload .label-highlight:active {
+  background-color: #dee2e6;
+}
+
+.custom-input,
+.custom-textarea,
+.custom-select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+.custom-textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.unsubscribe-button {
+
+  color: #0056b3;
+  border: none;
+
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+
+.unsubscribe-button i {
+  margin-right: 5px;
+}
+
+.mat-expansion-panel-header {
+  background-color: #fff;
+}
+
+
+.search-bar {
+  margin-bottom: 20px;
+}
+
+.mat-expansion-panel-header[aria-disabled=true] {
+  color: inherit; /* Используем наследование цвета текста */
+}
+
+.search-bar input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.search-bar input[type="text"]:focus {
+  border-color: #0d6efd;
+  outline: none;
+}
+
+.search-bar input[type="text"]::placeholder {
+  color: #999;
+}
+
+.add-tag-button {
+  margin-top: 10px;
+  margin-right: 10px; /* Отступ справа */
+  padding: 8px 16px;
+  background-color: #28a745; /* Зелений колір */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-tag-button:hover {
+  background-color: #218838; /* Темніший зелений колір при наведенні */
+}
+
+.delete-tag-button {
+  margin-top: 10px;
+  margin-right: 10px; /* Отступ справа */
+  padding: 8px 16px;
+  background-color: #dc3545; /* Червоний колір */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-tag-button:hover {
+  background-color: #c82333; /* Темніший червоний колір при наведенні */
+}
+
+.n {
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+.edit-tag-button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-tag-button:hover {
+  background-color: #0056b3;
+}
+
+.delete-button {
+  padding: 5px 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+
+.header-icon {
+  margin-right: 8px;
+  color: #3f51b5;
+}
+
+.comment {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.comment-icon {
+  margin-right: 10px;
+}
+
+.comment-content {
+  flex: 1;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #e0e0e0;
+}
+
+.comment-text {
+  margin: 0;
+}
+
+.comment-date {
+  display: block;
+  font-size: 0.85em;
+  color: #888;
+}
+
+.edit-button {
+  margin-left: 10px;
+  color: #1976d2;
+}
+
+.save-button {
+  margin-top: 10px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.save-button:hover {
+  background-color: #45a049;
+}
+
+.cancel-button {
+  margin-top: 10px;
+  margin-left: 10px;
+  background-color: #f44336;
+  color: white;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.cancel-button:hover {
+  background-color: #e53935;
+}
+
+textarea {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #e0e0e0;
+  resize: vertical;
+}
+
+.deleted-button {
+  margin-top: 10px;
+  margin-left: 10px;
+  background-color: #f44336;
+  color: white;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.deleted-button:hover {
+  background-color: #e53935;
+}
+
+.btn .btn-primary {
+  margin-top: 5px;
+}
+
+.file-upload-container {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.filename-input {
+  margin-bottom: 10px;
+}
+
+.upload-button {
+  width: 100%;
+}
+
+input.form-control-file {
+  font-size: 14px;
+  padding: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #495057;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+input.form-control-file:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.uploaded-file {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.file-icon {
+  margin-right: 10px;
+}
+
+.bold-text {
+  font-weight: bold;
+}
+
+.deleted-text {
+  color: red;
+}
+
+.file {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+}
+
+.file-icon {
+  margin-right: 8px;
+  color: #007bff; /* Цвет иконки файлов */
+}
+
+.file-info {
+  flex-grow: 1;
+}
+
+.file p {
+  margin: 0;
+}
+
+.file small {
+  color: gray;
+}
+
+.download-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.download-btn mat-icon {
+  color: #007bff; /* Цвет иконки */
+  font-size: 24px; /* Размер иконки */
+}
+
+.download-btn:hover mat-icon {
+  color: #0056b3; /* Цвет иконки при наведении */
+}
+
+.deleted-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 10px; /* Отступ слева для разделения кнопок */
+}
+
+.deleted-btn mat-icon {
+  color: #dc3545; /* Цвет иконки */
+  font-size: 24px; /* Размер иконки */
+}
+
+.deleted-btn:hover mat-icon {
+  color: #c82333; /* Цвет иконки при наведении */
+}
+
+.uploaded-files-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.uploaded-file {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 5px;
+  min-width: 200px;
+}
+
+.file-info {
+  flex-grow: 1;
+  margin-left: 10px;
+}
+
+.file-info-left {
+  overflow: hidden;
+}
+
+.file-info-right {
+  display: flex;
+  gap: 5px;
+}
+
+.no-cases-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.no-cases-card {
+  text-align: center;
+}
+
+.no-cases-card p {
+  font-size: 18px;
+  color: #333;
+  margin: 10px 0;
+}
+
+.no-cases-card p:first-child {
+  font-weight: bold;
+  margin-top: 0;
+}
+
+.no-cases-card p:last-child {
+  margin-bottom: 0;
+}
+
+.navigate-link {
+  color: #007bff; /* Link color */
+  cursor: pointer;
+  text-decoration: underline; /* Underline to indicate it's clickable */
+}
+
+.navigate-link:hover {
+  color: #0056b3; /* Darker color on hover */
+}
+
+.mat-divider {
+  margin: 12px 0; /* Отступы сверху и снизу */
+  border-top: 1px solid #0056b3;; /* Цвет линии разделителя */
+}
+
+.sort-icon {
+  height: 20px;
+  width: 20px;
+}
+
+.custom-expansion-panel .custom-panel-title {
+  width: 100%;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.mat-icon {
+  -webkit-user-select: none;
+  user-select: none;
+  background-repeat: no-repeat;
+  display: inline-block;
+  fill: currentColor;
+  height: auto !important;
+  width: auto !important;
+  overflow: hidden;
+}
+
+.tag-button {
+  padding: 0;
+  margin-left: 5px; /* Добавьте отступ для красоты */
+  vertical-align: middle; /* Выровняйте по центру */
+}
+
+.tag-button mat-icon {
+  font-size: 20px;
+  line-height: 1; /* Установите высоту строки для иконки */
+}
+
+.custom-modal .mat-dialog-container {
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  background: #ffffff;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* template-modal.component.css */
+
+.modal-container {
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+  overflow-y: auto;
+  max-height: 80vh;
+}
+
+.modal-container h1 {
+  font-size: 24px;
+  font-weight: 500;
+  color: #202124;
+  margin-bottom: 20px;
+}
+
+.form-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+button[mat-button] {
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button[mat-button][color="primary"] {
+  background-color: #1a73e8;
+  color: #ffffff;
+}
+
+button[mat-button][color="primary"]:hover {
+  background-color: #0d47a1;
+}
+
+button[mat-button]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .form-content {
+    grid-template-columns: 1fr;
+  }
+}

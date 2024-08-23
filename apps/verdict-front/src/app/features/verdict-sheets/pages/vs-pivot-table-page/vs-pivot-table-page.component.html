@@ -1,0 +1,60 @@
+<pivot-table-offcanvas-options class="offcanvas-button-container" [showRedZoneSlider]="false" />
+
+<div class="m-2 me-0 d-flex flex-row gap-2">
+  @if (dataService.isConfigurator() || dataService.isAdmin()) {
+    <div class="border-start"></div>
+
+    <app-dropdown-searchable
+      [selectedValue]="selectedPivotConfigName() || 'Обрати конфігурацію'"
+      (selectedValueChange)="loadPivotConfig($event)"
+      [valueList]="pivotConfigNames()"
+      [showButtonTooltip]="true"
+      [width]="'400px'"
+      [maxSymbols]="60"
+      [closeOnSelect]="true"
+    />
+
+    <div class="border-start"></div>
+
+    <div class="input-group w-auto">
+      <input
+        class="form-control"
+        id="config-name"
+        placeholder="Введіть назву конфігурації"
+        type="text"
+        [(ngModel)]="pivotConfigName"
+        [class.is-invalid]="!pivotConfigName()"
+        [style.width]="'250px'"
+      />
+      @if (pivotConfigName() && (!pivotConfigNames().includes(pivotConfigName()) || configChanged)) {
+        <button (click)="createPivotConfig(pivotConfigName())" class="btn btn-outline-success">
+          @if (!pivotConfigNames().includes(pivotConfigName())) {
+            @if (!configChanged && selectedPivotConfigName()) {
+              Оновити назву конфігурації
+            } @else {
+              Створити нову конфігурацію
+            }
+          } @else if (configChanged) {
+            Оновити конфігурацію
+          } @else {
+            ???
+          }
+        </button>
+      }
+    </div>
+
+    <div class="border-start"></div>
+
+    @if (pivotConfigNames().includes(selectedPivotConfigName()) && dataService.isAdmin()) {
+      <button (click)="deletePivotConfig(selectedPivotConfigName())" class="btn btn-outline-danger">
+        Видалити конфігурацію
+      </button>
+    }
+  }
+</div>
+
+<div class="row mt-3">
+  <div class="col-12">
+    <app-pivot-table [reportName]="pivotConfigName()" />
+  </div>
+</div>

@@ -1,0 +1,105 @@
+<div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-3 g-4 mt-3">
+  <div *ngFor="let prom of inputAbstractData" class="col">
+
+    <div [class.success]="prom.confirmed" class="card">
+      <h6 (click)="cardBody.hidden=!cardBody.hidden" class="card-header h6 pointer">
+            <span>
+              {{ prom.contractId }}, {{ prom.clientName }}
+              <ng-container *ngIf="prom.clientINN">({{ prom.clientINN }})</ng-container>
+            </span>
+
+        <i [class.bi-chevron-down]="cardBody.hidden"
+           [class.bi-chevron-up]="!cardBody.hidden"
+           class="bi float-end"
+        ></i>
+      </h6>
+
+      <div #cardBody class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item border-bottom-0 pb-0">
+            <strong>Використана суму боргу:</strong>
+            <span class="float-end">
+                {{ debtTypes[prom.debtType] }}
+              </span>
+          </li>
+
+          <li class="list-group-item border-top-0 text-end pt-0">
+            <span class="small">{{ prom.debtRule }}</span>
+          </li>
+
+          <li *ngIf="prom.sumToPay > prom.debt" class="list-group-item">
+            <strong class="text-danger">
+              <i class="bi bi-exclamation-circle-fill me-3"></i>
+              <span>Сума до сплати більша за обрану суму боргу!</span>
+            </strong>
+          </li>
+
+          <li class="list-group-item">
+            <strong>Сума боргу:</strong>
+            <span class="float-end">
+                {{ prom.debt | currency:'UAH':'symbol':'1.2-2' }}
+              </span>
+          </li>
+
+          <li class="list-group-item">
+            <strong>Сума до сплати:</strong>
+            <span class="float-end">
+                {{ prom.sumToPay | currency:'UAH':'symbol':'1.2-2' }}
+              </span>
+          </li>
+
+          <li class="list-group-item">
+            <strong>Назва проєкту:</strong>
+            <span class="float-end">{{ prom.projectName }}</span>
+          </li>
+
+          <li class="list-group-item">
+            <strong>БАНК:</strong>
+            <span class="float-end">{{ prom.bank }}</span>
+          </li>
+
+          <li class="list-group-item">
+            <strong>Дата внесення:</strong>
+            <span class="float-end">{{ prom.entryDate }}</span>
+          </li>
+
+          <li class="list-group-item">
+            <strong>Наявність погодження:</strong>
+            <span class="float-end">{{ prom.agreement }}</span>
+          </li>
+
+          <li class="list-group-item">
+            <strong>ПМ:</strong>
+            <span class="float-end">{{ prom.projectManager }}</span>
+          </li>
+
+          <li class="list-group-item">
+            <strong>Стан ВП:</strong>
+            <span class="float-end">{{ prom.epState }}</span>
+          </li>
+
+
+          <li *ngIf="prom.restructuring" class="list-group-item">
+            <strong>Кількість місяців по РС:</strong>
+            <span class="float-end">{{ prom.restructuring }}</span>
+          </li>
+        </ul>
+
+        <div class="card-footer text-end">
+          <button (click)="confirmTemplate.emit(prom.PromotionId); cardBody.hidden=true"
+                  *ngIf="!prom.confirmed" class="btn btn-outline-success btn-sm me-2">
+            <i class="bi bi-check-circle me-2"></i>
+            <span>Підтвердити</span>
+          </button>
+
+          <button (click)="removeTemplate.emit(prom.PromotionId)" class="btn btn-outline-danger btn-sm">
+            <i class="bi bi-trash me-2"></i>
+            <span>Видалити</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

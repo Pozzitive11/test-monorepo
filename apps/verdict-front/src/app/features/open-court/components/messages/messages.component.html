@@ -1,0 +1,61 @@
+<div class="mail-page">
+    <div class="mail-sidebar">
+      <!-- Меню -->
+      <div class="sidebar-menu">
+        <button class="menu-item" (click)="selectCategory('inbox')" [class.active]="selectedCategory === 'inbox'">
+          <i class="bi bi-inbox"></i> Входящие
+        </button>
+        <button class="menu-item" (click)="selectCategory('marked')" [class.active]="selectedCategory === 'marked'">
+          <i class="bi bi-bookmark-star"></i> Помеченные
+        </button>
+        <button class="menu-item" (click)="selectCategory('scheduled')" [class.active]="selectedCategory === 'scheduled'">
+          <i class="bi bi-clock-history"></i> Отложенные
+        </button>
+        <!-- <button class="menu-item" (click)="selectCategory('sent')" [class.active]="selectedCategory === 'sent'">
+          <i class="bi bi-arrow-up-circle"></i> Отправленные
+        </button> -->
+      </div>
+    </div>
+    <div class="mail-content">
+      <!-- Бар с вкладками -->
+      <div class="tab-bar">
+        <button class="tab-button" (click)="selectTab('all')" [class.active]="selectedTab === 'all'">
+          <i class="bi bi-inbox"></i> Несортированные
+        </button>
+        <button class="tab-button" (click)="selectTab('court')" [class.active]="selectedTab === 'court'">
+            <i class="bi bi-journal"></i> Судові Справи
+          </button>
+        <button class="tab-button" (click)="selectTab('executive')" [class.active]="selectedTab === 'executive'">
+          <i class="bi bi-file-earmark-break"></i> Виконавчі провадження
+        </button>
+      </div>
+      <!-- Уведомления -->
+      <div class="notification-list">
+        <div *ngIf="notifications.length > 0; else noNotifications">
+          <div *ngFor="let notification of notifications">
+            <div class="notification">
+              <div class="notification-header">
+                <h3>{{ notification.title }}</h3>
+                <span class="notification-time">{{ notification.time }}</span>
+              </div>
+              <p>{{ notification.content }}</p>
+              <button (click)="showDetails(notification)">Детали</button>
+            </div>
+          </div>
+        </div>
+        <ng-template #noNotifications>
+          <div class="no-notifications">
+            <p>Не вдалося знайти жодного повідомлення</p>
+            <p>Спробуйте видалити або відкоригувати фільтри.</p>
+          </div>
+        </ng-template>
+      </div>
+      <!-- Детали уведомления -->
+      <div *ngIf="selectedNotification" class="notification-details">
+        <h4>{{ selectedNotification.title }}</h4>
+        <p>{{ selectedNotification.content }}</p>
+        <!-- Дополнительные детали уведомления -->
+      </div>
+    </div>
+  </div>
+  

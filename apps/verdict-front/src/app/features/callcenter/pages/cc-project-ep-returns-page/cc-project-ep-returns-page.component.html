@@ -1,0 +1,136 @@
+<div class="container-fluid top-margin-sm">
+  <!--  ФИЛЬТРЫ ТУТ -->
+  <div class="row alert alert-info top-margin-sm">
+    <div class="row">
+      <div class="col-3">
+        <div class="row">
+          <app-age-bucket-filter></app-age-bucket-filter>
+        </div>
+        <div class="row top-margin-sm">
+          <app-ep-bucket-filter></app-ep-bucket-filter>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <a (click)="switchReestrMode()" class="nav-link pointer">
+          <input
+            [checked]="isInvestProjectOnly"
+            class="form-check-input big-check"
+            type="checkbox"
+          >
+          Фільтр за інвест-портфелями
+        </a>
+        <div [class.disabled-table]="isInvestProjectOnly" class="row top-margin-sm">
+          <app-project-manager></app-project-manager>
+        </div>
+        <div [class.disabled-table]="isInvestProjectOnly" class="row top-margin-sm">
+          <app-project></app-project>
+        </div>
+
+        <hr style="width: 80%">
+
+        <div [class.disabled-table]="!isInvestProjectOnly" class="row top-margin-sm">
+          <app-invest-project></app-invest-project>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="row">
+          <a
+            (click)="toggleIsActual()"
+            class="nav-link pointer"
+          >
+            <input
+              [checked]="isActual"
+              class="form-check-input big-check"
+              type="checkbox"
+            >
+            Актуальні реєстри
+          </a>
+        </div>
+        <div class="row top-margin-sm">
+          <app-reestr-type></app-reestr-type>
+        </div>
+        <div class="row top-margin-sm">
+          <app-reestr-status></app-reestr-status>
+        </div>
+        <div class="row top-margin-sm">
+          <app-reestr></app-reestr>
+        </div>
+      </div>
+    </div>
+
+    <div class="row top-margin-sm">
+      <div class="col-4">
+        <button
+          (click)="getData()"
+          [disabled]="!allFiltersSelected() || loading"
+          class="btn btn-success"
+        >
+          Завантажити звіт
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!--  ТАБЛИЦА С ОТЧЁТОМ ТУТ -->
+  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+  <div
+    *ngIf="!loading && reportData.length > 0"
+    class="row max-height-div"
+  >
+    <table class="table table-bordered table-responsive table-sm text-12">
+      <caption>Платежі у розрізі проектів та ознаки ВП</caption>
+      <thead class="sticky-top">
+      <tr class="header-level-1">
+        <th colspan="1">
+          <i (click)="hideAllProjects()" *ngIf="!areProjectsHidden()" class="pointer">Згорнути</i>
+          <i (click)="showAllProjects()" *ngIf="areProjectsHidden()" class="pointer">Розгорнути</i>
+        </th>
+        <th colspan="16"></th>
+      </tr>
+      <tr class="header-level">
+        <th
+          *ngFor="let column of filterHeader()"
+          scope="col"
+        >
+          {{ column }}
+        </th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr
+        *ngFor="let row of reportData"
+        [class.top-level-row-0]="row.ProjectName.includes('Всього')"
+        [class.top-level-row-1]="row.AgeBucket === 'Всього за проєктом'"
+        [hidden]="hiddenRows.includes(row.RowNum)"
+        style="text-align: right"
+      >
+        <td
+          (click)="toggleProject(row.ProjectNum)"
+          *ngIf="isFirstProjectRow(row)"
+          [class.pointer]="!row.ProjectName.includes('Всього')"
+          [rowSpan]="getProjectLen(row.ProjectNum)"
+          style="text-align: left"
+        >
+          <b *ngIf="isProjectHidden(row.ProjectNum) && !row.ProjectName.includes('Всього')">[+]</b>
+          <b *ngIf="!isProjectHidden(row.ProjectNum) && !row.ProjectName.includes('Всього')">[-]</b>
+          {{ row.ProjectName }}
+        </td>
+
+        <td style="text-align: left"> {{ row.AgeBucket }}</td>
+        <td *ngFor="let value of getRowValues(row)">{{ value }}</td>
+      </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+</div>
+
+
+
+
+
+
+

@@ -1,0 +1,144 @@
+<div *ngIf="!!scoreInfoData" class="row alert alert-info" style="margin: auto">
+  <div *ngIf="!scoreInfoData.AgreedSum && !scoreInfoData.RestructuringMonthsOld" class="col-6">
+    <div class="alert alert-danger">
+      По обраному НКС є інформація про стоп-лист, але немає запису в таблиці дисконтів.
+    </div>
+  </div>
+
+  <div *ngIf="!!scoreInfoData.AgreedSum || !!scoreInfoData.RestructuringMonthsOld" class="row">
+    <!--    Дисконт інфо  -->
+    <div [class.chosen-condition-top]="chosenConditions.Repeated === 'DC'" class="col-6">
+      <h4 class="h4">Дисконт</h4>
+
+      <div class="row">
+        <p>
+          Погоджена сума: <strong>{{ scoreInfoData.AgreedSum | number: "1.0-2" }} {{scoreInfoData.FactCurrency}}</strong>
+        </p>
+        <ng-container *ngIf="scoreInfoData.RestructuringMonthsOld">
+          <p>
+            Оплати по РС: <strong>{{ scoreInfoData.PaymentsRS | number: "1.0-2" }} {{scoreInfoData.FactCurrency}}</strong>
+          </p>
+          <p>
+            Залишок до сплати: <strong>{{ agreedSum | number: "1.0-2" }} {{scoreInfoData.FactCurrency}}</strong>
+          </p>
+        </ng-container>
+        <p>
+          Штраф: <strong>{{ fine * 100 | number: "1.0-2" }} %</strong> (<strong
+        >{{ agreedSum * fine | number: "1.0-2" }} {{scoreInfoData.FactCurrency}}</strong
+        >)
+        </p>
+        <p *ngIf="scoreInfoData.RestructuringMonthsOld > 0 && scoreInfoData.AgreedSum === scoreInfoData.Debt">
+          Відсоток списання по ДС: <strong>{{ scoreInfoData.Discounts.WriteOffPercent | number: "1.0-0" }} %</strong>
+        </p>
+        <p *ngIf="scoreInfoData.RestructuringMonthsOld > 0 && scoreInfoData.AgreedSum === scoreInfoData.Debt">
+          Списання по ДС: <strong>{{ discountSum | number: "1.0-2" }} грн</strong>
+        </p>
+
+        <!--            платіж приватному виконавцю              -->
+        <app-switch-checkbox
+          (valueChange)="$event ? setPrivateAgentPayment(setPASumRepeated) : (privateAgentPayment = 0)"
+          [id]="'privateAgentPaymentRepeatedSwitch'"
+          [value]="!!privateAgentPayment"
+          class="mt-3"
+        >Задати платіж приватному виконавцю
+        </app-switch-checkbox>
+      </div>
+    </div>
+
+    <!--    Реструктуризація інфо  -->
+    <div [class.chosen-condition-top]="chosenConditions.Repeated === 'RS'" class="col-6">
+      <h4 class="h4">Реструктуризація</h4>
+      <p>
+        Погоджена сума: <strong>{{ scoreInfoData.AgreedSum | number: "1.0-0" }} {{scoreInfoData.FactCurrency}}</strong>
+      </p>
+      <ng-container *ngIf="scoreInfoData.RestructuringMonthsOld">
+        <p>
+          Оплати по РС: <strong>{{ scoreInfoData.PaymentsRS | number: "1.0-2" }} {{scoreInfoData.FactCurrency}}</strong>
+        </p>
+        <p>
+          Залишок до сплати: <strong>{{ agreedSum | number: "1.0-2" }} {{scoreInfoData.FactCurrency}}</strong>
+        </p>
+      </ng-container>
+      <p>
+        Штраф: <strong>{{ fine * 100 | number: "1.0-2" }} %</strong> (<strong
+      >{{ agreedSum * fine | number: "1.0-2" }} {{scoreInfoData.FactCurrency}}</strong
+      >)
+      </p>
+
+      <p>
+        Максимальна кількість місяців для розбивки: <strong>{{ scoreInfoData.Restructuring.MaxMonths }}</strong>
+      </p>
+      <p>
+        Мінімальний платіж: <strong>{{ scoreInfoData.Restructuring.MinPayment | number: "1.0-2" }} {{scoreInfoData.FactCurrency}}</strong>
+      </p>
+
+      <p>
+        Кількість місяців для розбивки: <strong>{{ chosenConditions.restructuringMonths }}</strong>
+      </p>
+      <input
+        (ngModelChange)="chosenConditions.restructuringMonths = $event"
+        [max]="scoreInfoData.Restructuring.MaxMonths"
+        [ngModel]="chosenConditions.restructuringMonths"
+        class="form-range white-range"
+        min="1"
+        name="rcMonthsInput"
+        step="1"
+        type="range"
+      />
+    </div>
+  </div>
+
+  <div *ngIf="!!scoreInfoData.AgreedSum || !!scoreInfoData.RestructuringMonthsOld" class="row">
+    <!--        кнопка выбора ДС  -->
+    <div [class.chosen-condition-bottom]="chosenConditions.Repeated === 'DC'" class="col-6">
+      <p class="discounts-info">
+        Борг після списання:
+        <strong>{{ sumToPayDC - privateAgentPayment | number: "1.0-2" }} {{scoreInfoData.FactCurrency}}</strong>
+
+        <ng-container *ngIf="!!privateAgentPayment">
+          <span (click)="setPrivateAgentPayment(setPASumRepeated)" [ngbTooltip]="'Змінити суму'" class="pointer">
+            + оплата ПВ <strong>{{ privateAgentPayment | number: "1.0-2" }} {{scoreInfoData.FactCurrency}}</strong> </span
+          ><br />
+          (всього - <strong>{{ sumToPayDC | number: "1.0-2" }} {{scoreInfoData.FactCurrency}}</strong>)
+        </ng-container>
+      </p>
+      <button (click)="chose('DC')" *ngIf="chosenConditions.Repeated !== 'DC'" class="btn btn-primary mb-2">
+        Обрати
+      </button>
+      <button (click)="cancel()" *ngIf="chosenConditions.Repeated === 'DC'" class="btn btn-danger mb-2">
+        <i class="bi bi-arrow-return-left"></i> Відмінити
+      </button>
+    </div>
+
+    <!--        кнопка выбора РС  -->
+    <div [class.chosen-condition-bottom]="chosenConditions.Repeated === 'RS'" class="col-6">
+      <p class="discounts-info">
+        Місячний платіж:
+        <strong>{{ sumWithFine / chosenConditions.restructuringMonths | number: "1.0-2" }} {{scoreInfoData.FactCurrency}}</strong>
+      </p>
+      <button (click)="chose('RS')" *ngIf="chosenConditions.Repeated !== 'RS'" class="btn btn-primary mb-2">
+        Обрати
+      </button>
+      <button (click)="cancel()" *ngIf="chosenConditions.Repeated === 'RS'" class="btn btn-danger mb-2">
+        <i class="bi bi-arrow-return-left"></i> Відмінити
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #setPASumRepeated let-modalRepeated>
+  <div class="modal-header">
+    <h5 class="modal-title">Введіть суму платежа приватному виконавцю</h5>
+    <button (click)="modalRepeated.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+  </div>
+  <div class="modal-body">
+    <app-sum-input
+      (keyup.enter)="modalRepeated.close()"
+      [(sum)]="privateAgentPaymentInModal"
+      [maxSum]="sumToPayDC || 0"
+    ></app-sum-input>
+  </div>
+  <div class="modal-footer">
+    <button (click)="modalRepeated.close()" class="btn btn-outline-success" type="button">Підтвердити</button>
+  </div>
+</ng-template>

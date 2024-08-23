@@ -1,0 +1,20 @@
+export interface AddShipment {
+  POSTCODE: string,
+  group_name: string,
+  REGION_NAME: string,
+  DISTRICT_NAME: string,
+  CITY_NAME: string,
+  STREET_NAME: string,
+  HOUSENUMBER_: string,
+  APARTMENT: string,
+  Name: string,
+  IPN: string,
+  FIRST_NAME: string,
+  LAST_NAME: string,
+  MIDDLE_NAME: string,
+  phone: string,
+  nks: string,
+  uuid: string,
+  legal: number,
+  test_server: boolean
+}

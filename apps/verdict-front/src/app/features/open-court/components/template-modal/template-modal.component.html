@@ -1,0 +1,439 @@
+<div class="modal-container">
+  <h1 mat-dialog-title>Заповніть дані для шаблону</h1>
+  <div mat-dialog-content>
+    <form (ngSubmit)="createTemplateAndCloseModal()" #templateForm="ngForm">
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>Суд:</mat-label>
+        <input matInput name="to_court" [(ngModel)]="templateData.to_court">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>Заявник:</mat-label>
+        <input matInput name="applicant" [(ngModel)]="templateData.applicant">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>Адреса:</mat-label>
+        <input matInput name="address" [(ngModel)]="templateData.address">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>Email:</mat-label>
+        <input matInput type="email" name="email" [(ngModel)]="templateData.email">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>Телефон:</mat-label>
+        <input matInput name="telephone" [(ngModel)]="templateData.telephone">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>Суддя:</mat-label>
+        <input matInput name="judge" [(ngModel)]="templateData.judge">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>Номер справи:</mat-label>
+        <input matInput name="case_number" [(ngModel)]="templateData.case_number">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>Позивач:</mat-label>
+        <input matInput name="claim_from" [(ngModel)]="templateData.claim_from">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>Відповідач:</mat-label>
+        <input matInput name="claim_to" [(ngModel)]="templateData.claim_to">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>Предмет позову:</mat-label>
+        <input matInput name="claim_about" [(ngModel)]="templateData.claim_about">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>РНОКПП:</mat-label>
+        <input matInput name="rnokpp" [(ngModel)]="templateData.rnokpp">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>Правозастосування:</mat-label>
+        <input matInput name="enforcement" [(ngModel)]="templateData.enforcement">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>День рішення:</mat-label>
+        <input matInput name="decision_day" [(ngModel)]="templateData.decision_day">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>Місяць рішення:</mat-label>
+        <input matInput name="decision_month" [(ngModel)]="templateData.decision_month">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>Рік рішення:</mat-label>
+        <input matInput name="decision_year" [(ngModel)]="templateData.decision_year">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>Задоволено:</mat-label>
+        <input matInput name="satisfied_type" [(ngModel)]="templateData.satisfied_type">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>Поточний день:</mat-label>
+        <input matInput name="current_day" [(ngModel)]="templateData.current_day">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>Поточний місяць:</mat-label>
+        <input matInput name="current_month" [(ngModel)]="templateData.current_month">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>Поточний рік:</mat-label>
+        <input matInput name="current_year" [(ngModel)]="templateData.current_year">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '1'">
+        <mat-label>Повне ім'я:</mat-label>
+        <input matInput name="full_name" [(ngModel)]="templateData.full_name">
+      </mat-form-field>
+
+
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '2'">
+        <mat-label>Суд:</mat-label>
+        <input matInput name="to_court" [(ngModel)]="templateData.to_court">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '2'">
+        <mat-label>Заявник:</mat-label>
+        <input matInput name="applicant" [(ngModel)]="templateData.applicant">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '2'">
+        <mat-label>Адреса:</mat-label>
+        <input matInput name="address" [(ngModel)]="templateData.address">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '2'">
+        <mat-label>Email:</mat-label>
+        <input matInput type="email" name="email" [(ngModel)]="templateData.email">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '2'">
+        <mat-label>Телефон:</mat-label>
+        <input matInput name="telephone" [(ngModel)]="templateData.telephone">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '2'">
+        <mat-label>Суддя:</mat-label>
+        <input matInput name="judge" [(ngModel)]="templateData.judge">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '2'">
+        <mat-label>Номер справи:</mat-label>
+        <input matInput name="case_number" [(ngModel)]="templateData.case_number">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '2'">
+        <mat-label>Позивач:</mat-label>
+        <input matInput name="claim_from" [(ngModel)]="templateData.claim_from">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '2'">
+        <mat-label>Відповідач:</mat-label>
+        <input matInput name="claim_to" [(ngModel)]="templateData.claim_to">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '2'">
+        <mat-label>Предмет позову:</mat-label>
+        <input matInput name="claim_about" [(ngModel)]="templateData.claim_about">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '2'">
+        <mat-label>День рішення:</mat-label>
+        <input matInput name="decision_day" [(ngModel)]="templateData.decision_day">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '2'">
+        <mat-label>Місяць рішення:</mat-label>
+        <input matInput name="decision_month" [(ngModel)]="templateData.decision_month">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '2'">
+        <mat-label>Рік рішення:</mat-label>
+        <input matInput name="decision_year" [(ngModel)]="templateData.decision_year">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '2'">
+        <mat-label>Поточний день:</mat-label>
+        <input matInput name="current_day" [(ngModel)]="templateData.current_day">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '2'">
+        <mat-label>Поточний місяць:</mat-label>
+        <input matInput name="current_month" [(ngModel)]="templateData.current_month">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '2'">
+        <mat-label>Поточний рік:</mat-label>
+        <input matInput name="current_year" [(ngModel)]="templateData.current_year">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '2'">
+        <mat-label>Повне ім'я:</mat-label>
+        <input matInput name="full_name" [(ngModel)]="templateData.full_name">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '2'">
+        <mat-label>ІПН:</mat-label>
+        <input matInput name="inn" [(ngModel)]="templateData.inn">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '2'">
+        <mat-label>Адреса для отримання:</mat-label>
+        <input matInput name="address_receive" [(ngModel)]="templateData.address_receive">
+      </mat-form-field>
+
+
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Суд:</mat-label>
+        <input matInput name="to_court" [(ngModel)]="templateData.to_court">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Суддя:</mat-label>
+        <input matInput name="judge" [(ngModel)]="templateData.judge">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Номер справи:</mat-label>
+        <input matInput name="case_number" [(ngModel)]="templateData.case_number">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Позивач:</mat-label>
+        <input matInput name="claim_from" [(ngModel)]="templateData.claim_from">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Відповідач:</mat-label>
+        <input matInput name="claim_to" [(ngModel)]="templateData.claim_to">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Предмет позову:</mat-label>
+        <input matInput name="claim_about" [(ngModel)]="templateData.claim_about">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Поточний день:</mat-label>
+        <input matInput name="current_day" [(ngModel)]="templateData.current_day">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Поточний місяць:</mat-label>
+        <input matInput name="current_month" [(ngModel)]="templateData.current_month">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Поточний рік:</mat-label>
+        <input matInput name="current_year" [(ngModel)]="templateData.current_year">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Повне ім'я:</mat-label>
+        <input matInput name="full_name" [(ngModel)]="templateData.full_name">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>ІПН:</mat-label>
+        <input matInput name="inn" [(ngModel)]="templateData.inn">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Адреса для отримання:</mat-label>
+        <input matInput name="address_receive" [(ngModel)]="templateData.address_receive">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Email позивача:</mat-label>
+        <input matInput type="email" name="plaintiff_email" [(ngModel)]="templateData.plaintiff_email">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Телефон позивача:</mat-label>
+        <input matInput name="plaintiff_telephone" [(ngModel)]="templateData.plaintiff_telephone">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Email відповідача:</mat-label>
+        <input matInput type="email" name="defendant_email" [(ngModel)]="templateData.defendant_email">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Телефон відповідача:</mat-label>
+        <input matInput name="defendant_telephone" [(ngModel)]="templateData.defendant_telephone">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Адреса позивача:</mat-label>
+        <input matInput name="plaintiff_address" [(ngModel)]="templateData.plaintiff_address">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>ІПН позивача:</mat-label>
+        <input matInput name="plaintiff_inn" [(ngModel)]="templateData.plaintiff_inn">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Адреса відповідача:</mat-label>
+        <input matInput name="defendant_address" [(ngModel)]="templateData.defendant_address">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>ІПН відповідача:</mat-label>
+        <input matInput name="defendant_inn" [(ngModel)]="templateData.defendant_inn">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Причина відсутності:</mat-label>
+        <input matInput name="absence_reason" [(ngModel)]="templateData.absence_reason">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>День призначення:</mat-label>
+        <input matInput name="appointment_day" [(ngModel)]="templateData.appointment_day">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Місяць призначення:</mat-label>
+        <input matInput name="appointment_month" [(ngModel)]="templateData.appointment_month">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Рік призначення:</mat-label>
+        <input matInput name="appointment_year" [(ngModel)]="templateData.appointment_year">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Година призначення:</mat-label>
+        <input matInput name="appointment_hour" [(ngModel)]="templateData.appointment_hour">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '3'">
+        <mat-label>Хвилина призначення:</mat-label>
+        <input matInput name="appointment_minute" [(ngModel)]="templateData.appointment_minute">
+      </mat-form-field>
+      
+
+
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>Ім'я заявника:</mat-label>
+        <input matInput name="applicant" [(ngModel)]="templateData.applicant">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>Адреса заявника:</mat-label>
+        <input matInput name="address" [(ngModel)]="templateData.address">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>Email заявника:</mat-label>
+        <input matInput name="email" [(ngModel)]="templateData.email">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>Телефон заявника:</mat-label>
+        <input matInput name="telephone" [(ngModel)]="templateData.telephone">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>День призначення:</mat-label>
+        <input matInput name="appointment_day" [(ngModel)]="templateData.appointment_day">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>Місяць призначення:</mat-label>
+        <input matInput name="appointment_month" [(ngModel)]="templateData.appointment_month">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>Рік призначення:</mat-label>
+        <input matInput name="appointment_year" [(ngModel)]="templateData.appointment_year">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>Година призначення:</mat-label>
+        <input matInput name="appointment_hour" [(ngModel)]="templateData.appointment_hour">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>Хвилина призначення:</mat-label>
+        <input matInput name="appointment_minute" [(ngModel)]="templateData.appointment_minute">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>Суд:</mat-label>
+        <input matInput name="to_court" [(ngModel)]="templateData.to_court">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>Суддя:</mat-label>
+        <input matInput name="judge" [(ngModel)]="templateData.judge">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>Номер справи:</mat-label>
+        <input matInput name="case_number" [(ngModel)]="templateData.case_number">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>Позивач:</mat-label>
+        <input matInput name="claim_from" [(ngModel)]="templateData.claim_from">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>Відповідач:</mat-label>
+        <input matInput name="claim_to" [(ngModel)]="templateData.claim_to">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>Суть вимоги:</mat-label>
+        <input matInput name="claim_about" [(ngModel)]="templateData.claim_about">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>Поточна дата (день):</mat-label>
+        <input matInput name="current_day" [(ngModel)]="templateData.current_day">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>Поточний місяць:</mat-label>
+        <input matInput name="current_month" [(ngModel)]="templateData.current_month">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>Поточний рік:</mat-label>
+        <input matInput name="current_year" [(ngModel)]="templateData.current_year">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>Повне ім'я заявника:</mat-label>
+        <input matInput name="full_name" [(ngModel)]="templateData.full_name">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" *ngIf="templateData.templateType === '4'">
+        <mat-label>ІПН заявника:</mat-label>
+        <input matInput name="inn" [(ngModel)]="templateData.inn">
+      </mat-form-field>
+    </form>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="closeTemplateModal()">Закрити</button>
+  <button mat-button color="primary" [disabled]="!templateForm.form.valid" (click)="createTemplateAndCloseModal()">Створити шаблон</button>
+</div>

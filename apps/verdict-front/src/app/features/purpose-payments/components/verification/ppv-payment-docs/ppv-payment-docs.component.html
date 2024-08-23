@@ -1,0 +1,79 @@
+<ngb-progressbar
+  *ngIf="verificationService.loading().processingPayments"
+  [animated]="true"
+  [height]="'3px'"
+  [max]="100"
+  [striped]="true"
+  [value]="100"
+  class="mb-2"
+  type="primary"
+>
+</ngb-progressbar>
+
+<div [class.disabled-table]="verificationService.loading().processingPayments">
+  <div class="row">
+    <div class="col">
+      <button (click)="verificationService.loadPaymentDocsVerification()" class="btn btn-outline-primary my-2">
+        <i class="bi bi-arrow-clockwise me-2"></i>
+        Завантажити дані
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="verificationService.paymentDocsVerification().length" class="row">
+
+    <div class="col-12 col-md-3 mb-3">
+      <h5 class="h5 mb-2">Оберіть періоди</h5>
+      <app-searchable-list
+        (selectedValuesChange)="verificationService.paymentDocsVerificationSelectedPeriods.set($event)"
+        [list]="verificationService.paymentDocsVerificationPeriods()"
+                           [selectedValues]="verificationService.paymentDocsVerificationSelectedPeriods()"
+        [sortValues]="false">
+      </app-searchable-list>
+    </div>
+
+    <div class="col-12 col-md-9">
+      <h5 class="h5 mb-2">Інформація</h5>
+      <div *ngIf="verificationService.paymentDocsVerificationSelectedPeriods().length === 0"
+           class="alert alert-secondary">
+        <i class="bi bi-arrow-left me-2"></i>
+        Оберіть періоди
+      </div>
+
+      <div class="row row-cols-1 mt-2">
+        <div *ngIf="verificationService.paymentDocsVerificationNoRequestId().length" class="col">
+          <ppv-docs-card (onPeriodSelect)="loadUnverifiedPayments($event, 'NO_REQUEST_ID')"
+                         [title]="'Платежі без прив\'язки до заявки в 1С'"
+                         [totalData]="verificationService.paymentDocsVerificationTotal()"
+                         [verificationData]="verificationService.paymentDocsVerificationNoRequestId()">
+          </ppv-docs-card>
+        </div>
+
+        <div *ngIf="verificationService.paymentDocsVerificationNoDocumentAttached().length" class="col mt-3">
+          <ppv-docs-card (onPeriodSelect)="loadUnverifiedPayments($event, 'NO_DOC_PATH')"
+                         [title]="'Платежі без прив\'язки документів'"
+                         [totalData]="verificationService.paymentDocsVerificationTotal()"
+                         [verificationData]="verificationService.paymentDocsVerificationNoDocumentAttached()">
+          </ppv-docs-card>
+        </div>
+
+        <div *ngIf="verificationService.paymentDocsVerificationNoFilledInformation().length" class="col mt-3">
+          <ppv-docs-card (onPeriodSelect)="loadUnverifiedPayments($event, 'NO_INFORMATION')"
+                         [title]="'Платежі без заповненої інформації'"
+                         [tooltip]="'Центр фінансування/Проєкт/Батьківська стаття затрат/Стаття затрат'"
+                         [totalData]="verificationService.paymentDocsVerificationTotal()"
+                         [verificationData]="verificationService.paymentDocsVerificationNoFilledInformation()">
+          </ppv-docs-card>
+        </div>
+      </div>
+
+      <button (click)="loadUnverifiedPayments(null, null)"
+              *ngIf="verificationService.paymentDocsVerificationSelectedPeriods().length"
+              class="btn btn-outline-primary mb-5 mt-2">
+        <i class="bi bi-arrow-up-circle"></i>
+        Переглянути всі дані
+      </button>
+    </div>
+  </div>
+</div>
+

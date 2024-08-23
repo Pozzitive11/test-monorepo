@@ -1,0 +1,51 @@
+<ng-container [ngTemplateOutlet]="cellTemplate() || null" />
+
+<ng-template #dictionaryTemplate>
+  <app-default-dropdown
+    [selectedValue]="valueAsString()"
+    (selectedValueChange)="value.set($event); changeValue()"
+    [valueList]="dictionary()"
+    [scrollable]="true"
+    [fontSize]="fontSize()"
+    [placement]="'auto'"
+  >
+  </app-default-dropdown>
+</ng-template>
+
+<ng-template #numberTemplate>
+  <div contenteditable="true"
+       #cell
+       class="number"
+       (keydown)="checkNumberSymbol(cell.innerText, $event, cell)"
+       (blur)="changeNumberValue(cell.innerText)"
+       (focusin)="oldValue.set(value())"
+       [innerHTML]="valueAsString()"
+  ></div>
+</ng-template>
+
+<ng-template #textTemplate>
+  <div contenteditable="true"
+       #cell
+       class="text-start"
+       (keydown.enter)="cell.blur()"
+       (keydown.escape)="cancelChange()"
+       (focusin)="oldValue.set(value())"
+       (blur)="value.set(cell.innerText); changeValue()"
+       [innerHTML]="value()"
+  ></div>
+</ng-template>
+
+<ng-template #booleanTemplate>
+  <div class="d-flex justify-content-center">
+    <app-switch-checkbox [id]="id()" [value]="!!value()" (valueChange)="value.set($event); changeValue()" />
+  </div>
+</ng-template>
+
+<ng-template #dateTemplate>
+  <app-date-picker-popup
+    (chosenDateChange)="updateChosenDate($event)"
+    [chosenDate]="chosenDate()"
+    [fontSize]="fontSize()"
+    [minDate]="minDate"
+  ></app-date-picker-popup>
+</ng-template>

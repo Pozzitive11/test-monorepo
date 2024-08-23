@@ -1,0 +1,28 @@
+<div *ngFor="let value of values; let i = index" class="input-group text-12 mb-1" role="group">
+  <input
+    (blur)="values[i]=clearValue(valueInEdit); valueInEdit=''; afterValueChanged()"
+    (dblclick)="values[i] = ''; afterValueChanged()"
+    (focusin)="valueInEdit = value"
+    (ngModelChange)="valueInEdit=clearValue($event)"
+    [ngModel]="values[i]"
+    [pattern]="pattern"
+    [placeholder]="placeholder"
+    class="form-control"
+    type="text"
+  />
+  <button
+    (click)="values.push('')"
+    *ngIf="i === values.length - 1"
+    [disabled]="!value.match(pattern) || value === ''"
+    class="btn btn-outline-primary"
+  >
+    <i class="bi bi-plus-circle"></i>
+  </button>
+  <button
+    (click)="values.splice(i, 1)"
+    *ngIf="values.length > 1"
+    class="btn btn-outline-danger"
+  >
+    <i class="bi bi-dash-circle"></i>
+  </button>
+</div>

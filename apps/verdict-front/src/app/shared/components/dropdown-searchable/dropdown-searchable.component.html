@@ -1,0 +1,22 @@
+<div [placement]="placement()" ngbDropdown #dropdown="ngbDropdown">
+  <button
+    [class]="btnClass()"
+    [disabled]="disabled()"
+    [ngbTooltip]="showButtonTooltip() ? customTooltip() || staticBtnText() || selectedValue() : null"
+    [container]="'body'"
+    [style.font-size.pt]="fontSize()"
+    ngbDropdownToggle
+    type="button"
+  >
+    <span>{{ (staticBtnText() || selectedValue() || '') | shortText: 30 }}</span>
+  </button>
+
+  <div class="px-2" [ngStyle]="{ width: width() }" ngbDropdownMenu>
+    <app-searchable-list [multiple]="false"
+                         [list]="valueList()"
+                         [sortValues]="sortValues()"
+                         [maxSymbols]="maxSymbols()"
+                         (valueSelected)="onSelect($event, dropdown)"
+    />
+  </div>
+</div>

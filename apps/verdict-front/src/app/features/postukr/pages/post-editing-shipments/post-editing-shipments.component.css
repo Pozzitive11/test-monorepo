@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+.form-text {
+  display: flex;
+  color: #07123C;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: Geologica;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  justify-content: center;
+}
+
+.required {
+  color: red;
+}
+
+.addClass {
+  background-color: #b6effb;
+  border-radius: 20px;
+  border: 2px solid #07123C;
+  padding: 20px;
+  width: 500px;
+  margin: 20px auto;
+}
+
+.AddSetup {
+  background-color: #b6effb;
+  border-radius: 20px;
+  padding: 20px;
+  width: 600px;
+  margin: 20px auto;
+}
+
+.radio-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.radio-input {
+  margin-right: 7px;
+  margin-top: 5px;
+  width: 20px;
+  height: 20px;
+}
+
+.radio-input:checked::before {
+  content: "\2022";
+  font-size: 18px;
+  line-height: 18px;
+  color: #07123C;
+}
+
+.form-text,
+.labels,
+.label,
+.radio-label,
+.details label,
+button[type="submit"] {
+  color: #07123C;
+  font-family: 'Geologica', sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+}
+
+form {
+  font-family: 'Geologica', sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  color: #07123C;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.details {
+  margin-top: 10px;
+}
+
+button[type="submit"] {
+  background-color: #07123C;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #03204A;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  background: #ccc;
+  padding: 20px;
+  border-radius: 20px;
+  border: 2px solid black;
+  width: 200px;
+}
+
+.checkbox-container2 {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+
+  width: 200px;
+}
+
+.checkbox-input {
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+
+}
+
+::ng-deep .tooltip {
+  font-size: 12px; /* Увеличьте размер шрифта */
+  padding: 5px; /* Увеличьте отступы */
+  width: 150px;
+}
+
+.checkbox-label {
+  margin-left: 10px;
+  color: #07123C;
+  font-family: 'Geologica', sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+}
+

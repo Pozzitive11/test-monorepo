@@ -1,0 +1,219 @@
+/* styles.css (или styles.scss) */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+  animation: slideIn 1s ease;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  animation: slideIn 1s ease;
+}
+
+.content-left,
+.content-right {
+  width: 48%;
+}
+
+.form-container,
+.progress-container {
+  max-width: 100%;
+  background-color: #ffffff;
+  color: #333;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.form-footer,
+.progress-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.submit-button,
+.download-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #009dda;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  overflow: hidden;
+  white-space: nowrap; /* Предотвращаем перенос текста на новую строку */
+}
+
+.submit-button:disabled,
+.download-button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.submit-button:hover,
+.download-button:hover {
+  background-color: #009dda;
+}
+
+.file-input {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.custom-file-upload {
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+
+.custom-file-upload input,
+.upload-file-button input {
+  position: absolute;
+  font-size: 100px;
+  right: 0;
+  top: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.custom-file-upload::before,
+.upload-file-button::before {
+  content: 'Загрузити файл';
+  display: inline-block;
+  background: #009dda;
+  color: #fff;
+  padding: 8px 15px;
+  border-radius: 15px; /* Уменьшаем размер псевдоэлемента */
+  margin-right: 5px;
+}
+
+.error-message {
+  color: #e74c3c;
+  margin-top: 10px;
+}
+
+.form-header {
+  color: #009dda; /* Цвет выделенного текста */
+  font-weight: bold; /* Жирный текст */
+  margin-right: 5px; /* Добавляем отступ справа */
+  font-size: 1.1em; /* Увеличиваем размер текста (примерный размер, настройте по вашему вкусу) */
+}
+
+.progress-header {
+  color: #009dda; /* Цвет выделенного текста */
+  font-weight: bold; /* Жирный текст */
+  margin-right: 5px; /* Добавляем отступ справа */
+  font-size: 1.1em; /* Увеличиваем размер текста (примерный размер, настройте по вашему вкусу) */
+}
+
+.progress-bar {
+  background-color: #009dda;
+  height: 20px; /* Уменьшаем высоту прогресс-бара (примерная высота, настройте по вашему вкусу) */
+  border-radius: 10px; /* Закругляем углы прогресс-бара */
+  text-align: center; /* Центрируем текст внутри */
+  line-height: 20px; /* Задаем высоту строки, чтобы центрировать текст вертикально */
+  color: #fff; /* Цвет текста (белый) */
+  font-size: 11px;
+  animation: slideIn 1s ease;
+}
+
+.progress-container {
+  width: 80%; /* Уменьшаем ширину контейнера (примерная ширина, настройте по вашему вкусу) */
+  margin: 0 auto; /* Центрируем контейнер */
+}
+
+.progress-header {
+  display: flex;
+  align-items: center;
+}
+
+.progress-info {
+  margin-left: 10px; /* Добавляем отступ между прогресс-баром и процентами (примерный отступ, настройте по вашему вкусу) */
+}
+
+.progress-bar-container {
+  position: relative;
+  overflow: hidden; /* Скрываем все, что выходит за пределы контейнера */
+}
+
+.progress-percentage {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2px; /* Уменьшаем размер текста процентов (примерный размер, настройте по вашему вкусу) */
+  animation: slideIn 1s ease; /* Анимация выезда процентов */
+}
+
+/* styles.css (или styles.scss) */
+
+.progress-info {
+  margin-left: 10px; /* Добавляем отступ между прогресс-баром и текстом (примерный отступ, настройте по вашему вкусу) */
+  font-size: 14px; /* Устанавливаем размер шрифта (примерный размер, настройте по вашему вкусу) */
+  color: #009dda; /* Цвет текста (синий) */
+  text-align: center;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(100%); /* Начальное положение внизу */
+  }
+  to {
+    transform: translateY(0); /* Конечное положение вверху */
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.container,
+.form-container,
+.progress-container {
+  animation: fadeIn 1s ease-in-out;
+}
+
+.submit-button,
+.download-button,
+.custom-file-upload,
+.upload-file-button {
+  animation: fadeIn 1s ease-in-out;
+  transition: background-color 0.3s ease;
+  overflow: hidden;
+}
+
+.file-input,
+.form-footer,
+.progress-footer {
+  animation: fadeIn 1s ease-in-out;
+}
+
+.form-header,
+.progress-header,
+.progress-bar,
+.progress-percentage,
+.progress-info {
+  animation: fadeIn 1s ease-in-out;
+}
+
+.error-message {
+  animation: fadeIn 1s ease-in-out;
+  color: #e74c3c;
+  margin-top: 10px;
+}

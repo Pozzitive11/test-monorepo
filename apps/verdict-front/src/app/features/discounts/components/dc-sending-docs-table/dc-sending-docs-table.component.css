@@ -1,0 +1,74 @@
+.custom-table tbody th,
+.custom-table tbody td {
+  color: #000;
+  font-weight: 400;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  font-weight: 300;
+}
+.custom-table thead {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+}
+.custom-table tbody tr th,
+.custom-table tbody tr td {
+  border: 1px solid #eaeaea;
+  border-top: none;
+  border-bottom: none;
+  -webkit-transition: 0.3s all ease;
+  -o-transition: 0.3s all ease;
+  transition: 0.3s all ease;
+  cursor: pointer;
+}
+
+.custom-table tbody tr.spacer td {
+  padding: 0;
+  height: 3px;
+  border-radius: 0;
+  background: transparent;
+}
+
+.custom-table tbody tr:hover th,
+.custom-table tbody tr:hover td {
+  opacity: 0.8;
+}
+
+.selected td {
+  background: #233d4f7b !important;
+}
+
+.nova-poshta td {
+  background-color: #f7cabc;
+}
+
+.ukr-poshta td {
+  background-color: #fffdb0;
+}
+
+.electr-poshta td {
+  background-color: #a0e6e6;
+}
+
+.electr-nova-poshta td {
+  background: linear-gradient(0deg, #f7cabc 50%, #a0e6e6 50%) !important;
+}
+
+.electr-ukr-poshta td {
+  background: linear-gradient(0deg, #fffdb0 50%, #a0e6e6 50%) !important;
+}
+
+.ukr-nova-poshta td {
+  background: linear-gradient(0deg, #f7cabc 50%, #fffdb0 50%) !important;
+}
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}

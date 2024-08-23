@@ -1,0 +1,65 @@
+<div class="row">
+  <div class="col-3">
+    <div
+      (clickOutside)="dropMenu.classList.remove('show')"
+      class="nav-item dropdown"
+      clickOutside
+    >
+      <button
+        (click)="toggleShow(dropMenu)"
+        (dblclick)="clearChosen(true)"
+        aria-expanded="false"
+        class="btn btn-outline-primary dropdown-toggle"
+        data-bs-toggle="dropdown"
+        id="navbarDropdown"
+        role="button"
+      >Обрати сегментацію
+      </button>
+
+      <ul
+        #dropMenu
+        aria-labelledby="navbarDropdown"
+        class="dropdown-menu dropdown-menu-start"
+        style="z-index: 9999"
+      >
+        <li>
+
+          <button
+            (click)="clearChosen(false)"
+            class="btn btn-outline-success text-11 left-margin-sm"
+            type="button"
+          >
+            <span>Обрати всі</span>
+          </button>
+
+          <button
+            (click)="clearChosen(true)"
+            class="btn btn-outline-danger text-11 left-margin-sm"
+            type="button"
+          >
+            <span>Очистити</span>
+          </button>
+
+          <div class="col-auto left-margin-sm top-margin-sm"
+               style="overflow-y: scroll; max-height: 17rem; min-width: 300px">
+            <div *ngFor="let segmentationType of segmentationTypes" class="row-cols-auto">
+              <a
+                (click)="selectSegmentationType(segmentationType)"
+                class="nav-link pointer"
+              >
+                <input
+                  [checked]="isSelected(segmentationType)"
+                  class="form-check-input big-check"
+                  type="checkbox"
+                >
+                {{ segmentationType }}
+              </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+

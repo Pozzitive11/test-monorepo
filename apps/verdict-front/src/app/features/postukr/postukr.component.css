@@ -1,0 +1,204 @@
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+  animation: slideIn 1s ease;
+}
+
+.container {
+  width: 100%;
+  margin: 0;
+  display: flex;
+}
+
+.content-left,
+.content-right {
+  width: 100%;
+}
+
+.content-right {
+  margin-top: 20px;
+}
+
+.form-container,
+.progress-container {
+  max-width: 100%;
+  background-color: #ffffff;
+  color: #333;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  animation: slideIn 1s ease;
+}
+
+.form-footer,
+.progress-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.submit-button,
+.download-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #009dda;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.submit-button:disabled,
+.download-button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.submit-button:hover,
+.download-button:hover {
+  background-color: #009dda;
+}
+
+
+.file-input {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.custom-file-upload {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.custom-file-upload input {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+.custom-file-upload::before {
+  content: 'Загрузити файл';
+  display: inline-block;
+  background: #009dda;
+  color: #fff;
+  padding: 8px 15px;
+  border-radius: 15px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.custom-file-upload:hover::before {
+  background: #007bb5;
+}
+
+
+.error-message {
+  color: #e74c3c;
+  margin-top: 10px;
+}
+
+.form-header,
+.progress-header,
+.progress-bar,
+.progress-percentage,
+.progress-info {
+  animation: fadeIn 1s ease-in-out;
+}
+
+.infoTable {
+  margin: 20px auto;
+  max-width: 800px;
+  padding: 10px;
+  border: 2px solid #ffd700;
+  border-radius: 10px;
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.form-button {
+  margin-top: 20px;
+}
+
+
+@keyframes slideIn {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.container,
+.form-container,
+.progress-container,
+.infoTable {
+  animation: fadeIn 1s ease-in-out;
+}
+
+.submit-button,
+.download-button,
+.custom-file-upload,
+.upload-file-button {
+  animation: fadeIn 1s ease-in-out;
+  transition: background-color 0.3s ease;
+  overflow: hidden;
+}
+
+.file-input,
+.form-footer,
+.progress-footer {
+  animation: fadeIn 1s ease-in-out;
+}
+
+.form-header,
+.progress-header,
+.progress-bar,
+.progress-percentage,
+.progress-info {
+  animation: fadeIn 1s ease-in-out;
+}
+
+.error-message {
+  animation: fadeIn 1s ease-in-out;
+  color: #e74c3c;
+  margin-top: 10px;
+}
+
+.content-left {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.form-header, .progress-header, .infoTable .form-title {
+  color: #009dda;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.progress-info {
+  font-weight: 400
+}

@@ -1,0 +1,93 @@
+<div class="modal-header">
+  <h4 class="modal-title">({{ columnName }})</h4>
+  <button (click)="activeModal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+</div>
+
+
+<div class="modal-body">
+
+  <app-text-filters
+    (applied)="richTextFilters.inEdit = false"
+    (filterChange)="onFilterChange()"
+    *ngIf="richTextFilters.inEdit; else textFilterPlaceholder"
+    [(filter)]="richTextFilters.filter"
+  ></app-text-filters>
+
+  <app-number-filters
+    (applied)="numberFilters.inEdit = false"
+    (filterChange)="onFilterChange()"
+    *ngIf="numbersInColumn && numberFilters.inEdit; else numberFilterPlaceholder"
+    [(filter)]="numberFilters.filter"
+    class="mt-3"
+  ></app-number-filters>
+
+  <!--  SEARCHABLE LIST OF displayedValues -->
+  <app-searchable-list
+    (selectedValuesChange)="onSelectedValuesChange($event)"
+    [list]="displayedValues"
+    [selectedValues]="selectedValues"
+    class="mt-3"
+  ></app-searchable-list>
+
+</div>
+
+<div class="modal-footer">
+  <button
+    (click)="activeModal.close(selectedValues)"
+    class="btn btn-outline-primary"
+    type="button"
+  >Зберегти
+  </button>
+</div>
+
+
+<!-- ---------------- TEMPLATES ---------------- -->
+<ng-template #textFilterPlaceholder>
+  <h5>Текстові фільтри
+    <button
+      (click)="richTextFilters.inEdit = true"
+      class="btn btn-outline-primary btn-sm mx-2"
+      type="button"
+    >Редагувати
+    </button>
+    <button
+      (click)="richTextFilters.filter = { not: false }; onFilterChange()"
+      class="btn btn-outline-danger btn-sm mx-2"
+      type="button"
+    >Очистити
+    </button>
+  </h5>
+
+  <div *ngFor="let filter of richTextFiltersPlaceholder">
+    <strong>{{ filter[0] }}: </strong>
+    <i>{{ filter[1] }}</i>
+  </div>
+
+  <hr />
+</ng-template>
+
+<ng-template #numberFilterPlaceholder>
+  <ng-container *ngIf="numbersInColumn">
+    <h5>Числові фільтри
+      <button
+        (click)="numberFilters.inEdit = true"
+        class="btn btn-outline-primary btn-sm mx-2"
+        type="button"
+      >Редагувати
+      </button>
+      <button
+        (click)="numberFilters.filter = { not: false }; onFilterChange()"
+        class="btn btn-outline-danger btn-sm mx-2"
+        type="button"
+      >Очистити
+      </button>
+    </h5>
+
+    <div *ngFor="let filter of numberFiltersPlaceholderText">
+      <strong>{{ filter[0] }} </strong>
+      <i>{{ filter[1] }}</i>
+    </div>
+
+    <hr />
+  </ng-container>
+</ng-template>

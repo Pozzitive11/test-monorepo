@@ -1,0 +1,105 @@
+<div class="modal-header">
+  <h4 class="modal-title">Авто</h4>
+  <button (click)="activeModal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+</div>
+
+
+<div class="modal-body">
+  <ul class="list-group list-group-flush">
+
+    <li class="list-group-item">
+      <strong>Середня ринкова вартість (USD):</strong>
+      <app-sum-input
+        (sumChange)="autoObject.CostValuation=$event; updateLTV()"
+        [sum]="autoObject.CostValuation || 0"
+      ></app-sum-input>
+    </li>
+
+    <li class="list-group-item">
+      <strong>Дата оцінки:</strong>
+      <app-date-picker-popup
+        (chosenDateChange)="updateValuationDate($event)"
+        [chosenDate]="valuationDate"
+      ></app-date-picker-popup>
+    </li>
+
+    <li class="list-group-item">
+      <strong>Застава:</strong>
+      <textarea
+        #mortgage
+        (keydown.enter)="mortgage.blur()"
+        [(ngModel)]="autoObject.MortgageInfo"
+        class="form-control inputdefault text-13"
+        rows="2"
+      ></textarea>
+    </li>
+
+    <li class="list-group-item">
+      <strong>Обтяження:</strong>
+      <textarea
+        #encumbrance
+        (keydown.enter)="encumbrance.blur()"
+        [(ngModel)]="autoObject.EncumbranceInfo"
+        class="form-control inputdefault text-13"
+        rows="2"
+      ></textarea>
+    </li>
+
+    <li class="list-group-item">
+      <strong>МТСБУ:</strong>
+      <textarea
+        #mtsbu
+        (keydown.enter)="mtsbu.blur()"
+        [(ngModel)]="autoObject.MTSBU"
+        class="form-control inputdefault text-13"
+        rows="2"
+      ></textarea>
+    </li>
+
+    <li class="list-group-item">
+      <strong>Розшук:</strong>
+      <textarea
+        #wanted
+        (keydown.enter)="wanted.blur()"
+        [(ngModel)]="autoObject.Wanted"
+        class="form-control inputdefault text-13"
+        rows="2"
+      ></textarea>
+    </li>
+
+    <li *ngIf="isMortgage" class="list-group-item">
+      <strong>LTV:</strong>
+      <span class="float-end">
+        {{ autoObject.LTV | number:'1.0-2' }}
+        {{ autoObject.LTV ? '%' : '' }}
+      </span>
+    </li>
+
+    <li *ngIf="isMortgage" class="list-group-item">
+      <strong>Аргументація LTV <200%:</strong>
+      <textarea
+        #ltvArgumentation
+        (keydown.enter)="ltvArgumentation.blur()"
+        [(ngModel)]="autoObject.LTVArgumentation"
+        [class.border-danger]="autoObject.LTV && autoObject.LTV < 200 && !autoObject.LTVArgumentation"
+        class="form-control inputdefault text-13"
+        rows="2"
+      ></textarea>
+    </li>
+
+  </ul>
+</div>
+
+
+<div class="modal-footer">
+  <button
+    (click)="activeModal.close(autoObject)"
+    class="btn btn-outline-primary btn-sm"
+    type="button"
+  >Зберегти
+  </button>
+</div>
+
+
+
+

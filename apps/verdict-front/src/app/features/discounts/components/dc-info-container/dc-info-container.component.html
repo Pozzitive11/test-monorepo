@@ -1,0 +1,148 @@
+<div class="container-fluid mt-3">
+  <div class="row">
+    <div class="col-md-12 col-lg-9 col-xl-8 col-xxl-7">
+      <div class="mb-3">
+        <h2>НКС: {{contractId}}</h2>
+        <!-- <label class="form-label" for="ContractIdInput">Введіть НКС</label>
+        <div class="input-group">
+          <span class="input-group-text">НКС</span>
+          <input
+            #contract
+            (dblclick)="contract.value = ''"
+            (keyup.enter)="getScoreModel(); contract.blur()"
+            [(ngModel)]="contractId"
+            [class.is-invalid]="!contract.validity.valid"
+            [class.is-valid]="contract.validity.valid"
+            autofocus
+            class="form-control"
+            id="ContractIdInput"
+            pattern="\d*"
+            required
+            type="text"
+          />
+          <button (click)="getScoreModel()" [disabled]="!contract.validity.valid" class="btn btn-outline-primary">
+            Отримати інформацію
+          </button>
+
+          <button (click)="documentRequest()" [disabled]="!contract.validity.valid" class="btn btn-outline-secondary">
+            Запит документів
+          </button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!--  ІНФОРМАЦІЯ ДЛЯ ОПЕРАТОРА -->
+  <app-loading-bar [customType]="'inf-bar'" [loading]="loading" />
+
+  <div *ngIf="mode === 'info'" [class.disabled-table]="loading" class="mt-3">
+    <div *ngIf="scoreInfoData.length" class="row">
+      <p>
+        ПІБ клієнта: <strong>{{ scoreInfoData[0].ClientName ? scoreInfoData[0].ClientName : "?" }}</strong>
+      </p>
+    </div>
+
+    <div *ngIf="contractIds.length" class="row">
+      <ul class="nav nav-tabs">
+        <li *ngFor="let contr of contractIds" class="nav-item">
+          <a
+            (click)="shownContractId = contr"
+            [class.active]="contr === shownContractId"
+            [class.confirmed]="contractConfirmed(contr)"
+            [class.un-confirmed]="!contractConfirmed(contr)"
+            aria-current="page"
+            class="nav-link pointer"
+          >
+            <i *ngIf="contractConfirmed(contr)" [ngClass]="chosenIconClass(contr)" class="bi"></i>
+            {{ contr }}
+          </a>
+        </li>
+
+        <li *ngIf="contractIds.length > 1" class="nav-item align-self-end" style="margin-left: auto">
+          <p
+            [class.confirmed]="canBeSent()"
+            [class.un-confirmed]="!canBeSent()"
+            style="margin-bottom: 0.5rem; font-weight: bold"
+          >
+            <i *ngIf="canBeSent()" class="bi bi-check"></i>
+            <span *ngIf="!canBeSent()" class="red-text">Є суміжні НКС!</span>
+          </p>
+        </li>
+      </ul>
+    </div>
+
+    <ng-container *ngFor="let contr of contractIds; let i = index">
+      <app-dc-operator-info
+        *ngIf="contr === shownContractId"
+        [ContractId]="contr"
+        [chosenConditions]="chosenConditions[i]"
+        [clientHistory]="clientHistory"
+        [scoreInfoData]="scoreInfoData[i]"
+        [scoreModel]="scoreModel[i]"
+        [shown]="shown[i]"
+      ></app-dc-operator-info>
+
+      <div *ngIf="contr === shownContractId" class="row">
+        <div class="col-3">
+          <div [ngbTooltip]="cantBeSentReason()" class="btn-group ms-3" role="group">
+            <button (click)="sendInfo()" [disabled]="!canBeSent()" class="btn btn-outline-success">
+              Підтвердити вибір
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <ng-container *ngIf="mode === 'document' && contractPromotion">
+    <div [class.disabled-table]="loading" class="row row-cols-1 row-cols-md-2 g-4 mt-3">
+      <div class="col col-xxl-5">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <strong>НКС:</strong>
+            <span class="float-end">{{ contractPromotion.ContractId }}</span>
+          </li>
+          <li class="list-group-item">
+            <strong>Наявність погодження:</strong>
+            <span class="float-end">{{ contractPromotion.Agreed ? contractPromotion.Agreed : "-" }}</span>
+          </li>
+          <li class="list-group-item">
+            <strong>Дата подачі:</strong>
+            <span class="float-end">{{ contractPromotion.EntryDate | formatDate }}</span>
+          </li>
+          <li *ngIf="contractPromotion.DiscountPercent" class="list-group-item">
+            <strong>Дисконт:</strong>
+            <span class="float-end">{{ contractPromotion.DiscountPercent | number: "1.0-2" }} %</span>
+          </li>
+          <li *ngIf="contractPromotion.RestructuringMonths" class="list-group-item">
+            <strong>К-сть місяців реструктуризації:</strong>
+            <span class="float-end">{{ contractPromotion.RestructuringMonths }}</span>
+          </li>
+          <li class="list-group-item">
+            <strong>Гранична дата сплати:</strong>
+            <span class="float-end">{{ contractPromotion.PaymentDateLimit | formatDate }}</span>
+          </li>
+          <li class="list-group-item border-bottom-0">
+            <strong>Примітка:</strong>
+            <span class="float-end">{{ contractPromotion.Comment }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col col-xxl-5">
+        <dc-additional-docs-for-client-req
+          (additionalDocsChanged)="updateAdditionalDocsFields($event)"
+          [additionalDocsFields]="contractPromotion"
+          [pathsOfSending]="pathsOfSending"
+          [sendingAddress]="contractPromotion.PostOfficeAddress || ''"
+          [show]="true"
+        ></dc-additional-docs-for-client-req>
+      </div>
+    </div>
+
+    <button (click)="saveDocumentsRequest()" class="btn btn-outline-primary mt-3">
+      <span class="bi bi-envelope me-1"></span>
+      Відправити
+    </button>
+  </ng-container>
+</div>

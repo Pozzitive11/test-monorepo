@@ -1,0 +1,21 @@
+<h5 *ngIf="title" class="h5 mb-3">{{ title }}</h5>
+
+<pivot-display-table
+  (basicTableViewSelected)="basicTableViewSelected.emit($event)"
+  (hiddenLevelsChange)="hiddenLevels.set($event)"
+  (sortingChange)="sorting.set($event)"
+  *ngIf="pivotData().tableLevels"
+  [displayedTable]="displayedTable()"
+  [firstRowName]="pivotData().firstRowName"
+  [hiddenLevels]="hiddenLevels()"
+  [percentColumns]="percentColumns"
+  [sep]="sep"
+  [sorting]="sorting()"
+  [tableColumns]="tableColumns()"
+  [tableHigherLevels]="tableHigherLevels()"
+  [tableIndex]="tableIndex()"
+  [tableLevels]="pivotData().tableLevels"
+  [tableRowNames]="tableRowNames()"
+  [totalRowName]="totalRowName"
+  [useRedZone]="false"
+></pivot-display-table>

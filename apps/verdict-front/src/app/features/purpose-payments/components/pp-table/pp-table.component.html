@@ -1,0 +1,79 @@
+<div *ngIf="dataLength > 0" class="table-responsive small table-container">
+  <div class="scrolling-div">
+    <table class="table table-bordered table-hover table-sm text-11">
+      <caption>
+        Буфер
+      </caption>
+      <thead class="sticky-top" style="background-color: rgb(236, 236, 236); z-index: 100">
+      <tr>
+        <th class="ultra-small-col vert-align" scope="col">
+          <app-check-box [id]="'all'"></app-check-box>
+        </th>
+
+        <th class="vert-align upload-col" scope="col">
+          <app-payment-split *ngIf="processingType === processTypes.NKS" [type]="'upload'"></app-payment-split>
+        </th>
+
+        <th
+          (columnResize)="columnsWidth[key] = $event"
+          *ngFor="let key of header"
+          [style.min-width.px]="getColumnWidth(key)"
+          scope="col"
+          class="position-relative"
+        >
+          <div class="content">
+            <p class="card-title">
+              <span (click)="hideCol(key)" class="pointer">{{ key }}</span>
+            </p>
+
+            <i
+              (click)="openFilter(key)"
+              [style.color]="isFilterApplied(key) ? '#4FAD18FF' : 'black'"
+              class="bi bi-filter-circle mb-2 pointer"
+              style="font-size: 30px"
+            ></i>
+            <i
+              #resetFilter
+              (click)="clearFilter(key)"
+              (mouseout)="resetFilter.classList.remove('red-text')"
+              (mouseover)="resetFilter.classList.add('red-text')"
+              *ngIf="isFilterApplied(key)"
+              class="bi bi-arrow-counterclockwise left-margin-sm mb-2 pointer"
+              style="font-size: 30px"
+            ></i>
+          </div>
+
+          <div class="resize-handle"></div>
+        </th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr *ngFor="let row of data">
+        <th class="vert-align" scope="row">
+          <app-check-box [id]="row['id']"></app-check-box>
+        </th>
+
+        <td class="vert-align">
+          <app-payment-split
+            *ngIf="processingType === processTypes.NKS"
+            [id]="row['id']"
+            [type]="'download'"
+          ></app-payment-split>
+        </td>
+
+        <td *ngFor="let key of header">
+          <app-cell
+            [col]="key"
+            [isDebit]="row[debitCol] === 'Дебет'"
+            [isRent]="row[parentTypeCol] && row[parentTypeCol]['Name'] === 'Оренда'"
+            [row]="row['id']"
+            [value]="row[key]"
+          >
+          </app-cell>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

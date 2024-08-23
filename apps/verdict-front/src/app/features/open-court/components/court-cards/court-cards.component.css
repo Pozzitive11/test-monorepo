@@ -1,0 +1,944 @@
+.modal-header{
+ display: flex;
+align-items: center;
+justify-content: flex-start;
+flex-direction: row;
+gap: 97px;
+
+padding: 20px 30px;
+height: 65px;
+background: #213081;
+}
+.court-container {
+  display: flex;
+  margin: 10px;
+}
+.text-style {
+  color: rgba(23, 23, 23, 0.75);
+  font-family: Geologica;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 20px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+
+.highlight {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 15px;
+  background: rgb(255, 255, 255);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.highlight svg {
+  width: 22px;
+  height: 23px;
+}
+
+.court-title {
+  position: static;
+  display: flex;
+  align-items: center;
+  color: rgba(23, 23, 23, 0.75);
+  font-family: Geologica;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 20px;
+  letter-spacing: 0px;
+  text-align: left;
+  margin-right: 10px;
+}
+
+.court-name {
+  position: static;
+  display: flex;
+  align-items: center;
+  color: rgba(23, 23, 23, 0.75);
+  font-family: Geologica;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 20px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+
+.court-card {
+  border: 1px solid #d8d8d8;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: rgb(240, 242, 252);
+}
+
+.card-header {
+  border-radius: 10px 10px 0 0;
+  background-color: #2f49d1;
+  color: white;
+  padding: 10px;
+}
+
+.card-body {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #d8d8d8;
+  border-radius: 0 0 10px 10px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.btn-add, .btn-remove, .btn-search {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-add {
+  background-color: transparent;
+  color: #1a73e8;
+  border: 1px solid #1a73e8;
+  border-radius: 24px;
+  padding: 8px 16px;
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.btn-add:hover {
+  color: #0d47a1;
+  border-color: #0d47a1;
+}
+
+.subscribe-btn {
+  background-color: transparent;
+  color: #1a73e8;
+  margin-left: 12px;
+  border-radius: 24px;
+  padding: 8px 16px;
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.subscribe-btn:hover {
+  color: #0d47a1;
+  border-color: #0d47a1;
+}
+
+.unsubscribe-btn {
+  background-color: transparent;
+  color: #dc3545;
+  margin-left: 12px;
+  border-radius: 24px;
+  padding: 8px 16px;
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.unsubscribe-btn:hover {
+  color: #a71d2a;
+  border-color: #a71d2a;
+}
+
+.popover {
+  border: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
+
+.popover .arrow {
+  display: none !important;
+}
+
+.popover-content {
+  background-color: #fff !important;
+  border-radius: 5px !important;
+  padding: 20px !important;
+  width: 400px !important;
+  height: 400px !important;
+}
+
+.popover-header {
+  font-size: 1.2em !important;
+  font-weight: bold !important;
+  margin-bottom: 10px !important;
+}
+
+.popover-actions button {
+  padding: 10px 20px !important;
+  border-radius: 5px !important;
+  margin: 5px !important;
+}
+
+.bold-text:hover, .defendant-name:hover {
+  color: darkblue;
+  cursor: pointer;
+}
+
+.bold-text {
+  display: block;
+}
+
+.plaintiff-info, .defendant-info {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.plaintiff-info:last-child, .defendant-info:last-child {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+
+
+.court-card {
+  border: 1px solid #d8d8d8;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  margin-bottom: 20px;
+}
+.card {
+  height: 100%;
+  min-height: 100%;
+}
+.court-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  border-radius: 15px 15px 0px 0px;
+
+  background: rgb(33, 48, 129);
+}
+.h-100{
+  height: 100%;
+  min-height: 100%;
+}
+.card-footer {
+  position: absolute; /* Устанавливает позиционирование кнопки как абсолютное */
+  bottom: 0; /* Прикрепляет кнопку к нижнему краю карточки */
+  width: 100%; /* Задает ширину кнопки */
+}
+.card-text:last-child{
+  margin-bottom: -40px;
+}
+
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.highlights {
+  font-weight: bold;
+  /* Другие стили по вашему выбору */
+}
+
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card-container {
+  flex-grow: 1;
+  display: flex;
+  align-items: stretch;
+}
+
+.card {
+  flex-grow: 1;
+}
+
+
+
+.bold-text:hover, .defendant-name:hover {
+  color: darkblue; /* Изменяем цвет текста при наведении курсора */
+  cursor: pointer; /* Делаем курсор указателем при наведении на текст */
+}
+.bold-text {
+  display: block;
+}
+
+.plaintiff-info {
+  margin-bottom: 10px; /* Добавляем отступ снизу между блоками информации о позивателе */
+  border-bottom: 1px solid #ccc; /* Добавляем разделительную линию между блоками */
+  padding-bottom: 10px; /* Добавляем отступ снизу внутри блока информации о позивателе */
+}
+
+.plaintiff-info:last-child {
+  margin-bottom: 0; /* У последнего блока убираем отступ снизу */
+  border-bottom: none; /* У последнего блока убираем разделительную линию */
+}
+
+.defendant-info {
+  margin-bottom: 10px; /* Добавляем отступ снизу между блоками информации о ответчике */
+  border-bottom: 1px solid #ccc; /* Добавляем разделительную линию между блоками */
+  padding-bottom: 10px; /* Добавляем отступ снизу внутри блока информации о ответчике */
+}
+
+.defendant-info:last-child {
+  margin-bottom: 0; /* У последнего блока убираем отступ снизу */
+  border-bottom: none; /* У последнего блока убираем разделительную линию */
+}
+
+
+.card-footer {
+  position: relative; /* Относительное позиционирование для футера */
+  display: flex; /* Использование flexbox для распределения элементов внутри футера */
+  justify-content: space-between; /* Равномерное распределение элементов по горизонтали */
+  align-items: center; /* Выравнивание элементов по вертикали */
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Гибкая сетка */
+  grid-gap: 20px; /* Отступ между элементами */
+}
+.btn-remove,
+.btn-add,
+.btn-search {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.btn-add {
+  background-color: transparent; /* Прозрачный фон */
+  color: #1a73e8; /* Синий цвет текста, как у других кнопок */
+  border: 1px solid #1a73e8; /* Синяя граница */
+  border-radius: 24px; /* Скругление углов */
+  padding: 8px 16px; /* Отступы */
+  font-weight: 500; /* Жирность шрифта */
+  margin-right: 8px; /* Отступ справа, чтобы отделить от текста */
+  cursor: pointer; /* Курсор в виде руки при наведении */
+  transition: color 0.3s ease, border-color 0.3s ease; /* Плавный переход для цвета и границы */
+}
+.btn-add:hover {
+  color: #0d47a1; /* Тёмно-синий цвет текста при наведении */
+  border-color: #0d47a1; /* Тёмно-синяя граница при наведении */
+}
+
+.btn-add {
+  background-color: transparent; /* Прозрачный фон */
+  border: none; /* Убираем границу */
+  color: #1a73e8; /* Синий цвет текста, как у других кнопок */
+  padding: 0; /* Убираем отступы */
+  font-weight: 500; /* Жирность шрифта */
+}
+.btn-add:hover,
+.btn-add:focus {
+  background-color: transparent;
+  color: #0d47a1; /* Тёмно-синий цвет текста при наведении */
+}
+.btn-add:active {
+  background-color: transparent;
+  transform: none; /* Убираем эффект нажатия */
+}
+
+/* Убираем лишние стили для иконки, если она есть */
+.btn-add .icon {
+  margin: 0; /* Убираем внешние отступы */
+}
+/* Стили для кнопок */
+.btn-add,
+.btn-remove,
+.btn-search {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Стили для кнопки подписки */
+.subscribe-btn {
+  background-color: transparent; /* Прозрачный фон */
+  color: #1a73e8; /* Синий цвет текста */
+  margin-left: 12px;
+  border-radius: 24px; /* Скругление углов */
+  padding: 8px 16px; /* Отступы */
+  font-weight: 500; /* Жирность шрифта */
+  margin-right: 8px; /* Отступ справа */
+  cursor: pointer; /* Курсор в виде руки при наведении */
+  transition: color 0.3s ease, border-color 0.3s ease; /* Плавный переход для цвета и границы */
+}
+
+.subscribe-btn:hover {
+  color: #0d47a1; /* Тёмно-синий цвет текста при наведении */
+  border-color: #0d47a1; /* Тёмно-синяя граница при наведении */
+}
+
+.subscribe-btn .icon {
+  margin: 0; /* Убираем внешние отступы */
+}
+
+/* Стили для кнопки отписки */
+.unsubscribe-btn {
+  background-color: transparent; /* Прозрачный фон */
+  color: #dc3545; /* Красный цвет текста */
+  margin-left: 12px;
+  border-radius: 24px; /* Скругление углов */
+  padding: 8px 16px; /* Отступы */
+  font-weight: 500; /* Жирность шрифта */
+  margin-right: 8px; /* Отступ справа */
+  cursor: pointer; /* Курсор в виде руки при наведении */
+  transition: color 0.3s ease, border-color 0.3s ease; /* Плавный переход для цвета и границы */
+}
+
+.unsubscribe-btn:hover {
+  color: #a71d2a; /* Тёмно-красный цвет текста при наведении */
+  border-color: #a71d2a; /* Тёмно-красная граница при наведении */
+}
+
+.unsubscribe-btn .icon {
+  margin: 0; /* Убираем внешние отступы */
+}
+
+.popover {
+  border: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
+
+/* Убираем стрелку */
+.popover .arrow {
+  display: none !important;
+}
+
+/* Переопределяем стили для контента */
+.popover-content {
+  background-color: #fff !important;
+  border-radius: 5px !important;
+  padding: 20px !important;
+  width: 400px !important;
+  height: 400px !important;
+}
+
+/* Стили для заголовка */
+.popover-header {
+  font-size: 1.2em !important;
+  font-weight: bold !important;
+  margin-bottom: 10px !important;
+}
+
+/* Стили для кнопок */
+.popover-actions button {
+  padding: 10px 20px !important;
+  border-radius: 5px !important;
+  margin: 5px !important;
+}
+
+.court-details{
+  display: flex;
+  flex-direction: column;
+}
+.custom-button {
+  width: 135px;
+  height: 46px;
+  left: 16.5px;
+  top: 12.88px;
+  display: flex;
+  color: rgb(47, 73, 209);
+    font-family: Geologica;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0px;
+    text-align: left;
+    text-transform: uppercase;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 14px 28px 14px 28px;
+  box-sizing: border-box;
+  border: 1.5px solid rgb(47, 73, 209);
+  border-radius: 8px;
+}
+.modal-title{
+  font-family: "Geologica", sans-serif;
+font-weight: 400;
+font-size: 18px;
+line-height: 1.4;
+color: #fff;
+}
+.nav-switches {
+  
+  height: 54px;
+  margin: 20px auto; /* Центрирование контейнера */
+}
+
+.nav-switches .nav-tabs {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0;
+
+  list-style: none;
+}
+
+.nav-switches .nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.nav-switches .nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 32px;
+  border-radius: 15px 15px 0 0;
+  text-decoration: none;
+  color: rgb(23, 23, 23);
+
+background: rgb(240, 241, 244);/* Серый цвет для неактивной вкладки */
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.nav-switches .nav-link.active {
+  color: rgb(23, 23, 23); /* Синий цвет для активной вкладки */
+  color: #fff;
+}
+
+.nav-switches .nav-link i {
+  margin-left: 8px;
+}
+
+.nav-switches .nav-item::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  bottom: -4px;
+  left: 0;
+  background: rgb(47, 73, 209); /* Синий цвет подчеркивания */
+  display: none;
+}
+
+.nav-switches .nav-link.active + .active-tab-line {
+  display: block;
+}
+
+.nav-switches .selected-tab .nav-link {
+  background: rgb(47, 73, 209);
+  color: #fff;
+}
+.nav-tabs .nav-link {
+  font-family: "Geologica", sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.33333;
+  text-transform: uppercase;
+  color: #171717;
+  border: none;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-tabs .nav-link.active {
+  color: #fff;
+  border-bottom-color: #171717;
+}
+
+/* delimiter */
+.delimiter {
+  width: 1302px;
+  height: 0;
+  margin: 0 auto; /* Центрирование контейнера */
+  box-sizing: border-box;
+  border: 1.5px solid rgb(47, 73, 209);
+}
+.info-block{
+  border: 1px solid #e6e8ec;
+border-radius: 15px;
+background: #f7f8fd;
+}
+.court-container {
+  display: flex;
+  margin-bottom: 10px;
+}
+.text-style {
+  color: rgba(23, 23, 23, 0.75);
+  font-family: Geologica;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 20px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+
+.highlight {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 15px;
+  background: rgb(255, 255, 255);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.highlight svg {
+  width: 22px;
+  height: 23px;
+}
+
+.court-title {
+  position: static;
+  display: flex;
+  align-items: center;
+  color: rgba(23, 23, 23, 0.75);
+  font-family: Geologica;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 20px;
+  letter-spacing: 0px;
+  text-align: left;
+  margin-right: 10px;
+}
+
+.court-name {
+  position: static;
+  display: flex;
+  align-items: center;
+  color: rgba(23, 23, 23, 0.75);
+  font-family: Geologica;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 20px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+
+.court-card {
+  border: 1px solid #d8d8d8;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: rgb(240, 242, 252);
+}
+
+.card-header {
+  border-radius: 10px 10px 0 0;
+  background-color: #2f49d1;
+  color: white;
+  padding: 10px;
+}
+
+.card-body {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #d8d8d8;
+  border-radius: 0 0 10px 10px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.btn-add, .btn-remove, .btn-search {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-add {
+  background-color: transparent;
+  color: #1a73e8;
+  border: 1px solid #1a73e8;
+  border-radius: 24px;
+  padding: 8px 16px;
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.btn-add:hover {
+  color: #0d47a1;
+  border-color: #0d47a1;
+}
+
+.subscribe-btn {
+  background-color: transparent;
+  color: #1a73e8;
+  margin-left: 12px;
+  border-radius: 24px;
+  padding: 8px 16px;
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.subscribe-btn:hover {
+  color: #0d47a1;
+  border-color: #0d47a1;
+}
+
+.unsubscribe-btn {
+  background-color: transparent;
+  color: #dc3545;
+  margin-left: 12px;
+  border-radius: 24px;
+  padding: 8px 16px;
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.unsubscribe-btn:hover {
+  color: #a71d2a;
+  border-color: #a71d2a;
+}
+
+.popover {
+  border: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
+
+.popover .arrow {
+  display: none !important;
+}
+
+.popover-content {
+  background-color: #fff !important;
+  border-radius: 5px !important;
+  padding: 20px !important;
+  width: 400px !important;
+  height: 400px !important;
+}
+
+.popover-header {
+  font-size: 1.2em !important;
+  font-weight: bold !important;
+  margin-bottom: 10px !important;
+}
+
+.popover-actions button {
+  padding: 10px 20px !important;
+  border-radius: 5px !important;
+  margin: 5px !important;
+}
+
+.bold-text:hover, .defendant-name:hover {
+  color: darkblue;
+  cursor: pointer;
+}
+
+.bold-text {
+  display: block;
+}
+
+.plaintiff-info, .defendant-info {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.plaintiff-info:last-child, .defendant-info:last-child {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  background-color: #fff; /* или другой желаемый цвет фона */
+  border-radius: 20px;
+}
+
+.grid-container.scrollable {
+  max-height: 100vh; /* чтобы контейнер был прокручиваемым */
+  overflow-y: auto;
+}
+.decision-block{
+  border: 1px solid #e6e8ec;
+border-radius: 15px;
+margin: 10px;
+
+background: #f7f8fd;
+}
+.decision-header{
+  border: 1px solid #e6e8ec;
+border-radius: 15px 15px 0 0;
+height: 52px;
+background: #f7f8fd;
+}
+.decision-header {
+  border: 1px solid #e6e8ec;
+  border-radius: 15px 15px 0 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f7f8fd;
+  cursor: pointer;
+  font-family: "Geologica", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.25;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+  color: #2f49d1;
+}
+.header-container{
+  display:flex;
+}
+.view-switcher span {
+  border: 1px solid #e6e8ec;
+  border-radius: 8px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.view-switcher span.active {
+  background-color: #e6e8ec;
+}
+
+.view-switcher span svg {
+  width: 16px;
+  height: 17px;
+}
+.view-switcher{
+  justify-content: flex-end;
+}
+.accordion {
+  margin-top: 20px;
+}
+
+.accordion-item {
+  border: 1px solid #e6e8ec;
+  border-radius: 9px;
+  margin-bottom: 10px;
+}
+
+.accordion-header {
+  background-color: #f7f8fd;
+  border: none;
+  border-radius: 9px 9px 0 0;
+  color: #2f49d1;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  width: 100%;
+}
+
+.accordion-content {
+  padding: 20px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 12px;
+  text-align: left;
+}
+
+.table th {
+  border-radius: 15px 0 0 0;
+  padding: 16px 20px;
+  width: 327px;
+  height: 50px;
+  background: #213081;
+}
+
+.table td {
+  border-bottom: 1px solid #e6e8ec;
+}
+
+.even-cell {
+  background-color: #ffffff;
+}
+
+.odd-cell {
+  background-color: #f7f8fd;
+}
+
+.pointer-cursor {
+  cursor: pointer;
+  color: #2f49d1;
+}
+
+.link-style {
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+}
+
+
+

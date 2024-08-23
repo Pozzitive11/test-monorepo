@@ -1,0 +1,128 @@
+<ngb-progressbar
+  *ngIf="dcCreateClosingCertificateService.closingCertificateLoading()"
+  [animated]="true"
+  [height]="'5px'"
+  [striped]="true"
+  [type]="'success'"
+  [value]="100"
+></ngb-progressbar>
+@if (dcCreateClosingCertificateService.closingCertificateError()) {
+  <div class="alert alert-danger" role="alert">
+    {{ dcCreateClosingCertificateService.closingCertificateError() }}
+  </div>
+}
+
+@if (dcCreateClosingCertificateService.closingCertificateInfo()) {
+  @if (dcCreateClosingCertificateService.closingCertificateInfo()?.IsFullClosure) {
+    <h4 class="alert alert-primary text-center" role="alert">Повне закриття</h4>
+  } @else {
+    <h4 class="alert alert-success text-center" role="alert">Часткове закриття</h4>
+    <ul class="list-group list-group-flush">
+      @if (dcCreateClosingCertificateService.closingCertificateDetails()?.DiscountPercent) {
+        <li class="list-group-item">
+          <strong>Дисконт:</strong>
+          <span class="float-end"
+            >{{
+              dcCreateClosingCertificateService.closingCertificateDetails()?.DiscountPercent | number: '1.0-2'
+            }}
+            %</span
+          >
+        </li>
+      }
+      @if (dcCreateClosingCertificateService.closingCertificateDetails()?.RestructuringMonths) {
+        <li class="list-group-item">
+          <strong>К-сть місяців реструктуризації:</strong>
+          <span class="float-end">{{
+            dcCreateClosingCertificateService.closingCertificateDetails()?.RestructuringMonths
+          }}</span>
+        </li>
+      }
+      @if (dcCreateClosingCertificateService.closingCertificateDetails()?.EntryDate) {
+        <li class="list-group-item">
+          <strong>Дата внесення:</strong>
+          <span class="float-end">{{
+            dcCreateClosingCertificateService.closingCertificateDetails()?.EntryDate | formatDate
+          }}</span>
+        </li>
+      }
+      @if (dcCreateClosingCertificateService.closingCertificateDetails()?.PaymentDateLimit) {
+        <li class="list-group-item">
+          <strong>Гранична дата сплати:</strong>
+          <span class="float-end">{{
+            dcCreateClosingCertificateService.closingCertificateDetails()?.PaymentDateLimit | formatDate
+          }}</span>
+        </li>
+      }
+      @if (dcCreateClosingCertificateService.closingCertificateDetails()?.PaymentDateLimit) {
+        <li
+          class="list-group-item"
+          [ngClass]="
+            dcCreateClosingCertificateService.closingCertificateDetails()?.ContractOriginal
+              ? 'bg-green'
+              : 'bg-red'
+          "
+        >
+          <strong>Оригінал підписаної угоди:</strong>
+          <span class="float-end">
+            <i
+              class="bi bi-check"
+              [ngClass]="
+                dcCreateClosingCertificateService.closingCertificateDetails()?.ContractOriginal
+                  ? 'bi-check text-success'
+                  : 'bi-x text-danger'
+              "
+              style="font-size: 30px; line-height: 37px"
+            ></i>
+          </span>
+        </li>
+      }
+    </ul>
+  }
+  <div class="mb-2 d-flex flex-column">
+    <label
+      *ngFor="let path of dcCreateClosingCertificateService.sendingWays()"
+      [for]="path.id"
+      class="ms-4 d-flex align-items-center gap-1 pointer"
+    >
+      <input
+        class="form-check-input pointer m-0"
+        [id]="path.id"
+        type="checkbox"
+        (change)="dcCreateClosingCertificateService.changeSendingWays(path)"
+        [checked]="dcCreateClosingCertificateService.isChecked(path)"
+      />
+      {{ path.Name }}
+    </label>
+  </div>
+  <div class="top-margin-sm">
+    <h6 class="h6 mb-2">Адреса Укр або Нової пошти</h6>
+    <textarea
+      #address_val
+      (blur)="dcCreateClosingCertificateService.changeSendingAddress()"
+      (keydown.enter)="address_val.blur()"
+      [(ngModel)]="dcCreateClosingCertificateService.sendingAddress"
+      [title]="dcCreateClosingCertificateService.sendingAddress()"
+      class="form-control inputdefault"
+      placeholder="Адреса Укр або Нової пошти..."
+      rows="2"
+    ></textarea>
+  </div>
+  @if (dcCreateClosingCertificateService.isEmailSelected()) {
+    <div class="top-margin-sm">
+      <h6 class="h6 mb-2">Електронна адреса</h6>
+      <input
+        [(ngModel)]="dcCreateClosingCertificateService.emailAddress"
+        (ngModelChange)="dcCreateClosingCertificateService.changeEmailAddress()"
+        placeholder="Електронна адреса..."
+        class="form-control inputdefault"
+      />
+    </div>
+  }
+  <button
+    class="btn btn-primary mt-3"
+    (click)="dcCreateClosingCertificateService.createClosingCertificate(+contractId())"
+    [disabled]="!dcCreateClosingCertificateService.docsFields().length"
+  >
+    Створити
+  </button>
+}

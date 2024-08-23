@@ -1,0 +1,68 @@
+<div class="card">
+  <h5 (click)="cardBody.hidden=!cardBody.hidden" class="card-header pointer">
+    ВП інших компаній
+    <span class="float-end">
+      <i [class.bi-chevron-down]="cardBody.hidden" [class.bi-chevron-up]="!cardBody.hidden" class="bi"></i>
+    </span>
+  </h5>
+  <ngb-progressbar
+    *ngIf="loading"
+    [animated]="true"
+    [height]="'3px'"
+    [striped]="true"
+    [type]="'secondary'"
+    [value]="100"
+  ></ngb-progressbar>
+
+  <div #cardBody [class.disabled-table]="loading" class="card-body">
+    <ul *ngIf="othersEPInfo" class="list-group list-group-flush">
+      <li *ngFor="let othersEP of othersEPInfo" class="list-group-item">
+        <div class="card my-2">
+
+          <h5 (click)="incomeStagesCard.hidden=!incomeStagesCard.hidden" class="card-header pointer">
+            <span *ngIf="othersEP.ClientType" class="mb-2 text-18">{{ othersEP.ClientType }}<br /></span>
+            <span *ngIf="othersEP.ClientName" class="mb-2 text-18">{{ othersEP.ClientName }}<br /></span>
+            <span *ngIf="othersEP.ClientINN" class="mb-2 text-18">ІПН {{ othersEP.ClientINN }}<br /></span>
+            <span *ngIf="othersEP.EPNumber" class="mb-2 text-18">ВП {{ othersEP.EPNumber }}<br /></span>
+            <span class="float-end">
+              <i [class.bi-chevron-down]="incomeStagesCard.hidden"
+                 [class.bi-chevron-up]="!incomeStagesCard.hidden"
+                 class="bi"></i>
+            </span>
+          </h5>
+
+          <div #incomeStagesCard class="card-body">
+            <ul class="list-group list-group-flush">
+
+              <li class="list-group-item">
+                <strong>Орган ДВС:</strong>
+                <span class="float-end">{{ othersEP.Agency }}</span>
+              </li>
+
+              <li class="list-group-item">
+                <strong>Дата відкриття ВП:</strong>
+                <span class="float-end">{{ othersEP.EPDate | formatDate:false }}</span>
+              </li>
+
+              <li class="list-group-item">
+                <strong>Стан ВП:</strong>
+                <span class="float-end">{{ othersEP.EPState }}</span>
+              </li>
+
+              <li class="list-group-item">
+                <strong>Стягувач:</strong>
+                <span class="float-end">{{ othersEP.Collector }}</span>
+              </li>
+
+            </ul>
+          </div>
+
+        </div>
+      </li>
+    </ul>
+
+  </div>
+</div>
+
+
+

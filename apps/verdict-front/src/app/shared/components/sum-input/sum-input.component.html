@@ -1,0 +1,17 @@
+<div class="input-group">
+  <input
+    #SumInput
+    (blur)="changeSum(); inputBlur.emit()"
+    (dblclick)="SumInput.value=''"
+    (keyup.enter)="SumInput.blur()"
+    [(ngModel)]="sumString"
+    [class.is-invalid]="!SumInput.validity.valid || (sum || 0) > maxSum"
+    [class.is-valid]="SumInput.validity.valid && (sum || 0) <= maxSum"
+    class="form-control"
+    id="SumToPayInput"
+    pattern="(?:[\d\s]+[.,]?\d{0,2})?"
+    required
+    type="text"
+  />
+  <ng-content></ng-content>
+</div>

@@ -1,0 +1,195 @@
+<div class="container pt-5 pb-5">
+  <div class="row mb-5">
+    <div class="col-12">
+      <h2 class="text-center">Керування користувачами</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="mt-2 mb-5 d-flex align-items-center flex-wrap gap-3">
+      <button (click)="goToAddUserPage()" class="btn btn-outline-primary fz-18">
+        Створити <i class="bi bi-person-plus-fill"></i>
+      </button>
+      <button (click)="goToUpdateUserPage()" class="btn btn-outline-primary fz-18">
+        Оновити <i class="bi bi-person-fill-gear"></i>
+      </button>
+      <!-- <button class="btn btn-outline-primary fz-18" (click)="goToFireUserPage()">
+        Звільнити <i class="bi bi-person-fill-x"></i>
+      </button> -->
+      <button (click)="goToRemoveUserPage()" class="btn btn-outline-primary fz-18">
+        Видалити <i class="bi bi-person-fill-dash"></i>
+      </button>
+    </div>
+    <div class="col-12">
+      <div class="row mt-2">
+        <div class="col-12">
+          <h2 class="text-center">Всі користувачі</h2>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <h4>Підлеглі</h4>
+
+        <div class="col-12 mb-3">
+          <label>Фільтр за логіном: </label>
+          <ng-select
+            [formControl]="subordinatesUsersControl"
+            [items]="subordinatesUsersList"
+            [multiple]="true"
+            bindLabel="Login"
+            placeholder="Оберіть..."
+          >
+          </ng-select>
+        </div>
+        <div class="col-12">
+          <label>Фільтр за роллю: </label>
+          <ng-select
+            [formControl]="subordinatesUserRolesControl"
+            [items]="usersRolesList"
+            [multiple]="true"
+            bindLabel="Name"
+            placeholder="Оберіть..."
+          >
+          </ng-select>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-12">
+          <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Логін</th>
+                <th scope="col">Повне ім'я</th>
+                <th scope="col">Роль</th>
+                <th scope="col">Дата прийому на роботу</th>
+                <th scope="col">Дата звільнення</th>
+                <th scope="col">e-mail</th>
+                <th scope="col">Випробувальний термін</th>
+                <th scope="col">Переглянути</th>
+                <th scope="col">Додати нову оцінку</th>
+                <th scope="col">Прибрати користувача з підлеглих</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of subordinatesSearchedUsers">
+                <td class="text-center align-middle">{{ user.Login }}</td>
+                <td class="text-center align-middle">{{ user.FullName }}</td>
+                <td class="text-center align-middle">{{ user.RoleName }}</td>
+                <td class="text-center align-middle">{{ user.EmploymentDate }}</td>
+                <td *ngIf="user.DismissalDate === null; else tamp" class="text-center align-middle">-</td>
+                <ng-template #tamp>
+                  <td>{{ user.DismissalDate }}</td>
+                </ng-template>
+                <td class="text-center align-middle">{{ user.Email }}</td>
+                <td *ngIf="user.Probation === true; else tase" class="text-center align-middle">+</td>
+                <ng-template #tase>
+                  <td class="text-center align-middle">-</td>
+                </ng-template>
+                <td class="text-center align-middle">
+                  <button (click)="navigateToUserPage(user)" class="btn">
+                    <i class="bi bi-eye h1"></i>
+                  </button>
+                </td>
+                <td class="text-center align-middle">
+                  <button
+                    (click)="navigateToCreateMonitoring(user)"
+                    *ngIf="
+                      (user.RoleName === 'Оператор' ||
+                        user.RoleName === 'Сотрудник по подбору персонала' ||
+                        user.RoleName === 'Для запросов') &&
+                      user.DismissalDate === null
+                    "
+                    class="btn"
+                  >
+                    <i class="bi bi-person-plus h1"></i>
+                  </button>
+                </td>
+                <td class="text-center align-middle">
+                  <button (click)="removeUserFromSubordinates(user.Id)" class="btn">
+                    <i class="bi bi-person-dash text-danger h1"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-12">
+          <h4>Інші користувачі</h4>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-12 mb-3">
+          <label>Фільтр за логіном: </label>
+          <ng-select
+            [formControl]="anotherUsersControl"
+            [items]="anotherUsersList"
+            [multiple]="true"
+            bindLabel="Login"
+            placeholder="Оберіть..."
+          >
+          </ng-select>
+        </div>
+        <div class="col-12">
+          <label>Фільтр за роллю: </label>
+          <ng-select
+            [formControl]="anotherUserRolesControl"
+            [items]="usersRolesList"
+            [multiple]="true"
+            bindLabel="Name"
+            placeholder="Оберіть..."
+          ></ng-select>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-12">
+          <div style="max-height: 700px; overflow-y: auto">
+            <table class="table table-striped table-bordered">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Логін</th>
+                  <th>Повне ім'я</th>
+                  <th>Роль</th>
+                  <th>Дата прийому на роботу</th>
+                  <th>Дата звільнення</th>
+                  <th>Переглянути</th>
+                  <th>Додати нову оцінку</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of anotherSearchedUsers">
+                  <td class="text-center align-middle">{{ user.Login }}</td>
+                  <td class="text-center align-middle">{{ user.FullName }}</td>
+                  <td class="text-center align-middle">{{ user.RoleName }}</td>
+                  <td class="text-center align-middle">{{ user.EmploymentDate }}</td>
+                  <td *ngIf="user.DismissalDate === null; else tamp" class="text-center align-middle">-</td>
+                  <ng-template #tamp>
+                    <td class="text-center align-middle">{{ user.DismissalDate }}</td>
+                  </ng-template>
+                  <td class="text-center align-middle">
+                    <button (click)="navigateToUserPage(user)" class="btn">
+                      <i class="bi bi-eye h1"></i>
+                    </button>
+                  </td>
+                  <td class="text-center align-middle">
+                    <button
+                      (click)="navigateToCreateMonitoring(user)"
+                      *ngIf="
+                        (user.RoleName === 'Оператор' ||
+                          user.RoleName === 'Сотрудник по подбору персонала' ||
+                          user.RoleName === 'Для запросов') &&
+                        user.DismissalDate === null
+                      "
+                      class="btn"
+                    >
+                      <i class="bi bi-person-plus h1"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

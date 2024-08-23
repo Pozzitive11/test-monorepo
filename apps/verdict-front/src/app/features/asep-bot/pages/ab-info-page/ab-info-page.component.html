@@ -1,0 +1,140 @@
+<div [class.disabled-table]="filesLoading" class="container-fluid mt-3 mb-5">
+  <ngb-progressbar
+    *ngIf="filesLoading"
+    [animated]="true"
+    [height]="'3px'"
+    [max]="100"
+    [striped]="true"
+    [value]="100"
+    type="primary"
+  ></ngb-progressbar>
+
+  <div *ngIf="filesInWorkInfo" class="row">
+    <div class="col-3">
+      <p class="alert alert-info">
+        Активних користувачів: <strong>{{ filesInWorkInfo.TotalUsers }}</strong>
+      </p>
+    </div>
+    <div class="col-3">
+      <p class="alert alert-info">
+        Кількість файлів в обробці: <strong>{{ filesInWorkInfo.TotalFiles }}</strong>
+      </p>
+    </div>
+    <div class="col-3">
+      <p class="alert alert-info">
+        Частин файлів в обробці: <strong>{{ filesInWorkInfo.TotalPartFiles }}</strong>
+      </p>
+    </div>
+    <div class="col-3">
+      <p class="alert alert-info">
+        Середній відсоток обробки: <strong>{{ filesInWorkInfo.AvgPercent | number:'1.0-2' }}</strong> %
+      </p>
+    </div>
+
+    <div class="col-12 mb-3">
+      <ngb-progressbar
+        *ngIf="filesInWorkInfo.TotalPartFiles > 0"
+        [animated]="true"
+        [height]="'10px'"
+        [max]="100"
+        [ngbTooltip]="'Середній відсоток обробки усіх файлів'"
+        [showValue]="true"
+        [striped]="true"
+        [textType]="'danger'"
+        [value]="filesInWorkInfo.AvgPercent"
+        type="info"
+      ></ngb-progressbar>
+    </div>
+  </div>
+  <div class="row mb-5">
+
+    <div class="col-6">
+      <ab-bot-rules></ab-bot-rules>
+    </div>
+
+    <div class="col-6">
+      <h4 class="h4">Завантажити файли для обробки</h4>
+      <app-file-upload
+        (fileAdded)="onUploadFile($event)"
+        [id]="'asepFileInput'"
+        [multiple]="true"
+      ></app-file-upload>
+
+      <ng-container *ngIf="fileList.length > 0">
+
+        <ul class="list-group">
+          <li *ngFor="let file of fileList" class="list-group-item list-group-item-info">
+            {{ file.file.name }}
+
+            <span class="left-margin-sm">
+              <i (click)="removeFile(file.file.name)" class="bi bi-x-circle pointer red-text"></i>
+            </span>
+          </li>
+        </ul>
+
+        <button (click)="uploadFiles()" class="btn btn-success top-margin-sm">Завантажити файли</button>
+
+      </ng-container>
+
+      <div [class.disabled-table]="loading" class="alert alert-danger mt-3">
+        <ngb-progressbar
+          *ngIf="loading"
+          [animated]="true"
+          [height]="'3px'"
+          [max]="100"
+          [striped]="true"
+          [value]="100"
+          type="danger"
+        >
+        </ngb-progressbar>
+        <h5 class="h5 mb-3">
+            <span
+              (click)="getBufferInfo(true)"
+              [ngbTooltip]="'Оновити інформацію про буфер'"
+              class="bi bi-arrow-clockwise me-2 pointer btn-outline-danger btn"
+            ></span>
+          Інформація про буфер боту
+        </h5>
+
+        <p *ngIf="!bufferInfo"><strong>Інформація про буфер не оновлена.</strong></p>
+
+        <ng-container *ngIf="bufferInfo">
+          <p class="mb-3"><strong>Інформація оновлена {{ bufferInfo.LastInfoUpdate | formatDate:true }}</strong></p>
+          <p>
+            В буфері міститься
+            <strong>{{ bufferInfo.TotalUnprocessedRows | number:'1.0-0' }}</strong>
+            необроблених рядків
+          </p>
+
+          <p *ngIf="bufferInfo.BadAgencyNamesCount">
+            Невідомих органів ДВС/приватних виконавців:
+            <strong>{{ bufferInfo.BadAgencyNamesCount | number:'1.0-0' }}</strong>
+          </p>
+          <p *ngIf="bufferInfo.BadCollectorNamesCount">
+            Невідомих стягувачів:
+            <strong>{{ bufferInfo.BadCollectorNamesCount | number:'1.0-0' }}</strong>
+          </p>
+
+          <button (click)="getBufferFile()" class="btn btn-outline-danger me-3">Скачати файл для виправлення</button>
+          <file-upload-button
+            (fileAdded)="sendBufferRepairFile($event)"
+            [accept]="['.xlsx']"
+            [buttonClass]="'btn-outline-success'"
+            [multiple]="false"
+            [title]="'Надати файл з виправленнями'"
+          ></file-upload-button>
+        </ng-container>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+

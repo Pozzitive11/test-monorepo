@@ -1,0 +1,172 @@
+@if (qualityCallsCallService.callInfoLoader) {
+  <div class="spinner-grow text-primary mb-3" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+}
+@if (qualityCallsCallService.call(); as call) {
+  <div class="table-responsive">
+    <table class="table table-sm table-bordered mb-3">
+      <thead>
+        <tr>
+          <th *ngFor="let tableHeader of tableHeaders">
+            {{ tableHeader.title }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          @for (header of tableHeaders; track header.value) {
+            <td class="vert-align">
+              @if (header.value === 'StartTime') {
+                {{ call[header.value] | date: 'yyyy-MM-dd HH:mm:ss' }}
+              } @else if (header.value === 'Duration') {
+                {{ call[header.value] * 1000 | date: 'mm:ss' }}
+              } @else {
+                {{ call[header.value] }}
+              }
+            </td>
+          }
+        </tr>
+      </tbody>
+    </table>
+  </div>
+}
+@if (qualityCallsCallService.call()?.ContractId && qualityCallsCallService.call(); as call) {
+  <div class="table-responsive">
+    <table class="table table-sm table-bordered mb-4">
+      <thead>
+        <tr>
+          <th *ngFor="let tableHeader of secondTableHeaders">
+            {{ tableHeader.title }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          @for (header of secondTableHeaders; track $index) {
+            <td class="vert-align z-3">
+              @if (header.value === 'Note' && call['Note'] !== null) {
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary me-2 border-0"
+                  placement="left"
+                  [ngbPopover]="call[header.value]"
+                >
+                  <i class="bi bi-question-circle"></i>
+                </button>
+              } @else {
+                {{ call[header.value] }}
+              }
+            </td>
+          }
+        </tr>
+      </tbody>
+    </table>
+    <p class="text-danger mt-2 mb-3">Застосунок може помилятися. Перевіряйте НКС.</p>
+    <hr class="m-0 mb-4" />
+  </div>
+}
+
+@if (qualityCallsCallService.mixedFileLoader) {
+  <div class="spinner-grow text-primary mb-3" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+}
+@if (qualityCallsCallService.childRecords(); as childRecords) {
+  @if (qualityCallsCallService.singleAudioUrls(); as singleAudioUrls) {
+    @for (recordSet of childRecords; track recordSet; let i = $index) {
+      <div class="table-responsive">
+        <table class="table table-bordered table-sm mb-4" *ngIf="childRecords.length > 0">
+          <thead>
+            <tr>
+              <th>Час початку розмови</th>
+              <th>Тривалість</th>
+              <th>Міксований запис</th>
+              <th>Окремі записи</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (record of recordSet; track record; let j = $index) {
+              <tr>
+                <td class="vert-align">{{ record.StartTime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td class="vert-align">{{ record.Duration * 1000 | date: 'mm:ss' }}</td>
+                <td class="vert-align position-relative" *ngIf="j === 0 && qualityCallsCallService.mixedAudioUrl()" [attr.rowspan]="2" style="width: 400px;">
+                  <select
+                    class="form-select mb-2 pointer position-absolute top-0 end-0"
+                    style="width: 115px; margin-left: auto"
+                    [(ngModel)]="qualityCallsCallService.silencePosition"
+                    (ngModelChange)="selectSilencePosition()"
+                  >
+                    <option value="evenly">Спосіб 1</option>
+                    <option value="end">Спосіб 2</option>
+                    <option value="beginning">Спосіб 3</option>
+                  </select>
+                  @if (qualityCallsCallService.mixedAudioUrl()[i] === '') {
+                    Немає шляху до файлу
+                  } @else if (!qualityCallsCallService.mixedAudioUrl()[i]) {
+                    <div class="spinner-grow text-primary mb-3" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  } @else {
+                    <audio controls *ngIf="qualityCallsCallService.mixedAudioUrl()[i]" style="height: 70px;">
+                      <source [src]="qualityCallsCallService.mixedAudioUrl()[i]" type="audio/wav" />
+                    </audio>
+                  }
+                </td>
+                <td class="vert-align">
+                  @if (singleAudioUrls.length && singleAudioUrls[i][j] === '') {
+                    Немає шляху до файлу
+                  } @else if (!singleAudioUrls[i][j]) {
+                    Завантаження...
+                  } @else {
+                    <audio controls *ngIf="singleAudioUrls[i] && singleAudioUrls[i][j]">
+                      <source [src]="singleAudioUrls[i][j]" type="audio/wav" />
+                    </audio>
+                  }
+                </td>
+                <td class="vert-align" *ngIf="j === 0" [attr.rowspan]="2">
+                  <button
+                    class="btn btn-success"
+                    [disabled]="!qualityCallsCallService.mixedAudioUrl()[i]"
+                    (click)="qualityCallsCallService.saveFile(i)"
+                  >
+                    Завантажити
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    <ng-container *ngIf="qualityCallsCallService.operatorInfo.length > 0 && qualityCallsCallService.call() as call">
+      @if (qualityCallsCallService.operatorInfo.length > 1) {
+        <ng-select
+          [(ngModel)]="selectedOperator"
+          [items]="qualityCallsCallService.operatorInfo"
+          bindLabel="RoleName"
+          placeholder="Оберіть роль користувача"
+          class="col-4"
+        >
+        </ng-select>
+        @if (selectedOperator) {
+          <app-quality-create-monitoring
+            [callInfo]="call"
+            [operatorInfo]="selectedOperator"
+          ></app-quality-create-monitoring>
+        }
+      } @else {
+        <app-quality-create-monitoring
+          [callInfo]="call"
+          [operatorInfo]="qualityCallsCallService.operatorInfo[0]"
+        ></app-quality-create-monitoring>
+      }
+    </ng-container>
+  }
+}
+
+@if (qualityCallsCallService.operatorInfo.length === 0) {
+  <div class="alert alert-warning">Користувача з таким логіном не знайдено</div>
+}

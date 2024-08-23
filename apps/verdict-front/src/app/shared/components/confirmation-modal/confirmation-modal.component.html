@@ -1,0 +1,30 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ title }}</h4>
+  <button (click)="activeModal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+</div>
+
+<div *ngIf="showBody" class="modal-body my-2 d-flex flex-column">
+  <div [innerHTML]="confirmText"></div>
+
+  @if (alternativeAction) {
+    <button (click)="activeModal.close(alternativeAction)" class="btn btn-outline-success mt-2">
+      {{ alternativeAction }}
+    </button>
+  }
+</div>
+
+<div class="modal-footer">
+  @if (cancelButtonText) {
+    <button (click)="activeModal.dismiss()" class="btn btn-outline-secondary" type="button">
+      <i class="bi bi-x"></i>
+      {{ cancelButtonText }}
+    </button>
+  }
+  @if (confirmButtonText) {
+    <button (click)="activeModal.close(true)" class="btn btn-outline-{{ confirmButtonType }}" type="button">
+      <i class="bi bi-check"></i>
+      {{ confirmButtonText }}
+    </button>
+  }
+</div>
+

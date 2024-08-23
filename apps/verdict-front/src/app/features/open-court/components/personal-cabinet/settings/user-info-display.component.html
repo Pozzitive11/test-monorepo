@@ -1,0 +1,25 @@
+<div class="info-container">
+    <h2>Моя інформація</h2>
+    <div class="info-group">
+      <label>ПІБ:</label>
+      <div class="info-value">{{ userInfo.fullName }}</div>
+    </div>
+    <div class="info-group">
+      <label>ІПН:</label>
+      <div class="info-value">{{ userInfo.taxId }}</div>
+    </div>
+    <div class="info-group">
+      <label>e-mail:</label>
+      <div class="info-value">{{ userInfo.email }}</div>
+    </div>
+    <div class="info-group">
+      <label>телефон:</label>
+      <div class="info-value">{{ userInfo.phone }}</div>
+    </div>
+    <div class="info-group">
+      <label>адреса:</label>
+      <div class="info-value">{{ userInfo.address }}</div>
+    </div>
+    <button (click)="goBack()" class="btn btn-primary">Повернутися до налаштувань</button>
+  </div>
+  

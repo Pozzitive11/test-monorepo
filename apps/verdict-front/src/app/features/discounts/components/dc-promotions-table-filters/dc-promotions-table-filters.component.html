@@ -1,0 +1,179 @@
+<div [class.disabled-table]="loading$ | async" class="row">
+  <div class="col-12 col-lg-6">
+    <div class="row">
+      <div class="col-4">
+        <app-max-page-rows-filter
+          (maxRowsPerPageChange)="rowsPerPage = $event"
+          [maxRowsPerPage]="rowsPerPage"
+        />
+      </div>
+
+      <div class="col-8" style="z-index: 105">
+        <strong>Обрати період:</strong>
+        <app-date-picker-range-popup
+          (dateChanged)="changeDates($event)"
+          [fromDate]="dateFilter.fromDate"
+          [maxDate]="datesRange.MaxDate"
+          [minDate]="datesRange.MinDate"
+          [toDate]="dateFilter.toDate"
+        />
+        <button (click)="updateData()" class="btn btn-outline-success my-3 me-2">Застосувати</button>
+        <button (click)="openContractUploadModal()" class="btn btn-outline-primary my-3">
+          Обрати за списком НКС
+          <i class="bi bi-arrow-right-circle ms-1"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="row top-margin-sm">
+      <div class="col-4">
+        <app-switch-checkbox [(value)]="filterService.useNewInfo" [id]="'useNewInfoSwitch'">
+          Використовувати актуальні дані
+          <i
+            [ngbTooltip]="
+              'Використати дані з 68 серверу - довше завантаження, ' +
+              'але дані станом на зараз (при відключенні - дані станом на початок дня)'
+            "
+            class="ms-1 bi bi-question-circle"
+          >
+          </i>
+        </app-switch-checkbox>
+
+        <app-switch-checkbox [(value)]="filterService.onlyNew" [id]="'onlyNewSwitch'" (valueChange)="updateData()"
+        >Лише нові
+        </app-switch-checkbox>
+
+        <app-switch-checkbox
+          [(value)]="filterService.onlySubmitted"
+          (valueChange)="updateFilteredData()"
+          [id]="'onlySubmittedSwitch'"
+        >Лише подані НКС
+        </app-switch-checkbox>
+      </div>
+      <div class="col-8">
+        <app-switch-checkbox
+          [(value)]="filterService.limitDateFilter"
+          (valueChange)="updateFilteredData()"
+          [id]="'limitDateFilterSwitch'"
+        >Дата останнього платежу не пізніше граничної дати дисконтування
+        </app-switch-checkbox>
+        <app-switch-checkbox
+          [(value)]="filterService.paymentSumFilter"
+          (valueChange)="updateFilteredData()"
+          [id]="'paymentSumFilterSwitch'"
+        >Сума платежів (факт.) після РС/ДС не менша суми до сплати
+        </app-switch-checkbox>
+        <app-switch-checkbox [(value)]="filterService.getCalculations" [id]="'getCalculationsFilterSwitch'"
+        >Отримувати розрахунок суми боргу для 1С
+        </app-switch-checkbox>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-6">
+    <ng-container *ngIf="filterService.general">
+      <div class="d-flex flex-wrap">
+        <div *ngFor="let table of tableColorsNames" class="mb-3 mr-3 col-12 col-lg-6">
+          <table class="table text-13">
+            <thead>
+            <tr class="border-bottom">
+              <td><strong>Колір</strong></td>
+              <td><strong>Значення</strong></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr (click)="toggleAgreeTypeFilter(row.values)" *ngFor="let row of table.table">
+              <td
+                [style.background-color]="row.color"
+                [style.border]="typeChosen(row.values, this.agreeTypesFilter) ? '2px solid red' : 'none'"
+                class="pointer"
+              ></td>
+              <td>{{ row.name }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="filterService.documentsVerification">
+      <div class="col-12 col-lg-6">
+        <div *ngFor="let table of approvedDocumentsColorsNames" class="mb-3 mr-3 row-cols-1 row-cols-lg-2">
+          <table class="table text-13">
+            <thead>
+            <tr class="border-bottom">
+              <td class="col"><strong>Колір</strong></td>
+              <td class="col"><strong>Значення</strong></td>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr (click)="toggleApprovedDocumentsTypeFilter(row.values)" *ngFor="let row of table.table">
+              <td
+                [style.background-color]="row.color"
+                [style.border]="typeChosen(row.values, this.approvedDocumentsFilter) ? '2px solid red' : 'none'"
+                class="pointer col"
+              ></td>
+              <td class="col">{{ row.name }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </ng-container>
+    <div class="btn-group" data-toggle="buttons">
+      <label class="btn btn-light">
+        <input
+          (click)="updateFilter('general')"
+          [checked]="filterService.general"
+          id="general"
+          name="documentFilter"
+          type="radio"
+        />
+        Загальні
+      </label>
+      <label class="btn btn-light">
+        <input
+          (click)="updateFilter('documentsVerification')"
+          [checked]="filterService.documentsVerification"
+          id="documentsVerification"
+          name="documentFilter"
+          type="radio"
+        />
+        Перевірка документів
+      </label>
+      <i [ngbTooltip]="tipContent" class="ms-1 bi bi-question-circle"> </i>
+      <ng-template #tipContent
+      ><b>Загальні:</b> Усі доступні фільтри для заяв <br />
+        <br />
+        <b>Перевірка документів:</b> Фільтри для заяв, по яким запросили документи <br /><br />
+      </ng-template>
+    </div>
+  </div>
+</div>
+<!--           ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ ТАБЛИЦЫ           -->
+<div class="d-flex justify-content-between mt-2">
+  <div>
+    <button
+      (click)="templateService.openTemplateTypeChooseModal()"
+      *ngIf="rowsAreChecked"
+      class="btn btn-outline-primary mt-auto me-3"
+    >
+      <i class="bi bi-plus-circle fw-bold me-1"></i>
+      Створити шаблони
+    </button>
+    <button (click)="openRefNumbersJournalModal()" class="btn btn-outline-primary mt-auto">
+      <i class="bi bi-journal-text fw-bold me-1"></i>
+      Вихідні номери
+    </button>
+  </div>
+
+  <ngb-pagination
+    [(page)]="page"
+    [boundaryLinks]="true"
+    [class.disabled-table]="loading$ | async"
+    [collectionSize]="dataLength"
+    [maxSize]="3"
+    [pageSize]="rowsPerPage"
+    [rotate]="true"
+  />
+</div>

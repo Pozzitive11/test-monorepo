@@ -1,0 +1,31 @@
+<div *ngFor="let col of specEditCols" class="mb-1">
+  <div class="input-group text-13">
+    <span
+      class="input-group-text"
+      style="width: 80%; overflow: hidden; text-align: left;"
+    >{{ col }}: </span>
+
+    <button
+      (click)="toggleShow(dropMenu)"
+      (dblclick)="changeField(col, null)"
+      (focusout)="hideDropdown(dropMenu)"
+      class="btn btn-outline-secondary rounded-end"
+      style="width: 20%; overflow: hidden; white-space: nowrap; text-align: right"
+      type="button"
+    >
+      <span>{{ booleanToText(fieldValue(col)) }}</span>
+      <span class="bi bi-caret-down-fill float-end ms-2"></span>
+    </button>
+
+    <ul #dropMenu class="dropdown-menu" style="position: absolute; right: 0; top: 100%; width: 20%">
+      <li
+        *ngFor="let menuValue of ['так', 'ні']"
+      >
+        <a (mousedown)="changeField(col, menuValue === 'так')" class="dropdown-item pointer">{{ menuValue }}</a>
+      </li>
+    </ul>
+
+  </div>
+</div>
+
+

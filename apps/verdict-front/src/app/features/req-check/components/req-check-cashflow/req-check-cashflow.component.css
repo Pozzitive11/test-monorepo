@@ -1,0 +1,16 @@
+.status-label {
+  display: block;
+  padding: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.custom-bg-fcbdbd {
+  background-color: #fcbdbd;
+}
+
+.custom-bg-a2e8a3 {
+  background-color: #a2e8a3;
+}

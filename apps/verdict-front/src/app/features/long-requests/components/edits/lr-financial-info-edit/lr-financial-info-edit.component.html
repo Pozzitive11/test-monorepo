@@ -1,0 +1,52 @@
+<div class="modal-header">
+  <h4 class="modal-title">Фінансовий блок (редагування)</h4>
+  <button (click)="activeModal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+</div>
+
+
+<div class="modal-body">
+  <ul class="list-group list-group-flush">
+
+    <li class="list-group-item">
+      <strong>Собівартість (грн):</strong>
+      <app-sum-input
+        (keyup.enter)="activeModal.close(financialInfo)"
+        (sumChange)="financialInfo.Cost=$event"
+        [sum]="financialInfo.Cost || 0"
+      ></app-sum-input>
+    </li>
+
+    <li *ngIf="financialInfo.CurrencyExchangeRate !== 1" class="list-group-item">
+      <strong>Курс валюти на дату погодження (комерційний):</strong>
+      <app-sum-input
+        (keyup.enter)="activeModal.close(financialInfo)"
+        (sumChange)="financialInfo.CurrencyExchangeRateCommercial=$event"
+        [sum]="financialInfo.CurrencyExchangeRateCommercial || 0"
+      ></app-sum-input>
+    </li>
+
+    <li [class.disabled-table]="loading" class="list-group-item">
+      <lr-inflation-edit
+        (inflationChange)="calculateAccrualSum($event)"
+        *ngIf="inflationInfoEnabled"
+        [contractId]="contractId"
+        [currencies]="currenciesForAccruedSum"
+        [currencyValue]="financialInfo.CurrencyExchangeRate"
+        [inflation]="financialInfo.Inflation"
+        [loading]="loading"
+      ></lr-inflation-edit>
+    </li>
+
+  </ul>
+</div>
+
+
+<div class="modal-footer">
+  <button
+    (click)="activeModal.close(financialInfo)"
+    class="btn btn-outline-primary btn-sm"
+    type="button"
+  >Зберегти
+  </button>
+</div>
+

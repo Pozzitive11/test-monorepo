@@ -1,0 +1,106 @@
+<div class="accordion" style="margin-bottom: 1em">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <ngb-progressbar
+        *ngIf="loading"
+        [animated]="true"
+        [height]="'5px'"
+        [striped]="true"
+        [type]="'info'"
+        [value]="100"
+      ></ngb-progressbar>
+      <button (click)="shown=!shown" [class.collapsed]="!shown" class="accordion-button" type="button">
+        Завантажити інші документи
+      </button>
+    </h2>
+    <div *ngIf="shown" class="collapse-show">
+      <div *ngIf="shown" class="collapse-show">
+        <div class="form-group">
+
+          <app-file-upload
+            (fileAdded)="selectFiles($event)"
+            [id]="'otherDocsInput'"
+            [multiple]="true"
+          ></app-file-upload>
+
+          <div *ngIf="selectedFiles.length > 0" class="alert alert-primary">
+            <div class="row">
+              <div
+                *ngFor="let file of selectedFiles; let i=index"
+                class="input-group top-margin-sm text-12"
+                ngbDropdown
+              >
+                <button
+                  [class.btn-outline-danger]="!validDocType(file)"
+                  [class.btn-outline-success]="validDocType(file)"
+                  class="btn text-11 text-start"
+                  ngbDropdownToggle
+                  style="width: 40%; overflow: hidden"
+                  type="button"
+                >
+                  <span [title]="file.docType ? file.docType.name : 'Тип документа'">
+                    {{ file.docType ? file.docType.name : 'Тип документа' }}
+                    <ng-container *ngIf="file.docType?.name === 'Інше'">({{ file.comment }})</ng-container>
+                  </span>
+                </button>
+                <span
+                  [style.border]="validDocType(file) ? '1px solid #198754' : '1px solid #dc3545'"
+                  [title]="file.file.name"
+                  class="input-group-text"
+                  style="width: 53%; overflow: hidden"
+                >{{ file.file.name | shortText:40 }}</span>
+
+                <ul class="scrollable-drop-list" ngbDropdownMenu>
+                  <li *ngFor="let docType of docTypes">
+                    <a (mousedown)="setDocType(insertDocType, file, docType)" class="pointer"
+                       ngbDropdownItem>{{ docType?.name }}</a>
+                  </li>
+                </ul>
+                <button
+                  (click)="removeFile(i)"
+                  [class.btn-outline-danger]="!validDocType(file)"
+                  [class.btn-outline-success]="validDocType(file)"
+                  class="btn"
+                  style="width: 7%"
+                >
+                  <span class="btn btn-close"></span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <button
+            (click)="uploadFiles()"
+            [disabled]="canUpload()"
+            class="btn btn-primary"
+          >Завантажити файли
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #insertDocType let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Вкажіть тип документу</h4>
+    <button (click)="modal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+  </div>
+  <div class="modal-body">
+    <input
+      [(ngModel)]="docTypeName"
+      class="form-control"
+      placeholder="Тип документа"
+      required
+      type="text"
+    />
+  </div>
+  <div class="modal-footer">
+    <button (click)="modal.close()" class="btn btn-outline-primary" type="button">Підтвердити</button>
+    <button (click)="modal.dismiss()" class="btn btn-outline-secondary" type="button">Відмінити</button>
+  </div>
+</ng-template>
+

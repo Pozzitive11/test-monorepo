@@ -1,0 +1,451 @@
+<div>
+  <div class="row mb-0 mt-3">
+    <div *ngIf="elementService.getCashBla === false" class="col-md-12 text-center border p-2 rounded text-success">
+      <label class="status-label custom-bg-a2e8a3">Клієнт не в чорному списку </label>
+    </div>
+    <div *ngIf="elementService.getCashBla === true" class="col-md-12 text-center border p-2 rounded text-danger">
+      <label class="status-label custom-bg-fcbdbd">Клієнт в чорному списку</label>
+    </div>
+  </div>
+
+  <div class="row mb-0 mt-3">
+    <div *ngIf="elementService.getCashClos === 0" class="col-md-12 text-center border p-2 rounded text-success">
+      <label class="status-label custom-bg-a2e8a3">Кількість закритих кредитів: {{ elementService.getCashClos }}</label>
+    </div>
+    <div *ngIf="elementService.getCashClos > 0" class="col-md-12 text-center border p-2 rounded text-danger">
+      <label class="status-label custom-bg-fcbdbd">Кількість закритих кредитів: {{ elementService.getCashClos }}</label>
+    </div>
+  </div>
+
+  <div class="row mb-0 mt-3">
+    <div *ngIf="elementService.getCashTr === false" class="col-md-12 text-center border p-2 rounded text-success">
+      <label class="status-label custom-bg-a2e8a3">У клієнта немає відкритого кредиту </label>
+    </div>
+    <div *ngIf="elementService.getCashTr === true" class="col-md-12 text-center border p-2 rounded text-danger">
+      <label class="status-label custom-bg-fcbdbd">У клієнта є відкритий кредит</label>
+    </div>
+  </div>
+
+  <div class="row mb-0 mt-3">
+    <div *ngIf="elementService.getCashCash > 0" class="col-md-12 text-center border p-2 rounded text-success">
+      <label class="status-label custom-bg-a2e8a3"
+      >Дохід від клієнта: {{ elementService.getCashCash | currency: "UAH" : "symbol" : "1.2-2" }}</label
+      >
+    </div>
+    <div *ngIf="elementService.getCashCash <= 0" class="col-md-12 text-center border p-2 rounded text-danger">
+      <label class="status-label custom-bg-fcbdbd"
+      >Дохід від клієнта: {{ elementService.getCashCash | currency: "UAH" : "symbol" : "1.2-2" }}</label
+      >
+    </div>
+  </div>
+
+  <div class="row mb-0 mt-3">
+    <div *ngIf="elementService.getCashCashLong > 0" class="col-md-12 text-center border p-2 rounded text-success">
+      <label class="status-label custom-bg-a2e8a3"
+      >У клієнта є закриті кредити, якими користувався більше 7-ми днів</label
+      >
+    </div>
+    <div *ngIf="elementService.getCashCashLong === 0" class="col-md-12 text-center border p-2 rounded text-danger">
+      <label class="status-label custom-bg-fcbdbd"
+      >У клієнта не має закритих кредитів, якими користувався більше 7-ми днів</label
+      >
+    </div>
+  </div>
+
+  <div *ngIf="elementService.fioSee === 1" class="center-container">
+    <h2>
+      <strong>Звіт по FinApi за {{ this.elementService.displayedINN }}</strong>
+    </h2>
+
+    <div *ngIf="elementService.cashFinApi" class="row mb-0 mt-3">
+      <div
+        *ngIf="elementService.cashFinApi.is_pep === false"
+        class="col-md-12 text-center border p-2 rounded text-success"
+      >
+        <label class="status-label custom-bg-a2e8a3">Клієнт відсутній у списку публічних людей</label>
+      </div>
+      <div
+        *ngIf="elementService.cashFinApi.is_pep === true"
+        class="col-md-12 text-center border p-2 rounded text-danger"
+      >
+        <label class="status-label custom-bg-fcbdbd">Клієнт присутній у списку публічних людей</label>
+      </div>
+    </div>
+    <div *ngIf="elementService.cashFinApi" class="row mb-0 mt-3">
+      <div
+        *ngIf="elementService.cashFinApi.is_sanction === false"
+        class="col-md-12 text-center border p-2 rounded text-success"
+      >
+        <label class="status-label custom-bg-a2e8a3">Клієнт відсутній у списку санкцій</label>
+      </div>
+      <div
+        *ngIf="elementService.cashFinApi.is_sanction === true"
+        class="col-md-12 text-center border p-2 rounded text-danger"
+      >
+        <label class="status-label custom-bg-fcbdbd">Клієнт присутній у списку санкцій</label>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="elementService.cashGetCre">
+    <div
+      *ngIf="
+        elementService.cashGetCre.get_ubki_date_diff <= 10 &&
+        elementService.cashGetCre.active_part_percent < 7 &&
+        elementService.cashGetCre.debt_part_percent < 40 &&
+        elementService.cashGetCre.closed_sum > 50000
+      "
+    >
+      <div class="row border border-success p-3 mt-3">
+        <label *ngIf="elementService.cashGetCre.get_ubki_date_diff <= 10" class="status-label text-success"
+        >Інформація з УБКІ отримана меньше ніж 10 днів тому (а саме
+          {{ elementService.cashGetCre.get_ubki_date }}).</label
+        >
+        <label *ngIf="elementService.cashGetCre.get_ubki_date_diff > 10" class="status-label text-danger"
+        >Інформація з УБКІ отримана більше ніж 10 днів тому (а саме
+          {{ elementService.cashGetCre.get_ubki_date }}).</label
+        >
+        <div class="row mb-0 mt-3">
+          <div
+            *ngIf="
+              elementService.cashGetCre.active_part_percent < 7 || elementService.cashGetCre.active_part_percent < 5
+            "
+            class="col-md-12 text-center border p-2 rounded text-success"
+          >
+            <label class="status-label custom-bg-a2e8a3"
+            >Частка простроченої поточної заборгованості у виданих кредитах -
+              {{ elementService.cashGetCre.active_part_percent }}%</label
+            >
+          </div>
+          <div
+            *ngIf="elementService.cashGetCre.active_part_percent > 7"
+            class="col-md-12 text-center border p-2 rounded text-danger"
+          >
+            <label class="status-label custom-bg-fcbdbd"
+            >Частка простроченої поточної заборгованості у виданих кредитах -
+              {{ elementService.cashGetCre.active_part_percent }}%</label
+            >
+          </div>
+        </div>
+        <div class="row mb-0 mt-3">
+          <div
+            *ngIf="elementService.cashGetCre.debt_part_percent < 40"
+            class="col-md-12 text-center border p-2 rounded text-success"
+          >
+            <label class="status-label custom-bg-a2e8a3"
+            >Частка поточної заборгованості у виданих кредитах -
+              {{ elementService.cashGetCre.debt_part_percent | currency: "%" }}</label
+            >
+          </div>
+          <div
+            *ngIf="elementService.cashGetCre.debt_part_percent > 40"
+            class="col-md-12 text-center border p-2 rounded text-danger"
+          >
+            <label class="status-label custom-bg-fcbdbd"
+            >Частка поточної заборгованості у виданих кредитах -
+              {{ elementService.cashGetCre.debt_part_percent | currency: "%" }}</label
+            >
+          </div>
+        </div>
+        <div class="row mb-0 mt-3">
+          <div *ngIf="elementService.cashGetCre.debt_sum < 40" class="col-md-12 text-center border p-2 rounded">
+            <label class="status-label"
+            >Поточна заборгованість по всім кредитам -
+              {{ elementService.cashGetCre.debt_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+          <div *ngIf="elementService.cashGetCre.debt_sum > 40" class="col-md-12 text-center border p-2 rounded">
+            <label class="status-label"
+            >Поточна заборгованість по всім кредитам -
+              {{ elementService.cashGetCre.debt_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+        </div>
+        <div class="row mb-0 mt-3">
+          <div *ngIf="elementService.cashGetCre.debt_exp_sum < 40" class="col-md-12 text-center border p-2 rounded">
+            <label class="status-label"
+            >Поточна прострочена заборгованість по всім кредитам -
+              {{ elementService.cashGetCre.debt_exp_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+          <div *ngIf="elementService.cashGetCre.debt_exp_sum > 40" class="col-md-12 text-center border p-2 rounded">
+            <label class="status-label"
+            >Поточна прострочена заборгованість по всім кредитам -
+              {{ elementService.cashGetCre.debt_exp_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+        </div>
+        <div class="row mb-0 mt-3">
+          <div *ngIf="elementService.cashGetCre.all_credit_sum < 40" class="col-md-12 text-center border p-2 rounded">
+            <label class="status-label"
+            >Сума всіх кредитів -
+              {{ elementService.cashGetCre.all_credit_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+          <div *ngIf="elementService.cashGetCre.all_credit_sum > 40" class="col-md-12 text-center border p-2 rounded">
+            <label class="status-label"
+            >Сума всіх кредитів -
+              {{ elementService.cashGetCre.all_credit_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+        </div>
+        <div class="row mb-0 mt-3">
+          <div *ngIf="elementService.cashGetCre.open_sum < 40" class="col-md-12 text-center border p-2 rounded">
+            <label class="status-label"
+            >Сума відкритих кредитів -
+              {{ elementService.cashGetCre.open_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+          <div *ngIf="elementService.cashGetCre.open_sum > 40" class="col-md-12 text-center border p-2 rounded">
+            <label class="status-label"
+            >Сума відкритих кредитів -
+              {{ elementService.cashGetCre.open_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+        </div>
+        <div class="row mb-0 mt-3">
+          <div *ngIf="elementService.cashGetCre.sold_sum < 40" class="col-md-12 text-center border p-2 rounded">
+            <label class="status-label"
+            >Сума проданих кредитів -
+              {{ elementService.cashGetCre.sold_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+          <div *ngIf="elementService.cashGetCre.sold_sum > 40" class="col-md-12 text-center border p-2 rounded">
+            <label class="status-label"
+            >Сума проданих кредитів -
+              {{ elementService.cashGetCre.sold_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+        </div>
+        <div class="row mb-0 mt-3">
+          <div
+            *ngIf="elementService.cashGetCre.closed_sum > 50000"
+            class="col-md-12 text-center border p-2 rounded text-success"
+          >
+            <label class="status-label custom-bg-a2e8a3"
+            >Сума закритих кредитів понад
+              {{ elementService.cashGetCre.closed_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+          <div
+            *ngIf="elementService.cashGetCre.closed_sum < 50000"
+            class="col-md-12 text-center border p-2 rounded text-danger"
+          >
+            <label class="status-label custom-bg-fcbdbd"
+            >Сума закритих кредитів понад
+              {{ elementService.cashGetCre.closed_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      *ngIf="
+        elementService.cashGetCre.get_ubki_date_diff > 10 ||
+        elementService.cashGetCre.active_part_percent > 7 ||
+        elementService.cashGetCre.debt_part_percent > 40 ||
+        elementService.cashGetCre.closed_sum < 50000
+      "
+    >
+      <div class="row border border-danger p-3 mt-3">
+        <label *ngIf="elementService.cashGetCre.get_ubki_date_diff <= 10" class="status-label text-success"
+        >Інформація з УБКІ отримана меньше ніж 10 днів тому (а саме
+          {{ elementService.cashGetCre.get_ubki_date }}).</label
+        >
+        <label *ngIf="elementService.cashGetCre.get_ubki_date_diff > 10" class="status-label text-danger"
+        >Інформація з УБКІ отримана більше ніж 10 днів тому (а саме
+          {{ elementService.cashGetCre.get_ubki_date }}).</label
+        >
+        <div class="row mb-0 mt-3">
+          <div
+            *ngIf="
+              elementService.cashGetCre.active_part_percent < 7 || elementService.cashGetCre.active_part_percent < 5
+            "
+            class="col-md-12 text-center border p-2 rounded text-success"
+          >
+            <label class="status-label custom-bg-a2e8a3"
+            >Частка простроченої поточної заборгованості у виданих кредитах -
+              {{ elementService.cashGetCre.active_part_percent }}%</label
+            >
+          </div>
+          <div
+            *ngIf="
+              elementService.cashGetCre.active_part_percent > 7 || elementService.cashGetCre.active_part_percent > 10
+            "
+            class="col-md-12 text-center border p-2 rounded text-danger"
+          >
+            <label class="status-label custom-bg-fcbdbd"
+            >Частка простроченої поточної заборгованості у виданих кредитах -
+              {{ elementService.cashGetCre.active_part_percent }}%</label
+            >
+          </div>
+        </div>
+        <div class="row mb-0 mt-3">
+          <div
+            *ngIf="elementService.cashGetCre.debt_part_percent < 40"
+            class="col-md-12 text-center border p-2 rounded text-success"
+          >
+            <label class="status-label custom-bg-a2e8a3"
+            >Частка поточної заборгованості у виданих кредитах -
+              {{ elementService.cashGetCre.debt_part_percent | currency: "%" }}</label
+            >
+          </div>
+          <div
+            *ngIf="elementService.cashGetCre.debt_part_percent > 40"
+            class="col-md-12 text-center border p-2 rounded text-danger"
+          >
+            <label class="status-label custom-bg-fcbdbd"
+            >Частка поточної заборгованості у виданих кредитах -
+              {{ elementService.cashGetCre.debt_part_percent | currency: "%" }}</label
+            >
+          </div>
+        </div>
+        <div class="row mb-0 mt-3">
+          <div *ngIf="elementService.cashGetCre.debt_sum < 40" class="col-md-12 text-center border p-2 rounded">
+            <label class="status-label"
+            >Поточна заборгованість по всім кредитам -
+              {{ elementService.cashGetCre.debt_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+          <div *ngIf="elementService.cashGetCre.debt_sum > 40" class="col-md-12 text-center border p-2 rounded">
+            <label class="status-label"
+            >Поточна заборгованість по всім кредитам -
+              {{ elementService.cashGetCre.debt_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+        </div>
+        <div class="row mb-0 mt-3">
+          <div *ngIf="elementService.cashGetCre.debt_exp_sum < 40" class="col-md-12 text-center border p-2 rounded">
+            <label class="status-label"
+            >Поточна прострочена заборгованість по всім кредитам -
+              {{ elementService.cashGetCre.debt_exp_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+          <div *ngIf="elementService.cashGetCre.debt_exp_sum > 40" class="col-md-12 text-center border p-2">
+            <label class="status-label"
+            >Поточна прострочена заборгованість по всім кредитам -
+              {{ elementService.cashGetCre.debt_exp_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+        </div>
+        <div class="row mb-0 mt-3">
+          <div *ngIf="elementService.cashGetCre.all_credit_sum < 40" class="col-md-12 text-center border p-2 rounded">
+            <label class="status-label"
+            >Сума всіх кредитів -
+              {{ elementService.cashGetCre.all_credit_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+          <div *ngIf="elementService.cashGetCre.all_credit_sum > 40" class="col-md-12 text-center border p-2 rounded">
+            <label class="status-label"
+            >Сума всіх кредитів -
+              {{ elementService.cashGetCre.all_credit_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+        </div>
+        <div class="row mb-0 mt-3">
+          <div *ngIf="elementService.cashGetCre.open_sum < 40" class="col-md-12 text-center border p-2 rounded">
+            <label class="status-label"
+            >Сума відкритих кредитів -
+              {{ elementService.cashGetCre.open_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+          <div *ngIf="elementService.cashGetCre.open_sum > 40" class="col-md-12 text-center border p-2 rounded">
+            <label class="status-label"
+            >Сума відкритих кредитів -
+              {{ elementService.cashGetCre.open_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+        </div>
+        <div class="row mb-0 mt-3">
+          <div *ngIf="elementService.cashGetCre.sold_sum < 40" class="col-md-12 text-center border p-2 rounded">
+            <label class="status-label"
+            >Сума проданих кредитів -
+              {{ elementService.cashGetCre.sold_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+          <div *ngIf="elementService.cashGetCre.sold_sum > 40" class="col-md-12 text-center border p-2 rounded">
+            <label class="status-label"
+            >Сума проданих кредитів -
+              {{ elementService.cashGetCre.sold_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+        </div>
+        <div class="row mb-0 mt-3">
+          <div
+            *ngIf="elementService.cashGetCre.closed_sum > 50000"
+            class="col-md-12 text-center border p-2 rounded text-success"
+          >
+            <label class="status-label custom-bg-a2e8a3"
+            >Сума закритих кредитів понад
+              {{ elementService.cashGetCre.closed_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+          <div
+            *ngIf="elementService.cashGetCre.closed_sum < 50000"
+            class="col-md-12 text-center border p-2 rounded text-danger"
+          >
+            <label class="status-label custom-bg-fcbdbd"
+            >Сума закритих кредитів понад
+              {{ elementService.cashGetCre.closed_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-0 mt-3">
+    <div
+      *ngIf="elementService.cashGetPep.typesearch === -1"
+      class="col-md-12 text-center border p-2 rounded text-success"
+    >
+      <label class="status-label custom-bg-a2e8a3">Суб'єкт не належить до публічних осіб</label>
+    </div>
+    <div
+      *ngIf="elementService.cashGetPep.typesearch != -1"
+      class="col-md-12 text-center border p-2 rounded text-danger"
+    >
+      <label class="status-label custom-bg-fcbdbd">Суб'єкт належить до публічних осіб</label>
+    </div>
+  </div>
+  <div class="row mb-0 mt-3">
+    <div *ngIf="elementService.clientGone" class="col-md-12 text-center border p-2 rounded text-danger">
+      <label class="status-label custom-bg-fcbdbd">Наявна інформація про те, що людина може бути померлою</label>
+    </div>
+    <div *ngIf="!elementService.clientGone" class="col-md-12 text-center border p-2 rounded text-success">
+      <label class="status-label custom-bg-a2e8a3">Немає інформації про те, що людина може бути померлою</label>
+    </div>
+  </div>
+  <div class="row mb-0 mt-3">
+    <div *ngIf="elementService.cashGetWan.found === 0" class="col-md-12 text-center border p-2 rounded text-success">
+      <label class="status-label custom-bg-a2e8a3">Суб'єкт не знайдений в базі МВС</label>
+    </div>
+    <div *ngIf="elementService.cashGetWan.found != 0" class="col-md-12 text-center border p-2 rounded text-danger">
+      <label class="status-label custom-bg-fcbdbd">Суб'єкт знайдений в базі МВС</label>
+    </div>
+  </div>
+
+  <div *ngIf="elementService.cashGetSan" class="row mb-0 mt-3">
+    <div *ngIf="elementService.cashGetSan.found === 0" class="col-md-12 text-center border p-2 rounded text-success">
+      <label class="status-label custom-bg-a2e8a3">Суб'єкт не знайдений в списку санкцій</label>
+    </div>
+    <div *ngIf="elementService.cashGetSan.found != 0" class="col-md-12 text-center border p-2 rounded text-danger">
+      <label class="status-label custom-bg-fcbdbd">Суб'єкт знайдений в списку санкцій</label>
+    </div>
+  </div>
+
+  <div class="row mb-0 mt-3">
+    <div
+      *ngIf="elementService.cashGetBank[0].found === '0'"
+      class="col-md-12 text-center border p-2 rounded text-success"
+    >
+      <label class="status-label custom-bg-a2e8a3">Суб'єкт не знайдений в списку банкруства</label>
+    </div>
+    <div
+      *ngIf="elementService.cashGetBank[0].found != '0'"
+      class="col-md-12 text-center border p-2 rounded text-danger"
+    >
+      <label class="status-label custom-bg-fcbdbd">Суб'єкт знайдений в списку банкруства</label>
+    </div>
+  </div>
+</div>

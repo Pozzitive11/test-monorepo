@@ -1,0 +1,224 @@
+<h5 class="card-header remove-padding">
+  <span class="mb-2 text-18 px-2">
+    Інформація про торги <span
+    *ngIf="!property.InventoryIsDone && !property.InventarizationActDate">відсутня</span><br />
+
+    <strong *ngIf="property.AuctionStage || property.AuctionStatusStop"
+            [class.text-danger]="property.AuctionStageIsPositive === 0 || property.AuctionStatusStop"
+            [class.text-success]="property.AuctionStageIsPositive === 3"
+            [class.text-warning]="property.AuctionStageIsPositive === 2"
+            class="float-end text-14 me-2 mt-1"
+    >
+      {{ property.AuctionStage || property.AuctionStatusStop }}
+    </strong>
+  </span>
+</h5>
+
+<div *ngIf="property.InventoryIsDone || property.InventarizationActDate" class="card-body">
+  <ul class="list-group list-group-flush">
+
+    <ng-container *ngIf="property.InventarizationActDate; else noInventarizationActDate">
+      <li class="list-group-item">
+        <strong>Дата акта опису:</strong>
+        <span class="float-end">{{ property.InventarizationActDate | formatDate:false }}</span>
+      </li>
+
+      <ng-container *ngIf="property.EstimatorApplicationDate; else noEstimatorApplicationDate">
+        <li class="list-group-item">
+          <strong>Дата подачі заяви про призначення оцінювача:</strong>
+          <span class="float-end">{{ property.EstimatorApplicationDate | formatDate:false }}</span>
+        </li>
+
+        <ng-container *ngIf="property.EstimatorAssignmentDate; else noEstimatorAssignmentDate">
+          <li class="list-group-item">
+            <strong>Дата постанови про призначення оцінювача:</strong>
+            <span class="float-end">{{ property.EstimatorAssignmentDate | formatDate:false }}</span>
+          </li>
+
+          <ng-container *ngIf="property.EstimationReady; else noEstimationReady">
+            <li class="list-group-item">
+              <strong>Дата оцінки:</strong>
+              <span class="float-end">{{ property.EstimationReady | formatDate:false }}</span>
+            </li>
+
+            <li *ngIf="property.EstimationSum" class="list-group-item">
+              <strong>Сума оцінки:</strong>
+              <span class="float-end text-end">{{ property.EstimationSum | currency:'UAH':'symbol':'1.0-2' }}</span>
+            </li>
+
+            <ng-container *ngIf="property.AuctionDate1; else noScheduledAuction">
+              <li class="list-group-item">
+                <strong>Дата 1-х торгів:</strong>
+                <span class="float-end">{{ property.AuctionDate1 | formatDate:false }}</span>
+              </li>
+
+              <li *ngIf="property.SaleStartSum1" class="list-group-item">
+                <strong>Початкова сума 1-х торгів:</strong>
+                <span class="float-end text-end">{{ property.SaleStartSum1 | currency:'UAH':'symbol':'1.0-2' }}</span>
+              </li>
+
+              <li *ngIf="property.AuctionResult1" class="list-group-item">
+                <strong>Результат 1-х торгів:</strong>
+                <span class="float-end text-end">{{ property.AuctionResult1 }}</span>
+              </li>
+
+              <li *ngIf="property.SaleResultSum1" class="list-group-item">
+                <strong>Сума результату 1-х торгів:</strong>
+                <span class="float-end text-end">{{ property.SaleResultSum1 | currency:'UAH':'symbol':'1.0-2' }}</span>
+              </li>
+
+              <ng-container *ngIf="property.AuctionDate2; else noScheduledAuction">
+                <li class="list-group-item">
+                  <strong>Дата 2-х торгів:</strong>
+                  <span class="float-end">{{ property.AuctionDate2 | formatDate:false }}</span>
+                </li>
+
+                <li *ngIf="property.SaleStartSum2" class="list-group-item">
+                  <strong>Початкова сума 2-х торгів:</strong>
+                  <span class="float-end text-end">{{ property.SaleStartSum2 | currency:'UAH':'symbol':'1.0-2' }}</span>
+                </li>
+
+                <li *ngIf="property.AuctionResult2" class="list-group-item">
+                  <strong>Результат 2-х торгів:</strong>
+                  <span class="float-end text-end">{{ property.AuctionResult2 }}</span>
+                </li>
+
+                <li *ngIf="property.SaleResultSum2" class="list-group-item">
+                  <strong>Сума результату 2-х торгів:</strong>
+                  <span
+                    class="float-end text-end">{{ property.SaleResultSum2 | currency:'UAH':'symbol':'1.0-2' }}</span>
+                </li>
+
+                <ng-container *ngIf="property.AuctionDate3; else noScheduledAuction">
+                  <li class="list-group-item">
+                    <strong>Дата 3-х торгів:</strong>
+                    <span class="float-end">{{ property.AuctionDate3 | formatDate:false }}</span>
+                  </li>
+
+                  <li *ngIf="property.SaleStartSum3" class="list-group-item">
+                    <strong>Початкова сума 3-х торгів:</strong>
+                    <span
+                      class="float-end text-end">{{ property.SaleStartSum3 | currency:'UAH':'symbol':'1.0-2' }}</span>
+                  </li>
+
+                  <li *ngIf="property.AuctionResult3" class="list-group-item">
+                    <strong>Результат 3-х торгів:</strong>
+                    <span class="float-end text-end">{{ property.AuctionResult3 }}</span>
+                  </li>
+
+                  <li *ngIf="property.SaleResultSum3" class="list-group-item">
+                    <strong>Сума результату 3-х торгів:</strong>
+                    <span
+                      class="float-end text-end">{{ property.SaleResultSum3 | currency:'UAH':'symbol':'1.0-2' }}</span>
+                  </li>
+
+                  <ng-container *ngIf="property.AuctionDate4; else noScheduledAuction">
+                    <li class="list-group-item">
+                      <strong>Дата 4-х торгів:</strong>
+                      <span class="float-end">{{ property.AuctionDate4 | formatDate:false }}</span>
+                    </li>
+
+                    <li *ngIf="property.SaleStartSum4" class="list-group-item">
+                      <strong>Початкова сума 4-х торгів:</strong>
+                      <span
+                        class="float-end text-end">{{ property.SaleStartSum4 | currency:'UAH':'symbol':'1.0-2' }}</span>
+                    </li>
+
+                    <li *ngIf="property.AuctionResult4" class="list-group-item">
+                      <strong>Результат 4-х торгів:</strong>
+                      <span class="float-end text-end">{{ property.AuctionResult4 }}</span>
+                    </li>
+
+                    <li *ngIf="property.SaleResultSum4" class="list-group-item">
+                      <strong>Сума результату 4-х торгів:</strong>
+                      <span
+                        class="float-end text-end">{{ property.SaleResultSum4 | currency:'UAH':'symbol':'1.0-2' }}</span>
+                    </li>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+
+          </ng-container>
+
+        </ng-container>
+
+      </ng-container>
+
+    </ng-container>
+
+    <li *ngIf="property.AuctionStatus" class="list-group-item">
+      <strong>Статус торгів:</strong>
+      <span class="float-end text-end">{{ property.AuctionStatus }}</span>
+    </li>
+
+    <li *ngIf="property.AuctionStatus" class="list-group-item">
+      <strong>Дата переходу в статус:</strong>
+      <span class="float-end text-end">{{ property.AuctionStatusDate | formatDate:false }}</span>
+    </li>
+
+    <li *ngIf="property.SaleSum" class="list-group-item">
+      <strong>Сума реалізації майна:</strong>
+      <span class="float-end text-end">{{ property.SaleSum | currency:'UAH':'symbol':'1.0-2' }}</span>
+    </li>
+
+    <li *ngIf="property.MoneyGettingSum" class="list-group-item">
+      <strong>Сума отриманих коштів:</strong>
+      <span class="float-end text-end">{{ property.MoneyGettingSum | currency:'UAH':'symbol':'1.0-2' }}</span>
+    </li>
+
+    <li *ngIf="property.MoneyGettingDate" class="list-group-item">
+      <strong>Дата отримання коштів:</strong>
+      <span class="float-end text-end">{{ property.MoneyGettingDate | formatDate:false }}</span>
+    </li>
+
+  </ul>
+</div>
+
+
+<ng-template #noInventarizationActDate>
+  <li *ngIf="!property.AuctionStatusStop" class="list-group-item">
+    <strong [class.text-danger]="(property.NoInventarizationActDays || 0) > 200"
+            [class.text-warning]="(property.NoInventarizationActDays || 0) > 14"
+            class="float-end text-end"
+    >Акт опису відсутній {{ daysToString(property.NoInventarizationActDays || 0) }}</strong>
+  </li>
+</ng-template>
+
+<ng-template #noEstimatorApplicationDate>
+  <li *ngIf="!property.AuctionStatusStop" class="list-group-item">
+    <strong [class.text-danger]="(property.NoEstimatorApplicationDays || 0) > 200"
+            [class.text-warning]="(property.NoEstimatorApplicationDays || 0) > 14"
+            class="float-end"
+    >Не подано заяву про призначення оцінювача {{ daysToString(property.NoEstimatorApplicationDays || 0) }}</strong>
+  </li>
+</ng-template>
+
+<ng-template #noEstimatorAssignmentDate>
+  <li *ngIf="!property.AuctionStatusStop" class="list-group-item">
+    <strong [class.text-danger]="(property.NoEstimatorAssignmentDays || 0) > 200"
+            [class.text-warning]="(property.NoEstimatorAssignmentDays || 0) > 14"
+            class="float-end"
+    >Відсутня постанова про призначення оцінювача {{ daysToString(property.NoEstimatorAssignmentDays || 0) }}</strong>
+  </li>
+</ng-template>
+
+<ng-template #noEstimationReady>
+  <li *ngIf="!property.AuctionStatusStop" class="list-group-item">
+    <strong [class.text-danger]="(property.NoEstimationDays || 0) > 200"
+            [class.text-warning]="(property.NoEstimationDays || 0) > 14"
+            class="float-end"
+    >Оцінка відсутня {{ daysToString(property.NoEstimationDays || 0) }}</strong>
+  </li>
+</ng-template>
+
+<ng-template #noScheduledAuction>
+  <li *ngIf="isAuctionScheduled()" class="list-group-item">
+    <strong [class.text-danger]="(property.NoScheduledAuctionDays || 0) > 200"
+            [class.text-warning]="(property.NoScheduledAuctionDays || 0) > 14"
+            class="float-end"
+    >Торги не призначені {{ daysToString(property.NoScheduledAuctionDays || 0) }}</strong>
+  </li>
+</ng-template>
+
+

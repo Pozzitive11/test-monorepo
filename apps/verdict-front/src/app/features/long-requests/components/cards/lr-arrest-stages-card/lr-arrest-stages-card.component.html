@@ -1,0 +1,81 @@
+<div class="card">
+  <h5 (click)="cardBody.hidden=!cardBody.hidden" class="card-header pointer">
+    Арешт коштів
+    <span class="float-end">
+      <i [class.bi-chevron-down]="cardBody.hidden" [class.bi-chevron-up]="!cardBody.hidden" class="bi"></i>
+    </span>
+  </h5>
+  <ngb-progressbar
+    *ngIf="loading"
+    [animated]="true"
+    [height]="'3px'"
+    [striped]="true"
+    [type]="'secondary'"
+    [value]="100"
+  ></ngb-progressbar>
+
+  <div #cardBody [class.disabled-table]="loading" class="card-body">
+    <ul *ngIf="arrestStagesInfo" class="list-group list-group-flush">
+      <li *ngFor="let arrestStages of arrestStagesInfo" class="list-group-item">
+        <div class="card my-2">
+
+          <h5 (click)="incomeStagesCard.hidden=!incomeStagesCard.hidden" class="card-header pointer">
+            <span *ngIf="arrestStages.ClientType" class="mb-2 text-18">{{ arrestStages.ClientType }}<br /></span>
+            <span *ngIf="arrestStages.ClientName" class="mb-2 text-18">{{ arrestStages.ClientName }}<br /></span>
+            <span *ngIf="arrestStages.ClientINN" class="mb-2 text-18">ІПН {{ arrestStages.ClientINN }}<br /></span>
+            <span *ngIf="arrestStages.EPNum" class="mb-2 text-18">ВП {{ arrestStages.EPNum }}<br /></span>
+            <span class="float-end">
+              <i [class.bi-chevron-down]="incomeStagesCard.hidden"
+                 [class.bi-chevron-up]="!incomeStagesCard.hidden"
+                 class="bi"></i>
+            </span>
+          </h5>
+
+          <div #incomeStagesCard class="card-body">
+            <ul class="list-group list-group-flush">
+
+              <li *ngIf="arrestStages.ArrestDate; else noArrest" class="list-group-item">
+                <strong>Дата арешту:</strong>
+                <span class="float-end">{{ arrestStages.ArrestDate | formatDate:false }}</span>
+              </li>
+
+              <ng-template #noArrest>
+                <li *ngIf="!arrestStages.ArrestByINN" class="list-group-item">
+                  <strong [class.text-danger]="arrestStages.NoArrestDays" class="float-end">
+                    Арешт відсутній
+                    <ng-container *ngIf="arrestStages.NoArrestDays"> {{ daysToString(arrestStages.NoArrestDays) }}
+                    </ng-container>
+                  </strong>
+                </li>
+              </ng-template>
+
+              <li *ngIf="arrestStages.NoArrestWithReason" class="list-group-item">
+                <strong class="text-warning">
+                  Арешту не буде по об'єктивним причинам
+                </strong>
+              </li>
+
+              <li *ngIf="arrestStages.ArrestByINN" class="list-group-item">
+                <strong class="text-success">
+                  Арешт наявний по ІПН
+                </strong>
+              </li>
+
+              <li *ngIf="arrestStages.NoArrestBigMoney" class="list-group-item">
+                <strong class="float-end text-danger">
+                  Відсутній арешт коштів по ВП на суму більше 100 тис.
+                </strong>
+              </li>
+
+            </ul>
+          </div>
+
+        </div>
+      </li>
+    </ul>
+
+  </div>
+</div>
+
+
+

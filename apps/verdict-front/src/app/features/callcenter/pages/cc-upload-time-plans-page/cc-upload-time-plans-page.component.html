@@ -1,0 +1,119 @@
+<div class="container-fluid">
+  <h4 class="h4 top-margin-sm">Завантаження планів за часом</h4>
+
+
+  <div class="row">
+    <div class="col-auto">
+      <button class="btn btn-outline-secondary top-margin-sm" role="button" routerLink="..">
+        Повернутися
+      </button>
+    </div>
+  </div>
+
+  <div class="row top-margin-sm">
+    <div class="col-4 alert alert-dark top-margin-sm">
+      <div class="alert alert-secondary">
+        <p class="alert-link" style="text-align: center;">Необхідний формат для обробки:</p>
+        <ul>
+          <li class="alert-link">Файл *.xlsx</li>
+          <li>
+            <p class="alert-link">Необхідні стовпці:</p>
+            <ul>
+              <li>"Назва проєкту"</li>
+              <li>"План (годин)"</li>
+              <li>"Місяць" <span [ngbTooltip]="'Вказати перше число місяця'"><i
+                class="bi bi-question-circle"></i></span></li>
+              <li>"Тип плану"
+                <span
+                  [ngbTooltip]="'Необов\'язковий стовпець. Вказати значення \'З ВП\' (для плану по НКС з відкритими ВП), \'Без ВП\' (для плану по НКС без відкритих ВП) або залишити пустим.'">
+                  <i class="bi bi-question-circle"></i>
+                </span>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <!--        <p class="alert alert-primary">Після завантаження файлу відразу почнеться його обробка</p>-->
+      </div>
+    </div>
+
+    <div class="col-1"></div>
+    <div *ngIf="!loading" class="col-4">
+      <div *ngIf="!disabled" class="form-group">
+
+        <label class="sr-only mb-2" for="inputFile">Завантажити файл для обробки:</label>
+        <label
+          class="form-control-file text-success font-weight-bold"
+          data-title="Оберіть файл"
+        >
+          <input
+            (change)="onUploadFile($event)"
+            accept=".xlsx"
+            id="inputFile"
+            type="file"
+          >
+        </label>
+
+      </div>
+    </div>
+    <div *ngIf="loading" class="col-xxl-4">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+
+
+  </div>
+
+  <div class="row">
+    <div class="col-4">
+      <ngb-progressbar
+        *ngIf="updating"
+        [animated]="true"
+        [height]="'7px'"
+        [striped]="true"
+        [type]="'info'"
+        [value]="100"
+      ></ngb-progressbar>
+
+      <table [class.disabled-table]="updating" class="table table-bordered table-responsive table-sm text-13">
+        <caption>Плани поточного місяця</caption>
+        <thead>
+        <tr class="header-level-1">
+          <td colspan="3" style="text-align: center">Плани поточного місяця</td>
+        </tr>
+        <tr class="header-level" style="text-align: center; vertical-align: middle">
+          <td>
+            Проєкт
+            <input
+              (dblclick)="filter=''"
+              (ngModelChange)="filterChanged()"
+              [(ngModel)]="filter"
+              class="form-control input-group text-11"
+              placeholder="Фільтр"
+            >
+          </td>
+          <td>План (годин)</td>
+          <td>Тип плану</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let row of plans">
+          <td>{{ row.ProjectName }}</td>
+          <td>{{ row.TimePlan | number:'1.0-2' }}</td>
+          <td>{{ row.PlanType ? row.PlanType : '-' }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+

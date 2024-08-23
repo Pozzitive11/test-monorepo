@@ -1,0 +1,139 @@
+<div class="container flex-wrap top-margin-sm">
+  <!--  ФИЛЬТРЫ ТУТ -->
+  <div class="row alert alert-info top-margin-sm">
+    <div class="row">
+      <!--      ФИЛЬТР ПО ДАТЕ -->
+      <div class="col-4">
+        <app-one-month-date-filter></app-one-month-date-filter>
+      </div>
+
+      <div class="col-4">
+        <div class="row">
+          <app-no-take-account-of-filter></app-no-take-account-of-filter>
+        </div>
+        <div class="row">
+          Фільтр за проєктом:
+          <app-project-complex-filter
+            *ngFor="let filter of textFilters; let i=index"
+            [filter]="filter"
+            [id]="i">
+          </app-project-complex-filter>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <button class="btn btn-outline-secondary top-margin-sm" role="button" routerLink="uploadPlans">
+          Завантажити плани
+        </button>
+      </div>
+    </div>
+
+    <div class="row top-margin-sm">
+      <div class="col-4">
+        <button
+          (click)="getData()"
+          [disabled]="!allFiltersSelected() || loading"
+          class="btn btn-success"
+        >
+          Завантажити звіт
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!--  ВКЛАДКИ ОТЧЁТОВ ТУТ -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!--    <a class="navbar-brand left-margin-sm">СЕГМЕНТАЦІЯ</a>-->
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li *ngFor="let type of reportTypes" class="nav-item">
+        <div
+          [class.success-color]="selectedReportTypes.includes(type.type)"
+        >
+          <a
+            (click)="toggleReportType(type.type); updateData()"
+            [ngbTooltip]="type.description"
+            class="nav-link fw-bold pointer"
+          >
+            {{ type.type }}
+          </a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!--  ТАБЛИЦА С ОТЧЁТОМ ТУТ -->
+  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+  <div
+    *ngIf="!loading && reportData.length > 0"
+    class="row max-height-div top-margin-sm"
+  >
+    <table class="table table-bordered table-responsive table-sm text-12">
+      <caption>План/факт за часом</caption>
+      <thead class="sticky-top">
+      <tr class="header-level">
+        <th scope="col" style="vertical-align: middle; text-align: center">
+          <p>Виключити НКС з відкритими ВП</p>
+          <input
+            (click)="checkAll()"
+            [checked]="allChecked()"
+            class="form-check-input big-check"
+            type="checkbox"
+          >
+        </th>
+        <th
+          *ngFor="let column of header"
+          scope="col"
+          style="vertical-align: middle; text-align: center"
+        >
+          {{ column }}
+          <span
+            (click)="changeSortType(column)"
+            [class.bi-filter-left]="getSortType(column).none"
+            [class.bi-sort-down]="getSortType(column).down"
+            [class.bi-sort-up]="getSortType(column).up"
+            [style.font-size]="'25px'"
+            [style.vertical-align]="'middle'"
+            class="bi"
+          ></span>
+        </th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr
+        *ngFor="let row of shownData; let i=index"
+        [class.top-level-row-0]="row.ProjectName.includes('Всього')"
+        [hidden]="hiddenRows.includes(row.ProjectName)"
+        style="text-align: right"
+      >
+        <td style="vertical-align: middle; text-align: center">
+          <input
+            (click)="updateRow(row)"
+            [checked]="row.excludeEP"
+            class="form-check-input big-check"
+            type="checkbox"
+          >
+        </td>
+        <td class="top-level-row-3" style="text-align: left">
+          {{ row.ProjectName }}
+        </td>
+        <td> {{ row.WTimePlan | number:'1.0-2' }}</td>
+        <td> {{ row.WTimePlanNow | number:'1.0-2' }}</td>
+        <td> {{ row.WTimeFact | number:'1.0-2' }}</td>
+        <td> {{ row.Deviation | number:'1.0-2' }}</td>
+        <td> {{ row.PRC | number:'1.0-2' }}</td>
+      </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+</div>
+
+
+
+
+
+
+

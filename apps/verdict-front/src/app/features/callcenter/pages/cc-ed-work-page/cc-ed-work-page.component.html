@@ -1,0 +1,94 @@
+<div class="container-fluid top-margin-sm">
+  <div class="row alert alert-info top-margin-sm">
+    <div class="row">
+      <div class="col-auto">
+        <app-datepicker></app-datepicker>
+      </div>
+      <div class="col-lg-3">
+        <a (click)="switchReestrMode()" class="nav-link pointer">
+          <input
+            [checked]="isInvestProjectOnly"
+            class="form-check-input big-check"
+            type="checkbox"
+          >
+          Фільтр за інвест-портфелями
+        </a>
+        <div [class.disabled-table]="isInvestProjectOnly" class="row top-margin-sm">
+          <app-project-manager></app-project-manager>
+        </div>
+        <div [class.disabled-table]="isInvestProjectOnly" class="row top-margin-sm">
+          <app-project></app-project>
+        </div>
+
+        <hr>
+
+        <div [class.disabled-table]="!isInvestProjectOnly" class="row top-margin-sm">
+          <app-invest-project></app-invest-project>
+        </div>
+      </div>
+
+      <div class="col-2">
+        <div class="row">
+          <a
+            (click)="toggleIsActual()"
+            class="nav-link pointer"
+          >
+            <input
+              [checked]="isActual"
+              class="form-check-input big-check"
+              type="checkbox"
+            >
+            Актуальні реєстри
+          </a>
+        </div>
+        <div class="row top-margin-sm">
+          <app-reestr-type></app-reestr-type>
+        </div>
+        <div class="row top-margin-sm">
+          <app-reestr-status></app-reestr-status>
+        </div>
+        <div class="row top-margin-sm">
+          <app-reestr></app-reestr>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-3 top-margin-sm">
+        <a (click)="isDateFirst=!isDateFirst; updateReport()" class="nav-link pointer">
+          <input
+            [checked]="isDateFirst"
+            class="form-check-input big-check"
+            type="checkbox"
+          >
+          Групувати за датою
+        </a>
+      </div>
+    </div>
+
+    <div class="row top-margin-sm">
+      <div class="col-4">
+        <button
+          (click)="getData()"
+          [disabled]="!allFiltersSelected() || loading"
+          class="btn btn-success"
+        >
+          Завантажити звіт
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!--  ТАБЛИЦА С ОТЧЁТОМ ТУТ -->
+  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+  <app-cc-ed-work-date-table *ngIf="isDateFirst" [class.disabled-table]="loading"></app-cc-ed-work-date-table>
+  <app-cc-ed-work-rnumber-table *ngIf="!isDateFirst" [class.disabled-table]="loading"></app-cc-ed-work-rnumber-table>
+
+</div>
+
+
+
+
+
+
+

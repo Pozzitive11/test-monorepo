@@ -1,0 +1,53 @@
+<div class="my-3">
+  @if (this.dcClosingCertificatesService.checkedRows().length) {
+    <button class="btn btn-outline-success" (click)="open(content)">Створити шаблон</button>
+  }
+  <app-dc-closing-certificate-table></app-dc-closing-certificate-table>
+</div>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    @if (dcClosingCertificatesService.fillClosingCertificateTemplateDataLoader()) {
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    } @else {
+      <h4 class="h4 mt-3 pointer">Довідки про закриття</h4>
+    }
+    <h4 class="modal-title" id="modal-basic-title"></h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="closeModal(modal)"
+      [disabled]="dcClosingCertificatesService.templatesToDBLoader()"
+    ></button>
+  </div>
+  <div class="col-1 mt-1 ms-1">
+    <button class="btn btn-outline-secondary" (click)="closeModal(modal)">Повернутися</button>
+  </div>
+  <div class="modal-body">
+    @if (dcClosingCertificatesService.step() === 1) {
+      @if (dcClosingCertificatesService.fillClosingCertificateTemplateData()) {
+        <app-dc-closing-certificate-card
+          [cardTemplateData]="dcClosingCertificatesService.fillClosingCertificateTemplateData() || []"
+          (confirmTemplate)="confirmDocument($event)"
+        ></app-dc-closing-certificate-card>
+
+        <button class="btn btn-outline-success btn-sm me-2 mt-3" (click)="confirmAll()">
+          <i class="bi bi-check-circle me-2"></i>
+          <span>Підтвердити всі</span>
+        </button>
+      }
+
+      @if (isAllConfirmed()) {
+        <button class="btn btn-outline-success btn-sm me-2 mt-3" (click)="nextStep()">
+          <span class="me-1">Далі</span>
+          <i class="bi bi-arrow-right"></i>
+        </button>
+      }
+    }
+    @if (dcClosingCertificatesService.step() === 2) {
+      <app-dc-closing-certificate-pdf-view (stepChange)="prevStep($event)"></app-dc-closing-certificate-pdf-view>
+    }
+  </div>
+</ng-template>

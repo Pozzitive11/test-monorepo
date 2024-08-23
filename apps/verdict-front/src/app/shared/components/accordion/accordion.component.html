@@ -1,0 +1,16 @@
+<div ngbAccordion class="accordion" [closeOthers]="closeOthers()">
+  @for (item of items(); track item[trackBy()]) {
+    <div ngbAccordionItem [collapsed]="collapsed()(item, $index)" class="accordion-item">
+      <h2 ngbAccordionHeader class="accordion-header">
+        <button ngbAccordionToggle class="accordion-button">{{ item[titleKey()] }}</button>
+      </h2>
+
+      <div ngbAccordionCollapse class="collapse-show">
+        <div ngbAccordionBody>
+          <ng-container [ngTemplateOutlet]="template()" [ngTemplateOutletContext]="{ $implicit: item }">
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  }
+</div>

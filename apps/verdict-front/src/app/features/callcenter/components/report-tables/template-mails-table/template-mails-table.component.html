@@ -1,0 +1,98 @@
+<div
+  *ngIf="!!reportData"
+  class="row max-height-div"
+>
+  <table class="table table-bordered table-responsive table-sm text-12">
+    <caption>Звіт з листів</caption>
+    <thead class="sticky-top">
+    <tr class="header-level-1">
+      <th colspan="1">
+        <i (click)="hideAllTemplates()" *ngIf="!areTemplatesHidden()" class="pointer">Згорнути</i>
+        <i (click)="showAllTemplates()" *ngIf="areTemplatesHidden()" class="pointer">Розгорнути</i>
+      </th>
+      <th colspan="1">
+        <i (click)="hideAllProjects()" *ngIf="!areProjectsHidden()" class="pointer">Згорнути</i>
+        <i (click)="showAllProjects()" *ngIf="areProjectsHidden()" class="pointer">Розгорнути</i>
+      </th>
+      <th colspan="1">
+        <i (click)="hideAllReestrs()" *ngIf="!areReestrsHidden()" class="pointer">Згорнути</i>
+        <i (click)="showAllReestrs()" *ngIf="areReestrsHidden()" class="pointer">Розгорнути</i>
+      </th>
+      <th colspan="8"></th>
+    </tr>
+    <tr class="header-level">
+      <th
+        *ngFor="let column of reportData.column_names"
+        scope="col"
+      >
+        {{ column }}
+      </th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr
+      *ngFor="let row of reportData.rows"
+      [class.top-level-row-0]="row.TemplateName.includes('Всього')"
+      [class.top-level-row-1]="row.ProjectName.toString().includes('Всього')"
+      [class.top-level-row-2]="row.RNumber.toString().includes('Всього')"
+      [class.top-level-row-3]="row.ActivityDate.includes('Всього')"
+      [hidden]="hiddenRows.includes(row.RowNum)"
+      style="text-align: right"
+    >
+      <td
+        (click)="toggleTemplate(row.TemplateNum)"
+        *ngIf="isFirstTemplateRow(row)"
+        [class.pointer]="!row.TemplateName.includes('Всього')"
+        [rowSpan]="getTemplateLen(row.TemplateNum)"
+        style="text-align: left"
+      >
+        <ng-container *ngIf="!row.TemplateName.includes('Всього') && !(row.ProjectName === '')">
+          <b *ngIf="isTemplateHidden(row.TemplateNum)">[+]</b>
+          <b *ngIf="!isTemplateHidden(row.TemplateNum)">[-]</b>
+        </ng-container>
+        {{ row.TemplateName }}
+      </td>
+      <td
+        (click)="toggleProject(row.ProjectNum)"
+        *ngIf="isFirstProjectRow(row)"
+        [class.pointer]="!row.ProjectName.includes('Всього') && !row.TemplateName.includes('Всього')"
+        [rowSpan]="getProjectLen(row.ProjectNum)"
+        style="text-align: left"
+      >
+        <ng-container *ngIf="!row.ProjectName.includes('Всього') && !!row.RNumber">
+          <b *ngIf="isProjectHidden(row.ProjectNum)">[+]</b>
+          <b *ngIf="!isProjectHidden(row.ProjectNum)">[-]</b>
+        </ng-container>
+        {{ row.ProjectName }}
+      </td>
+
+      <td
+        (click)="toggleReestr(row.RNumber)"
+        *ngIf="isFirstReestrRow(row)"
+        [rowSpan]="getReestrLen(row.RNumber)"
+        class="pointer"
+        style="text-align: left"
+      >
+        <ng-container *ngIf="!!row.ActivityDate">
+          <b *ngIf="isReestrHidden(row.RNumber)">[+]</b>
+          <b *ngIf="!isReestrHidden(row.RNumber)">[-]</b>
+        </ng-container>
+        {{ row.RNumber }}
+      </td>
+      <td> {{ row.ActivityDate }}</td>
+      <td> {{ row.LetterCount | number:'1.0-0' }}</td>
+      <td> {{ row.PromiseAmount | number:'1.0-2' }}</td>
+      <td> {{ row.PromiseDate }}</td>
+      <td> {{ row.PaymentsCount | number:'1.0-0' }}</td>
+      <td> {{ row.PaymentSum | number:'1.0-2' }}</td>
+      <td> {{ row.Blank }}</td>
+      <td> {{ row.Sender }}</td>
+    </tr>
+    </tbody>
+
+  </table>
+</div>
+
+
+

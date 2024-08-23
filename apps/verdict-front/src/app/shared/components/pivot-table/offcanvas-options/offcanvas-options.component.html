@@ -1,0 +1,39 @@
+<ng-template #content let-offcanvas>
+  <div class="offcanvas-header">
+    <h4 class="offcanvas-title">Опції для зведеної таблиці</h4>
+  </div>
+
+  <div class="offcanvas-body">
+    <pivot-selected-values
+      [showRedZoneSlider]="showRedZoneSlider()"
+      (closeCanvas)="offcanvas.close()"
+    />
+  </div>
+
+  <div class="offcanvas-button-container">
+    <button (click)="offcanvas.close()"
+            [ngbPopover]="infoClose"
+            [placement]="'left'"
+            [triggers]="'hover'"
+            class="btn btn-outline-primary offcanvas-button"
+    >
+      <i class="bi bi-chevron-double-up"></i>
+    </button>
+  </div>
+</ng-template>
+
+<button (click)="openTop(content)"
+        [ngbPopover]="info"
+        [placement]="'right'"
+        [triggers]="'hover'"
+        class="btn btn-outline-primary offcanvas-button"
+>
+  <i class="bi bi-chevron-double-down"></i>
+</button>
+
+<ng-template #info>
+  <span>Відкрити опції</span>
+</ng-template>
+<ng-template #infoClose>
+  <span>Сховати</span>
+</ng-template>

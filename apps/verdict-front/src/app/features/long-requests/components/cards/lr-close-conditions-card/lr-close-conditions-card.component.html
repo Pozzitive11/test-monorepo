@@ -1,0 +1,76 @@
+<div class="card">
+  <h5 (click)="cardBody.hidden=!cardBody.hidden" class="card-header pointer">
+    Умови закриття
+    <span class="float-end">
+      <button
+        (click)="openEdit(); cardBody.hidden=!cardBody.hidden"
+        [ngbTooltip]="'Редагувати'"
+        class="btn btn-outline-secondary btn-sm right-margin-sm"
+      >
+<!--        Редагувати-->
+        <i class="bi bi-pencil-square"></i>
+      </button>
+      <i [class.bi-chevron-down]="cardBody.hidden" [class.bi-chevron-up]="!cardBody.hidden" class="bi"></i>
+    </span>
+  </h5>
+  <ngb-progressbar
+    *ngIf="loading"
+    [animated]="true"
+    [height]="'3px'"
+    [striped]="true"
+    [type]="'secondary'"
+    [value]="100"
+  ></ngb-progressbar>
+
+  <div #cardBody [class.disabled-table]="loading" class="card-body">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <strong>Сума до сплати:</strong>
+        <span
+          class="float-end">{{ closeConditions.SumToPay | currency: closeConditions.PayCurrency : 'symbol' : '1.0-2' }}</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Дисконт:</strong>
+        <span *ngIf="closeConditions.DiscountPercent" class="float-end">
+          {{ closeConditions.DiscountPercent | number:'1.0-2' }} %
+        </span>
+        <span *ngIf="!closeConditions.DiscountPercent" class="float-end">-</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Реструктуризація (місяців):</strong>
+        <span *ngIf="closeConditions.RestructuringMonths" class="float-end">
+          {{ closeConditions.RestructuringMonths }}
+        </span>
+        <span *ngIf="!closeConditions.RestructuringMonths" class="float-end">-</span>
+      </li>
+      <li *ngIf="closeConditions.RestructuringMonths" class="list-group-item">
+        <strong>Сума платежу по РС/місяць:</strong>
+        <span class="float-end">{{ closeConditions.RestructuringPaymentPerMonth | number:'1.0-2' }}</span>
+      </li>
+      <li *ngIf="closeConditions.RestructuringMonths" class="list-group-item">
+        <strong>Дата першої оплати:</strong>
+        <span class="float-end">{{ closeConditions.RestructuringFirstPayment | formatDate }}</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Гранична дата сплати:</strong>
+        <span class="float-end">{{ closeConditions.PaymentDateLimit | formatDate }}</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Метод закриття:</strong>
+        <span class="float-end">{{ closeConditions.ClosingMethod }}</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Коментар:</strong>
+        <span class="float-end">{{ closeConditions.Comment }}</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Податкові зобов'язання під час врегулювання:</strong>
+        <span class="float-end">{{ closeConditions.TaxObligations }}</span>
+      </li>
+    </ul>
+
+  </div>
+</div>
+
+
+

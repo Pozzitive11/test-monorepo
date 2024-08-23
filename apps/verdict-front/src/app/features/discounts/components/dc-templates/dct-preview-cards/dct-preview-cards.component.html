@@ -1,0 +1,51 @@
+<div *ngIf="shownTemplateData" [class.border-danger]="!shownTemplateData.fileBlob" class="card">
+  <div class="card-body">
+    <ngx-extended-pdf-viewer
+      *ngIf="shownTemplateData.fileBlob"
+      [filenameForDownload]="shownTemplateData.fileBlobName || undefined"
+      [height]="'700px'"
+      [showDownloadButton]="false"
+      [showDrawEditor]="false"
+      [showFindButton]="false"
+      [showHandToolButton]="false"
+      [showOpenFileButton]="false"
+      [showPagingButtons]="true"
+      [showPresentationModeButton]="false"
+      [showPrintButton]="false"
+      [showPropertiesButton]="false"
+      [showRotateButton]="true"
+      [showScrollingButton]="false"
+      [showSecondaryToolbarButton]="false"
+      [showSidebarButton]="false"
+      [showSpreadButton]="false"
+      [showTextEditor]="false"
+      [showToolbar]="true"
+      [showZoomButtons]="true"
+      [src]="shownTemplateData.fileBlob"
+      zoom="90%"
+    >
+      <!--      [useBrowserLocale]="true"-->
+    </ngx-extended-pdf-viewer>
+
+    <ng-container *ngIf="shownTemplateData && !shownTemplateData.fileBlob">
+      <ngb-progressbar
+        *ngIf="shownTemplateData.fileLoaded === false"
+        [animated]="true"
+        [height]="'5px'"
+        [striped]="true"
+        [type]="'secondary'"
+        [value]="100"
+      ></ngb-progressbar>
+
+      <span class="text-danger">Помилка завантаження файлу</span>
+      <button
+        (click)="reloadFile.emit(selectedTemplate && { id: selectedTemplate.id, templateType: selectedTemplate.templateType })"
+              [class.disabled-table]="shownTemplateData && shownTemplateData.fileLoaded === false"
+        class="btn btn-outline-primary btn-sm float-end"
+      >
+        <span class="bi bi-arrow-repeat"></span>
+        Повторити
+      </button>
+    </ng-container>
+  </div>
+</div>

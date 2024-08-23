@@ -1,0 +1,112 @@
+<div class="modal-header">
+  <h4 class="modal-title">Введіть дані</h4>
+  <button (click)="activeModal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+</div>
+<div class="modal-body pb-5">
+
+  <ul class="list-group">
+    <li class="list-group-item">
+      <strong [class.text-danger]="!manualRefNumber.ContractId">НКС:</strong>
+      <app-input-in-group (valueChangedNumber)="changeContract($event)"
+                          [fillColor]="'#fff'"
+                          [typeOfInput]="'number'"
+                          [value]="'' + manualRefNumber.ContractId">
+      </app-input-in-group>
+    </li>
+
+    <li [class.disabled-table]="loading" class="list-group-item">
+      <ngb-progressbar
+        *ngIf="loading"
+        [animated]="true"
+        [height]="'3px'"
+        [striped]="true"
+        [type]="'primary'"
+        [value]="100"
+      ></ngb-progressbar>
+
+      <strong [class.text-danger]="manualRefNumber.ClientPromotionId === null">Оберіть відповідну заявку:</strong>
+
+      <table *ngIf="contractPromotions.length" class="table table-bordered table-hover table-sm mt-1 text-14">
+        <thead>
+        <tr>
+          <th>Дата подачі</th>
+          <th>Гранична дата</th>
+          <th>Погодження</th>
+          <th>Сума боргу</th>
+          <th>Дисконт</th>
+          <th>Реструктуризація</th>
+          <th>Сума до сплати</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr (click)="manualRefNumber.ClientPromotionId=promotion.id"
+            *ngFor="let promotion of contractPromotions"
+            [style.background-color]="manualRefNumber.ClientPromotionId === promotion.id ? '#6FD5A8B2 !important' : 'white'"
+            class="pointer">
+          <td>{{ promotion.EntryDate | formatDate }}</td>
+          <td>{{ promotion.PaymentDateLimit | formatDate }}</td>
+          <td>{{ promotion.Agreed }}</td>
+          <td>{{ promotion.Debt | number:'1.0-2' }}</td>
+          <td>{{ promotion.DiscountPercent | number:'1.0-2' }} %</td>
+          <td>{{ promotion.RestructuringMonths || '-' }} {{ promotion.RestructuringMonths ? ' міс.' : '' }}</td>
+          <td>{{ promotion.SumToPay | number:'1.0-2' }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </li>
+
+    <li class="list-group-item">
+      <strong [class.text-danger]="!manualRefNumber.Company">Компанія:</strong>
+      <app-searchable-list
+        (valueSelected)="manualRefNumber.Company=$event"
+        [list]="refNumberCompanies"
+        [multiple]="false"
+      ></app-searchable-list>
+    </li>
+
+    <li class="list-group-item">
+      <strong [class.text-danger]="!manualRefNumber.DocType">Тип документу:</strong>
+      <span class="float-end">
+        <app-default-dropdown (valueSelected)="manualRefNumber.DocType=$event"
+                              [placement]="'bottom-end'"
+                              [selectedValue]="manualRefNumber.DocType"
+                              [valueList]="docTypes"
+        ></app-default-dropdown>
+      </span>
+    </li>
+
+    <li class="list-group-item">
+      <strong [class.text-danger]="!manualRefNumber.RefNumber">Вих. номер:</strong>
+      <app-input-in-group [(value)]="manualRefNumber.RefNumber"></app-input-in-group>
+    </li>
+
+    <li class="list-group-item">
+      <strong>Вих. номер (дата):</strong>
+
+      <app-date-picker-popup
+        [(chosenDate)]="refNumberDate"
+        [maxDate]="maxDate"
+        [minDate]="minDate"
+      ></app-date-picker-popup>
+    </li>
+
+    <li class="list-group-item">
+      <strong [class.text-danger]="!manualRefNumber.Executant">Виконавець:</strong>
+      <app-input-in-group [(value)]="manualRefNumber.Executant" [fillColor]="'#fff'"></app-input-in-group>
+    </li>
+  </ul>
+
+</div>
+<div class="modal-footer">
+  <button (click)="activeModal.dismiss()" class="btn btn-outline-secondary" type="button">
+    <i class="bi bi-arrow-return-left me-2"></i>
+    Скасувати
+  </button>
+  <button (click)="activeModal.close(manualRefNumber)"
+          [disabled]="!canBeSaved()"
+          class="btn btn-outline-success"
+          type="button">
+    Підтвердити
+  </button>
+</div>

@@ -1,0 +1,777 @@
+.container {
+  width: 100%;
+  max-width: 1366px;
+  padding: 32px; /* Добавляем внутренние отступы */
+  margin: 0 auto; /* Центрирование контейнера */
+  box-sizing: border-box;
+  background: rgb(255, 255, 255); /* Белая заливка */
+  border-radius: 9.49px; /* Закругленные углы */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 
+  0 1px 3px rgba(0, 0, 0, 0.08); /* Мягкие тени */
+}
+body {
+  font-family: Geologica, sans-serif;
+  color: rgb(23, 23, 23);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+h6 {
+  font-family: Geologica, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+
+
+.active-tab {
+  color: rgb(23, 23, 23);
+  cursor: pointer;
+}
+
+.inactive-tab {
+  color: rgb(162, 162, 162);
+  cursor: pointer;
+}
+
+
+/* tab menu */
+/* tab menu */
+.nav-switches {
+  width: 1302px;
+  height: 54px;
+  margin: 20px auto; /* Центрирование контейнера */
+}
+
+.nav-switches .nav-tabs {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.nav-switches .nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.nav-switches .nav-link {
+  font-family: "Geologica", sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 1.69231;
+    text-transform: uppercase;
+    color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 32px;
+  border-radius: 15px 15px 0 0;
+  text-decoration: none;
+  color: rgb(23, 23, 23);
+
+background: rgb(240, 241, 244);/* Серый цвет для неактивной вкладки */
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.nav-switches .nav-link.active {
+  color: rgb(23, 23, 23); /* Синий цвет для активной вкладки */
+  color: #fff;
+}
+
+.nav-switches .nav-link i {
+  margin-left: 8px;
+}
+
+.nav-switches .nav-item::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  bottom: -4px;
+  left: 0;
+  background: rgb(47, 73, 209); /* Синий цвет подчеркивания */
+  display: none;
+}
+
+.nav-switches .nav-link.active + .active-tab-line {
+  display: block;
+}
+
+.nav-switches .selected-tab .nav-link {
+  background: rgb(47, 73, 209);
+  color: #fff;
+}
+
+/* delimiter */
+.delimiter {
+  width: 1302px;
+  height: 0;
+  margin: 0 auto; /* Центрирование контейнера */
+  box-sizing: border-box;
+  border: 1.5px solid rgb(47, 73, 209);
+}
+
+
+/* search banner */
+.search-banner {
+  background: rgb(227, 230, 235);
+  border-radius: 20px 20px 0 0;
+  padding: 20px 32px;
+  margin-top: 20px;
+}
+
+.search-banner h2 {
+  font-family: "Geologica", sans-serif;
+font-weight: 600;
+font-size: 22px;
+line-height: 1.41667;
+color: #171717;
+  margin: 0;
+}
+
+/* search toggle */
+.search-toggle {
+  margin: 20px;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.search-toggle .toggle-option {
+  font-family: "Geologica", sans-serif;
+font-weight: 600;
+font-size: 18px;
+line-height: 1.4;
+color: #2f49d1;
+  padding: 0 20px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  color: #a2a2a2;
+}
+
+.search-toggle .toggle-option.active {
+  color: rgb(47, 73, 209);
+  font-weight: bold;
+}
+
+.search-toggle .toggle-switch {
+  margin: 0 10px;
+  position: relative;
+  width: 54px;
+  height: 32px;
+}
+
+.search-toggle .toggle-switch input {
+  display: none;
+}
+
+.search-toggle .toggle-switch label {
+  display: inline-block;
+  width: 54px;
+  height: 32px;
+  background: rgb(255, 255, 255);
+  border: 1px solid rgba(156, 165, 181, 0.25);
+  border-radius: 50px;
+  box-shadow: 0px 4px 4px 0px rgba(156, 165, 181, 0.25);
+  position: relative;
+  cursor: pointer;
+}
+
+.search-toggle .toggle-switch label::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background: rgb(47, 73, 209);
+  border-radius: 50px;
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  transition: left 0.3s ease;
+}
+
+.search-toggle input:checked + label::after {
+  left: 28px;
+}
+/* search container */
+.search-container {
+  margin: 30px;
+  width: 1050px;
+  height: 64px;
+  left: 60px;
+  top: 149px;
+  box-sizing: border-box;
+  border: 1px solid rgb(230, 232, 236);
+  border-radius: 100px;
+  box-shadow: 0px 4px 4px 0px rgba(156, 165, 181, 0.25);
+  background: rgb(255, 255, 255);
+}
+
+.search-input {
+  font-family: "Geologica", sans-serif;
+font-weight: 300;
+font-size: 16px;
+line-height: 1.375;
+color: #a2a2a2;
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 100px;
+  outline: none;
+}
+
+
+
+
+
+.modal.show {
+  display: flex;
+}
+
+
+
+.filter-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+
+
+.btn-search {
+  background: #2F49D1;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-search:hover {
+  background: #1e348c;
+}
+
+.form-check-input {
+  margin-top: 0.3rem;
+}
+/* Додати сторону */
+.custom-checkbox {
+  margin-left: 30px;
+  width: 161px;
+  height: 24px;
+  left: 60px;
+  top: 228px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0px;
+}
+
+.custom-checkbox .form-check-input {
+  position: static;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin: 0px 12px;
+  box-sizing: border-box;
+  border: 1px solid rgba(156, 165, 181, 0.25);
+  border-radius: 5px;
+  background: rgb(255, 255, 255);
+}
+.custom-checkbox .form-check-input:checked {
+  background-color: transparent;
+  border: none;
+  background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="%23000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>ic_fluent_checkbox_checked_24_regular</title> <desc>Created with Sketch.</desc> <g id="🔍-Product-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="ic_fluent_checkbox_checked_24_regular" fill="%232F49D1" fill-rule="nonzero"> <path d="M18.25,3 C19.7687831,3 21,4.23121694 21,5.75 L21,18.25 C21,19.7687831 19.7687831,21 18.25,21 L5.75,21 C4.23121694,21 3,19.7687831 3,18.25 L3,5.75 C3,4.23121694 4.23121694,3 5.75,3 L18.25,3 Z M18.25,4.5 L5.75,4.5 C5.05964406,4.5 4.5,5.05964406 4.5,5.75 L4.5,18.25 C4.5,18.9403559 5.05964406,19.5 5.75,19.5 L18.25,19.5 C18.9403559,19.5 19.5,18.9403559 19.5,18.25 L19.5,5.75 C19.5,5.05964406 18.9403559,4.5 18.25,4.5 Z M10,14.4393398 L16.4696699,7.96966991 C16.7625631,7.6767767 17.2374369,7.6767767 17.5303301,7.96966991 C17.7965966,8.23593648 17.8208027,8.65260016 17.6029482,8.94621165 L17.5303301,9.03033009 L10.5303301,16.0303301 C10.2640635,16.2965966 9.84739984,16.3208027 9.55378835,16.1029482 L9.46966991,16.0303301 L6.46966991,13.0303301 C6.1767767,12.7374369 6.1767767,12.2625631 6.46966991,11.9696699 C6.73593648,11.7034034 7.15260016,11.6791973 7.44621165,11.8970518 L7.53033009,11.9696699 L10,14.4393398 L16.4696699,7.96966991 L10,14.4393398 Z" id="🎨Color"> </path> </g> </g> </g></svg>');
+  background-size: cover;
+}
+
+
+.custom-checkbox .form-check-label {
+  position: static;
+  width: 125px;
+  height: 22px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0px;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin: 0px 12px;
+  color: rgb(23, 23, 23);
+  font-family: Geologica, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: 0px;
+  text-align: left;
+}
+/* Filters container */
+.filters-container {
+/* Filters */
+margin-left: 30px;
+border: 1px solid #e6e8ec;
+    border-radius: 100px;
+    width: 1050px;
+    height: 64px;
+
+background:#fff;
+}
+
+/* Filter column */
+.filter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.selected  {
+  border: 1px solid rgb(23, 23, 23);
+  border-radius: 8px;
+  background: rgb(255, 255, 255);
+  padding: 10px;
+}
+
+.row.justify-content-between {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.col-auto.filter {
+  flex: 0 0 auto;
+  margin: 10px;
+}
+
+
+
+
+
+
+.btn-primary {
+  margin-bottom: 20px;
+  position: relative; /* Это необходимо для абсолютного позиционирования иконки внутри кнопки */
+  width: 141.23px;
+  height: 52px;
+  background-color: #007bff; /* Цвет кнопки */
+  color: white; /* Цвет текста и иконки */
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-family: Geologica;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 140%;
+  border-radius: 8px;
+
+background: rgb(47, 73, 209);
+}
+
+.btn-primary svg {
+  margin-right: 8px; /* Отступ между иконкой и текстом */
+}
+
+.btn-primary:hover {
+  background-color: #0056b3; /* Цвет кнопки при наведении */
+}
+
+.btn-primary:focus {
+  outline: none; /* Убираем стандартный outline */
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5); /* Добавляем кастомный outline */
+}
+
+
+.form-control {
+  width: 100%;
+}
+
+
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.filter-group label {
+  position: static;
+  width: 115px;
+  height: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0px;
+  color: rgb(23, 23, 23);
+  font-family: Geologica, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 10px;
+  position: relative;
+}
+
+.filter:not(:last-child)::after {
+  content: "";
+  width: 1px;
+  height: 36px;
+  background: rgba(156, 165, 181, 0.25);
+  position: absolute;
+  top: 30%;
+  transform: translateY(-50%);
+  right: -10px;
+}
+
+.custom-form-control {
+  position: static;
+  width: 150px;
+  height: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0px;
+  color: rgb(162, 162, 162);
+  font-family: Geologica, sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 16px;
+  letter-spacing: 0px;
+  text-align: left;
+  border: none; /* Убираем обводку */
+  box-shadow: none; /* Убираем тени */
+}
+
+.court-list, .region-list {
+  position: absolute;
+  background-color: #f9f9f9;
+  width: 100%;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.court-list .dropdown-item, .region-list .dropdown-item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.court-list .dropdown-item:hover, .region-list .dropdown-item:hover {
+  background-color: #f1f1f1;
+}
+.search-dropdown {
+  position: absolute;
+  width: 800px;
+height: 176px;
+  border-radius: 20px;
+  box-shadow: 0px 15px 50px 0px rgba(156, 165, 181, 0.25);
+  background-color: white;
+  z-index: 1000;
+  top: 100%; /* Позиционирование под input */
+  left: 0;
+  overflow: hidden;
+}
+
+.search-dropdown-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.search-dropdown-item:hover {
+  background-color: #f1f1f1;
+}
+
+.search-dropdown-icon {
+  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.search-dropdown-icon svg {
+  width: 19px;
+  height: 19px;
+}
+/* Общие стили для модального окна */
+.modal {
+  position: relative;
+  width: 845px;
+  height: 188px;
+  border-radius: 15px;
+  box-shadow: 0px 15px 50px 0px rgba(156, 165, 181, 0.25);
+  background-color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Стили для кнопок */
+.btn-remove, .btn-add {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: Geologica, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0px;
+}
+.btn-add {
+  color: #2f49d1;
+}
+
+
+
+.btn-remove svg, .btn-add svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Стили для элементов фильтров */
+.participant-filter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.form-select, .form-control {
+  flex: 1;
+}
+
+.filter-actions {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: auto;
+  color: #2f49d1;
+}
+
+
+
+.filter-actions .btn-add svg {
+  width: 20px;
+  height: 20px;
+}
+.modal {
+  display: none;
+}
+.divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(156, 165, 181, 0.25);
+  margin: 10px 0;
+}
+.custom-form-control:focus {
+  outline: none; /* Убирает черный ободок */
+  box-shadow: none; /* Убирает тень */
+  border-color: rgba(162, 162, 162, 0.5); /* Задает цвет рамки при фокусе */
+}
+.filter-container{
+  border-radius: 20px;
+
+background: rgb(240, 241, 244);
+}
+.selected {
+  right:10px;
+  height: 64px;
+  bottom: 12px;
+  box-sizing: border-box;
+  border: 1px solid rgb(23, 23, 23);
+  border-radius: 100px;
+}
+.filterss{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+}
+.view-switcher span {
+  border: 1px solid #e6e8ec;
+  border-radius: 8px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 10px;
+  
+}
+
+.view-switcher span.active {
+  background-color: #e6e8ec;
+}
+
+.view-switcher span svg {
+  width: 16px;
+  height: 17px;
+}
+
+.pagination .page-link {
+  color: #171717;
+}
+.custom-dropdownss .dropdown-toggless {
+  border: 1px solid #e6e8ec;
+  border-radius: 8px;
+  width: 250px;
+  height: 48px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  font-family: "Geologica", sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.33333;
+  color: #171717;
+  cursor: pointer;
+}
+
+.custom-dropdownss .dropdown-toggless svg:first-child {
+  margin-right: 10px;
+}
+
+.custom-dropdownss .dropdown-toggless svg:last-child {
+  margin-left: auto;
+  fill: #171717;
+}
+
+.custom-dropdownss .dropdown-menu {
+  border-radius: 8px;
+  border: 1px solid #e6e8ec;
+  padding: 10px 0;
+  min-width: 250px;
+}
+
+.custom-dropdownss .dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  font-family: "Geologica", sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  color: #171717;
+  cursor: pointer;
+}
+
+.custom-dropdownss .dropdown-item:hover {
+  background-color: #f5f5f5;
+}
+.view-switcher-container{
+  margin: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+.sort-container{
+  display: flex;
+    justify-content: flex-end;
+}
+.badge .bg-secondary{
+  border-radius: 100px;
+width: 241px;
+height: 36px;
+background: #eaedfa;
+font-family: "Geologica", sans-serif;
+font-weight: 400;
+font-size: 14px;
+line-height: 1.42857;
+color: #171717;
+}
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.styled-table thead tr {
+  background-color: #213081;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.styled-table th, .styled-table td {
+  padding: 12px 15px;
+
+}
+.styled-table tr {
+  background: rgb(47, 73, 209);
+  color: #fff;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #213081;
+}
+
+.styled-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.icon-wrapper {
+  cursor: pointer;
+  margin-left: 8px;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(156, 165, 181, 0.25);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-wrapper svg {
+  width: 20px;
+  height: 21px;
+}
+
+.icons-table {
+  display: flex;
+}
+

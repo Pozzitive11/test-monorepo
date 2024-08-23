@@ -1,0 +1,187 @@
+<div class="container-fluid top-margin-sm">
+  <!--  ФИЛЬТРЫ ТУТ -->
+  <div class="row alert alert-info top-margin-sm">
+    <div class="row">
+      <!--      ФИЛЬТР ПО ДАТЕ -->
+      <div class="col-3">
+        Період:
+        <div
+          (clickOutside)="dropMenu.classList.remove('show')"
+          class="nav-item dropdown top-margin-sm"
+          clickOutside
+        >
+          <!--          Місяць:-->
+          <button
+            (click)="toggleShow(dropMenu)"
+            (wheel)="scrollMonth($event)"
+            aria-expanded="false"
+            class="form-control dropdown-toggle"
+            data-bs-toggle="dropdown"
+            id="navbarDropdown"
+            role="button"
+            style="width: 70%"
+          >{{ month.name }}
+          </button>
+
+          <ul
+            #dropMenu
+            aria-labelledby="navbarDropdown"
+            class="dropdown-menu dropdown-menu-start"
+            style="z-index: 9999; overflow-y: scroll; max-height: 17rem; width: 70%"
+          >
+            <li>
+              <div *ngFor="let mon of months" class="row-cols-auto">
+                <a
+                  (click)="setMonth(mon); toggleShow(dropMenu)"
+                  class="nav-link pointer back-hover"
+                >
+                  {{ mon.name }}
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!--          Рік:-->
+        <input
+          [(ngModel)]="year"
+          [max]="currentYear()"
+          class="form-control top-margin-sm"
+          min="2014"
+          style="width: 70%"
+          type="number"
+        >
+
+      </div>
+
+      <div class="col-4">
+        <a (click)="switchReestrMode()" class="nav-link pointer">
+          <input
+            [checked]="isInvestProjectOnly"
+            class="form-check-input big-check"
+            type="checkbox"
+          >
+          Фільтр за інвест-портфелями
+        </a>
+        <div [class.disabled-table]="isInvestProjectOnly" class="row top-margin-sm">
+          <app-project-manager></app-project-manager>
+        </div>
+        <div [class.disabled-table]="isInvestProjectOnly" class="row top-margin-sm">
+          <app-project></app-project>
+        </div>
+
+        <hr style="width: 80%">
+
+        <div [class.disabled-table]="!isInvestProjectOnly" class="row top-margin-sm">
+          <app-invest-project></app-invest-project>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="row">
+          <a
+            (click)="toggleIsActual()"
+            class="nav-link pointer"
+          >
+            <input
+              [checked]="isActual"
+              class="form-check-input big-check"
+              type="checkbox"
+            >
+            Актуальні реєстри
+          </a>
+        </div>
+        <div class="row top-margin-sm">
+          <app-reestr-type></app-reestr-type>
+        </div>
+        <div class="row top-margin-sm">
+          <app-reestr-status></app-reestr-status>
+        </div>
+        <div class="row top-margin-sm">
+          <app-reestr></app-reestr>
+        </div>
+      </div>
+    </div>
+
+    <div class="row top-margin-sm">
+
+    </div>
+
+    <div class="row top-margin-sm">
+      <div class="col-3 top-margin-sm">
+        <a (click)="isTemplatesFirst=!isTemplatesFirst; processReportData()" class="nav-link pointer">
+          <input
+            [checked]="isTemplatesFirst"
+            class="form-check-input big-check"
+            type="checkbox"
+          >
+          Групувати за шаблонами листів
+        </a>
+      </div>
+
+      <div class="col-auto top-margin-sm">
+        <div class="input-group mb-3">
+          <span class="input-group-text">Враховувати платежі з</span>
+          <input
+            [(ngModel)]="payDayStart"
+            [max]="payDayEnd"
+            class="form-control"
+            min="0"
+            type="number"
+          >
+          <span class="input-group-text">дня по</span>
+          <input
+            [(ngModel)]="payDayEnd"
+            [min]="payDayStart"
+            class="form-control"
+            type="number"
+          >
+          <span class="input-group-text">від відправки листа</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row top-margin-sm">
+      <div class="col-3">
+        <button
+          (click)="getData()"
+          [disabled]="!allFiltersSelected() || loading"
+          class="btn btn-success"
+        >
+          Завантажити звіт
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!--  ТАБЛИЦА С ОТЧЁТОМ ТУТ -->
+  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+
+  <ngb-progressbar
+    *ngIf="updating"
+    [animated]="true"
+    [height]="'7px'"
+    [striped]="true"
+    [type]="'info'"
+    [value]="100"
+  ></ngb-progressbar>
+  <ng-container *ngIf="!!processedData && !loading && !updating">
+    <app-default-mails-table
+      *ngIf="!isTemplatesFirst"
+      [reportData]="processedData"
+    ></app-default-mails-table>
+
+    <app-template-mails-table
+      *ngIf="isTemplatesFirst"
+      [reportData]="processedData"
+    ></app-template-mails-table>
+  </ng-container>
+
+</div>
+
+
+
+
+
+
+

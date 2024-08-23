@@ -1,0 +1,137 @@
+<div class="row my-3">
+  <div class="col">
+    <button (click)="reloadData.emit()" class="btn btn-outline-primary">Оновити дані</button>
+
+    <button
+      (click)="closeAll.emit()"
+      *ngIf="privateEntrepreneursInfoCollapsed.length === 0; else openBtn"
+      class="btn btn-outline-primary ms-3"
+    >
+      Сховати всі
+    </button>
+    <ng-template #openBtn>
+      <button (click)="openAll.emit()" class="btn btn-outline-primary ms-3">Показати всі</button>
+    </ng-template>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <div *ngFor="let info of privateEntrepreneursInfo; let i = index" class="accordion">
+      <div [class.border-danger]="info.Accounts.length === 0" class="accordion-item">
+        <h2 class="accordion-header">
+          <button
+            (click)="hideInfo.emit(info.id)"
+            [class.collapsed]="privateEntrepreneursInfoCollapsed.includes(info.id)"
+            [style.opacity.%]="info.IsActive ? 100 : 50"
+            class="accordion-button"
+            type="button"
+          >
+            <i
+              *ngIf="info.IsActive"
+              [disableTooltip]="false"
+              [ngbTooltip]="'Статус ФОП'"
+              class="bi bi-check-circle-fill text-success"
+            ></i>
+
+            <i
+              *ngIf="!info.IsActive"
+              [disableTooltip]="false"
+              [ngbTooltip]="'Статус ФОП'"
+              class="bi bi-x-circle-fill text-danger"
+            ></i>
+            <span [ngbTooltip]="'Рахунки ФОП'"
+                  class="badge bg-primary rounded-pill mx-2">{{ info.Accounts.length }}</span>
+
+            <span>{{ info.Name }} ({{ info.INN }})</span>
+          </button>
+        </h2>
+
+        <div *ngIf="!privateEntrepreneursInfoCollapsed.includes(info.id)" class="accordion-body">
+          <ul
+            (click)="selectAccount.emit(account.BankAccountId); openAccount(account.BankAccountId)"
+            *ngFor="let account of info.Accounts; let last = last"
+            [class.mb-3]="!last"
+            [class.selected-account]="selectedAccount === account.BankAccountId"
+            class="list-group pointer"
+          >
+            <li class="list-group-item">
+              <strong>Баланс:</strong>
+              <span [class.text-danger]="(account.Balance || 0) < 0" class="float-end">
+                {{ account.Balance | currency: "UAH" : "symbol" : "1.2-2" }}
+              </span>
+            </li>
+
+            <li class="list-group-item">
+              <strong>Номер рахунку:</strong>
+              <span class="float-end">{{ account.IBAN }}</span>
+            </li>
+
+            <li class="list-group-item">
+              <strong>Назва банку:</strong>
+              <span class="float-end">{{ account.BankName }} ({{ account.MFO }})</span>
+            </li>
+
+            <li class="list-group-item">
+              <strong>Транзакції наявні за період:</strong>
+              <span class="float-end">
+                {{ account.StartDate | date: "dd.MM.yyyy" }} - {{ account.EndDate | date: "dd.MM.yyyy" }}
+              </span>
+            </li>
+          </ul>
+          <div style="margin-top: 10px">
+            <button (click)="activate(info.id)" class="btn btn-outline-success">Активувати</button>
+            <button (click)="deactivate(info.id)" class="btn btn-outline-danger" style="margin-left: 10px">
+              Деактивувати
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div *ngFor="let info of privateEntrepreneursInfo" class="info-container">
+      <div *ngFor="let account of info.Accounts">
+        <div *ngIf="selectedAccount === account.BankAccountId"
+             [class.selected-account]="selectedAccount === account.BankAccountId">
+          <table class="table custom-table">
+            <thead>
+            <tr>
+              <th>Місяць</th>
+              <th *ngFor="let paymentType of getDistinctPaymentTypes(account.BankAccountId)">{{ paymentType }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr
+              *ngFor="
+                  let monthYear of getDistinctPaymentTypesWithMonthYear(account.BankAccountId);
+                  let monthIndex = index
+                "
+              class="table-row"
+            >
+              <td>
+                <a (click)="fullTableInThisMonth(account.BankAccountId, monthYear.month, monthYear.year)"
+                >{{ months[monthYear.month] }} {{ monthYear.year }}</a
+                >
+              </td>
+
+              <td
+                *ngFor="let paymentType of getDistinctPaymentTypes(account.BankAccountId)"
+                class="money"
+                style="vertical-align: middle"
+              >
+                {{
+                  getTransactionSumForMonth(account.BankAccountId, monthYear.year, monthYear.month, paymentType)
+                    | currency: "UAH" : "symbol" : "1.2-2"
+                }}
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--<td><a (click)="fullTableInThisMonth(month, info.id)">{{ month }} 2023</a></td>-->

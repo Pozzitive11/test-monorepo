@@ -1,0 +1,132 @@
+<div class="card-container h-100">
+  <div class="col h-100">
+    <div class="row h-100">
+      <div class="col mb-3 h-100" *ngIf="miniCourtData">
+        <!-- Переключатель вида -->
+
+        <!-- Отображение данных в виде карточек -->
+        <div class="h-100" *ngIf="currentView === 'cards'">
+          <div class="card court-card">
+            <div class="card-header text-white">
+              <h5 class="card-title">Номер справи: {{ miniCourtData.caseNumber }}</h5>
+            </div>
+            <div class="card-body">
+              <div class="court-info">
+                <div class="court-container">
+                  <span class="highlight">
+                    <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M2.94616 5.00742H19.0376M10.9922 5.00742V19.3288M6.00425 22.0645H15.981L14.2109 19.6507H7.6134L6.00425 22.0645ZM12.5041 3.09314C12.5041 3.93741 11.8197 4.62183 10.9754 4.62183C10.1311 4.62183 9.44672 3.93741 9.44672 3.09314C9.44672 2.24887 10.1311 1.56445 10.9754 1.56445C11.8197 1.56445 12.5041 2.24887 12.5041 3.09314ZM6.92118 11.9107C6.92118 13.3428 5.76259 14.5175 4.31436 14.5175C2.86613 14.5175 1.72363 13.3428 1.72363 11.9107L4.33045 5.00742L6.92118 11.9107ZM20.2774 11.9107C20.2774 13.3428 19.1188 14.5175 17.6706 14.5175C16.2223 14.5175 15.0638 13.3589 15.0638 11.9107L17.6706 5.00742L20.2774 11.9107Z" stroke="#2F49D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </span>
+                  <div class="court-details">
+                    <span class="highlights">Суд</span>
+                    <span class="court-name">{{ miniCourtData.courtName }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="court-container">
+              <div *ngIf="miniCourtData.judge" class="court-container">
+                <span class="highlight">
+                  <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.8044 20.4235L19.0386 21.6577C19.5622 22.1439 20.385 22.1439 20.8712 21.6203C21.3574 21.1341 21.3948 20.3113 20.8712 19.7877L19.6744 18.5909M17.8044 20.4235L19.6744 18.5909M17.8044 20.4235L11.5181 14.0998M19.6744 18.5909L13.3507 12.2672M1.83148 10.6216L1.36046 11.0926C0.546515 11.9066 0.546515 13.2262 1.36046 14.0402L3.49931 16.179C4.31326 16.993 5.63291 16.993 6.44685 16.179L6.91788 15.708M14.9963 7.92881L15.6169 7.30818C16.4308 6.49424 16.4308 5.17458 15.6169 4.36064L13.478 2.22178C12.6641 1.40784 11.3444 1.40784 10.5305 2.22178L9.90988 2.84241M6.24062 3.74407L2.94689 7.03781C1.73014 8.25455 1.72538 10.2258 2.93623 11.4484L6.25133 14.7957C7.46633 16.0225 9.44579 16.0321 10.6726 14.8171L13.9984 11.5232C15.2294 10.3041 15.2342 8.31633 14.0091 7.09125L10.6619 3.74407C9.44102 2.52316 7.46154 2.52316 6.24062 3.74407Z" stroke="#2F49D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
+                <div class="court-details">
+                <span class="highlights">Судді</span>
+                <span class="court-name">{{ miniCourtData.judge }}</span>
+                </div>
+              </div>
+              </div>
+              <div *ngIf="miniCourtData.plaintiff && miniCourtData.plaintiff.length > 0" class="court-container">
+                <span class="highlight">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="rgb(47, 73, 209)" fill="none">
+                    <path d="M16.9961 9.01264H17.0042M17.0045 7.00903V4.50451M22 6.792C22 9.43833 19.7593 11.584 16.9961 11.584C16.6711 11.5844 16.3472 11.5543 16.028 11.4943C15.7983 11.4511 15.6835 11.4296 15.6033 11.4418C15.523 11.454 15.4094 11.5145 15.1822 11.6356C14.5393 11.9778 13.7896 12.0987 13.0686 11.9645C13.3426 11.627 13.5298 11.2222 13.6123 10.7882C13.6624 10.5228 13.5384 10.2649 13.3526 10.0762C12.5093 9.21878 11.9922 8.06347 11.9922 6.792C11.9922 4.14565 14.2328 2 16.9961 2C19.7593 2 22 4.14565 22 6.792Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M7.50189 22H4.71817C4.39488 22 4.07021 21.9545 3.77327 21.8269C2.80666 21.4116 2.31624 20.8633 2.08769 20.5202C1.95764 20.325 1.97617 20.0764 2.11726 19.889C3.23716 18.4015 5.8337 17.503 7.50189 17.5029M7.50665 22H10.2904C10.6137 22 10.9383 21.9545 11.2353 21.8269C12.2019 21.4116 12.6923 20.8633 12.9209 20.5202C13.0509 20.325 13.0324 20.0764 12.8913 19.889C11.7714 18.4015 9.17484 17.503 7.50665 17.5029M10.2854 12.2888C10.2854 13.8201 9.0413 15.0614 7.50665 15.0614C5.97199 15.0614 4.72791 13.8201 4.72791 12.2888C4.72791 10.7575 5.97199 9.51611 7.50665 9.51611C9.0413 9.51611 10.2854 10.7575 10.2854 12.2888Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
+                <div class="court-details">
+                <span class="highlights">Позивач:</span>
+                <ng-container *ngFor="let plaintiff of miniCourtData.plaintiff; let last = last">
+                  <div class="plaintiff-info">
+                    <span class="court-name" (click)="setSearchString(plaintiff.NAME)">Назва: {{ plaintiff.NAME }}</span>
+                    <span *ngIf="plaintiff.TYPE" class="court-name"> Тип: {{ plaintiff.TYPE }}</span>
+                    <span *ngIf="plaintiff.EDRPOU" class="court-name"> Код: {{ plaintiff.EDRPOU }}</span>
+                  </div>
+                  <span *ngIf="!last"></span>
+                </ng-container>
+              </div>
+              </div>
+              <div *ngIf="miniCourtData.defendant && miniCourtData.defendant.length > 0" class="court-container">
+                <span class="highlight">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="rgb(47, 73, 209)" fill="none">
+                    <path d="M5 9.08333C5 7.91667 6 7.5 6.5 7.5C7.49411 7.5 8 8.25383 8 9.08333C8 11.0163 6.65685 12 5 12C3.34315 12 2 10.433 2 8.5C2 6.567 3.34315 5 5 5H19C20.6569 5 22 6.567 22 8.5C22 10.433 20.6569 12 19 12C17.3431 12 16 11.0163 16 9.08333C16 8.25383 16.5059 7.5 17.5 7.5C18 7.5 19 7.91667 19 9.08333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M3 20C3 19.4477 3.44772 19 4 19H20C20.5523 19 21 19.4477 21 20V21C21 21.5523 20.5523 22 20 22H4C3.44772 22 3 21.5523 3 21V20Z" stroke="currentColor" stroke-width="1.5" />
+                    <path d="M13 9H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M9.5 19L9.5 15M14.5 19L14.5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M19 5C19 3.58579 19 2.87868 18.5607 2.43934C18.1213 2 17.4142 2 16 2H8C6.58579 2 5.87868 2 5.43934 2.43934C5 2.87868 5 3.58579 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M5 12V19H19V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                </span>
+                <div class="court-details">
+                <span class="highlights">Відповідач:</span>
+                <ng-container *ngFor="let defendant of miniCourtData.defendant; let last = last">
+                  <div class="defendant-info">
+                    <span class="court-name" (click)="setSearchString(defendant.NAME)">Назва: {{ defendant.NAME }}</span>
+                    <span *ngIf="defendant.TYPE" class="court-name"> Тип: {{ defendant.TYPE }}</span>
+                    <span *ngIf="defendant.EDRPOU" class="court-name"> Код: {{ defendant.EDRPOU }}</span>
+                  </div>
+                  <span *ngIf="!last"></span>
+                </ng-container>
+              </div>
+              </div>
+              <div *ngIf="miniCourtData.description" class="court-container">
+                <span class="highlight">
+                  <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.0005 5.44922H17.7505C18.3005 5.44922 18.7505 5.89922 18.7505 6.44922V13.6992M11.0005 5.44922H4.25049C3.70049 5.44922 3.25049 5.89922 3.25049 6.44922V13.6992M11.0005 5.44922V15.4492M18.7505 12.4492V12.1819M18.7505 12.1819H14.2678C11.2818 12.1819 11.0005 14.5992 11.0005 15.4492M18.7505 12.1819V14.4492C18.7505 14.9992 18.3005 15.4492 17.7505 15.4492H11.0005M11.0005 15.4492C11.0005 14.6242 10.7295 12.1819 7.73319 12.1819H3.25049M11.0005 15.4492H4.25049C3.70049 15.4492 3.25049 14.9992 3.25049 14.4492V12.1819M3.25049 12.1819V12.4492M20.2505 2.69922C20.8005 2.69922 21.2505 3.14922 21.2505 3.69922V17.1992C21.2505 17.7492 20.8005 18.1992 20.2505 18.1992H4.75049C4.65049 18.1992 4.55049 18.2242 4.45049 18.2992L2.25049 19.9492V18.6992C2.25049 18.4242 2.02549 18.1992 1.75049 18.1992C1.20049 18.1992 0.750488 17.7492 0.750488 17.1992V3.69922C0.750488 3.14922 1.20049 2.69922 1.75049 2.69922H20.2505Z" stroke="#2F49D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
+                <div class="court-details">
+                <span class="highlights">Предмет позову:</span>
+                <span class="court-name">{{ miniCourtData.description }}</span>
+              </div>
+              </div>
+              <div *ngIf="miniCourtData.lastDate" class="court-container">
+                <span class="highlight">
+                  <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14.0495 3.74137L7.94904 3.78838M4.99294 3.74137H4.10816C2.95141 3.74137 2.0127 4.6789 2.0127 5.83684V19.969C2.0127 21.1257 2.95141 22.0645 4.10816 22.0645H17.8915C19.0483 22.0645 19.9869 21.1269 19.9869 19.969V5.83684C19.9869 4.68009 19.0483 3.74137 17.8915 3.74137H17.0068M19.9629 8.537H2.0127M2.0127 18.5823C2.3386 18.7223 2.68983 18.7923 3.04435 18.7888H15.5023C15.7066 18.7854 15.9017 18.7028 16.0439 18.557M5.09052 2.58235C5.09052 2.02001 5.72393 1.56445 6.50548 1.56445C7.28694 1.56445 7.92034 2.02001 7.92034 2.58235V4.96928C7.92034 5.53152 7.28694 5.98717 6.50548 5.98717C5.72393 5.98717 5.09052 5.53152 5.09052 4.96928V2.58235ZM14.1085 2.59436C14.1085 2.03202 14.7419 1.57646 15.5235 1.57646C16.3049 1.57646 16.9384 2.03202 16.9384 2.59436V4.98129C16.9384 5.54362 16.3049 5.99918 15.5235 5.99918C14.7419 5.99918 14.1085 5.54362 14.1085 4.98129V2.59436ZM16.0424 14.7013H19.9017L16.0424 18.5606V14.7013Z" stroke="#2F49D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
+                <div class="court-details">
+                <span class="highlights">Дата останньої події:</span>
+                <span class="court-name">{{ miniCourtData.lastDate }}</span>
+              </div>
+              </div>
+            </div>
+            <div class="card-footer text-right">
+              <button type="button" class="custom-button" data-bs-toggle="modal"
+                      (click)="openModal.emit(miniCourtData)">Детальніше
+              </button>
+              <button class="btn-add"
+              [ngClass]="isSubscribed ? 'unsubscribe-btn' : 'subscribe-btn'"
+              (click)="toggleSubscription()">
+        <i class="fas" [ngClass]="isSubscribed ? 'fa-times' : 'fa-plus'"></i>
+        {{ isSubscribed ? 'Відписатись від справи' : 'Слідкувати за справою' }}
+      </button>
+              
+              <div #popover="bs-popover" [popover]="popoverContent" placement="top" triggers="manual" containerClass="custom-popover-container"></div>
+              
+              <ng-template #popoverContent>
+                <app-confirmation-popover
+                  [showButtons]="showButtons"
+                  [title]="popoverTitle"
+                  [message]="popoverMessage"
+                  (confirmed)="handlePopoverConfirmed($event)">
+                </app-confirmation-popover>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

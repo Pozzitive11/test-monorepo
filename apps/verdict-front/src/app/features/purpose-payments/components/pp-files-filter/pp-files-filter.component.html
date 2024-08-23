@@ -1,0 +1,45 @@
+<strong>Фільтр за файлами:</strong>
+
+<div class="input-group top-margin-sm" role="group">
+  <button
+    (click)="clearChosen(true)"
+    class="btn btn-outline-success text-11"
+    type="button"
+  >
+    <span>Обрати всі</span>
+  </button>
+
+  <button
+    (click)="clearChosen(false)"
+    class="btn btn-outline-danger text-11"
+    type="button"
+  >
+    <span>Очистити</span>
+  </button>
+
+  <input
+    (dblclick)="textFilter=''"
+    (ngModelChange)="updateTextFilter()"
+    [(ngModel)]="textFilter"
+    class="form-control text-11"
+    placeholder="Фільтр"
+    style="width: 40%; margin-right: 10px"
+  >
+</div>
+
+<app-default-dropdown
+  (valueSelected)="chooseFile($event)"
+  [selectable]="false"
+  [selectedValue]="'Обрати файл'"
+  [valueList]="shown_available_files"
+  [fontSize]="11"
+  btnClass="btn btn-secondary dropdown-toggle mt-2"
+></app-default-dropdown>
+
+<div class="col-auto alert alert-info top-margin-sm" style="overflow-y: scroll; max-height: 17rem">
+  <div *ngFor="let file of chosen_files" class="row-cols-auto">
+    {{ file }}
+    <button (click)="removeFile(file)" class="btn btn-sm btn-close"></button>
+  </div>
+</div>
+

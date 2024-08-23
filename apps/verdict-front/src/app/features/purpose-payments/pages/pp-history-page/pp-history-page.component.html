@@ -1,0 +1,36 @@
+<div class="container-fluid">
+  <h4 class="h4 mb-2 top-margin-sm">Історія змін ({{ processType }})</h4>
+
+  <div class="row mb-2">
+
+    <div class="col-3">
+      <strong>Тип буфера:</strong>
+      <app-default-dropdown
+        (valueSelected)="updateProcessType($event)"
+        [cycled]="true"
+        [selectedValue]="processType"
+        [valueList]="processTypes"
+        btnClass="btn btn-success dropdown-toggle mt-2"
+        [fontSize]="13"
+      />
+    </div>
+
+    <div class="col-8" style="z-index: 105;">
+      <strong>Обрати період:</strong>
+      <app-date-picker-range-popup
+        (dateChanged)="dates=$event"
+        [fromDate]="dates.fromDate"
+        [maxDate]="datesRange.MaxDate"
+        [minDate]="datesRange.MinDate"
+        [toDate]="dates.toDate"
+      >
+        <button (click)="$event.preventDefault(); updateData()" class="btn btn-outline-success">Застосувати</button>
+      </app-date-picker-range-popup>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <app-table-with-filters [data]="historyData()" [loading]="loading()" />
+  </div>
+</div>

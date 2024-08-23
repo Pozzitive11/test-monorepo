@@ -1,0 +1,54 @@
+<button
+  (click)="open(content)"
+  aria-expanded="false"
+  class="nav-link d-flex align-items-center"
+  id="userInfoOpen"
+  role="button"
+  style="border: none; background: none"
+>
+  <strong>{{ username }}</strong>
+  <i class="bi bi-person-circle" style="font-size: 30px; margin: 0 0.5rem"></i>
+</button>
+
+
+<ng-template #content let-offcanvas>
+  <div class="offcanvas-header">
+    <h4 class="offcanvas-title">Файли користувача</h4>
+    <button (click)="offcanvas.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+  </div>
+
+  <div class="offcanvas-body mb-2">
+    <div *ngIf="!userFiles.length">
+      Файли відсутні
+    </div>
+
+    <div *ngFor="let file of userFiles">
+      <div class="input-group top-margin-sm row" role="group" style="width: 100%">
+        <button
+          (mousedown)="downloadFile(file)"
+          [ngbTooltip]="'Скачати ' + file"
+          class="btn btn-secondary col-9"
+          style="margin-left: 0.5rem;">
+          {{ file }}
+        </button>
+        <button
+          (click)="removeFile(file)"
+          [ngbTooltip]="'Видалити ' + file"
+          class="btn btn-outline-danger col-2"
+        >
+          <i class="bi bi-x-circle"></i>
+        </button>
+      </div>
+    </div>
+
+    <hr>
+    <asep-user-files-info (navigatedAway)="offcanvas.close()"></asep-user-files-info>
+
+    <div class="text-end">
+      <button (click)="offcanvas.close()" class="btn btn-outline-dark top-margin-sm" type="button">Закрити</button>
+    </div>
+  </div>
+</ng-template>
+
+
+

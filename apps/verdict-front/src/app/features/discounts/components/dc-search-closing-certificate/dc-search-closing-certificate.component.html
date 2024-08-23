@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col-12 col-md-6 d-flex flex-column flex-md-row align-items-strart gap-3">
+    <div class="d-flex align-items-center me-3 pointer">
+      <div class="form-check form-switch pointer top-margin-sm">
+        <input
+          class="form-check-input pointer"
+          [(ngModel)]="dcClosingCertificatesService.isFullClosure"
+          type="checkbox"
+          id="isFullClosure"
+        />
+        <label class="form-check-label pointer" for="isFullClosure">Повне закриття</label>
+      </div>
+    </div>
+    <div class="mt-3 mt-md-0">
+      <app-date-picker-range-popup
+        (dateChanged)="dcClosingCertificatesService.changeDateRange($event)"
+        [fromDate]="dcClosingCertificatesService.fromDate()"
+        [toDate]="dcClosingCertificatesService.toDate()"
+      ></app-date-picker-range-popup>
+    </div>
+    <button
+      class="btn btn-primary top-margin-sm"
+      [disabled]="!dcClosingCertificatesService.toDate() || !dcClosingCertificatesService.fromDate()"
+      (click)="dcClosingCertificatesService.getClosingCertificatesInfo()"
+    >
+      Пошук
+    </button>
+  </div>
+</div>

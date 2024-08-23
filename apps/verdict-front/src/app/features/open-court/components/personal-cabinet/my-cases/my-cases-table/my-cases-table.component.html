@@ -1,0 +1,365 @@
+<div *ngIf="showInfoBanner" class="info-banner">
+  <div class="info-close" (click)="closeInfoBanner()">×</div>
+  <div class="info-content">
+    <p class="welcome">Ласкаво просимо до особистого кабінету!</p>
+    <p>Тут ви можете керувати своїми судовими справами.</p>
+    <p><i class="fas fa-bell"></i> Сповіщення по справі.</p>
+    <p><i class="fas fa-pencil-alt"></i> Редагувати справу.</p>
+    <p>
+      <mat-icon style="font-size: 17px;">visibility_off</mat-icon>
+      Відписатись від оновлень.
+    </p>
+    <p><i class="fas fa-tag"></i> Редагувати коротке позначення</p>
+  </div>
+</div>
+<div class="search-bar">
+  <input type="text" placeholder="Введіть номер справи або ваш нікнейм справи" [(ngModel)]="searchQuery"
+         (keyup)="searchCases()" />
+</div>
+<div *ngIf="noCasesFound" class="no-cases-message">
+  <div class="no-cases-card">
+    <p>Наразі ви не підписані на жодну справу.</p>
+    <span class="navigate-link" (click)="navigateToStartPage()">Перейдіть до пошуку</span>, оберіть судову справу та додайте її до відстеження.
+  </div>
+
+</div>
+
+<div *ngIf="!noCasesFound">
+  <div *ngIf="filteredCourtData.length" class="card-container">
+    <div class="card">
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let court of filteredCourtData" [expanded]="court.isExpanded">
+          <mat-expansion-panel-header (click)="toggleAccordion(court); scrollToElement()">
+            <mat-panel-title>
+              <div class="card-header">
+                <h5>
+                  {{ court.caseNumber }}
+                  <span *ngIf="court.userCase && court.userCase.tag">
+                    ({{ court.userCase.tag }})
+                  </span>
+                  <button mat-icon-button class="tag-button"
+                          ngbPopover
+                          #tagPopover="ngbPopover"
+                          (click)="court.isExpanded && $event.stopPropagation()"
+                          [autoClose]="'outside'"
+                          [ngbPopover]="popoverContent"
+                          matTooltip="Редагувати коротке позначення"
+                          matTooltipPosition="above">
+                    <mat-icon>local_offer</mat-icon>
+                  </button>
+                </h5>
+                <ng-template #popoverContent>
+                  <div class="form-group">
+                    <label for="tagInput" class="label-highlight">Введіть тег:</label>
+                    <input type="text" id="tagInput" [(ngModel)]="court.userCase.tag" class="form-control custom-input"
+                           (click)="$event.stopPropagation()" />
+                  </div>
+                  <button class="label-highlight add-tag-button" (click)="updateTag(court.userCase.id, court.userCase.tag); tagPopover.close()">Зберегти</button>
+                  <button class="label-highlight delete-tag-button" (click)="deleteTag(court.userCase.id); tagPopover.close()">Видалити тег</button>
+                </ng-template>
+
+                <div class="notification-wrapper">
+                  <button mat-icon-button class="notification-button" *ngIf="court.notifications?.length > 0"
+                          (click)="court.isExpanded && $event.stopPropagation(); toggleNotifications(court); scrollToElement()"
+                          matTooltip="Сповіщення по справі."
+                          matTooltipPosition="above">
+                    <mat-icon style="font-size: 20px;">notifications</mat-icon>
+                    <span class="n">{{ court.notifications?.length }}</span>
+                  </button>
+                  <button mat-icon-button class="edit-button"
+                          (click)="court.isExpanded && $event.stopPropagation(); toggleEdit(court)"
+                          matTooltip="Редагувати справу."
+                          matTooltipPosition="above">
+                    <mat-icon style="font-size: 20px;">edit</mat-icon>
+                  </button>
+                  <button mat-icon-button class="info-button"
+                          (click)="court.isExpanded && $event.stopPropagation(); unsubscribeFromCaseById(court.userCase.id)"
+                          matTooltip="Відписатись від оновлень."
+                          matTooltipPosition="above">
+                    <mat-icon style="font-size: 20px;">visibility_off</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="card-body">
+            <mat-accordion>
+              <mat-expansion-panel [disabled]="court.courtName.length <= 50">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <mat-icon class="header-icon">balance</mat-icon>
+                    <strong style="margin-right: 5px;"> Суд: </strong> {{ court.courtName | slice:0:50 }}
+                    <span *ngIf="court.courtName.length > 50">...</span>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div *ngIf="court.courtName">{{ court.courtName }}</div>
+              </mat-expansion-panel>
+
+              <!-- Панель "Судді" -->
+              <mat-expansion-panel [disabled]="court.judge.length <= 50">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <mat-icon class="header-icon">gavel</mat-icon>
+                    <strong style="margin-right: 5px;"> Судді: </strong> {{ court.judge | slice:0:50 }}
+                    <span *ngIf="court.judge.length > 50">...</span>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div *ngIf="court.judge">{{ court.judge }}</div>
+              </mat-expansion-panel>
+              <mat-expansion-panel *ngIf="court.plaintiff && court.plaintiff.length > 0" [expanded]="court.isExpandedPlaintiff" (expandedChange)="court.isExpandedPlaintiff = !court.isExpandedPlaintiff">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <mat-icon class="header-icon">person</mat-icon>
+                    <strong style="margin-right: 5px;"> Позивач: </strong>
+                    <span *ngIf="!court.isExpandedPlaintiff">{{ court.plaintiff[0].NAME | slice:0:50 }}</span>
+                    <span *ngIf="court.plaintiff[0].NAME.length > 50 && !court.isExpandedPlaintiff">...</span>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div *ngIf="court.isExpandedPlaintiff || court.plaintiff[0].NAME.length <= 50">
+                  <ng-container *ngFor="let plaintiff of court.plaintiff">
+                    <div class="plaintiff-info">
+                      <span>Назва: {{ plaintiff.NAME }}</span>
+                      <span *ngIf="plaintiff.TYPE"> Тип: {{ plaintiff.TYPE }}</span>
+                      <span *ngIf="plaintiff.EDRPOU"> Код: {{ plaintiff.EDRPOU }}</span>
+                    </div>
+                  </ng-container>
+                </div>
+              </mat-expansion-panel>
+
+              <mat-expansion-panel *ngIf="court.defendant && court.defendant.length > 0" [expanded]="court.isExpandedDefendant" (expandedChange)="court.isExpandedDefendant = !court.isExpandedDefendant">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <mat-icon class="header-icon">person_outline</mat-icon>
+                    <strong style="margin-right: 5px;"> Відповідач: </strong>
+                    <span *ngIf="!court.isExpandedDefendant">{{ court.defendant[0].NAME | slice:0:50 }}</span>
+                    <span *ngIf="court.defendant[0].NAME.length > 50 && !court.isExpandedDefendant">...</span>
+
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div *ngIf="court.isExpandedDefendant || court.defendant[0].NAME.length <= 50">
+                  <ng-container *ngFor="let defendant of court.defendant">
+                    <div class="defendant-info">
+                      <span>Назва: {{ defendant.NAME }}</span>
+                      <span *ngIf="defendant.TYPE"> Тип: {{ defendant.TYPE }}</span>
+                      <span *ngIf="defendant.EDRPOU"> Код: {{ defendant.EDRPOU }}</span>
+                    </div>
+                  </ng-container>
+                </div>
+              </mat-expansion-panel>
+            <mat-expansion-panel [expanded]="court.isExpandedDescription" (expandedChange)="court.isExpandedDescription = !court.isExpandedDescription">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <mat-icon class="header-icon">list</mat-icon>
+                  <strong style="margin-right: 5px;"> Предмет позову: </strong>
+                  <span *ngIf="!court.isExpandedDescription">{{ court.description | slice:0:50 }}</span>
+                  <span *ngIf="!court.isExpandedDescription && court.description.length > 50">...</span>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div *ngIf="court.isExpandedDescription || court.description.length <= 50">{{ court.description }}</div>
+            </mat-expansion-panel>
+
+              <!-- Панель "Дата останньої події" -->
+              <mat-expansion-panel [disabled]="court.lastDate.length <= 50">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <mat-icon class="header-icon">event</mat-icon>
+                    <strong style="margin-right: 5px;"> Дата останньої
+                      події: </strong> {{ court.lastDate | slice:0:50 }}
+                    <span *ngIf="court.lastDate.length > 50">...</span>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div *ngIf="court.lastDate">{{ court.lastDate }}</div>
+              </mat-expansion-panel>
+              <mat-expansion-panel [disabled]="court.lastDate.length <= 50" class="custom-expansion-panel">
+                <mat-expansion-panel-header>
+                  <mat-panel-title class="custom-panel-title">
+                    <div class="d-flex justify-content-end w-100">
+                      <button mat-button class="info-button ml-auto"
+                              (click)="openModal(court,court.id); stopPropagation($event)">
+                       Детальна інформація по справі
+                      </button>
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+              </mat-expansion-panel>
+              <mat-divider></mat-divider>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <mat-icon class="header-icon">comment</mat-icon>
+                    <strong style="margin-right: 5px;"> Мої коментарі: </strong>
+                    <span class="comment-count">({{ court.userCase.comments.length }})</span>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div *ngFor="let comment of court.userCase.comments" class="comment">
+                  <mat-icon class="comment-icon">comment</mat-icon>
+                  <div class="comment-content">
+                    <ng-container *ngIf="!comment.isEditing">
+                      <p class="comment-text">{{ comment.comment }}</p>
+                      <small class="comment-date">{{ comment.createdAt | date: 'dd.MM.yyyy' }}</small>
+                      <button mat-button class="edit-button" (click)="openEditComment(comment)">Редагувати</button>
+
+                    </ng-container>
+                    <ng-container *ngIf="comment.isEditing">
+                      <textarea [(ngModel)]="comment.updatedComment" class="form-control"></textarea>
+                      <button mat-button class="save-button" (click)="updateComment(court, comment)">Зберегти</button>
+                      <button mat-button class="delete-button" (click)="deleteComment(comment.id)">Видалити</button>
+                      <button mat-button class="cancel-button" (click)="cancelEdit(comment)">Скасувати</button>
+                    </ng-container>
+                  </div>
+                </div>
+              </mat-expansion-panel>
+
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <mat-icon class="header-icon">attach_file</mat-icon>
+                    <strong style="margin-right: 5px;"> Мої завантаженні файли: </strong>
+                    <span class="file-count">({{ court.userCase.files.length }})</span>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="uploaded-files-container">
+                  <div *ngFor="let file of court.userCase.files">
+                    <div *ngIf="!file.deletedAt" class="uploaded-file">
+                      <mat-icon class="file-icon">description</mat-icon>
+                      <div class="file-info">
+                        <div class="file-info-left">
+                          <span class="bold-text">Назва файлу: {{ file.fileName }}</span>
+                          <span class="bold-text">Дата завантаження: {{ file.createdAt | date: 'dd.MM.yyyy' }}</span>
+                        </div>
+                        <div class="file-info-right">
+                          <button class="download-btn" (click)="downloadFile(file.id)">
+                            <mat-icon>cloud_download</mat-icon>
+                          </button>
+                          <button class="btn btn-danger deleted-btn" (click)="deleteFile(file.id)">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </mat-expansion-panel>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <mat-icon class="header-icon">description</mat-icon>
+                    <strong style="margin-right: 5px;">Мої процесуальні документи</strong>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="not-implemented">Список документів поки що не доступний</div>
+              </mat-expansion-panel>
+            </mat-accordion>
+
+            <div *ngIf="courtData.length" class="court-card-container">
+              <div *ngFor="let court of courtData" class="court-card">
+                <div class="actions-container" *ngIf="court.isEditing">
+                  <div class="form-group">
+                    <label for="selectAction" class="label-highlight">Оберіть дію:</label>
+                    <select id="selectAction" class="form-select" (change)="onActionChange($event, court)">
+                      <option value="" disabled selected>Оберіть дію</option>
+                      <option *ngFor="let action of actions" [value]="action.id">{{ action.name }}</option>
+                    </select>
+                    <div *ngIf="court.selectedAction && court.selectedAction.id === 20" class="form-group">
+                      <label for="commentInput" class="label-highlight">Введіть коментар:</label>
+                      <textarea id="commentInput" class="form-control" [(ngModel)]="court.commentInput"></textarea>
+                      <button class="btn btn-primary mt-2" (click)="addComment(court)" [disabled]="!court.commentInput">Зберегти</button>
+                    </div>
+                    <div *ngIf="court.selectedAction && court.selectedAction.id === 22" class="form-group">
+                      <label for="templateType" class="label-highlight">Оберіть тип шаблону:</label>
+                      <select id="templateType" class="form-select" [(ngModel)]="templateData.templateType" name="templateType">
+                        <option value="" disabled selected>Оберіть тип шаблону</option>
+                        <option value="1">Заява про видачу виконавчого листа</option>
+                        <option value="2">Заява про видачу копіїї рішення суду</option>
+                        <option value="3">Заява про відкладення розгляду справи</option>
+                        <option value="4">Заява про розгяд справ без участі позивача</option>
+                        <!-- Add more options as needed -->
+                      </select>
+                      <button class="btn btn-primary mt-2" (click)="openTemplateModal()" [disabled]="!templateData.templateType">Створити шаблон</button>
+                    </div>
+
+
+                    <div *ngIf="court.selectedAction && court.selectedAction.id === 21" class="form-group file-upload-container">
+                      <!-- Название файла -->
+                      <div class="form-group">
+                        <label for="fileInput" class="label-highlight">Завантажити файл:</label>
+                        <input type="text" placeholder="Введіть назву файлу (Опціонально)" [(ngModel)]="court.filenameInput" class="form-control filename-input">
+                      </div>
+
+                      <!-- Загрузка файла -->
+                      <div class="form-group">
+                        <input type="file" (change)="onFileSelected($event, court)" class="form-control-file">
+                      </div>
+                      <div class="form-group">
+                        <label for="documentType" class="label-highlight">Оберіть тип процесуального документу:</label>
+                        <select id="documentType" [(ngModel)]="court.documentType" class="form-select">
+                          <option value="" disabled selected>Оберіть тип процесуального документу</option>
+                          <option *ngFor="let type of documentTypes" [value]="type.judgment_code">{{ type.name }}</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="instance" class="label-highlight">Оберіть інстанцію:</label>
+                        <select id="instance" class="form-select" [(ngModel)]="court.instance">
+                          <option value="" disabled selected>Оберіть інстанцію</option>
+                          <option *ngFor="let instance of instances" [value]="instance.instance_code">{{ instance.uk_name }}</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <button class="btn btn-primary mt-2 upload-button" (click)="uploadFile(court)" [disabled]="!court.fileToUpload">Зберегти</button>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div *ngIf="court.selectedAction && court.selectedAction.id !== 20 && court.selectedAction.id !== 21 && court.selectedAction.id !== 22">
+                    <div class="form-group">
+                      <label for="eventDate" class="label-highlight">Дата події:</label>
+                      <input type="datetime-local" id="eventDate" [(ngModel)]="eventData.eventDate" class="form-control" />
+                    </div>
+                    <button class="btn btn-primary mt-2" (click)="createEvent(court)" [disabled]="!eventData.eventDate">Зберегти</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="court.showNotifications && court.notifications && court.notifications.length > 0" class="notification-row" #elementToScrollTo>
+              <table>
+                <thead>
+                  <tr>
+                    <th (click)="sortNotifications(court, 'date')">
+                      Дата
+                      <mat-icon *ngIf="sortState.date === 'asc'" class="sort-icon">arrow_upward</mat-icon>
+                      <mat-icon *ngIf="sortState.date === 'desc'" class="sort-icon">arrow_downward</mat-icon>
+                    </th>
+                    <th (click)="sortNotifications(court, 'type')">
+                      Тип
+                      <mat-icon *ngIf="sortState.type === 'asc'" class="sort-icon">arrow_upward</mat-icon>
+                      <mat-icon *ngIf="sortState.type === 'desc'" class="sort-icon">arrow_downward</mat-icon>
+                    </th>
+                    <th>Повідомлення</th>
+                    <th>Дії</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let notification of court.notifications">
+                    <td>{{ notification.date }}</td>
+                    <td>{{ notification.type }}</td>
+                    <td>{{ notification.description }}</td>
+                    <td>
+                      <mat-icon *ngIf="notification.createdBy === true" class="created-by-icon">person</mat-icon>
+                      <mat-icon *ngIf="notification.createdBy === true" class="delete-icon"
+                                (click)="deleteEvent(notification.id)">delete
+                      </mat-icon>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+</div>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#0d6efd" type="ball-clip-rotate-multiple" [fullScreen]="true">
+  <p style="color: #0d6efd"><strong>Обробка...</strong></p>
+</ngx-spinner>

@@ -1,0 +1,14 @@
+<div class="row mb-0 mt-3">
+  <div *ngIf="elementService.paymentDelay <= 10 && elementService.paymentDelay > 0"
+       class="col-md-12 text-center border p-2 rounded text-success">
+    <label class="status-label custom-bg-a2e8a3">Макимальна прострочка клієнта
+      (днів): {{ elementService.paymentDelay }}</label>
+  </div>
+  <div *ngIf="elementService.paymentDelay > 10" class="col-md-12 text-center border p-2 rounded text-danger">
+    <label class="status-label custom-bg-fcbdbd">Макимальна прострочка клієнта
+      (днів): {{ elementService.paymentDelay }}</label>
+  </div>
+  <div *ngIf="elementService.paymentDelay === 0" class="col-md-12 text-center border p-2 rounded">
+    <label class="status-label">Клієнт не виходив на прострочення зовсім</label>
+  </div>
+</div>

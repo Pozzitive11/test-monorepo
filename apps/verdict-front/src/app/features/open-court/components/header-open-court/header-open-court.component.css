@@ -1,0 +1,162 @@
+header.main-header {
+    width: 1366px;
+height: 77px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 77px;
+    background: #fff;
+    padding: 0 32px;
+    border-bottom: 1px solid #e0e0e0; /* Линия вместо тени */
+  }
+  .personal-icon {
+    display: flex;
+    align-items: center;
+  }
+  
+  .avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #213081; /* или любой другой цвет */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-right: 0.5rem;
+  }
+  
+  header .site-title {
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: auto;
+  }
+  
+  header .site-title svg {
+    margin-bottom: 10px;
+  }
+  
+  
+  
+  .header-right {
+    display: flex;
+    align-items: center;
+  }
+  
+  header .notification-icon {
+    position: relative;
+    width: 34.45px;
+    height: 20px;
+    cursor: pointer;
+    margin-right: 16px;
+  }
+  
+  header .notification-icon .notification-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 23px;
+    height: 17px;
+    background: #2F49D1;
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+  }
+  
+  header .personal-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .header-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  
+  .personal-icon {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .personal-cabinet {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    z-index: 1000;
+    width: 200px; /* ширина выпадающего меню */
+  }
+  
+  .personal-cabinet .options-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .options-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.options-list li {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+
+.options-list li:hover {
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+.options-list .svg {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    fill: #2F49D1; /* Adjust color as needed */
+}
+  
+  .personal-cabinet .options-list li {
+    padding: 10px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .personal-cabinet .options-list li i {
+    margin-right: 10px;
+  }
+  
+  .personal-cabinet .options-list li:hover {
+    background-color: #f5f5f5;
+  }
+  
+  header .personal-icon .personal-cabinet ul li {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+  }
+  
+  header .personal-icon .personal-cabinet ul li:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* Анимация для открытия личного кабинета */
+  header .personal-icon.active .personal-cabinet {
+    display: block;
+  }

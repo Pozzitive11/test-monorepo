@@ -1,0 +1,30 @@
+<div class="modal-header">
+  <h4 class="modal-title">Оберіть тип шаблону</h4>
+  <button (click)="activeModal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+</div>
+
+
+<div class="modal-body">
+
+  <p class="fw-bold mb-2">Типи документів</p>
+  <app-searchable-list
+    [(selectedValues)]="selectedDocumentTypes"
+    [list]="templateTypes"
+  ></app-searchable-list>
+
+  <div class="mt-3">
+    <app-switch-checkbox
+      [(value)]="canCreateRepeatedTemplate"
+      [id]="'canCreateRepeatedTemplateDc'"
+    >Можливо створити документи повторно
+    </app-switch-checkbox>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button (click)="activeModal.close({ selectedDocumentTypes, canCreateRepeatedTemplate })"
+          class="btn btn-outline-primary"
+          type="button">Обрати
+  </button>
+  <button (click)="activeModal.dismiss()" class="ms-2 btn btn-outline-secondary" type="button">Скасувати</button>
+</div>

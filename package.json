@@ -2,7 +2,10 @@
   "name": "@test-monorepo/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start-verdict-front": "nx serve verdict-front --configuration development",
+    "build-verdict-front": "nx build verdict-front --configuration production"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~18.2.0",
@@ -10,11 +13,35 @@
     "@angular/compiler": "~18.2.0",
     "@angular/core": "~18.2.0",
     "@angular/forms": "~18.2.0",
+    "@angular/material": "^18.2.1",
     "@angular/platform-browser": "~18.2.0",
     "@angular/platform-browser-dynamic": "~18.2.0",
     "@angular/router": "~18.2.0",
+    "@danielmoncada/angular-datetime-picker": "^18.1.0",
+    "@fortawesome/angular-fontawesome": "^0.15.0",
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@ng-bootstrap/ng-bootstrap": "^17.0.0",
+    "@ng-select/ng-select": "^13.7.0",
+    "@ngrx/store": "^18.0.2",
+    "@popperjs/core": "^2.11.8",
+    "angular-calendar": "^0.31.1",
+    "angularx-flatpickr": "^8.0.0",
+    "autoprefixer": "^10.4.20",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "crypto-js": "^4.2.0",
+    "date-fns": "^3.6.0",
+    "dayjs": "^1.11.13",
+    "file-saver": "^2.0.5",
+    "ng-multiselect-dropdown": "^1.0.0",
+    "ngx-bootstrap": "^18.0.2",
+    "ngx-extended-pdf-viewer": "^21.3.2",
+    "ngx-spinner": "^16.0.2",
     "rxjs": "~7.8.0",
+    "shevchenko": "^3.0.7",
     "tslib": "^2.3.0",
+    "util": "^0.12.5",
     "zone.js": "~0.14.3"
   },
   "devDependencies": {
@@ -37,6 +64,7 @@
     "@swc-node/register": "~1.9.1",
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
+    "@types/file-saver": "^2.0.7",
     "@types/jest": "^29.5.12",
     "@types/node": "18.16.9",
     "@typescript-eslint/eslint-plugin": "^7.16.0",
@@ -52,5 +80,8 @@
     "ts-jest": "^29.1.0",
     "ts-node": "10.9.1",
     "typescript": "~5.5.2"
+  },
+  "browser": {
+    "crypto": false
   }
 }

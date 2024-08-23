@@ -1,0 +1,44 @@
+<!-- Ваш компонент или шаблон Angular -->
+
+<div class="container">
+  <div class="content-left">
+    <div class="form-container">
+      <div class="form-header">
+        Подача заяв
+      </div>
+      <div class="form-body">
+        <p>Ваш логін: {{ session_id }}</p>
+        <div class="file-input">
+          <p>Оберіть файл: <span>{{ userFile }}</span></p>
+          <label class="custom-file-upload">
+            <input (change)="onFileSelected($event)" type="file">
+          </label>
+        </div>
+        <div *ngIf="fileError" class="error-message">{{ fileError }}</div>
+      </div>
+      <div class="form-footer">
+        <button (click)="uploadAddress()" [disabled]="isdisabled" class="submit-button">Подати заяви</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-right">
+    <div *ngIf="load === 1" class="progress-container">
+      <div class="progress-header">
+        Прогрес перевірки :
+        <div class="progress-container">
+
+          <div [style.width.%]="progressPercentage" class="progress-bar">
+            {{ progressPercentage }}%
+          </div>
+          <div class="progress-info">{{ displayinfo }}</div>
+        </div>
+      </div>
+      <div class="progress-buttons">
+        <button (click)="downloadFile()" [disabled]="canUpload" class="download-button">ID заяв</button>
+        <button (click)="downloadFiles()" [disabled]="canUpload" class="download-button">Проблемні заяви</button>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,170 @@
+<div class="card">
+  <h5 (click)="cardBody.hidden=!cardBody.hidden" class="card-header pointer">
+    Фінансовий блок
+    <span class="float-end">
+      <button
+        (click)="editFinancialInfo(); cardBody.hidden=!cardBody.hidden"
+        [ngbTooltip]="'Редагувати'"
+        class="btn btn-outline-secondary btn-sm right-margin-sm"
+      >
+        <i class="bi bi-pencil-square"></i>
+      </button>
+      <i [class.bi-chevron-down]="cardBody.hidden" [class.bi-chevron-up]="!cardBody.hidden" class="bi"></i>
+    </span>
+  </h5>
+
+  <ngb-progressbar
+    *ngIf="loading"
+    [animated]="true"
+    [height]="'3px'"
+    [striped]="true"
+    [type]="'secondary'"
+    [value]="100"
+  ></ngb-progressbar>
+
+  <div #cardBody [class.disabled-table]="loading" class="card-body">
+    <ul *ngIf="financialInfo" class="list-group list-group-flush">
+
+      <li class="list-group-item">
+        <strong>Валюта кредиту:</strong>
+        <span class="float-end">{{ financialInfo.ContractCurrency }}</span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>Собівартість:</strong>
+        <span class="float-end">
+          {{ financialInfo.Cost | currency: 'UAH': 'symbol':'1.0-2' }}
+        </span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>Курс валюти на дату погодження:</strong>
+        <span class="float-end">{{ financialInfo.CurrencyExchangeRate | number:'1.0-2' }}</span>
+      </li>
+
+      <li *ngIf="financialInfo.ContractCurrency !== 'UAH'" class="list-group-item">
+        <strong [class.red-text]="!financialInfo.CurrencyExchangeRateCommercial">
+          Курс валюти на дату погодження (комерційний):
+        </strong>
+        <span class="float-end">
+          {{ financialInfo.CurrencyExchangeRateCommercial | number:'1.0-4' }}
+        </span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>Сума боргу при покупці (всього):</strong>
+        <span class="float-end">{{ financialInfo.DebtOnPurchaseDate | number:'1.0-2' }}</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Сума боргу при покупці (тіло):</strong>
+        <span class="float-end">{{ financialInfo.BodyOnPurchaseDate | number:'1.0-2' }}</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Сума боргу при покупці (відсотки):</strong>
+        <span class="float-end">{{ financialInfo.PercentsOnPurchaseDate | number:'1.0-2' }}</span>
+      </li>
+      <li *ngIf="financialInfo.CommissionOnPurchaseDate" class="list-group-item">
+        <strong>Сума боргу при покупці (комісія):</strong>
+        <span class="float-end">{{ financialInfo.CommissionOnPurchaseDate | number:'1.0-2' }}</span>
+      </li>
+      <li *ngIf="financialInfo.FineOnPurchaseDate" class="list-group-item">
+        <strong>Сума боргу при покупці (пеня):</strong>
+        <span class="float-end">{{ financialInfo.FineOnPurchaseDate | number:'1.0-2' }}</span>
+      </li>
+      <li *ngIf="financialInfo.AccruedSumOnPurchaseDate" class="list-group-item">
+        <strong>Сума боргу при покупці (наші нарахування):</strong>
+        <span class="float-end">{{ financialInfo.AccruedSumOnPurchaseDate | number:'1.0-2' }}</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Сума платежів:</strong>
+        <span class="float-end">{{ financialInfo.PaymentsSum | number:'1.0-2' }}</span>
+      </li>
+      <li *ngIf="financialInfo.LastPaymentDate" class="list-group-item">
+        <strong>Дата останнього платежу:</strong>
+        <span class="float-end">{{ financialInfo.LastPaymentDate | formatDate }}</span>
+      </li>
+      <li class="list-group-item list-group-item-info">
+        <strong>Сума боргу (всього):</strong>
+        <span class="float-end">{{ financialInfo.Debt | number:'1.0-2' }}</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Сума боргу (тіло):</strong>
+        <span class="float-end">{{ financialInfo.Body | number:'1.0-2' }}</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Сума боргу (відсотки):</strong>
+        <span class="float-end">{{ financialInfo.Percents | number:'1.0-2' }}</span>
+      </li>
+      <li *ngIf="financialInfo.Commission" class="list-group-item">
+        <strong>Сума боргу (комісія):</strong>
+        <span class="float-end">{{ financialInfo.Commission | number:'1.0-2' }}</span>
+      </li>
+      <li *ngIf="financialInfo.Fine" class="list-group-item">
+        <strong>Сума боргу (пеня):</strong>
+        <span class="float-end">{{ financialInfo.Fine | number:'1.0-2' }}</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Сума боргу (наші нарахування):</strong>
+        <span class="float-end">{{ financialInfo.AccruedSum | number:'1.0-2' }}</span>
+      </li>
+
+      <li *ngIf="financialInfo.DebtType" class="list-group-item">
+        <strong>Стадія позову:</strong>
+        <span class="float-end">{{ financialInfo.DebtType }}</span>
+      </li>
+      <li *ngIf="financialInfo.ClaimSum" class="list-group-item">
+        <strong>Сума позову:</strong>
+        <span class="float-end">{{ financialInfo.ClaimSum | number:'1.0-2' }}</span>
+      </li>
+      <li *ngIf="financialInfo.CourtFee" class="list-group-item">
+        <strong>Судовий збір:</strong>
+        <span class="float-end">{{ financialInfo.CourtFee | number:'1.0-2' }}</span>
+      </li>
+      <li *ngIf="financialInfo.LegalAssistance" class="list-group-item">
+        <strong>Правова допомога:</strong>
+        <span class="float-end">{{ financialInfo.LegalAssistance | number:'1.0-2' }}</span>
+      </li>
+      <!--      <li class="list-group-item" *ngIf="financialInfo.AdvancePay">-->
+      <!--        <strong>Авансовий платіж:</strong>-->
+      <!--        <span class="float-end">{{ financialInfo.AdvancePay | number:'1.0-2' }}</span>-->
+      <!--      </li>-->
+
+      <li class="list-group-item">
+        <app-switch-checkbox
+          [(value)]="inflationInfoEnabled"
+          (valueChange)="$event ? editFinancialInfo(true) : null"
+          [bottomMargin]="0"
+          [id]="'inflationSwitch'"
+        >
+          <strong>Визначити можливість подати позов на 3%</strong>
+        </app-switch-checkbox>
+
+        <ul *ngIf="inflationInfoEnabled" class="list-group list-group-flush">
+          <li class="list-group-item">
+            <strong>Дата рішення:</strong>
+            <span class="float-end">{{ financialInfo.Inflation.DecisionDate | formatDate:false }}</span>
+          </li>
+          <li class="list-group-item">
+            <strong>Сума рішення:</strong>
+            <span class="float-end">
+              <ng-container *ngFor="let decisionSum of financialInfo.Inflation.DecisionSums; let index=index">
+                {{ decisionSum.Sum | currency:decisionSum.Currency:'symbol':'1.0-2' }}
+                <ng-container *ngIf="index < financialInfo.Inflation.DecisionSums.length - 1"> + </ng-container>
+              </ng-container>
+            </span>
+          </li>
+          <li class="list-group-item">
+            <strong>Можливість подати позов на 3%:</strong>
+            <strong *ngIf="financialInfo.Inflation.IsPossible" class="float-end text-success">є</strong>
+            <strong *ngIf="!financialInfo.Inflation.IsPossible" class="float-end text-danger">відсутня</strong>
+          </li>
+        </ul>
+
+      </li>
+    </ul>
+
+  </div>
+</div>
+
+
+

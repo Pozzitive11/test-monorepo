@@ -1,0 +1,5 @@
+<div>
+  <input [(ngModel)]="docId" placeholder="Введите ID документа" type="text">
+  <button (click)="loadHtml()">Загрузить HTML</button>
+</div>
+<div [innerHTML]="safeHtmlContent"></div>

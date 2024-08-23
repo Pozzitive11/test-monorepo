@@ -1,0 +1,127 @@
+<!--  Тип сортировки  -->
+<div class="row text-12">
+  <div class="col-auto">
+    <div
+      (clickOutside)="dropMenu.classList.remove('show')"
+      class="btn-group dropend"
+      clickOutside
+    >
+      <button
+        (click)="toggleShow(dropMenu)"
+        (dblclick)="sortingBy='Кількість КД'"
+        aria-expanded="false"
+        class="btn btn-outline-primary dropdown-toggle"
+        data-bs-toggle="dropdown"
+        id="navbarDropdown"
+        type="button"
+      >
+        <span class="fw-bold">Сортувати за: </span>
+        {{ sortingBy }}
+      </button>
+
+      <ul
+        #dropMenu
+        aria-labelledby="navbarDropdown"
+        class="dropdown-menu"
+        style="z-index: 9999; left: 100%"
+      >
+        <li *ngFor="let sortingType of selectedRowTypes">
+          <a
+            (click)="sortingBy=sortingType; dropMenu.classList.remove('show')"
+            class="dropdown-item pointer"
+          >
+            {{ sortingType }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!--  Выбор разделов отчёта  -->
+  <nav class="navbar col-auto navbar-expand-lg navbar-light bg-light">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li *ngFor="let rowType of allRowTypes" class="nav-item">
+        <div
+          [class.success-color]="selectedRowTypes.includes(rowType)"
+        >
+          <a
+            (click)="toggleSelectedRowTypes(rowType)"
+            [ngbTooltip]="getRowTypeTooltip(rowType)"
+            class="nav-link fw-bold pointer"
+          >
+            {{ rowType }}
+          </a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<!--  Непосредственно сама таблица с данными отчёта  -->
+<div *ngIf="reportData.length > 0" class="row max-width-div max-height-div top-margin-sm">
+  <table class="table table-bordered table-responsive table-sm text-12">
+    <caption>{{ 'Сегментація за DPD/сумою боргу' }}</caption>
+    <thead class="sticky-top">
+    <tr class="header-level">
+      <th
+        *ngFor="let column of getFullHeader()"
+        [style.vertical-align]="'middle'"
+        scope="col"
+      >
+          <span
+            [ngbTooltip]="getTooltip(column)"
+          >{{ column | bucketPipe }}</span><br>
+        <span
+          (click)="changeSortType(column)"
+          *ngIf="!nonSortedColumns.includes(column)"
+          [class.bi-filter-left]="getSortType(column).none"
+          [class.bi-sort-down]="getSortType(column).down"
+          [class.bi-sort-up]="getSortType(column).up"
+          [style.font-size]="'25px'"
+          [style.vertical-align]="'middle'"
+          class="bi"
+        ></span>
+      </th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <ng-container *ngFor="let projectRow of shownData; let pr=index">
+      <ng-container *ngFor="let phoneRow of projectRow.phoneData; let ph=index">
+        <ng-container *ngFor="let key of selectedRowTypes; let k=index">
+          <tr
+            *ngFor="let debtRow of getProperty(key, phoneRow); let de=index"
+            [class.top-level-row-0]="projectRow.project.includes('Всього')"
+            [class.top-level-row-1]="phoneRow.PhonePresence.includes('Всього')"
+            style="text-align: right"
+          >
+            <td
+              *ngIf="k+de+ph===0"
+              [rowSpan]="getProjectLength(projectRow)"
+              style="text-align: left"
+            >{{ projectRow.project }}
+            </td>
+            <td
+              *ngIf="k+de===0"
+              [rowSpan]="getPhoneDataLength(phoneRow)"
+              style="text-align: left"
+            >{{ phoneRow.PhonePresence }}
+            </td>
+            <td
+              *ngIf="de===0"
+              [rowSpan]="getKeyLength(phoneRow)"
+              style="text-align: left"
+            >{{ key }}
+            </td>
+            <td style="text-align: left">{{ debtRow.debtBucket | bucketPipe }}</td>
+
+            <td *ngFor="let val of debtRow.dpdValues">{{ val | number:getDigitsInfoForPipe(key) }}</td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+    </tbody>
+
+  </table>
+</div>
+

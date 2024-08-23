@@ -1,0 +1,108 @@
+<ngb-progressbar
+  *ngIf="verificationService.loading().contractPayments || filterService.updating()"
+  [animated]="true"
+  [height]="'3px'"
+  [max]="100"
+  [striped]="true"
+  [value]="100"
+  class="mb-2"
+  type="primary"
+>
+</ngb-progressbar>
+
+<div [class.disabled-table]="verificationService.loading().contractPayments || filterService.updating()" class="mb-5">
+  <div class="row row-cols-auto">
+    <div class="col">
+      <div class="mb-2 fw-bold">Групувати за:</div>
+
+      <app-switch-checkbox (valueChange)="toggleIndex('Період', $event)"
+                           [bottomMargin]="1"
+                           [id]="'period-switch'"
+                           [value]="verificationService.index().includes('Період')"
+      >Період
+      </app-switch-checkbox>
+      <app-switch-checkbox (valueChange)="toggleIndex('Проєкт', $event)"
+                           [bottomMargin]="1"
+                           [id]="'project-switch'"
+                           [value]="verificationService.index().includes('Проєкт')"
+      >Проєкт
+      </app-switch-checkbox>
+      <app-switch-checkbox (valueChange)="toggleIndex('RNumber', $event)"
+                           [bottomMargin]="0"
+                           [id]="'rnumber-switch'"
+                           [value]="verificationService.index().includes('RNumber')"
+                           class="disabled-table"
+      >RNumber
+      </app-switch-checkbox>
+    </div>
+
+    <div class="col ms-md-5">
+      <strong>Фільтр за датою:</strong>
+      <div class="mt-2">
+        <app-date-picker-range-popup
+          (dateChanged)="filterService.changeDateRange($event)"
+          [fromDate]="filterService.fromDate()"
+          [maxDate]="filterService.maxDate()"
+          [minDate]="filterService.minDate()"
+          [toDate]="filterService.toDate()"
+        ></app-date-picker-range-popup>
+      </div>
+
+      <div class="mt-3">
+        <app-switch-checkbox (valueChange)="verificationService.onlyFactoring.set($event)"
+                             [id]="'only-factoring-switch'"
+                             [value]="verificationService.onlyFactoring()">
+          <strong>Тільки факторингові проєкти</strong>
+        </app-switch-checkbox>
+      </div>
+    </div>
+
+    <div class="col-12 my-2">
+      <button (click)="verificationService.loadFullVerificationData()" class="btn btn-outline-primary my-1">
+        <i class="bi bi-arrow-clockwise me-2"></i>
+        Завантажити дані
+      </button>
+      <hr />
+    </div>
+  </div>
+
+  <div class="row">
+    <div *ngIf="verificationService.contractPayments().length > 0" class="col-12 col-xl-6">
+      <pivot-table-simple (basicTableViewSelected)="onViewSelected($event.rowName, 'CONTRACT_PAYMENTS')"
+                          [aggFunctions]="verificationService.aggFunctions()"
+                          [data]="verificationService.contractPayments()"
+                          [index]="verificationService.index()"
+                          [resultAliases]="verificationService.resultAliases()"
+                          [rowAliases]="verificationService.rowAliases()"
+                          [rowPercentagesKeys]="verificationService.rowPercentagesKeys()"
+                          [sep]="verificationService.sep"
+                          [title]="'Є в НКС, немає прив\'язки до виписки'"
+                          [values]="verificationService.values()">
+      </pivot-table-simple>
+
+      <button (click)="onViewSelected('', 'CONTRACT_PAYMENTS')" class="btn btn-outline-primary mt-2">
+        Завантажити всі дані до файлу
+      </button>
+    </div>
+
+    <div *ngIf="verificationService.processingPayments().length > 0" class="col-12 col-xl-6">
+      <pivot-table-simple (basicTableViewSelected)="onViewSelected($event.rowName, 'PAYMENTS_PROCESSING')"
+                          [aggFunctions]="verificationService.aggFunctions()"
+                          [data]="verificationService.processingPayments()"
+                          [index]="verificationService.index()"
+                          [resultAliases]="verificationService.resultAliases()"
+                          [rowAliases]="verificationService.rowAliases()"
+                          [rowPercentagesKeys]="verificationService.rowPercentagesKeys()"
+                          [sep]="verificationService.sep"
+                          [title]="'Є у виписці, немає прив\'язки до НКС'"
+                          [values]="verificationService.values()">
+      </pivot-table-simple>
+
+      <button (click)="onViewSelected('', 'PAYMENTS_PROCESSING')" class="btn btn-outline-primary mt-2">
+        Завантажити всі дані
+      </button>
+    </div>
+  </div>
+</div>
+
+<hr />

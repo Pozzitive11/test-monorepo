@@ -1,0 +1,165 @@
+<div class="card">
+  <h5 (click)="cardBody.hidden=!cardBody.hidden" class="card-header pointer">
+    {{ isRelated ? 'Виконавчі провадження по суміжним НКС' : 'Наші виконавчі провадження' }}
+    <span class="float-end">
+      <i [class.bi-chevron-down]="cardBody.hidden" [class.bi-chevron-up]="!cardBody.hidden" class="bi"></i>
+    </span>
+  </h5>
+  <ngb-progressbar
+    *ngIf="loading"
+    [animated]="true"
+    [height]="'3px'"
+    [striped]="true"
+    [type]="'secondary'"
+    [value]="100"
+  ></ngb-progressbar>
+
+  <div #cardBody [class.disabled-table]="loading" class="card-body">
+    <ul *ngIf="epDetailedInfoList" class="list-group list-group-flush">
+      <li *ngFor="let epDetailedInfo of epDetailedInfoList; let epIndex = index" class="list-group-item remove-padding">
+        <div class="card my-2">
+
+          <h5 (click)="epInfo.hidden=!epInfo.hidden" class="card-header pointer">
+            <span *ngIf="epDetailedInfo.ClientType" class="mb-2 text-18">{{ epDetailedInfo.ClientType }}<br /></span>
+            <span *ngIf="epDetailedInfo.ClientName" class="mb-2 text-18">{{ epDetailedInfo.ClientName }}<br /></span>
+            <span *ngIf="epDetailedInfo.ClientINN" class="mb-2 text-18">ІПН {{ epDetailedInfo.ClientINN }}<br /></span>
+            <span *ngIf="epDetailedInfo.EPNum" class="mb-2 text-18">ВП {{ epDetailedInfo.EPNum }}<br /></span>
+            <strong *ngIf="epDetailedInfo.LastAction" class="text-18">{{ epDetailedInfo.LastAction }}</strong>
+            <span class="float-end">
+              <button
+                (click)="openEdit(epDetailedInfo, epIndex); epInfo.hidden=!epInfo.hidden"
+                *ngIf="!epDetailedInfo.EPFinalDate"
+                [ngbTooltip]="'Редагувати'"
+                class="btn btn-outline-secondary btn-sm right-margin-sm"
+              >
+                <i class="bi bi-pencil-square"></i>
+              </button>
+
+              <i [class.bi-chevron-down]="epInfo.hidden" [class.bi-chevron-up]="!epInfo.hidden" class="bi"></i>
+            </span>
+          </h5>
+
+          <div #epInfo class="card-body">
+            <ul class="list-group list-group-flush">
+
+              <li *ngIf="epDetailedInfo.AccessIdentifier; else noIdentifier" class="list-group-item">
+                <strong>Ідентифікатор:</strong>
+                <span class="float-end">{{ epDetailedInfo.AccessIdentifier }}</span>
+              </li>
+
+              <ng-template #noIdentifier>
+                <li class="list-group-item">
+                  <strong class="float-end text-danger">
+                    Ідентифікатор відсутній {{ daysToString(epDetailedInfo.NoIdentifierDays || 0) }}
+                  </strong>
+                </li>
+              </ng-template>
+
+              <li class="list-group-item">
+                <strong>Тип ВД:</strong>
+                <span class="float-end">{{ epDetailedInfo.ELType }}</span>
+              </li>
+
+              <li class="list-group-item">
+                <strong>Номер ВД:</strong>
+                <span class="float-end">{{ epDetailedInfo.ELNum }}</span>
+              </li>
+
+              <li class="list-group-item">
+                <strong>Нотаріус/суд:</strong>
+                <span class="float-end">{{ epDetailedInfo.Notary }}</span>
+              </li>
+
+              <li class="list-group-item">
+                <strong>Орган ДВС/ПВ:</strong>
+                <span class="float-end">{{ epDetailedInfo.PrivateAgent }}</span>
+              </li>
+
+              <li *ngIf="epDetailedInfo.EPNum" class="list-group-item">
+                <strong>Стягувач:</strong>
+                <span class="float-end">{{ epDetailedInfo.Collector }}</span>
+              </li>
+
+              <li class="list-group-item">
+                <strong>Сума авансу:</strong>
+                <span class="float-end">{{ epDetailedInfo.AvansSum | number:'1.0-2' }}</span>
+              </li>
+
+              <li class="list-group-item">
+                <strong>Сума ВП:</strong>
+                <span class="float-end">{{ epDetailedInfo.EPSum | number:'1.0-2' }}</span>
+              </li>
+
+              <li class="list-group-item">
+                <strong>Дата претензії:</strong>
+                <span class="float-end">{{ epDetailedInfo.RequirementDate | formatDate:false }}</span>
+              </li>
+
+              <li class="list-group-item">
+                <strong>Дата подачі на ВНН:</strong>
+                <span class="float-end">{{ epDetailedInfo.NotarStatDate | formatDate:false }}</span>
+              </li>
+
+              <li class="list-group-item">
+                <strong>Дата отримання ВД:</strong>
+                <span class="float-end">{{ epDetailedInfo.DateReceiptEL | formatDate:false }}</span>
+              </li>
+
+              <li class="list-group-item">
+                <strong>Дата ВД:</strong>
+                <span class="float-end">{{ epDetailedInfo.ELDate | formatDate:false }}</span>
+              </li>
+
+              <li class="list-group-item">
+                <strong>Дата заяви ПВ:</strong>
+                <span class="float-end">{{ epDetailedInfo.StatementDate | formatDate:false }}</span>
+              </li>
+
+              <li class="list-group-item">
+                <strong>Дата авансування:</strong>
+                <span class="float-end">{{ epDetailedInfo.AvansDate | formatDate:false }}</span>
+              </li>
+
+              <li class="list-group-item">
+                <strong>Дата передачі документів ПВ:</strong>
+                <span class="float-end">{{ epDetailedInfo.TransferDate | formatDate:false }}</span>
+              </li>
+
+              <li *ngIf="epDetailedInfo.EPNum" class="list-group-item">
+                <strong>Дата відкриття ВП:</strong>
+                <span class="float-end">{{ epDetailedInfo.EPDate | formatDate:false }}</span>
+              </li>
+
+              <li *ngIf="epDetailedInfo.EPFinalDate" class="list-group-item">
+                <strong>Дата закінчення ВП:</strong>
+                <span class="float-end">{{ epDetailedInfo.EPFinalDate | formatDate:false }}</span>
+              </li>
+
+              <ng-container *ngIf="!epDetailedInfo.EPFinalDate || !closedEPStates.includes(epDetailedInfo.LastAction)">
+                <li class="list-group-item">
+                  <strong>Стаття закриття ВП:</strong>
+                  <span class="float-end">{{ epDetailedInfo.EPFinalState }}</span>
+                </li>
+
+                <li class="list-group-item">
+                  <strong>Винагорода приватного виконавця:</strong>
+                  <span class="float-end">{{ epDetailedInfo.PrivateAgentReward | number:'1.0-2' }}</span>
+                </li>
+
+                <li class="list-group-item">
+                  <strong>Платник винагороди:</strong>
+                  <span class="float-end">{{ epDetailedInfo.RewardPayer }}</span>
+                </li>
+              </ng-container>
+            </ul>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+
+  </div>
+</div>
+
+
+

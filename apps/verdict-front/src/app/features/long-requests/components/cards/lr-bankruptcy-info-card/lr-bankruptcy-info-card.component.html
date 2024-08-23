@@ -1,0 +1,53 @@
+<div class="card">
+  <h5 (click)="cardBody.hidden=!cardBody.hidden" class="card-header pointer">
+    Інформація про банкрутство
+    <span class="float-end">
+      <i [class.bi-chevron-down]="cardBody.hidden" [class.bi-chevron-up]="!cardBody.hidden" class="bi"></i>
+    </span>
+  </h5>
+  <ngb-progressbar
+    *ngIf="loading"
+    [animated]="true"
+    [height]="'3px'"
+    [striped]="true"
+    [type]="'secondary'"
+    [value]="100"
+  ></ngb-progressbar>
+
+  <div #cardBody [class.disabled-table]="loading" class="card-body">
+    <ul *ngIf="bankruptcyInfo" class="list-group list-group-flush">
+      <li *ngIf="bankruptcyInfo.LastDateCheck" class="list-group-item">
+        <strong>Дата останньої перевірки:</strong>
+        <span class="float-end">{{ bankruptcyInfo.LastDateCheck | formatDate }}</span>
+      </li>
+      <li *ngIf="bankruptcyInfo.LastDateCheck" class="list-group-item">
+        <strong>Кількість справ:</strong>
+        <span class="float-end">{{ bankruptcyInfo.CasesCount }}</span>
+      </li>
+
+      <li *ngIf="!bankruptcyInfo.LastDateCheck" class="list-group-item">
+        <strong class="red-text">Перевірка відсутня</strong>
+      </li>
+
+      <li *ngIf="bankruptcyInfo.BankruptcyInfo.length" class="list-group-item">
+        <div *ngFor="let info of bankruptcyInfo.BankruptcyInfo" class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <strong>Номер справи:</strong>
+              <span class="float-end">{{ info.CaseNum }}</span>
+            </li>
+            <li class="list-group-item">
+              <strong>Стадія справи:</strong>
+              <span class="float-end">{{ info.MaxCaseStage }}</span>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+    </ul>
+
+  </div>
+</div>
+
+
+

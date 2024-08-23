@@ -1,0 +1,16 @@
+<ngx-spinner [fullScreen]="true" bdColor="rgba(0, 0, 0, 0.8)" color="#3e8bff" size="medium"
+             type="ball-clip-rotate-multiple">
+  <p style="color: #3e8bff"><strong>Завантаження даних...</strong></p>
+</ngx-spinner>
+
+<div [class.disabledTable]="loading$ | async" class="col-6 mt-3">
+  <pe-private-entrepreneurs-list (closeAll)="closeAll()"
+                                 (hideInfo)="dashboardService.privateEntrepreneursHideInfo$.next($event)"
+                                 (openAll)="openAll()"
+                                 (reloadData)="dashboardService.loadPrivateEntrepreneursInfo()"
+                                 (selectAccount)="dashboardService.privateEntrepreneursSelectAccount$.next($event)"
+                                 [privateEntrepreneursInfoCollapsed]="(dashboardService.privateEntrepreneursInfoCollapsed$ | async)!"
+                                 [privateEntrepreneursInfo]="(dashboardService.privateEntrepreneursInfo$ | async)!"
+                                 [selectedAccount]="dashboardService.privateEntrepreneursSelectAccount$ | async"
+  ></pe-private-entrepreneurs-list>
+</div>

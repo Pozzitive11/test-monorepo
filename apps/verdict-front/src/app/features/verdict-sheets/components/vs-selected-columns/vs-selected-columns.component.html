@@ -1,0 +1,52 @@
+<ul class="list-group list-group-flush text-12">
+  @for (column of selectedColumns(); track column.alias) {
+    <li class="list-group-item d-flex flex-row gap-2 align-items-center pointer"
+        [class.bg-danger-subtle]="!column.table_name || !column.column_name"
+        (click)="editColumn(column)">
+      <button class="badge bg-danger bg-hover-danger border-0" (click)="removeColumn(column); $event.stopPropagation()">
+        <i class="bi bi-x text-18 text-white"></i>
+      </button>
+      <strong [ngbTooltip]="'Редагувати назву'">{{ column.alias }}</strong>
+      <span [ngClass]="{
+              'text-danger': !column.table_name,
+              'text-muted': column.table_name,
+              'fw-bold': column.table_name
+            }"
+            [ngbTooltip]="column.table_name ? 'Змінити таблицю' : 'Присвоїти таблицю'"
+      >
+        {{ column.table_name || 'НЕВІДОМА ТАБЛИЦЯ' }}
+      </span>
+      <span [ngClass]="{
+              'text-danger': !column.column_name,
+              'text-muted': column.column_name,
+              'fw-bold': column.column_name
+            }"
+            [ngbTooltip]="column.column_name ? 'Змінити стовпець' : 'Присвоїти стовпець'"
+      >
+        {{ column.column_name || 'НЕВІДОМИЙ СТОВПЕЦЬ' }}
+      </span>
+
+      @if (column.table_name && column.column_name) {
+        <button class="badge border-0 ms-auto"
+                [ngClass]="{
+                'bg-primary bg-hover-danger': column.editable,
+                'bg-secondary bg-hover-info': !column.editable,
+              }"
+                [ngbTooltip]="'Редагувати'"
+                (mouseenter)="element.classList.toggle('bi-pencil', !column.editable); element.classList.toggle('bi-ban', column.editable)"
+                (mouseleave)="element.classList.toggle('bi-pencil', column.editable); element.classList.toggle('bi-ban', !column.editable)"
+        >
+          <i class="bi text-18 text-white"
+             #element
+             [ngClass]="{
+             'bi-pencil': column.editable,
+             'bi-ban': !column.editable,
+           }"
+          ></i>
+        </button>
+      }
+    </li>
+  }
+</ul>
+
+

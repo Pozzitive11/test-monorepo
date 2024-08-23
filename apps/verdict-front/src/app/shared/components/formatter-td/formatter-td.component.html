@@ -1,0 +1,52 @@
+<ng-content></ng-content>
+
+<ng-container *ngIf="isNumber">
+  <span *ngIf="!isStrong"><ng-container *ngTemplateOutlet="numberTemplate"></ng-container></span>
+  <strong *ngIf="isStrong">
+    <ng-container *ngTemplateOutlet="numberTemplate"></ng-container>
+  </strong>
+</ng-container>
+
+<ng-container *ngIf="isString">
+  <span *ngIf="!isStrong">{{ value }}</span>
+  <strong *ngIf="isStrong">{{ value }}</strong>
+</ng-container>
+
+<ng-container *ngIf="isDate">
+  <span *ngIf="!isStrong"><ng-container *ngTemplateOutlet="dateTemplate"></ng-container></span>
+  <strong *ngIf="isStrong">
+    <ng-container *ngTemplateOutlet="dateTemplate"></ng-container>
+  </strong>
+</ng-container>
+
+<ng-container *ngIf="isBoolean">
+  <span *ngIf="!isStrong"><ng-container *ngTemplateOutlet="booleanTemplate"></ng-container></span>
+  <strong *ngIf="isStrong">
+    <ng-container *ngTemplateOutlet="booleanTemplate"></ng-container>
+  </strong>
+</ng-container>
+
+<ng-container *ngIf="isNull || isUndefined">
+  <span *ngIf="!isStrong">-</span>
+  <strong *ngIf="isStrong">-</strong>
+</ng-container>
+
+<ng-container *ngIf="isObject">
+  <span *ngIf="!isStrong">{{ value | json }}</span>
+  <strong *ngIf="isStrong">{{ value | json }}</strong>
+</ng-container>
+
+
+<!-----------------------  TEMPLATES  ----------------------->
+<ng-template #numberTemplate>
+  <ng-container *ngIf="isPercent">{{ value | number: '1.0-2' }} %</ng-container>
+  <ng-container *ngIf="isInteger && !isPercent">{{ value | number: '1.0-0' }}</ng-container>
+  <ng-container *ngIf="!isInteger && !isPercent">{{ value | number: '1.2-2' }}</ng-container>
+</ng-template>
+
+<ng-template #dateTemplate>{{ value | date: 'dd.MM.yyyy' }}</ng-template>
+
+<ng-template #booleanTemplate>
+  <i *ngIf="value" class="bi bi-check-circle"></i>
+  <i *ngIf="!value" class="bi bi-x-circle"></i>
+</ng-template>

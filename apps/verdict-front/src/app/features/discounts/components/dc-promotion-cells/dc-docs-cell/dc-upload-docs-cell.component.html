@@ -1,0 +1,114 @@
+<ng-container *ngIf="!isElectrPoshta; else dateIcon">
+  <div
+    (click)="openModal(docsEdit)"
+    *ngIf="selectedRowsIds.length > 0; else noselectedRows"
+    class="d-flex align-items-center justify-content-center gap-3"
+  >
+    <i
+      [class.bi-file-earmark-arrow-up]="value.length === 0"
+      [class.bi-file-earmark]="value.length === 1"
+      [class.bi-files]="value.length > 1"
+      class="bi pointer text-primary text-30"
+    ></i>
+
+    Підтвердити відправку
+  </div>
+  <ng-template #noselectedRows>
+    <i
+      (click)="openModal(docsEdit)"
+      [class.bi-file-earmark-arrow-up]="value.length === 0"
+      [class.bi-file-earmark]="value.length === 1"
+      [class.bi-files]="value.length > 1"
+      class="bi pointer text-primary text-30"
+    ></i>
+  </ng-template>
+</ng-container>
+<ng-template #dateIcon>
+  <div
+    (click)="openModal(docsEdit)"
+    *ngIf="selectedRowsIds.length > 0; else noselectedRows"
+    class="d-flex align-items-center justify-content-center gap-3"
+  >
+    <i class="bi bi-calendar-plus text-primary text-30"></i>
+    Підтвердити відправку
+  </div>
+  <ng-template #noselectedRows>
+    <div (click)="openModal(docsEdit)">
+      <i class="bi bi-calendar-plus text-primary text-30"></i>
+      Підтвердити відправку
+    </div>
+  </ng-template>
+</ng-template>
+<ng-template #docsEdit let-modal>
+  <ngb-progressbar
+    [animated]="true"
+    [height]="'3px'"
+    [max]="100"
+    [showValue]="false"
+    [striped]="true"
+    [type]="'primary'"
+    [value]="100"
+  ></ngb-progressbar>
+
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Документи</h4>
+    <button (click)="modal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+  </div>
+
+  <div class="modal-body">
+    <ul class="list-group">
+      <li *ngFor="let doc of valueInEdit" class="list-group-item">
+        <div class="input-group">
+          <span
+            class="input-group-text"
+            style="width: 65%; text-overflow: ellipsis; overflow: hidden; white-space: nowrap"
+          >
+            {{ doc.DocPath }}
+          </span>
+          <button class="btn btn-outline-danger" style="width: 5%" type="button">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </li>
+    </ul>
+
+    <ng-container *ngIf="!isElectrPoshta">
+      <app-file-upload (fileAdded)="addFiles($event)" [id]="'load-payment-doc'" [multiple]="true"></app-file-upload>
+    </ng-container>
+
+    <ul class="list-group">
+      <li *ngFor="let doc of newLoadedDocs" class="list-group-item">
+        <div class="input-group">
+          <app-default-dropdown
+            (valueSelected)="doc.docType = $event"
+            [btnClass]="'btn btn-outline-primary w-100 rounded-0 rounded-start' + (doc.docType ? '' : ' btn-outline-danger')"
+            [placement]="'bottom-start'"
+            [selectedValue]="doc.docType"
+            [valueList]="PAYMENT_DOC_TYPES"
+            style="width: 20%"
+          ></app-default-dropdown>
+          <span class="input-group-text" style="width: 75%">{{ doc.file.name }}</span>
+          <button
+            (click)="newLoadedDocs.splice(newLoadedDocs.indexOf(doc), 1)"
+            [ngbTooltip]="'Видалити файл'"
+            class="btn btn-outline-danger"
+            style="width: 5%"
+            type="button"
+          >
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </li>
+    </ul>
+    <div class="mt-3">
+      <label class="form-label" for="deliveryDate">Дата підтвердження доставки</label>
+      <app-date-picker-popup [(chosenDate)]="dataService.chosenDate" id="deliveryDate"></app-date-picker-popup>
+    </div>
+    <div (click)="modal.close()">
+
+      <button (click)="uploadFiles()" [disabled]="!canBeUploaded()" class="float-end btn btn-outline-success mt-3">
+        Завантажити
+      </button>
+    </div>
+  </div>
+</ng-template>

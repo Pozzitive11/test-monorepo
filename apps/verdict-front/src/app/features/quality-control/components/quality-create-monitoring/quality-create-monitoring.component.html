@@ -1,0 +1,234 @@
+<div class="row mt-2">
+  <div class="d-flex justify-content-center mb-4">
+    <h2>Створення моніторингу</h2>
+  </div>
+</div>
+
+<div class="row d-flex justify-content-center">
+  <div class="col-5">
+    <p><b>Кориcтувач:</b> {{ operatorInfo ? operatorInfo.FullName : employeeName }} ({{ operatorInfo ? operatorInfo.RoleName : employeeRole }})</p>
+    <p><b>Дата створення моніторингу:</b> {{ currentDate }}</p>
+  </div>
+</div>
+<form [formGroup]="createMonitoringForm" (ngSubmit)="createMonitoring()" class="pb-5">
+  <div *ngIf="qualityMonitoringService.employeeRoleNumber === 1" class="mt-4">
+    <div class="row d-flex justify-content-center mb-2">
+      <div class="col-5">
+        <label class="mb-2">НКС:</label>
+        <input [formControl]="nksControl" class="form-control" placeholder="Введіть НКС" type="number" />
+      </div>
+    </div>
+    <div class="row d-flex justify-content-center mb-4">
+      <div class="col-5">
+        <div *ngIf="isInvalidNKS" class="mb-4 text-danger">Неправильний нкс</div>
+        <div *ngIf="!isInvalidNKS">
+          <div><b>Реєстр:</b> {{ displayedReestrNumber }} ({{ displayedReestrName }})</div>
+          <div>
+            <b> Контрагент: </b>
+            {{ displayedReestrNameContragent }} ({{ displayedReestrNameContragentRUS }})
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center mb-3">
+    <div class="col-5">
+      <div class="form-check pointer">
+        <input [formControl]="testCallControl" class="form-check-input pointer" id="flexCheckDefault" type="checkbox" />
+        <label class="form-check-label pointer" for="flexCheckDefault"> Тестовий дзвінок </label>
+      </div>
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center mb-4">
+    <div class="col-5 position-relative">
+      <p class="m-0 text-danger">Обов'язкове поле</p>
+      <input [formControl]="callIdControl" class="form-control" placeholder="Введіть id дзвінка" type="text" />
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center mb-4">
+    <div class="col-5">
+      <input
+        [formControl]="phoneControl"
+        class="form-control"
+        maxlength="12"
+        placeholder="Введіть телефон"
+        type="text"
+      />
+    </div>
+  </div>
+
+  <div class="row d-flex justify-content-center mb-4">
+    <div class="col-5">
+      <label class="form-label" for="strongSide">Сильні сторони</label>
+      <textarea [formControl]="strongSidesControl" class="form-control" id="strongSide" type="text"></textarea>
+    </div>
+  </div>
+
+  <div class="row d-flex justify-content-center mb-4">
+    <div class="col-5">
+      <label class="form-label" for="weightSide">Слабкі сторони</label>
+      <textarea [formControl]="weakSidesControl" class="form-control" id="weightSide" type="text"></textarea>
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center mb-4" *ngIf="qualityMonitoringService.employeeRoleNumber === 1">
+    <div class="col-5">
+      <label>Контакт з: </label>
+      <ng-select
+        [formControl]="contactWithControl"
+        [items]="qualityMonitoringService.contactWithList"
+        bindLabel="Name"
+        placeholder="Контакт з"
+      >
+      </ng-select>
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center mb-4">
+    <div class="col-5">
+      <label>Результат дзвінку: </label>
+      <ng-select
+        [formControl]="callResultControl"
+        [items]="qualityMonitoringService.callResultList"
+        bindLabel="Name"
+        placeholder="Результат дзвінку"
+      >
+      </ng-select>
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center mb-4">
+    <div class="col-5">
+      <label>Тип дзвінку: </label>
+      <ng-select
+        [formControl]="callTypesControl"
+        [items]="qualityMonitoringService.callTypesList"
+        bindLabel="Name"
+        placeholder="Тип дзвінку"
+      >
+      </ng-select>
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center mb-4" *ngIf="qualityMonitoringService.employeeRoleNumber === 1">
+    <div class="col-5">
+      <label>Дисконт/реструктуризація: </label>
+      <ng-select
+        [formControl]="discountControl"
+        [items]="qualityMonitoringService.discountsList"
+        bindLabel="Name"
+        placeholder="Дисконт/реструктуризація"
+      >
+      </ng-select>
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center mb-4">
+    <div class="col-5">
+      <label>Проблема із дзвінком: </label>
+      <ng-select
+        [formControl]="callProblemsControl"
+        [items]="qualityMonitoringService.callProblemsList"
+        bindLabel="Name"
+        placeholder="Проблема із дзвінком"
+      >
+      </ng-select>
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center mb-4">
+    <div class="col-5">
+      <label>Дата розмови: </label>
+      <input
+        [formControl]="conversationDateControl"
+        class="form-control"
+        id="dateInput"
+        placeholder="Дата розмови"
+        type="date"
+      />
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center mb-4" *ngIf="qualityMonitoringService.employeeRoleNumber === 1">
+    <div class="col-5">
+      <label>Вид розмови: </label>
+      <ng-select
+        [formControl]="conversationTypeControl"
+        [multiple]="true"
+        [items]="qualityMonitoringService.conversationTypesList"
+        bindLabel="Name"
+        placeholder="Вид розмови"
+      >
+      </ng-select>
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center mb-4">
+    <div class="col-5">
+      <label>Довжина розмови: </label>
+      <ng-select
+        [formControl]="conversationLengthControl"
+        [items]="qualityMonitoringService.conversationLengthList"
+        bindLabel="Name"
+        placeholder="Довжина розмови"
+      >
+      </ng-select>
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center mb-4">
+    <div class="col-5">
+      <label class="form-label" for="comm">Вільне поле для коментарю:</label>
+      <textarea [formControl]="commentControl" class="form-control" id="comm" type="text"></textarea>
+    </div>
+  </div>
+  <div class="row justify-content-center mb-4">
+    <div class="d-flex justify-content-center gap-5">
+      <div class="">
+        <div formArrayName="checkboxesDictionariesArray">
+          <div
+            *ngFor="let group of checkboxesDictionariesArray.controls; let i = index"
+            class="form-check pointer"
+            [formGroupName]="i"
+          >
+            <input
+              formControlName="isSelected"
+              [id]="monitoringDictionariesList[i].Id + 100"
+              class="form-check-input pointer"
+              type="checkbox"
+            />
+            <label class="form-check-label pointer" for="{{ monitoringDictionariesList[i].Id + 100 }}">{{
+              monitoringDictionariesList[i].Name
+            }}</label>
+          </div>
+        </div>
+
+        <div><b> Результат: </b> {{ totalCoefficient }}</div>
+      </div>
+      <div class="col-4" style="width: 470px" *ngIf="qualityMonitoringService.employeeRoleNumber === 1">
+        <div formArrayName="checkboxesPenaltiesArray" style="max-height: 400px; overflow-y: auto">
+          <div
+            *ngFor="let group of checkboxesPenaltiesArray.controls; let i = index"
+            class="form-check pointer"
+            [formGroupName]="i"
+          >
+            <input
+              formControlName="isSelected"
+              [id]="monitoringPenaltiesList[i].Id + 200"
+              class="form-check-input pointer"
+              type="checkbox"
+            />
+            <label class="form-check-label pointer mb-2" for="{{ monitoringPenaltiesList[i].Id + 200 }}">{{
+              monitoringPenaltiesList[i].Name
+            }}</label>
+          </div>
+        </div>
+
+        <div><b> Результат: </b> {{ totalPenalty }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="container mt-5">
+    <div class="d-flex justify-content-center">
+      <button
+        (click)="createMonitoring()"
+        [disabled]="createMonitoringForm.invalid || isSubmitting"
+        class="btn btn-primary"
+        type="button"
+      >
+        Створити моніторинг
+      </button>
+    </div>
+  </div>
+</form>

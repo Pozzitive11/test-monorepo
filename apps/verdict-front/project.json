@@ -1,0 +1,111 @@
+{
+  "name": "verdict-front",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "apps/verdict-front/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/verdict-front",
+        "index": "apps/verdict-front/src/index.html",
+        "browser": "apps/verdict-front/src/main.ts",
+        "polyfills": ["zone.js", "@angular/localize/init"],
+        "tsConfig": "apps/verdict-front/tsconfig.app.json",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/verdict-front/public"
+          },
+          {
+            "glob": "**/*",
+            "input": "node_modules/ngx-extended-pdf-viewer/assets/",
+            "output": "/assets/"
+          }
+        ],
+        "styles": [
+          "apps/verdict-front/src/styles.css",
+          "@angular/material/prebuilt-themes/indigo-pink.css",
+          "@angular/cdk/overlay-prebuilt.css",
+          "node_modules/ngx-spinner/animations/ball-clip-rotate-multiple.css",
+          "node_modules/bootstrap/dist/css/bootstrap.min.css"
+        ],
+        "scripts": [],
+        "allowedCommonJsDependencies": [
+          "file-saver",
+          "util",
+          "crypto",
+          "dayjs",
+          "shevchenko"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "5kb",
+              "maximumError": "25kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/verdict-front/src/environments/environment.ts",
+              "with": "apps/verdict-front/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/verdict-front/src/environments/environment.ts",
+              "with": "apps/verdict-front/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "verdict-front:build:production"
+        },
+        "development": {
+          "buildTarget": "verdict-front:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "verdict-front:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/verdict-front/jest.config.ts"
+      }
+    }
+  }
+}

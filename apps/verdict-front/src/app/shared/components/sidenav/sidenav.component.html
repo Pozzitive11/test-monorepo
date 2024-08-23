@@ -1,0 +1,51 @@
+<div (clickOutside)="closeSidenav()" [ngClass]="collapsed ? 'sidenav-collapsed': ''" class="sidenav">
+  <div class="logo-container">
+    <button (click)="toggleCollapse()" class="logo">V</button>
+    <div *ngIf="collapsed" @fadeInOut class="logo-text" routerLink="/dashboard" style="cursor: pointer;">Verdict</div>
+    <button (click)="closeSidenav()" *ngIf="collapsed" @rotate class="btn btn-close btn-close-white">
+      <!--            <i class="fal fa-times close-icon"></i>-->
+    </button>
+  </div>
+
+  <ul class="sidenav-nav">
+    <li *ngFor="let data of navData" class="sidenav-nav-item">
+
+      <a (click)="handleClick(data)" *ngIf="data.items && data.items.length > 0" class="sidenav-nav-link">
+        <i [class]="data.icon" class="sidenav-link-icon"></i>
+        <span *ngIf="collapsed" @fadeInOut class="sidenav-link-text">
+                    {{ data.label }}
+                </span>
+        <i
+          *ngIf="data.items && collapsed"
+          [ngClass]="!data.expanded ? 'bi-chevron-right':'bi-chevron-down'"
+          class="menu-collapse-icon bi"
+        ></i>
+      </a>
+
+      <a *ngIf="(!data.items || (data.items && data.items.length === 0)) && !data.external"
+         [routerLinkActiveOptions]="{exact: true}"
+         [routerLink]="[data.routeLink]" class="sidenav-nav-link"
+         routerLinkActive="active">
+        <i [class]="data.icon" class="sidenav-link-icon"></i>
+        <span *ngIf="collapsed" @fadeInOut class="sidenav-link-text">
+                    {{ data.label }}
+                </span>
+      </a>
+
+      <a
+        *ngIf="data.external"
+        [href]="data.routeLink"
+        class="sublevel-nav-link"
+      >
+        <i class="sublevel-link-icon fa fa-circle"></i>
+        <span *ngIf="collapsed" class="sublevel-link-text">{{ data.label }}</span>
+      </a>
+
+      <div *ngIf="collapsed && data.items && data.items.length > 0">
+        <app-sublevel-menu [collapsed]="collapsed" [data]="data" [expanded]="data.expanded" [multiple]="multiple">
+        </app-sublevel-menu>
+      </div>
+
+    </li>
+  </ul>
+</div>

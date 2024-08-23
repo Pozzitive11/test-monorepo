@@ -1,0 +1,81 @@
+<div
+  *ngFor="let row of value"
+  class="col-8"
+>
+  <div class="input-group mt-3 text-12" ngbDropdown placement="top-left">
+    <button
+      (click)="deleteDoc(row['DocumentId'])"
+      [ngbTooltip]="'ВИДАЛИТИ ФАЙЛ'"
+      class="btn btn-danger"
+      style="width: 4%; overflow: hidden; white-space: nowrap; text-align: left"
+    >
+      <span class="btn btn-close"></span>
+    </button>
+
+    <button
+      [class.btn-danger]="!row['Вид документу']"
+      [class.btn-info]="!!row['Вид документу']"
+      class="btn"
+      ngbDropdownToggle
+      style="width: 30%; overflow: hidden; white-space: nowrap; text-align: left"
+      type="button"
+    >
+      <span *ngIf="!docTypeEditable(row['Вид документу'])"
+            [title]="row['Вид документу']">{{ row['Вид документу'] }}</span>
+      <input
+        #docTypeEdit
+        (blur)="changeDocType(row, docTypeEdit.value)"
+        (keyup.enter)="docTypeEdit.blur()"
+        *ngIf="docTypeEditable(row['Вид документу'])"
+        [value]="row['Вид документу']"
+        autofocus
+        class="d-inline-block btn-input"
+        placeholder="Введіть тип документу"
+        required
+        type="text"
+      />
+    </button>
+
+    <input
+      [style.border]="'1px solid #0dcaf0'"
+      [title]="row['Шлях до документу']"
+      [value]="row['Шлях до документу']"
+      class="input-group-text"
+      disabled
+      style="width: 62%; overflow: hidden; text-align: left;"
+    >
+
+    <span
+      (click)="copy(row['Шлях до документу'], copyThing)"
+      class="input-group-text pointer"
+      style="width: 4%; overflow: hidden"
+    >
+      <i
+        #copyThing
+        (click)="openLocation(row['Шлях до документу'])"
+        [ngbTooltip]="'Копіювати'"
+        class="bi bi-clipboard2"
+        style="left: -40%; position: relative;"></i>
+    </span>
+
+    <ul class="scrollable-drop-list" ngbDropdownMenu>
+
+      <ng-container *ngIf="isMilitaryDocs(row['Вид документу'])">
+        <li *ngFor="let docType of docTypes">
+          <a (mousedown)="changeDocType(row, docType['name'])" class="pointer" ngbDropdownItem>{{ docType['name'] }}</a>
+        </li>
+      </ng-container>
+
+      <ng-container *ngIf="!isMilitaryDocs(row['Вид документу'])">
+        <li *ngFor="let docType of otherDocTypes">
+          <a (mousedown)="changeDocType(row, docType['name'])" class="dropdown-item pointer"
+             ngbDropdownItem>{{ docType['name'] }}</a>
+        </li>
+      </ng-container>
+
+    </ul>
+  </div>
+</div>
+
+
+

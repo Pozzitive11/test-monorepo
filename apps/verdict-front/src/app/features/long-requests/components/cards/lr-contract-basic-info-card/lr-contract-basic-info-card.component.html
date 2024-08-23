@@ -1,0 +1,100 @@
+<div class="card">
+  <h5 (click)="cardBody.hidden=!cardBody.hidden" class="card-header pointer">
+    Загальна характеристика КД
+    <span class="float-end">
+      <i [class.bi-chevron-down]="cardBody.hidden" [class.bi-chevron-up]="!cardBody.hidden" class="bi"></i>
+    </span>
+  </h5>
+  <ngb-progressbar
+    *ngIf="loading"
+    [animated]="true"
+    [height]="'3px'"
+    [striped]="true"
+    [type]="'secondary'"
+    [value]="100"
+  ></ngb-progressbar>
+
+  <div #cardBody [class.disabled-table]="loading" class="card-body">
+    <ul class="list-group list-group-flush">
+
+      <li class="list-group-item">
+        <strong>Назва реєстра з НКС:</strong>
+        <span class="float-end">{{ contractBasicInfo.RegisterName }}</span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>Проєкт:</strong>
+        <span class="float-end">{{ contractBasicInfo.ProjectName }}</span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>Первинний кредитор:</strong>
+        <span class="float-end">{{ contractBasicInfo.FirstCreditor }}</span>
+      </li>
+
+      <ng-container *ngFor="let debtor of contractBasicInfo.Debtors; let i = index">
+        <li (click)="dataService.activeTab=debtor.INN || ''" class="list-group-item pointer">
+          <strong>
+            {{ i >= 1 ? 'ПІБ боржника ' + (i + 1) + ':' : 'ПІБ боржника:' }}
+          </strong>
+          <span class="float-end link-color">{{ debtor.FullName }}</span>
+        </li>
+
+        <li (click)="dataService.activeTab=debtor.INN || ''" class="list-group-item pointer">
+          <strong>
+            {{ i >= 1 ? 'РНОКПП боржника ' + (i + 1) + ':' : 'РНОКПП боржника:' }}
+          </strong>
+          <span class="float-end link-color">{{ debtor.INN }}</span>
+        </li>
+      </ng-container>
+
+      <li class="list-group-item">
+        <strong>№ договору:</strong>
+        <span class="float-end">{{ contractBasicInfo.ContractNum }}</span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>Суміжні договори:</strong>
+        <span class="float-end">{{ contractBasicInfo.Intersections || 'відсутні' }}</span>
+      </li>
+
+      <li *ngIf="contractBasicInfo.Guarantors.length" class="list-group-item remove-padding">
+
+        <div class="card">
+          <h5 (click)="debtorBody.hidden=!debtorBody.hidden" class="card-header pointer">
+            Поручителі
+            <span class="float-end">
+              <i [class.bi-chevron-down]="debtorBody.hidden" [class.bi-chevron-up]="!debtorBody.hidden" class="bi"></i>
+            </span>
+          </h5>
+
+          <div #debtorBody [class.disabled-table]="loading" class="card-body">
+            <ul class="list-group list-group-flush">
+
+              <li
+                (click)="dataService.activeTab=guarantor.INN || ''"
+                *ngFor="let guarantor of contractBasicInfo.Guarantors"
+                class="list-group-item pointer"
+              >
+                <strong>{{ guarantor.Type }}:</strong>
+                <span class="float-end link-color">{{ guarantor.FullName }} ({{ guarantor.INN }})</span>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+
+      </li>
+
+      <li *ngIf="!contractBasicInfo.Guarantors.length" class="list-group-item">
+        <strong>Поручителі:</strong>
+        <span class="float-end">відсутні</span>
+      </li>
+
+    </ul>
+
+  </div>
+</div>
+
+
+

@@ -1,0 +1,22 @@
+<div *ngIf="elementService.getContactable">
+  <div class="row mb-0 mt-3">
+    <div *ngIf="elementService.getContactable.is_user_contactable"
+         class="col-md-12 text-center border p-2 rounded text-success">
+      <label class="status-label custom-bg-a2e8a3">Клієнт контактний</label>
+    </div>
+    <div *ngIf="!elementService.getContactable.is_user_contactable"
+         class="col-md-12 text-center border p-2 rounded text-danger">
+      <label class="status-label custom-bg-fcbdbd">Клієнт не контактний</label>
+    </div>
+  </div>
+  <div class="row mb-0 mt-3">
+    <div *ngIf="elementService.getContactable.is_contacts_contactable"
+         class="col-md-12 text-center border p-2 rounded text-success">
+      <label class="status-label custom-bg-a2e8a3">Контактні особи контактні</label>
+    </div>
+    <div *ngIf="!elementService.getContactable.is_contacts_contactable"
+         class="col-md-12 text-center border p-2 rounded  text-danger">
+      <label class="status-label custom-bg-fcbdbd">Контактні особи не передавали інформацію під час прострочки</label>
+    </div>
+  </div>
+</div>

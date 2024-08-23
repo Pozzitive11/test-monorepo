@@ -1,0 +1,152 @@
+<button
+  (click)="selectAllRows()"
+  *ngIf="!sendingDocsFiltersService.appliedFilters$.value.includes('confirmed')"
+  class="btn btn-outline-primary mt-auto me-3 mb-5"
+  style="height: 60px"
+>
+  <i class="bi bi-check2-square"></i>
+  Обрати усі
+</button>
+<div class="col-2">
+  <div class="mb-3">
+    <label for="rowsCount" class="form-label">К-сть рядків таблиці</label>
+    <input
+      type="number"
+      class="form-control"
+      id="rowsCount"
+      placeholder="10"
+      [(ngModel)]="temporaryPageSize"
+      (blur)="updatePageSize()"
+      style="width: 55px"
+    />
+  </div>
+</div>
+<button
+  *ngIf="selectedRows.length > 0 && sendingDocsFiltersService.appliedFilters$.value.includes('confirmSending')"
+  class="btn btn-outline-primary mt-auto me-3 mb-5"
+>
+  <ng-container
+    *ngIf="sendingDocsFiltersService.selectedWays$.value.includes('Електронна пошта'); else notElectrPoshta"
+  >
+    <span class="d-flex align-items-center justify-content-center gap-2" style="height: 46px">
+      <dc-upload-docs-cell [isElectrPoshta]="true" [selectedRowsIds]="selectedRows"></dc-upload-docs-cell>
+    </span>
+  </ng-container>
+  <ng-template #notElectrPoshta>
+    <span class="d-flex align-items-center justify-content-center gap-2" style="height: 46px">
+      <dc-upload-docs-cell [selectedRowsIds]="selectedRows"></dc-upload-docs-cell>
+    </span>
+  </ng-template>
+</button>
+<button
+  (click)="templateService.downloadZipTemplates()"
+  *ngIf="selectedRows.length > 0 && sendingDocsFiltersService.appliedFilters$.value.includes('downloadDocuments')"
+  class="btn btn-outline-primary mt-auto me-3 mb-5"
+  style="height: 60px"
+>
+  <i class="bi bi-plus-circle fw-bold me-1"></i>
+  Завантажити документи
+</button>
+<ng-container>
+  <div class="max-height-div">
+    <table class="table table-responsive custom-table">
+      <thead>
+        <tr>
+          <th *ngFor="let key of tableHeaders" scope="col">
+            {{ key }}
+            @if (booleanTableHeaders.includes(key)) {
+              <div class="form-check d-flex justify-content-center align-items-center">
+                <input
+                  class="form-check-input pointer"
+                  type="checkbox"
+                  [checked]="sendingDocsFiltersService.documentFilters.includes(key)"
+                  (click)="documentFilter(key)"
+                />
+              </div>
+            } @else {
+              <input
+                #filter
+                (blur)="applyFilter(key, filter.value)"
+                (dblclick)="filter.value = ''; filter.blur()"
+                (keydown.enter)="filter.blur()"
+                (keydown.escape)="filter.blur()"
+                [style.background-color]="filter.value ? '#f0ff9f' : 'transparent'"
+                class="form-control text-11 top-margin-sm"
+                contenteditable="true"
+                placeholder="..."
+              />
+            }
+          </th>
+        </tr>
+      </thead>
+      <tbody *ngIf="applications" scope="row">
+        <ng-container *ngFor="let application of applications">
+          <tr
+            (click)="toggleRowSelection(application)"
+            [class.selected]="isRowSelected(application['id'])"
+            [ngClass]="colorClassForRow(application['Шляхи відправки'])"
+          >
+            <td *ngFor="let key of tableHeaders">
+              <ng-container *ngIf="key === 'Дата відправки'; else otherContent">
+                {{ application[key] }}
+                <ng-container *ngIf="application['Дата відправки'] === null">
+                  <div
+                    (click)="handleClickOnConfirmationCell($event)"
+                    *ngIf="application['Дата експорту документа'] !== null; else minus"
+                    class="d-flex justify-content-center align-items-center w-100 h-100"
+                  >
+                    <ng-container *ngIf="application['Шляхи відправки'] !== 'Електронна пошта'; else electrPoshta">
+                      <dc-upload-docs-cell
+                        [cp_id]="application['id']"
+                        [isElectrPoshta]="false"
+                        [pib]="application['ПІБ']"
+                        [row]="application"
+                      ></dc-upload-docs-cell>
+                    </ng-container>
+                    <ng-template #electrPoshta>
+                      <dc-upload-docs-cell
+                        [cp_id]="application['id']"
+                        [isElectrPoshta]="true"
+                        [pib]="application['ПІБ']"
+                        [row]="application"
+                      ></dc-upload-docs-cell>
+                    </ng-template>
+                  </div>
+                  <ng-template #minus>
+                    <i class="bi bi-dash-lg d-flex justify-content-center align-items-center"></i>
+                  </ng-template>
+                </ng-container>
+              </ng-container>
+              <ng-template #otherContent>
+                <ng-container *ngIf="application[key] === true; else notTrue">
+                  <i class="bi bi-check-lg d-flex justify-content-center align-items-center"></i>
+                </ng-container>
+                <ng-template #notTrue>
+                  <ng-container *ngIf="application[key] === false; else notFalse">
+                    <i class="bi bi-dash-lg d-flex justify-content-center align-items-center"></i>
+                  </ng-container>
+                </ng-template>
+                <ng-template #notFalse>
+                  <ng-container *ngIf="application[key] === null">
+                    <i class="bi bi-dash-lg d-flex justify-content-center align-items-center"></i>
+                  </ng-container>
+                  <ng-container *ngIf="application[key] !== null && application[key] !== false">
+                    <ng-container *ngIf="key === 'Сума боргу'; else notNumber">
+                      {{ application[key] | currency: 'UAH' : 'symbol' : '1.0-2' }}
+                    </ng-container>
+                    <ng-template #notNumber>
+                      {{ application[key] }}
+                    </ng-template>
+                  </ng-container>
+                </ng-template>
+              </ng-template>
+            </td>
+          </tr>
+          <tr class="spacer">
+            <td colspan="100"></td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</ng-container>

@@ -1,0 +1,269 @@
+<div class="row" style="margin-top: 20px">
+  <p class="form-text" style="justify-content: left">Виберіть опцію:</p>
+</div>
+
+<div class="row">
+  <div class="col-md-2" style="width: 100px">
+    <button (click)="postAdd()" class="btn btn-primary">Створити</button>
+  </div>
+  <div class="col-md-2" style="width: 112px">
+    <button (click)="postEdit()" class="btn btn-primary">Редагувати</button>
+  </div>
+  <div class="col-md-2" style="width: 100px">
+    <button (click)="postDelete()" class="btn btn-primary">Видалити</button>
+  </div>
+</div>
+<div style="margin-top: 50px">
+  <div *ngIf="block === 1">
+    <div class="checkbox-container">
+      <input (click)="checked()" [(ngModel)]="itemForm" class="checkbox-input" type="checkbox" />
+      <label class="checkbox-label">Наявний uuid</label>
+    </div>
+    <div *ngIf="!itemForm" class="AddSetup">
+      <div class="addClass">
+        <form>
+          <div>
+            <label for="index"
+            >Індекс відділення укрпошти<span [ngbTooltip]="'Обов\'язкове поле'" class="required">&nbsp;*</span></label
+            >
+            <input [(ngModel)]="index" id="index" required type="text" />
+          </div>
+
+          <div>
+            <label for="registryName"
+            >Назва реестру<span [ngbTooltip]="'Обов\'язкове поле'" class="required">&nbsp;*</span></label
+            >
+            <input [(ngModel)]="registryName" id="registryName" required type="text" />
+          </div>
+
+          <div>
+            <label for="region">Область</label>
+            <input [(ngModel)]="region" id="region" type="text" />
+          </div>
+
+          <div>
+            <label for="region">Район</label>
+            <input [(ngModel)]="district" id="region" type="text" />
+          </div>
+
+          <div>
+            <label for="city">Місто<span [ngbTooltip]="'Обов\'язкове поле'" class="required">&nbsp;*</span></label>
+            <input [(ngModel)]="city" id="city" type="text" />
+          </div>
+
+          <div>
+            <label for="street">Вулиця</label>
+            <input [(ngModel)]="street" id="street" type="text" />
+          </div>
+
+          <div>
+            <label for="houseNumber">Номер будинку</label>
+            <input [(ngModel)]="houseNumber" id="houseNumber" type="text" />
+          </div>
+
+          <div>
+            <label for="apartment">Квартира</label>
+            <input [(ngModel)]="apartment" id="apartment" type="text" />
+          </div>
+
+          <div class="radio-container">
+            <input
+              [(ngModel)]="personType"
+              class="radio-input"
+              id="radioFiz"
+              name="personType"
+              type="radio"
+              value="fiz"
+            />
+            <label class="radio-label" for="radioFiz">Фізична особа</label>
+          </div>
+
+          <div class="radio-container">
+            <input
+              [(ngModel)]="personType"
+              class="radio-input"
+              id="radioYur"
+              name="personType"
+              type="radio"
+              value="yur"
+            />
+            <label class="radio-label" for="radioYur">Юридична особа</label>
+          </div>
+
+          <div *ngIf="personType === 'fiz'" class="details" id="fizPersonDetails">
+            <div>
+              <label for="firstName">Ім'я<span [ngbTooltip]="'Обов\'язкове поле'"
+                                               class="required">&nbsp;*</span></label>
+              <input [(ngModel)]="firstName" id="firstName" type="text" />
+            </div>
+            <div>
+              <label for="lastName">Прізвище<span [ngbTooltip]="'Обов\'язкове поле'"
+                                                  class="required">&nbsp;*</span></label>
+              <input [(ngModel)]="lastName" id="lastName" type="text" />
+            </div>
+            <div>
+              <label for="patronymic">По батькові<span [ngbTooltip]="'Обов\'язкове поле'"
+                                                       class="required">&nbsp;*</span></label>
+              <input [(ngModel)]="patronymic" id="patronymic" type="text" />
+            </div>
+          </div>
+
+          <div *ngIf="personType === 'yur'">
+            <label for="registryTitle">Назва<span [ngbTooltip]="'Обов\'язкове поле'"
+                                                  class="required">&nbsp;*</span></label>
+            <input [(ngModel)]="registryTitle" id="registryTitle" maxlength="60" type="text" />
+          </div>
+
+          <div *ngIf="personType === 'yur'">
+            <label for="ipn">IPN</label>
+            <input [(ngModel)]="ipn" id="ipn" type="text" />
+          </div>
+
+          <div>
+            <label for="phone">Телефон<span [ngbTooltip]="'Обов\'язкове поле'" class="required">&nbsp;*</span></label>
+            <input [(ngModel)]="phone" id="phone" type="tel" />
+          </div>
+
+          <div>
+            <label for="nks">НКС<span [ngbTooltip]="'Обов\'язкове поле'" class="required">&nbsp;*</span></label>
+            <input [(ngModel)]="nks1" id="nks" type="text" />
+          </div>
+
+          <button (click)="uploadPostWithoutUuid()" type="submit">Відправити</button>
+        </form>
+      </div>
+    </div>
+    <div *ngIf="itemForm" class="AddSetup">
+      <div class="addClass">
+        <form>
+          <div>
+            <label for="registryName"
+            >Назва реестру<span [ngbTooltip]="'Обов\'язкове поле'" class="required">&nbsp;*</span></label
+            >
+            <input [(ngModel)]="registryName2" id="registryName" required type="text" />
+          </div>
+          <div>
+            <label for="nks">НКС<span [ngbTooltip]="'Важливе поле'" class="required">&nbsp;*</span></label>
+            <input [(ngModel)]="nks2" id="nks" type="text" />
+          </div>
+
+          <div>
+            <label for="legal">UUID<span [ngbTooltip]="'Важливе поле'" class="required">&nbsp;*</span></label>
+            <input [(ngModel)]="uuid" id="uuid" type="text" />
+          </div>
+
+          <button (click)="uploadPostWithUuid()" type="submit">Відправити</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="block === 2">
+    <div class="AddSetup">
+      <div class="addClass">
+        <form>
+          <div>
+            <label for="barcode_edit"
+            >Штрих-код посилки<span [ngbTooltip]="'Обов\'язкове поле'" class="required">&nbsp;*</span></label
+            >
+            <input [(ngModel)]="barcode_edit" id="barcode_edit" required type="text" />
+          </div>
+
+          <label>Тип відправлень</label>
+          <div class="radio-container">
+            <input
+              [(ngModel)]="deliveryType"
+              class="radio-input"
+              id="radioW2W"
+              name="deliveryType"
+              type="radio"
+              value="W2W"
+            />
+            <label class="radio-label" for="radioW2W">W2W</label>
+          </div>
+
+          <div class="radio-container">
+            <input
+              [(ngModel)]="deliveryType"
+              class="radio-input"
+              id="radioW2D"
+              name="deliveryType"
+              type="radio"
+              value="W2D"
+            />
+            <label class="radio-label" for="radioW2D">W2D</label>
+          </div>
+
+          <div class="radio-container">
+            <input
+              [(ngModel)]="deliveryType"
+              class="radio-input"
+              id="radioNone"
+              name="deliveryType"
+              type="radio"
+              value=""
+            />
+            <label class="radio-label" for="radioNone">Без типу</label>
+          </div>
+
+
+          <div>
+            <label for="registryTitle_edit">Назва</label>
+            <input [(ngModel)]="registryTitle_edit" id="registryTitle_edit" maxlength="60" type="text" />
+          </div>
+
+          <div>
+            <label for="firstName_edit">Ім'я</label>
+            <input [(ngModel)]="firstName_edit" id="firstName_edit" type="text" />
+          </div>
+          <div>
+            <label for="lastName_edit">Прізвище</label>
+            <input [(ngModel)]="lastName_edit" id="lastName_edit" type="text" />
+          </div>
+          <div>
+            <label for="patronymic_edit">По батькові</label>
+            <input [(ngModel)]="patronymic_edit" id="patronymic_edit" type="text" />
+          </div>
+
+          <div>
+            <label for="weight">Вага</label>
+            <input [(ngModel)]="weight" id="weight" type="text" />
+          </div>
+
+          <div>
+            <label for="phone_edit">Телефон</label>
+            <input [(ngModel)]="phone_edit" id="phone_edit" type="tel" />
+          </div>
+
+
+          <button (click)="editPost()" type="submit">Редагувати</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="block === 3">
+    <div class="AddSetup">
+      <div class="addClass">
+        <div class="checkbox-container2">
+          <input (click)="checked_express()" [(ngModel)]="express" class="checkbox-input" id="exp" type="checkbox" />
+          <label class="checkbox-label" for="exp">Express</label>
+        </div>
+        <form>
+
+          <div>
+            <label for="index"
+            >Штрих-код посилки<span [ngbTooltip]="'Важливе поле'" class="required">&nbsp;*</span></label
+            >
+            <input [(ngModel)]="barcode" id="index" required type="text" />
+          </div>
+
+
+          <button (click)="deletePost()" type="submit">Видалити</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

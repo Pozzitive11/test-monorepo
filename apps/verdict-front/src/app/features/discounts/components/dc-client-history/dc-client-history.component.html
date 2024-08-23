@@ -1,0 +1,99 @@
+<div class="wrapper">
+  <ul class="mb-0 pt-3 pb-3 d-flex justify-content-evenly gap-5 fw-bold bg-light">
+    <li class="list-unstyled" style="width: 190px">Дата внесення</li>
+    <li class="list-unstyled" style="width: 190px">Тип</li>
+    <li class="list-unstyled" style="width: 190px">Наявність узгодження</li>
+    <li class="list-unstyled" style="width: 190px">Сума боргу</li>
+    <li class="list-unstyled" style="width: 190px">Документів запрошено</li>
+  </ul>
+  <div class="accordion">
+    <div *ngFor="let entry of clientHistory" class="accordion-item">
+      <div class="accordion-header">
+        <button
+          (click)="show(entry['id'])"
+          [class.collapsed]="!isShow[entry['id']]"
+          class="accordion-button"
+          type="button"
+        >
+          <ul class="position-absolute start-0 end-0 d-flex justify-content-evenly gap-5">
+            <li class="list-unstyled" style="width: 190px">{{ entry["EntryDate"] | date: "dd.MM.yyyy" }}</li>
+            <li class="list-unstyled" style="width: 190px">
+              <ng-container *ngIf="entry['RestructuringMonths'] === null; else rs">ДС</ng-container>
+              <ng-template #rs>РС</ng-template>
+            </li>
+            <li class="list-unstyled" style="width: 190px">{{ entry["Agreed"] }}</li>
+            <li class="list-unstyled" style="width: 190px">
+              {{ entry["Debt"] | currency: "UAH" : "symbol" : "1.0-2" }}
+            </li>
+            <li class="list-unstyled" style="width: 190px">{{ getDocumentsCount(entry) }}</li>
+          </ul>
+        </button>
+        <div [hidden]="!isShow[entry['id']]" class="container mt-4">
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <p class="card-text">
+                    <span class="fw-bold">Дата внесення: </span> {{ entry["EntryDate"] | date: "dd.MM.yyyy" }}
+                  </p>
+                  <p *ngIf="entry['PaymentDateLimit']" class="card-text">
+                    <span class="fw-bold">Кінцевий термін оплати: </span>
+                    {{ entry["PaymentDateLimit"] | date: "dd.MM.yyyy" }}
+                  </p>
+                  <p class="card-text"><span class="fw-bold">Логін TS: </span> {{ entry["TS"] }}</p>
+                  <p class="card-text"><span class="fw-bold">Логін SV: </span> {{ entry["SV"] }}</p>
+                  <p class="card-text">
+                    <span class="fw-bold">Сума боргу: </span> {{ entry["Debt"] | currency: "UAH" : "symbol" : "1.0-2" }}
+                  </p>
+                  <p *ngIf="entry['Agreed'] !== 'тільки документи'" class="card-text">
+                    <span class="fw-bold">Сума до сплати: </span>
+                    {{ entry["SumToPay"] || 0 | currency: "UAH" : "symbol" : "1.0-2" }}
+                  </p>
+                  <p *ngIf="entry['RestructuringPaymentPerMonth']" class="card-text">
+                    <span class="fw-bold">Cума оплат/місяць: </span>
+                    {{ entry["RestructuringPaymentPerMonth"] || 0 | currency: "UAH" : "symbol" : "1.0-2" }}
+                  </p>
+                  <p *ngIf="entry['RestructuringMonths']" class="card-text">
+                    <span class="fw-bold">Місяці реструктуризації: </span>
+                    {{ entry["RestructuringMonths"] }}
+                  </p>
+                  <p *ngIf="entry['Agreed']" class="card-text">
+                    <span class="fw-bold">Наявність узгодження: </span>{{ entry["Agreed"] }}
+                  </p>
+                  <p *ngIf="entry['Comment']" class="card-text">
+                    <span class="fw-bold">Коментарі: </span>{{ entry["Comment"] }}
+                  </p>
+                  <p *ngIf="entry['SendingDay']" class="card-text">
+                    <span class="fw-bold">Дата відправки: </span>{{ entry["SendingDay"] | date: "dd.MM.yyyy" }}
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <div *ngIf="entry['Documents']">
+                    <h5 class="card-title mb-4">Запрошені документи</h5>
+                    <p *ngIf="entry['Documents']['Originals']">Оригінали</p>
+                    <p *ngIf="entry['Documents']['AccruingAppendix']">Додаток нарахування</p>
+                    <p *ngIf="entry['Documents']['AssignmentLetter']">Інформаційний лист</p>
+                    <p *ngIf="entry['Documents']['GuaranteeLetter']">Гарантійний лист</p>
+                    <p *ngIf="entry['Documents']['IndividualTerms']">Індивідуальні умови</p>
+                    <p *ngIf="entry['Documents']['WritingOffContract']">Списання договору</p>
+                    <p *ngIf="entry['Documents']['Abstract']">Витяг</p>
+                    <p *ngIf="entry['Documents']['FactoringContract']">Договір факторингу</p>
+                    <p *ngIf="entry['Documents']['SendingWays']">
+                      <span class="fw-bold">Шляхи відпрaвки: </span>
+                      {{ entry["Documents"]["SendingWays"] }}
+                    </p>
+
+                    <p *ngIf="entry['Documents']['PostOfficeAddress']">
+                      <span class="fw-bold">Адреса поштового відділення: </span>
+                      {{ entry["Documents"]["PostOfficeAddress"] }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

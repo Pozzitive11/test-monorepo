@@ -1,0 +1,46 @@
+<div class="accordion">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button
+        (click)="showDocUpload=!showDocUpload"
+        [class.collapsed]="!showDocUpload"
+        class="accordion-button"
+        type="button"
+      >
+        Завантажити документи
+      </button>
+    </h2>
+
+    <div *ngIf="showDocUpload" class="collapse-show">
+      <div class="input-group text-12 mb-2" role="group">
+        <input
+          #inn
+          (blur)="checkClient()"
+          (dblclick)="inn.value=''"
+          [(ngModel)]="clientINN"
+          [class.is-invalid]="!inn.validity.valid"
+          [class.is-valid]="inn.validity.valid"
+          class="form-control"
+          id="clientINNInput"
+          pattern="\d*"
+          placeholder="Введіть ІПН клієнта..."
+          required
+          type="text"
+        />
+        <span class="input-group-text">Клієнт:</span>
+        <strong [class.red-text]="!clientName" class="input-group-text">
+          {{ clientName ? clientName : 'невідомо' }}
+        </strong>
+      </div>
+
+      <dcm-doc-upload
+        [INN]="clientINN ? clientINN : 'NULL'"
+        [class.disabled-table]="!clientName"
+      ></dcm-doc-upload>
+      <app-dc-other-docs-upload
+        [INN]="clientINN ? clientINN : 'NULL'"
+        [class.disabled-table]="!clientName"
+      ></app-dc-other-docs-upload>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div *ngIf="incomeQuarterInfo" class="card">
+  <h5 (click)="cardBody.hidden=!cardBody.hidden" class="card-header pointer">
+    {{ incomeQuarter }}:
+    <span class="float-end">
+      {{ incomeTotalSum() | currency: 'UAH': 'symbol':'1.0-2' }}
+      <i [class.bi-chevron-down]="cardBody.hidden" [class.bi-chevron-up]="!cardBody.hidden" class="bi"></i>
+    </span>
+  </h5>
+
+  <div #cardBody class="card-body">
+    <ul class="list-group list-group-flush">
+      <li *ngFor="let quarterInfo of incomeQuarterInfo" class="list-group-item">
+
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <strong>Сума доходу:</strong>
+              <span class="float-end">{{ quarterInfo.IncomeSum | number:'1.0-2' }}</span>
+            </li>
+            <li class="list-group-item">
+              <strong>Ознака:</strong>
+              <span class="float-end">{{ quarterInfo.Sign }}</span>
+            </li>
+            <li class="list-group-item">
+              <strong>Назва компанії роботодавця:</strong>
+              <span class="float-end">{{ quarterInfo.CompanyName }}</span>
+            </li>
+            <li class="list-group-item">
+              <strong>Можливість стягнення:</strong>
+              <span class="float-end">{{ quarterInfo.IsSolvent ? 'є' : 'відсутня' }}</span>
+            </li>
+          </ul>
+        </div>
+
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+
+

@@ -1,0 +1,59 @@
+<!--           TEXT CELL            -->
+<div
+  *ngIf="isDefault"
+  [title]="value"
+  class="text-12"
+>{{ value }}
+</div>
+
+
+<!--           EDITABLE CELL            -->
+<input
+  #cell
+  (blur)="changeValue()"
+  (keydown.enter)="cell.blur()"
+  *ngIf="isEditable"
+  [(ngModel)]="value"
+  [title]="value"
+  class="form-control inputdefault text-11"
+>
+
+
+<!--           EDITABLE CELL // COMMENT            -->
+<textarea
+  #comment
+  (blur)="changeValue()"
+  (keydown.enter)="comment.blur()"
+  *ngIf="col === 'Коментар'"
+  [(ngModel)]="value"
+  [title]="value"
+  class="form-control inputdefault text-11"
+  rows="2"
+>
+</textarea>
+
+
+<!--           DROPDOWN            -->
+<div *ngIf="dropdown.length>0" class="text-12">
+  <button
+    (click)="toggleShow(dropMenu)"
+    (dblclick)="value=''; changeValue()"
+    (focusout)="hideDropdown(dropMenu)"
+    aria-expanded="false"
+    class="btn btn-secondary dropdown-toggle text-11"
+    data-bs-toggle="dropdown"
+    type="button"
+  >
+    <span>{{ value }}</span>
+    <span class="caret left-margin-sm"></span>
+  </button>
+  <ul #dropMenu class="dropdown-menu">
+    <li
+      *ngFor="let menuValue of dropdown"
+    >
+      <a (mousedown)="value = menuValue; changeValue()" class="dropdown-item text-11 pointer">{{ menuValue }}</a>
+    </li>
+  </ul>
+</div>
+
+

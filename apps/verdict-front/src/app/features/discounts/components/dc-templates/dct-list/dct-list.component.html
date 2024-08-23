@@ -1,0 +1,36 @@
+<ul class="list-group list-group-flush" style="max-height: 700px; overflow-y: auto">
+  <li (click)="currentStep === 3 && selectTemplate.emit(template)"
+      *ngFor="let template of templatesList; let i = index"
+      [class.bg-info.fw-bold]="selectedTemplate?.id === template.id && selectedTemplate?.templateType === template.templateType"
+      class="list-group-item pointer">
+
+    <i *ngIf="template.confirmed" class="bi bi-check-circle me-2 text-success"></i>
+    {{ template.projectName }}
+    <br />
+    {{ template.contractId }} ({{ template.clientName }})
+    <strong class="float-end">
+      {{ template.templateType }}
+
+      <!--      <button class="btn btn-outline-primary btn-sm ms-2"-->
+      <!--              *ngIf="currentStep === 3 && !isFileLoaded(template.id, template.templateType)"-->
+      <!--              (click)="rebuildTemplate({ id: template.id, templateType: template.templateType })">-->
+      <!--        <span class="bi bi-arrow-repeat"></span>-->
+      <!--      </button>-->
+
+      <button (click)="removeTemplate.emit({ id: template.id, templateType: template.templateType })"
+              *ngIf="currentStep === 0 || currentStep === 3"
+              class="btn btn-outline-danger btn-sm ms-2">
+        <span class="bi bi-trash"></span>
+      </button>
+    </strong>
+  </li>
+</ul>
+
+
+<button (click)="confirmTemplate.emit({ id: selectedTemplate.id, templateType: selectedTemplate.templateType })"
+        *ngIf="currentStep === 3 && selectedTemplate && !selectedTemplate.confirmed && shownTemplateData?.fileBlob"
+        class="btn btn-outline-success mt-3">
+  <i class="bi bi-check-circle me-2"></i>
+  <span>Підтвердити</span>
+</button>
+

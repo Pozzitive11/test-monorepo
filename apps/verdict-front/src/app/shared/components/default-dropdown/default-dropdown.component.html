@@ -1,0 +1,32 @@
+<div [placement]="placement()" ngbDropdown>
+  <button
+    (dblclick)="cycleValue()"
+    [class]="btnClass()"
+    [disabled]="disabled()"
+    [ngbTooltip]="showButtonTooltip() ? customTooltip() || selectedValue() : null"
+    [container]="'body'"
+    [style.font-size.pt]="fontSize()"
+    ngbDropdownToggle
+    type="button"
+  >
+    <span>{{ (selectedValue() || '') | shortText: 30 }}</span>
+  </button>
+
+  <ul [class.scrollable-drop-list]="scrollable()" ngbDropdownMenu>
+    @for (value of valueList(); track value; let index = $index) {
+      <li>
+        <a
+          (click)="selectValue(value)"
+          [ngbTooltip]="showTooltip() ? value : null"
+          [style.text-align]="textPlacement()"
+          [class.fw-bold]="index < boldValuesNum()"
+          [class.border-bottom]="index === boldValuesNum() - 1"
+          style="border-bottom-style: dashed !important"
+          class="pointer"
+          ngbDropdownItem
+        >{{ value | shortText }}</a>
+      </li>
+    }
+  </ul>
+</div>
+

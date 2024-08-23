@@ -1,0 +1,22 @@
+
+.list-group {
+  max-height: 19rem;
+  overflow-y: scroll;
+}
+
+.list-group-item {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  text-overflow: ellipsis;
+  min-height: 2rem;
+  /* max-height: 2rem; */
+}
+
+.list-group-item + .list-group-item.active {
+  border-top-width: var(--bs-list-group-border-width);
+  border-top-color: #7FFFD4;
+}
+
+.success-hover:hover {
+  background-color: rgba(127, 255, 212, 0.5);
+}

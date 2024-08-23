@@ -1,0 +1,142 @@
+<div class="modal-header">
+  <h4 class="modal-title">Нерухоме майно ({{ propertyObject.PropertyType }})</h4>
+  <button (click)="activeModal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+</div>
+
+
+<div class="modal-body">
+  <ul class="list-group list-group-flush">
+
+    <li *ngIf="!areaPredefined" class="list-group-item">
+      <strong [class.text-danger]="!propertyObject.CollateralArea">
+        Площа ({{ propertyObject.PropertyType.includes('земля') ? 'га' : 'кв. м.' }}):
+      </strong>
+      <app-sum-input
+        (sumChange)="propertyObject.CollateralArea=$event"
+        [sum]="propertyObject.CollateralArea || 0"
+      ></app-sum-input>
+    </li>
+
+    <li class="list-group-item">
+      <strong
+        [class.text-danger]="propertyObject.CostValuationPerUnit === undefined || propertyObject.CostValuationPerUnit === null">
+        Середня ринкова вартість одиниці площі (USD):
+      </strong>
+      <app-sum-input
+        (sumChange)="propertyObject.CostValuationPerUnit=$event; updateLTV()"
+        [sum]="propertyObject.CostValuationPerUnit || 0"
+      ></app-sum-input>
+    </li>
+
+    <li class="list-group-item">
+      <strong>Дата оцінки:</strong>
+      <app-date-picker-popup
+        (chosenDateChange)="updateValuationDate($event)"
+        [chosenDate]="valuationDate"
+      ></app-date-picker-popup>
+    </li>
+
+    <li *ngIf="isMortgage" class="list-group-item">
+      <strong>Risk Group:</strong>
+      <div class="btn-group float-end" role="group">
+        <app-default-dropdown
+          (valueSelected)="selectedGroup=$event; selectedProblem = undefined"
+          [btnClass]="'btn btn-outline-secondary'"
+          [cycled]="true"
+          [placement]="'bottom-end'"
+          [scrollable]="true"
+          [selectedValue]="selectedGroup || 'Оберіть групу'"
+          [valueList]="groups"
+        ></app-default-dropdown>
+        <app-default-dropdown
+          (valueSelected)="setRiskGroup($event)"
+          *ngIf="selectedGroup"
+          [btnClass]="'btn btn-outline-secondary'"
+          [cycled]="true"
+          [placement]="'bottom-end'"
+          [scrollable]="true"
+          [selectedValue]="selectedProblem || 'Оберіть проблему'"
+          [valueList]="problems(selectedGroup)"
+        ></app-default-dropdown>
+        <i
+          (click)="propertyObject.RiskGroup = undefined; selectedProblem = undefined; selectedGroup = undefined"
+          *ngIf="propertyObject.RiskGroup"
+          [ngbTooltip]="propertyObject.RiskGroup"
+          class="text-danger bi bi-x-lg pointer ms-2"
+          style="font-size: 1.5rem;"
+        >
+        </i>
+      </div>
+
+    </li>
+
+    <li class="list-group-item">
+      <strong>Мораторій:</strong>
+      <div class="btn-group float-end" role="group">
+        <app-default-dropdown
+          (valueSelected)="propertyObject.MoratoriumInfo = $event"
+          [btnClass]="'float-end btn btn-outline-secondary'"
+          [cycled]="true"
+          [placement]="'bottom-end'"
+          [scrollable]="true"
+          [selectedValue]="propertyObject.MoratoriumInfo || 'Оберіть причину'"
+          [valueList]="moratoriumReasonsStrings()"
+        ></app-default-dropdown>
+        <i
+          (click)="propertyObject.MoratoriumInfo = undefined"
+          *ngIf="propertyObject.MoratoriumInfo"
+          [ngbTooltip]="propertyObject.MoratoriumInfo"
+          class="text-danger bi bi-x-lg pointer ms-2"
+          style="font-size: 1.5rem;"
+        >
+        </i>
+      </div>
+    </li>
+
+    <li class="list-group-item">
+      <strong>Ф 3:</strong>
+      <textarea
+        #signedPeople
+        (keydown.enter)="signedPeople.blur()"
+        [(ngModel)]="propertyObject.SignedPeopleInfo"
+        class="form-control inputdefault text-13"
+        rows="2"
+      ></textarea>
+    </li>
+
+    <li *ngIf="isMortgage" class="list-group-item">
+      <strong>LTV:</strong>
+      <span class="float-end">
+        {{ propertyObject.LTV | number:'1.0-2' }}
+        {{ propertyObject.LTV ? '%' : '' }}
+      </span>
+    </li>
+
+    <li *ngIf="isMortgage" class="list-group-item">
+      <strong>Аргументація LTV <200%:</strong>
+      <textarea
+        #ltvArgumentation
+        (keydown.enter)="ltvArgumentation.blur()"
+        [(ngModel)]="propertyObject.LTVArgumentation"
+        [class.border-danger]="propertyObject.LTV && propertyObject.LTV < 200 && !propertyObject.LTVArgumentation"
+        class="form-control inputdefault text-13"
+        rows="2"
+      ></textarea>
+    </li>
+
+  </ul>
+</div>
+
+
+<div class="modal-footer">
+  <button
+    (click)="activeModal.close(propertyObject)"
+    class="btn btn-outline-primary btn-sm"
+    type="button"
+  >Зберегти
+  </button>
+</div>
+
+
+
+

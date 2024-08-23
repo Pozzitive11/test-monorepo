@@ -1,0 +1,91 @@
+@if (tableWithSortService.filteredTableData().length > 0 || tableWithSortService.textFilters().length > 0) {
+  <div class="pt-2 pb-5">
+    <div class="table-container">
+      <table
+        class="table table-bordered table-striped custom-table"
+        [ngClass]="choseRowParameter ? 'table-hover ' : null"
+      >
+        <thead>
+          <tr>
+            @if (isCheckboxes) {
+              <th (click)="checkRow(undefined)" class="pointer ultra-small-col">
+                <input [checked]="allRowsChecked" class="form-check-input big-check" type="checkbox" />
+              </th>
+            }
+            <ng-container *ngFor="let header of tableHeaders">
+              <th scope="col" class="text-center pointer position-relative" (click)="sortByColumn(header.key)">
+                <div>
+                  <i
+                    class="pointer bi bi-sort-down sort-icon"
+                    [ngClass]="{
+                      'bi-sort-up-alt': sortColumn === header.key && sortDirection === 'asc',
+                      'bi-sort-down': sortColumn === header.key && sortDirection === 'desc'
+                    }"
+                  ></i>
+                  {{ header.name }}
+                </div>
+
+                <div>
+                  @if (isFilters) {
+                    <input
+                      #filter
+                      (blur)="applyFilter(header.key, filter.value)"
+                      (dblclick)="filter.value = ''; filter.blur()"
+                      (keydown.enter)="filter.blur()"
+                      (keydown.escape)="filter.blur()"
+                      [style.background-color]="filter.value ? '#f0ff9f' : 'transparent'"
+                      class="form-control text-11 top-margin-sm"
+                      contenteditable="true"
+                      placeholder="..."
+                      (click)="$event.stopPropagation()"
+                    />
+                  }
+                </div>
+              </th>
+            </ng-container>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let row of isPagination ? paginationService.paginatedData() : tableWithSortService.filteredTableData()
+            "
+            (click)="onChoseRow(row[choseRowParameter])"
+          >
+            @if (isCheckboxes) {
+              <td (click)="checkRow(row[checkboxesParameter])" class="pointer ultra-small-col vert-align">
+                <input
+                  [checked]="rowChecked(row[checkboxesParameter])"
+                  class="form-check-input big-check pointer"
+                  type="checkbox"
+                />
+              </td>
+            }
+            <td
+              class="vert-align"
+              *ngFor="let header of tableHeaders"
+              [ngClass]="choseRowParameter ? 'pointer ' : null"
+            >
+              @if (row[header.key] === true) {
+                <span class="text-success"><i class="bi bi-check2 h2"></i></span>
+              } @else if (row[header.key] === false) {
+                <span class="text-danger"><i class="bi bi-x-lg h2"></i></span>
+              } @else if (dateTableHeaders.includes(header.key)) {
+                {{ row[header.key] | date: 'dd.MM.yyyy' }}
+              } @else if (priceTableHeaders.includes(header.key)) {
+                {{ row[header.key] | number: '1.2-2' }}
+              } @else if (row[header.key] === null) {
+                —
+              } @else {
+                {{ row[header.key] }}
+              }
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  @if (isPagination) {
+    <app-pagination></app-pagination>
+  }
+}

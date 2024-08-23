@@ -1,0 +1,40 @@
+<div class="modal-header">
+  <h4 class="modal-title">Введіть дані</h4>
+  <button (click)="activeModal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+</div>
+
+<div class="modal-body pb-5">
+  <ngb-progressbar
+    *ngIf="loading"
+    [animated]="true"
+    [height]="'3px'"
+    [striped]="true"
+    [type]="'primary'"
+    [value]="100"
+  ></ngb-progressbar>
+
+  <ul class="list-group">
+    <li class="list-group-item">
+      <strong>Тип платежу</strong>
+      <span class="float-end">
+        <app-default-dropdown (valueSelected)="paymentType.set($event)"
+                              [selectedValue]="paymentType()"
+                              [showTooltip]="false"
+                              [valueList]="paymentTypes"></app-default-dropdown>
+      </span>
+    </li>
+  </ul>
+
+</div>
+
+<div class="modal-footer">
+  <button (click)="activeModal.dismiss()" class="btn btn-outline-secondary" type="button">
+    <i class="bi bi-arrow-return-left me-2"></i>
+    Скасувати
+  </button>
+  <button (click)="save()"
+          class="btn btn-outline-success"
+          type="button">
+    Підтвердити
+  </button>
+</div>

@@ -1,0 +1,92 @@
+<div class="row">
+  <div class="col-md-3">
+    <label class="firstLabel" for="searchType">Виберіть тип пошуку:</label>
+    <div id="searchType">
+      <input [(ngModel)]="searchType" id="searchByIpn" name="searchType" type="radio" value="ipn" />
+      <label for="searchByIpn">По ІПН</label>
+      <br />
+      <input [(ngModel)]="searchType" id="searchByFio" name="searchType" type="radio" value="fio" />
+      <label for="searchByFio">По ФІО</label>
+    </div>
+  </div>
+</div>
+
+<div [hidden]="searchType !== 'ipn'" class="row">
+  <div class="col-md-3">
+    <label class="firstLabel" for="ipn">Введіть ІПН:</label>
+    <input [(ngModel)]="ipn" autocomplete id="ipn" name="ipn" type="text" />
+  </div>
+  <div class="col-md-3">
+    <button (click)="infoAboutUserAsvpNks()" type="button">Отримати інформацію</button>
+  </div>
+</div>
+<div [hidden]="searchType !== 'fio'" class="row">
+  <div class="col-md-3">
+    <label class="firstLabel" for="fio">Введіть ФІО:</label>
+    <input [(ngModel)]="fio" autocomplete id="fio" name="fio" type="text" />
+  </div>
+  <div class="col-md-3">
+    <button (click)="infoAboutUserAsvpFio()" type="button">Отримати інформацію</button>
+  </div>
+</div>
+<div>
+  <div *ngIf="elementService.displayedInfo === 1" class="row">
+    <app-loading-spinner *ngIf="elementService.loaderInfo > 0 && elementService.loaderInfo < 3"></app-loading-spinner>
+    <app-loading-spinner *ngIf="elementService.fioSee != 1"></app-loading-spinner>
+
+    <div *ngIf="elementService.loaderInfo === 3" class="center-container">
+      <h2>
+        <strong>Звіт по {{ this.elementService.displayedINN }} в Credit1</strong>
+      </h2>
+
+      <app-req-check-income-ncs-credits></app-req-check-income-ncs-credits>
+
+      <div *ngIf="elementService.fioSee === 1" class="center-container">
+        <h2>
+          <strong>Звіт по FinApi за {{ this.elementService.displayedINN }}</strong>
+        </h2>
+
+        <app-req-check-fin-api></app-req-check-fin-api>
+      </div>
+
+      <div *ngIf="elementService.index_check === 0" class="col-md-1">
+        <button (click)="infoAboutUserINN()" style="margin-bottom: 20px" type="button">Далі</button>
+      </div>
+
+      <div *ngIf="elementService.fullInfo === 1" class="row">
+        <app-req-check-ban></app-req-check-ban>
+
+        <app-req-check-military></app-req-check-military>
+
+        <app-req-check-open-credit></app-req-check-open-credit>
+
+        <app-req-check-week-credit></app-req-check-week-credit>
+
+        <app-req-check-cashflow></app-req-check-cashflow>
+
+        <app-req-check-risk-scoring></app-req-check-risk-scoring>
+
+        <app-req-check-credit-table></app-req-check-credit-table>
+
+        <app-req-check-bki-info></app-req-check-bki-info>
+
+        <app-req-check-payment-delay></app-req-check-payment-delay>
+
+        <app-req-check-contactable></app-req-check-contactable>
+      </div>
+    </div>
+
+    <hr style="padding-top: 50px" />
+    <div class="row" class="center-container">
+      <h2>
+        <strong>Звіт по {{ this.elementService.displayedINN }} в CashtanCredit</strong>
+      </h2>
+
+      <app-loading-spinner *ngIf="elementService.visionCash === 0"></app-loading-spinner>
+
+      <app-req-check-cashtan></app-req-check-cashtan>
+
+      <app-req-check-cashtan-canceled-docs></app-req-check-cashtan-canceled-docs>
+    </div>
+  </div>
+</div>

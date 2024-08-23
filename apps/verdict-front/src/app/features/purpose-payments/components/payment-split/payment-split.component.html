@@ -1,0 +1,27 @@
+<button
+  (click)="downloadRow()"
+  *ngIf="type === 'download' && !loading"
+  [id]="id"
+  class="btn btn-primary text-11 btn-sm"
+>
+  Поділити платіж
+</button>
+
+<p *ngIf="type === 'upload' && !loading">
+  Поділити платіж
+  <br><br>
+  <button
+    (click)="fileUpload.click()"
+    class="btn btn-success text-11"
+  >
+    Завантажити
+  </button>
+
+  <input #fileUpload (change)="onUploadFile($event)" style="display: none" type="file">
+</p>
+
+<div *ngIf="loading">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+
+

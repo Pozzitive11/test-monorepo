@@ -1,0 +1,123 @@
+<div *ngIf="elementService.bkiInfo">
+  <div
+    *ngIf="
+        elementService.bkiInfo.bki_date_diff <= 10 &&
+        elementService.bkiInfo.debt_part_percent < 7 &&
+        elementService.bkiInfo.active_part_percent < 40 &&
+        elementService.bkiInfo.closed_credits_sum > 50000
+      "
+  >
+    <div class="row border border-success p-3 mt-3">
+      <label class="status-label text-success"
+      >Інформація з УБКІ отримана меньше ніж 10 днів тому (а саме {{ elementService.bkiInfo.bki_date_diff }}).</label
+      >
+      <div class="row mb-0 mt-3">
+        <div *ngIf="elementService.bkiInfo.debt_part_percent < 7 || elementService.bkiInfo.debt_part_percent < 5"
+             class="col-md-12 text-center border p-2 rounded text-success">
+          <label class="status-label custom-bg-a2e8a3"
+          >Частка простроченої поточної заборгованості у виданих кредитах
+            - {{ elementService.bkiInfo.debt_part_percent }}%</label
+          >
+        </div>
+        <div *ngIf="elementService.bkiInfo.debt_part_percent > 7"
+             class="col-md-12 text-center border p-2 rounded text-danger">
+          <label class="status-label custom-bg-fcbdbd"
+          >Частка простроченої поточної заборгованості у виданих кредитах
+            - {{ elementService.bkiInfo.debt_part_percent }}%</label
+          >
+        </div>
+      </div>
+      <div class="row mb-0 mt-3">
+        <div *ngIf="elementService.bkiInfo.active_part_percent < 40"
+             class="col-md-12 text-center border p-2 rounded text-success">
+          <label class="status-label custom-bg-a2e8a3"
+          >Частка поточної заборгованості у виданих кредитах - {{ elementService.bkiInfo.active_part_percent }}%</label
+          >
+        </div>
+        <div *ngIf="elementService.bkiInfo.active_part_percent > 40"
+             class="col-md-12 text-center border p-2 rounded text-danger">
+          <label class="status-label custom-bg-fcbdbd"
+          >Частка поточної заборгованості у виданих кредитах - {{ elementService.bkiInfo.active_part_percent }}%</label
+          >
+        </div>
+      </div>
+      <div class="row mb-0 mt-3">
+        <div *ngIf="elementService.bkiInfo.closed_credits_sum > 50000"
+             class="col-md-12 text-center border p-2 rounded text-success">
+          <label class="status-label custom-bg-a2e8a3"
+          >Сума закритих кредитів понад
+            {{ elementService.bkiInfo.closed_credits_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+          >
+        </div>
+        <div *ngIf="elementService.bkiInfo.closed_credits_sum < 50000"
+             class="col-md-12 text-center border p-2 rounded text-danger">
+          <label class="status-label custom-bg-fcbdbd"
+          >Сума закритих кредитів понад
+            {{ elementService.bkiInfo.closed_credits_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    *ngIf="
+      elementService.bkiInfo.bki_date_diff > 10 ||
+      elementService.bkiInfo.debt_part_percent > 7 ||
+      elementService.bkiInfo.active_part_percent > 40 ||
+      elementService.bkiInfo.closed_credits_sum < 50000
+      "
+  >
+    <div class="row border border-danger p-3 mt-3">
+      <label class="status-label text-danger"
+      >Інформація з УБКІ отримана більше ніж 10 днів тому (а саме {{ elementService.bkiInfo.bki_date_diff }}).</label
+      >
+      <div class="row mb-0 mt-3">
+        <div
+          *ngIf="(elementService.bkiInfo.debt_part_percent < 7 || elementService.bkiInfo.debt_part_percent < 5) && elementService.bkiInfo.bki_date_diff < 10"
+          class="col-md-12 text-center border p-2 rounded text-success">
+          <label class="status-label custom-bg-a2e8a3"
+          >Частка простроченої поточної заборгованості у виданих кредитах
+            - {{ elementService.bkiInfo.debt_part_percent }}%</label
+          >
+        </div>
+        <div *ngIf="elementService.bkiInfo.debt_part_percent > 7 || elementService.bkiInfo.bki_date_diff > 10"
+             class="col-md-12 text-center border p-2 rounded text-danger">
+          <label class="status-label custom-bg-fcbdbd"
+          >Частка простроченої поточної заборгованості у виданих кредитах
+            - {{ elementService.bkiInfo.debt_part_percent }}%</label
+          >
+        </div>
+      </div>
+      <div class="row mb-0 mt-3">
+        <div *ngIf="elementService.bkiInfo.active_part_percent < 40 && elementService.bkiInfo.bki_date_diff < 10"
+             class="col-md-12 text-center border p-2 rounded text-success">
+          <label class="status-label custom-bg-a2e8a3"
+          >Частка поточної заборгованості у виданих кредитах - {{ elementService.bkiInfo.active_part_percent }}%</label
+          >
+        </div>
+        <div *ngIf="elementService.bkiInfo.active_part_percent > 40 || elementService.bkiInfo.bki_date_diff > 10"
+             class="col-md-12 text-center border p-2 rounded text-danger">
+          <label class="status-label custom-bg-fcbdbd"
+          >Частка поточної заборгованості у виданих кредитах - {{ elementService.bkiInfo.active_part_percent }}%</label
+          >
+        </div>
+      </div>
+      <div class="row mb-0 mt-3">
+        <div *ngIf="elementService.bkiInfo.closed_credits_sum > 50000 && elementService.bkiInfo.bki_date_diff < 10"
+             class="col-md-12 text-center border p-2 rounded text-success">
+          <label class="status-label custom-bg-a2e8a3"
+          >Сума закритих кредитів понад
+            {{ elementService.bkiInfo.closed_credits_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+          >
+        </div>
+        <div *ngIf="elementService.bkiInfo.closed_credits_sum < 50000 || elementService.bkiInfo.bki_date_diff > 10"
+             class="col-md-12 text-center border p-2 rounded text-danger">
+          <label class="status-label custom-bg-fcbdbd"
+          >Сума закритих кредитів понад
+            {{ elementService.bkiInfo.closed_credits_sum | currency: "UAH" : "symbol" : "1.2-2" }}</label
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

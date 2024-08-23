@@ -1,0 +1,142 @@
+<ngb-progressbar
+  *ngIf="loading()"
+  [animated]="true"
+  [height]="'3px'"
+  [striped]="true"
+  [type]="'primary'"
+  [value]="100"
+></ngb-progressbar>
+
+<div class="container-fluid">
+  <button (click)="navigationService.navigateBack('/discounts/promotions_table/templates')"
+          class="btn btn-outline-secondary my-3">
+    <i class="bi bi-arrow-left me-1"></i>
+    Повернутися
+  </button>
+
+  <div class="row-cols-auto row g-4 align-items-end">
+
+    <div class="col">
+      <app-max-page-rows-filter
+        (maxRowsPerPageChange)="requestsService.recordsOnPage.set($event); reloadPage()"
+        [maxRowsPerPage]="requestsService.recordsOnPage()"
+      ></app-max-page-rows-filter>
+    </div>
+
+    <div class="col">
+      <button
+        (click)="requestsService.checkDocumentRequests()"
+        [disabled]="!requestsService.selectedRequestIds().length"
+        class="btn btn-outline-success"
+      >
+        <i class="bi bi-check2 me-1"></i>
+        Відмітити як переглянуті
+      </button>
+    </div>
+
+    <div class="col">
+      <button
+        (click)="loadTemplatesTable()"
+        [disabled]="!requestsService.selectedRequestIds().length"
+        class="btn btn-outline-success"
+      >
+        <i class="bi bi-file-earmark-plus me-1"></i>
+        Перейти до створення документів
+      </button>
+    </div>
+
+  </div>
+
+  <div class="row-cols-auto row mt-2">
+    <div class="col">
+      <app-switch-checkbox (valueChange)="requestsService.showOnlyNewRequests.set(!$event); reloadInfo()"
+                           [id]="'checked-reqs-switch'"
+                           [value]="!requestsService.showOnlyNewRequests()">
+        Відображати всі запити
+      </app-switch-checkbox>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<div class="h4 mt-3 d-flex align-items-center justify-content-start position-relative">
+  <button (click)="reloadInfo()" class="btn btn-outline-primary me-3 align-self-start">
+    <i class="bi bi-arrow-clockwise"></i>
+    Оновити
+  </button>
+
+  <div class="position-absolute start-50 translate-middle-x">
+    Запити
+    <ng-container *ngIf="!loading() && !requestsService.docsRequests().length"> відсутні</ng-container>
+  </div>
+</div>
+
+<table *ngIf="requestsService.docsRequests().length"
+       [class.disabled-table]="loading()"
+       class="table table-bordered table-hover table-sm mt-3 text-14">
+  <thead class="sticky-top" style="background-color: rgb(236,236,236); z-index: 100">
+  <tr>
+    <th>
+      <input
+        (click)="toggleAll()"
+        [checked]="allSelected()"
+        [id]="'request_check_all'"
+        class="form-check-input big-check pointer mx-2"
+        type="checkbox"
+      >
+    </th>
+    <th>№ ДС/РС</th>
+    <th>НКС</th>
+    <th>Дата подачі</th>
+    <th>Гранична дата</th>
+    <th>Погодження</th>
+    <th>Сума боргу</th>
+    <th>Дисконт</th>
+    <th>РС (міс.)</th>
+    <th>Сума до сплати</th>
+    <th>Тип документа</th>
+    <th>Запит від</th>
+    <th>Дата запиту</th>
+    <th>Переглянуто</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr *ngFor="let request of requestsService.docsRequests()">
+    <td class="text-center">
+      <input
+        (click)="toggleRequestSelection(request.ReqId)"
+        [checked]="requestsService.selectedRequestIds().includes(request.ReqId)"
+        [id]="'request_check_' + request.ReqId"
+        class="form-check-input big-check pointer mx-2"
+        type="checkbox"
+      >
+    </td>
+    <td>{{ request.id }}</td>
+    <td class="text-end">{{ request.ContractId }}</td>
+    <td>{{ request.EntryDate | formatDate }}</td>
+    <td>{{ request.PaymentDateLimit | formatDate }}</td>
+    <td>{{ request.Agreed }}</td>
+    <td class="text-end">{{ request.Debt | number:'1.0-2' }}</td>
+    <td class="text-end">{{ request.DiscountPercent | number:'1.0-2' }} %</td>
+    <td>{{ request.RestructuringMonths || '-' }} {{ request.RestructuringMonths ? ' міс.' : '' }}</td>
+    <td class="text-end">{{ request.SumToPay | number:'1.0-2' }}</td>
+    <td>{{ request.DocType }}</td>
+    <td>{{ request.CreatedBy }}</td>
+    <td>{{ request.RequestDate | formatDate:true }}</td>
+    <td>{{ request.CheckDate ? '+' : '-' }}</td>
+  </tr>
+  </tbody>
+</table>
+
+<ngb-pagination
+  (pageChange)="goToPage($event)"
+  *ngIf="requestsService.docsRequests().length"
+  [boundaryLinks]="true"
+  [collectionSize]="requestsService.totalRequests()"
+  [maxSize]="3"
+  [pageSize]="requestsService.recordsOnPage()"
+  [page]="requestsService.currentPage()"
+  [rotate]="true"
+></ngb-pagination>

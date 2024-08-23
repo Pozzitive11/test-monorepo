@@ -1,0 +1,23 @@
+<div class="modal-header">
+  <h4 class="modal-title">Внесіть список НКС (будь-який роздільник)</h4>
+  <button (click)="activeModal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+</div>
+
+
+<div class="modal-body">
+  <app-switch-checkbox
+    [(value)]="selectLatestOnly" [id]="'selectLatestOnlySwitch'"
+  >Завантажити лише останні подачі
+  </app-switch-checkbox>
+  <textarea [(ngModel)]="contractsList" class="form-control" rows="10"></textarea>
+</div>
+
+<div class="modal-footer">
+  <button
+    (click)="activeModal.close([contractsList, selectLatestOnly])"
+    class="btn btn-outline-success"
+    type="button"
+  >Застосувати
+  </button>
+</div>
+

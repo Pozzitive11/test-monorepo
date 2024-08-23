@@ -1,0 +1,107 @@
+
+.spreadsheet {
+  display: table;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.ss__ {
+  &row {
+    display: table-row;
+    overflow: hidden;
+
+    &.highlight {
+      background-color: #f7ffcb;
+    }
+  }
+
+  &cell {
+    display: table-cell;
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+    transition: background-color 0.3s;
+    position: relative;
+    height: inherit;
+
+    &.edited {
+      border: 2px solid #f57633;
+
+      &::after {
+        z-index: 100;
+        content: attr(data-user);
+        position: absolute;
+        top: -15px;
+        right: -2px;
+        background: #f57633;
+        padding: 0 5px;
+        font-size: 10px;
+      }
+
+      &.by-me {
+        border-color: #33d1f5;
+
+        &::after {
+          background: #33d1f5;
+        }
+      }
+    }
+  }
+
+  &header .ss__cell {
+    background-color: #f0f0f0;
+    cursor: default;
+  }
+
+  &resize {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: -2px;
+    width: 3px;
+    border-left: 2px solid #4285f4;
+    border-right: 2px solid #4285f4;
+    background: #4285f4;
+    cursor: col-resize;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 99;
+
+    &:hover, &:active {
+      opacity: 1 !important;
+    }
+
+    &__row {
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-top: 2px solid #4285f4;
+      border-bottom: 2px solid #4285f4;
+      background: #4285f4;
+      cursor: row-resize;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 99;
+
+      &:hover, &:active {
+        opacity: 1 !important;
+      }
+    }
+  }
+}
+
+.context-menu {
+  background-color: #fff;
+  position: absolute;
+  z-index: 100;
+  border: 1px solid #d7c1c1;
+  border-radius: 5px;
+  top: 100%;
+  box-shadow: 0 5px 6px 1px #a78888;
+  width: max-content;
+  left: 0;
+}
+

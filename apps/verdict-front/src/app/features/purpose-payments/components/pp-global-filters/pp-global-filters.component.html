@@ -1,0 +1,142 @@
+<div class="offcanvas-header">
+  <h2 class="mb-0">Фільтри</h2>
+  <button
+    (click)="activeOffCanvas.dismiss()"
+    aria-label="Close"
+    class="btn-close text-reset"
+    type="button"
+  ></button>
+</div>
+
+<app-loading-bar
+  [customType]="'inf-bar'"
+  [loading]="preparing || preparingFilteredFile || updating"
+></app-loading-bar>
+<div
+  [class.disabled-table]="preparing || preparingFilteredFile || updating"
+  class="offcanvas-body"
+>
+
+  <div class="row">
+    <!--    РЯДКІВ НА СТОРІНЦІ    -->
+    <div class="col-6">
+      <app-max-page-rows-filter
+        (maxRowsPerPageChange)="maxRowsPerPage=$event"
+        [maxRowsPerPage]="maxRowsPerPage"
+      ></app-max-page-rows-filter>
+    </div>
+
+    <!--  Тип даних буфера для завантаження  -->
+    <div class="col-6">
+      <strong>Тип даних буфера для завантаження:</strong>
+      <app-default-dropdown
+        (valueSelected)="currentBufferType=$event"
+        [cycled]="true"
+        [selectedValue]="currentBufferType"
+        [valueList]="bufferTypes"
+        [scrollable]="true"
+        [fontSize]="13"
+        btnClass="btn btn-primary dropdown-toggle mt-2"
+      ></app-default-dropdown>
+    </div>
+
+    <hr class="my-2" />
+
+    <!--    ФІЛЬТР ЗА ФАЙЛАМИ    -->
+    <div class="col-12">
+      <app-pp-files-filter
+        (chosenFilesUpdated)="chosen_files=$event"
+        (textFilterUpdated)="textFilter=$event"
+        [available_files]="available_files"
+        [chosen_files]="chosen_files"
+        [textFilter]="textFilter"
+      ></app-pp-files-filter>
+    </div>
+
+    <hr class="mb-2" />
+
+    <!--    ФІЛЬТР ЗА ДАТОЮ    -->
+    <div class="col-12">
+      <strong>Фільтр за датою:</strong>
+      <div class="my-2">
+        <app-date-picker-range-popup
+          (dateChanged)="filterService.changeDateRange($event)"
+          [fromDate]="filterService.fromDate()"
+          [maxDate]="filterService.maxDate()"
+          [minDate]="filterService.minDate()"
+          [toDate]="filterService.toDate()"
+        ></app-date-picker-range-popup>
+      </div>
+    </div>
+
+    <hr class="mb-2" />
+
+    <!--    ПРИХОВАНІ СТОВПЦІ    -->
+    <div class="col-12">
+      <strong>Приховані стовпці:</strong>
+      <div class="col-auto alert alert-info mt-2" style="overflow-y: scroll; max-height: 17rem">
+        <div *ngFor="let col of hiddenCols" class="row-cols-auto">
+          {{ col }}
+          <button (click)="showCol(col)" class="btn btn-sm btn-close"></button>
+        </div>
+      </div>
+    </div>
+
+    <hr class="mb-2" />
+
+    <div class="col-12 mb-2">
+      <button
+        (click)="uploadData(); activeOffCanvas.close()"
+        class="btn btn-outline-success"
+        type="button"
+      >Завантажити дані з буферу
+      </button>
+    </div>
+
+    <div class="col-12 mb-2">
+      <button
+        (click)="getFileWithFilters()"
+        [disabled]="preparingFilteredFile"
+        class="btn btn-outline-primary"
+      >
+        Скачати файл за обраними фільтрами
+      </button>
+    </div>
+
+    <hr class="mb-2" />
+
+    <!--    ПІДГОТУВАТИ ФАЙЛ ДЛЯ ЗАВАНТАЖЕННЯ    -->
+    <div class="col-12">
+      <app-switch-checkbox
+        [(value)]="withFilters"
+        [id]="'useDCSumSwitch'"
+      >Лише за обраними фільтрами
+      </app-switch-checkbox>
+    </div>
+    <div class="col-12 mb-2">
+      <button
+        (click)="prepareUpload()"
+        class="btn btn-outline-primary"
+      >
+        Підготувати файл для завантаження
+      </button>
+    </div>
+
+  </div>
+
+  <div class="text-end mt-2">
+    <button
+      (click)="resetFilters(); activeOffCanvas.close()"
+      class="btn btn-outline-dark"
+    >Очистити фільтри
+    </button>
+  </div>
+</div>
+
+
+
+
+
+
+
+

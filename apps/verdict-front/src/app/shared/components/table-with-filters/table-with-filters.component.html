@@ -1,0 +1,79 @@
+<app-loading-bar [customType]="'inf-bar'" [loading]="loading()" />
+
+<div [class.disabled-table]="loading()" class="container-fluid mt-2 mb-5">
+  @if (dataLength() === 0) {
+    <div class="row">
+      <div class="alert alert-secondary">Інформація відсутня</div>
+    </div>
+  } @else {
+    <div class="row">
+      <div class="d-flex justify-content-between w-100 align-items-baseline">
+        <app-max-page-rows-filter [(maxRowsPerPage)]="rowsPerPage" />
+        <ngb-pagination
+          [(page)]="page"
+          [boundaryLinks]="true"
+          [collectionSize]="filteredDataLength()"
+          [maxSize]="5"
+          [pageSize]="rowsPerPage()"
+          [rotate]="true"
+        />
+      </div>
+
+      <!--    ТАБЛИЦА     -->
+      <div class="table-responsive" style="max-height: 700px; overflow-y: auto">
+        <table class="table table-striped table-bordered">
+          <thead class="thead-dark">
+          <tr>
+            @for (key of header(); track $index) {
+              <th scope="col">
+                <span class="d-block fw-bold">
+                  {{ key | slice: 0 : 40 }}
+                  @if (key.length > 40) {
+                    ...
+                  }
+                </span>
+
+                <i
+                  (click)="openFilter(key)"
+                  [style.color]="isFilterApplied(key) ? '#4FAD18FF' : 'black'"
+                  class="bi bi-filter-circle mb-2 pointer"
+                  style="font-size: 30px"
+                ></i>
+                @if (isFilterApplied(key)) {
+                  <i
+                    #resetFilter
+                    (click)="clearFilter(key)"
+                    (mouseout)="resetFilter.classList.remove('red-text')"
+                    (mouseover)="resetFilter.classList.add('red-text')"
+                    class="bi bi-arrow-counterclockwise left-margin-sm mb-2 pointer"
+                    style="font-size: 30px"
+                  ></i>
+                }
+              </th>
+            }
+          </tr>
+          </thead>
+
+          <tbody>
+            @for (row of filteredData() | pagination:page():rowsPerPage(); track $index) {
+              <tr (click)="rowClick.emit(row)" class="pointer">
+                @for (key of header(); track key) {
+                  <td
+                    [style.text-align]="isNumber(row[key]) ? 'right' : 'left'"
+                    class="text-center align-middle"
+                  >
+                    @if (isLink(row[key])) {
+                      <a [href]="row[key]" target="_blank">{{ row[key] | formatAnyValue }}</a>
+                    } @else {
+                      {{ row[key] | formatAnyValue }}
+                    }
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>

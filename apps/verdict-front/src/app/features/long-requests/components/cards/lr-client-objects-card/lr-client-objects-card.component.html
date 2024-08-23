@@ -1,0 +1,116 @@
+<div class="card">
+  <h5 (click)="cardBody.hidden = !cardBody.hidden" class="card-header pointer">
+    {{ isMortgage ? "Характеристика об'єкту застави" : 'Додатковe майно' }}
+    <span class="float-end">
+      <i [class.bi-chevron-down]="cardBody.hidden" [class.bi-chevron-up]="!cardBody.hidden" class="bi"></i>
+    </span>
+  </h5>
+  <ngb-progressbar
+    *ngIf="loading"
+    [animated]="true"
+    [height]="'3px'"
+    [striped]="true"
+    [type]="'secondary'"
+    [value]="100"
+  ></ngb-progressbar>
+
+  <div #cardBody [class.disabled-table]="loading" class="card-body">
+    <ul *ngIf="propertyCheck && !isMortgage" class="list-group list-group-flush">
+      <li class="list-group-item">
+        <strong>Дата безкоштовної перевірки (нерухоме майно):</strong>
+        <span class="float-end">{{ propertyCheck.FreeINNCheckDate | formatDate }}</span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>Результат безкоштовної перевірки (нерухоме майно):</strong>
+        <div class="text-end red-text mb-1" *ngIf="propertyCheck.OTPropertyCount">
+          <strong>
+            {{ propertyCheck.OTPropertyCount }} з {{ propertyCheck.AllPropertyCount }}
+            на окупованих територіях
+          </strong>
+        </div>
+        <span [class.red-text]="(propertyCheck.FreeINNCheckResult || '').includes('відсутня')" class="float-end">
+          {{ propertyCheck.FreeINNCheckResult }}
+        </span>
+      </li>
+
+      <li *ngIf="!propertyCheck.CheckDate" class="list-group-item">
+        <strong>Статус перевірки (нерухоме майно):</strong>
+        <strong class="float-end red-text">
+          {{ propertyCheck.CheckStatus }}
+        </strong>
+      </li>
+
+      <ng-container *ngIf="propertyCheck.CheckDate">
+        <li class="list-group-item">
+          <strong>Дата останньої перевірки (нерухоме майно):</strong>
+          <span class="float-end">{{ propertyCheck.CheckDate | formatDate }}</span>
+        </li>
+
+        <li class="list-group-item">
+          <strong>Статус перевірки (нерухоме майно):</strong>
+          <span [class.red-text]="propertyCheck.CheckStatus.includes('відсутня')" class="float-end">
+            {{ propertyCheck.CheckStatus }}
+          </span>
+        </li>
+
+        <li *ngIf="objectsNotPresent() && checkDateIsReal()" class="list-group-item">
+          <strong class="red-text">Майно відсутнє</strong>
+        </li>
+      </ng-container>
+    </ul>
+
+    <ul *ngIf="objectsNotPresent() && isMortgage" class="list-group list-group-flush">
+      <li class="list-group-item">
+        <strong>Заставне майно:</strong>
+        <span class="float-end red-text">відсутнє</span>
+      </li>
+    </ul>
+
+    <ng-container *ngIf="autoObjects">
+      <ng-container *ngFor="let auto of autoObjects; let i = index">
+        <h5 (click)="autosBody.hidden = !autosBody.hidden" class="card-header pointer">
+          Авто
+          <span class="float-end">
+            <button
+              (click)="editAuto(auto, i); autosBody.hidden = !autosBody.hidden"
+              [ngbTooltip]="'Редагувати'"
+              class="btn btn-outline-secondary btn-sm right-margin-sm"
+            >
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <i [class.bi-chevron-down]="autosBody.hidden" [class.bi-chevron-up]="!autosBody.hidden" class="bi"></i>
+          </span>
+        </h5>
+        <app-lr-auto-object-card #autosBody [autoObject]="auto"></app-lr-auto-object-card>
+      </ng-container>
+    </ng-container>
+
+    <ng-container>
+      <ng-container *ngFor="let propertyObject of propertyObjects; let i = index">
+        <h5 (click)="propertiesBody.hidden = !propertiesBody.hidden" class="card-header pointer">
+          {{ propertyObject.PropertyType }}
+          <span class="float-end">
+            <button
+              (click)="editProperty(propertyObject, i); propertiesBody.hidden = !propertiesBody.hidden"
+              [ngbTooltip]="'Редагувати'"
+              class="btn btn-outline-secondary btn-sm right-margin-sm"
+            >
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <i
+              [class.bi-chevron-down]="propertiesBody.hidden"
+              [class.bi-chevron-up]="!propertiesBody.hidden"
+              class="bi"
+            ></i>
+          </span>
+        </h5>
+        <app-lr-property-object-card
+          #propertiesBody
+          [isMortgage]="isMortgage"
+          [propertyObject]="propertyObject"
+        ></app-lr-property-object-card>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,136 @@
+<div class="card">
+  <h5 (click)="cardBody.hidden=!cardBody.hidden" class="card-header pointer">
+    Запит до ДФС/ПФУ
+    <span class="float-end">
+      <i [class.bi-chevron-down]="cardBody.hidden" [class.bi-chevron-up]="!cardBody.hidden" class="bi"></i>
+    </span>
+  </h5>
+  <ngb-progressbar
+    *ngIf="loading"
+    [animated]="true"
+    [height]="'3px'"
+    [striped]="true"
+    [type]="'secondary'"
+    [value]="100"
+  ></ngb-progressbar>
+
+  <div #cardBody [class.disabled-table]="loading" class="card-body">
+    <ul *ngIf="incomeStagesInfo" class="list-group list-group-flush">
+      <li *ngFor="let incomeStages of incomeStagesInfo" class="list-group-item">
+        <div class="card my-2">
+
+          <h5 (click)="incomeStagesCard.hidden=!incomeStagesCard.hidden" class="card-header pointer">
+            <span *ngIf="incomeStages.ClientType" class="mb-2 text-18">{{ incomeStages.ClientType }}<br /></span>
+            <span *ngIf="incomeStages.ClientName" class="mb-2 text-18">{{ incomeStages.ClientName }}<br /></span>
+            <span *ngIf="incomeStages.ClientINN" class="mb-2 text-18">ІПН {{ incomeStages.ClientINN }}<br /></span>
+            <span *ngIf="incomeStages.EPNum" class="mb-2 text-18">ВП {{ incomeStages.EPNum }}<br /></span>
+            <span class="float-end">
+              <i [class.bi-chevron-down]="incomeStagesCard.hidden"
+                 [class.bi-chevron-up]="!incomeStagesCard.hidden"
+                 class="bi"></i>
+            </span>
+          </h5>
+
+          <div #incomeStagesCard class="card-body">
+            <ul class="list-group list-group-flush">
+
+              <ng-container *ngIf="incomeStages.AnswerDateDFS; else noResponseDFS">
+                <li class="list-group-item">
+                  <strong>Дата відповіді з ДФС:</strong>
+                  <span class="float-end">{{ incomeStages.AnswerDateDFS | formatDate:false }}</span>
+                </li>
+
+                <li *ngIf="incomeStages.PositiveResultDFS != undefined" class="list-group-item">
+                  <strong *ngIf="incomeStages.PositiveResultDFS" class="text-success">
+                    Позитивна відповідь ДФС
+                  </strong>
+                  <strong *ngIf="!incomeStages.PositiveResultDFS" class="text-danger float-end">
+                    Негативна відповідь ДФС
+                  </strong>
+                </li>
+
+                <ng-container *ngIf="incomeStages.PositiveResultDFS">
+                  <lr-income-stages-by-quarter *ngIf="incomeStages.IncomeDetailedInfo.length > 0"
+                                               [incomeQuarterInfo]="incomeStages.IncomeDetailedInfo"
+                  ></lr-income-stages-by-quarter>
+
+                  <li *ngIf="incomeStages.IncomeDetailedInfo.length === 0 && incomeStages.CompanyName != undefined"
+                      class="list-group-item">
+                    <strong>Роботодавець:</strong>
+                    <span class="float-end">
+                      {{ incomeStages.CompanyName }}
+                      <ng-container *ngIf="incomeStages.CompanyEDRPOU != undefined"> ({{ incomeStages.CompanyEDRPOU }}
+                        )</ng-container>
+                    </span>
+                  </li>
+                </ng-container>
+
+              </ng-container>
+
+              <ng-template #noResponseDFS>
+                <strong [class.text-danger]="(incomeStages.NoAnswerDaysDFS || 0) > 14" class="float-end"
+                >Відповідь з ДФС відсутня {{ daysToString(incomeStages.NoAnswerDaysDFS || 0) }}</strong>
+              </ng-template>
+
+              <ng-container *ngIf="incomeStages.AnswerDatePFU">
+                <li class="list-group-item">
+                  <strong>Дата відповіді з ПФУ:</strong>
+                  <span class="float-end">{{ incomeStages.AnswerDatePFU | formatDate:false }}</span>
+                </li>
+
+                <li *ngIf="incomeStages.PositiveResultPFU != undefined" class="list-group-item">
+                  <strong *ngIf="incomeStages.PositiveResultPFU" class="text-success">
+                    Позитивна відповідь ПФУ
+                  </strong>
+                  <strong *ngIf="!incomeStages.PositiveResultPFU" class="text-danger float-end">
+                    Негативна відповідь ПФУ
+                  </strong>
+                </li>
+
+                <li *ngIf="incomeStages.NoResolutionFromPositiveDFS" class="list-group-item">
+                  <strong class="float-end text-danger">Відсутні постанови (від позитивних відповідей з ДФС)</strong>
+                </li>
+              </ng-container>
+
+              <li *ngIf="incomeStages.Stopped" class="list-group-item">
+                <strong class="float-end text-danger">Зупинено</strong>
+              </li>
+
+              <li
+                *ngIf="incomeStages.PositiveResultDFS || incomeStages.PositiveResultPFU || incomeStages.ResolutionDate"
+                class="list-group-item">
+                <ng-container *ngIf="incomeStages.ResolutionDate">
+                  <strong>Дата постанови на ЗП:</strong>
+                  <span class="float-end">{{ incomeStages.ResolutionDate | formatDate:false }}</span>
+                </ng-container>
+
+                <strong
+                  *ngIf="!incomeStages.ResolutionDate"
+                  class="float-end text-danger"
+                >Постанова на ЗП відсутня</strong>
+              </li>
+
+              <li *ngIf="incomeStages.NoResolutionFromNegativeDFS" class="list-group-item">
+                <strong class="float-end text-danger text-end">
+                  Постанова на ЗП відсутня з врахуванням негативних відповідей ПФУ і "Зупинено"
+                </strong>
+              </li>
+
+              <li *ngIf="incomeStages.NoResolutionDays" class="list-group-item">
+                <strong [class.text-danger]="incomeStages.NoResolutionDays > 14" class="float-end">
+                  Постанова на ЗП відсутня {{ daysToString(incomeStages.NoResolutionDays) }}
+                </strong>
+              </li>
+
+            </ul>
+          </div>
+
+        </div>
+      </li>
+    </ul>
+
+  </div>
+</div>
+
+
+

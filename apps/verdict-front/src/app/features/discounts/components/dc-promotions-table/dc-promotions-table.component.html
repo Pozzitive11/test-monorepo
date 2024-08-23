@@ -1,0 +1,90 @@
+<table class="table table-bordered table-hover table-sm text-12">
+  <thead>
+    <tr>
+      <th (click)="checkRow(undefined)" class="pointer ultra-small-col">
+        <input [checked]="allRowsChecked" class="form-check-input big-check" type="checkbox" />
+      </th>
+      <th *ngIf="canBeEdited" scope="col">Створити шаблон</th>
+      <ng-container *ngFor="let key of header">
+        <th *ngIf="key !== 'Фактична валюта(символ)'" scope="col">
+          {{ key }}
+          <input
+            #filter
+            (blur)="applyFilter(key, filter.value)"
+            (dblclick)="filter.value = ''; filter.blur()"
+            (keydown.enter)="filter.blur()"
+            (keydown.escape)="filter.blur()"
+            [style.background-color]="filter.value ? '#f0ff9f' : 'transparent'"
+            class="form-control text-11 top-margin-sm"
+            contenteditable="true"
+            placeholder="..."
+          />
+        </th>
+      </ng-container>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr
+      #rowElement
+      (mouseenter)="rowElement.classList.remove('ellipsis')"
+      (mouseleave)="rowElement.classList.add('ellipsis')"
+      *ngFor="let row of data$ | async"
+      [class.col-edit-chosen]="!!editRow && row['id'] === editRow['id']"
+      [class]="colorClassForRow(row['Причина неподачі'], row['Наявність узгодження'], row['Документ Затверджено'])"
+      class="ellipsis"
+    >
+      <td (click)="checkRow(row['id'])" class="pointer ultra-small-col">
+        <input [checked]="rowChecked(row['id'])" class="form-check-input big-check" type="checkbox" />
+      </td>
+
+      <td
+        (click)="templateService.openTemplateTypeChooseModal(row['id'])"
+        *ngIf="canBeEdited"
+        class="pointer text-center"
+      >
+        <button class="btn btn-sm btn-outline-primary">
+          <i class="bi bi-plus-circle fw-bold"></i>
+        </button>
+      </td>
+
+      <ng-container *ngFor="let key of header">
+        <td
+          *ngIf="key !== 'Фактична валюта(символ)'"
+          (click)="canBeEdited && choseRow(row)"
+          [class.pointer]="canBeEdited"
+          [class]="colSize(key)"
+        >
+          <!-- <ng-container *ngIf="key === 'Підтвердження відправки'">
+          <span (click)="handleClickOnConfirmationCell($event)">
+            <div *ngIf="!row[key]" class="d-flex justify-content-center align-items-center w-100 h-100">
+              <dc-upload-docs-cell [cp_id]="row['id']" [row]="row" [inn]="row['ІПН клієнта']"></dc-upload-docs-cell>
+            </div>
+          </span>
+        </ng-container> -->
+          <!-- <span *ngIf="key === 'Документ Затверджено'">
+          <div *ngIf="!row[key]" class="d-flex justify-content-center align-items-center w-100 h-100">
+            {{ promotionDataService.updateRow() }}
+          </div>
+        </span> -->
+          <span *ngIf="booleanCols.includes(key)">{{ booleanToText(row[key]) }}</span>
+          <ng-container *ngIf="!!row[key]">
+            <span *ngIf="inDefaultCols(key)" class="">{{ row[key] }}</span>
+            <span *ngIf="key === 'Примітка' && !!row['Коментар ТС']">
+              {{ (row[key] ? '; ' : '') + row['Коментар ТС'] }}
+            </span>
+            <span *ngIf="moneyCols.includes(key) && isNumber(row[key])">
+              {{ row[key] | number: '1.0-2' }} {{ row['Фактична валюта(символ)'] }}
+            </span>
+            <span *ngIf="numberCols.includes(key) && !moneyCols.includes(key) && isNumber(row[key])">
+              {{ row[key] | number: '1.0-2' }}
+            </span>
+            <span *ngIf="(moneyCols.includes(key) || numberCols.includes(key)) && !isNumber(row[key])">
+              {{ row[key] }}
+            </span>
+          </ng-container>
+        </td>
+      </ng-container>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,28 @@
+<div class="container-fluid mt-3 mb-5">
+  <div class="row mb-5">
+    <div class="col-6">
+      <cc-info-rules></cc-info-rules>
+    </div>
+
+    <div class="col-6">
+      <h4 class="h4">Завантажити файли для обробки</h4>
+      <app-file-upload (fileAdded)="onUploadFile($event)" [id]="'CCFileInput'" [multiple]="true"></app-file-upload>
+
+      <!--<ng-container *ngIf="fileList.length > 0">
+
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-info" *ngFor="let file of fileList">
+          {{ file.file.name }}
+
+          <span class="left-margin-sm">
+            <i class="bi bi-x-circle pointer red-text" (click)="removeFile(file.file.name)"></i>
+          </span>
+        </li>
+      </ul>
+
+      <button class="btn btn-success top-margin-sm" (click)="uploadFiles()">Завантажити файли</button>
+
+    </ng-container>-->
+    </div>
+  </div>
+</div>

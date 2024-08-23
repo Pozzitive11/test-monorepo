@@ -1,0 +1,157 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+  animation: slideIn 1s ease;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.container {
+  width: 100%;
+  margin: 0;
+  display: flex;
+}
+
+
+.form-container {
+  margin: 0 auto;
+  flex: 1;
+  width: 50%;
+  background-color: #ffffff;
+  color: #333;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.progress-container {
+
+  width: 50%; /* уменьшаем ширину до 30% */
+  background-color: #ffffff;
+  color: #333;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 10px;
+}
+
+.delete-container {
+
+  width: 70%; /* ширина 100% для контейнера видалення */
+  background-color: #ffffff;
+  color: #333;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 10px;
+}
+
+
+.form-title {
+  color: #009dda;
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.form-text {
+  margin-bottom: 15px;
+}
+
+.form-text input,
+.form-text select {
+  border: 2px solid #009dda;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form-text input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.form-file {
+  margin-bottom: 15px;
+}
+
+.custom-file-upload {
+  content: 'Загрузить файл';
+  cursor: pointer;
+  border-radius: 20px;
+  display: inline-block;
+  background: #009dda;
+  color: #fff;
+  padding: 8px 15px;
+  border-radius: 15px;
+  margin-right: 5px;
+}
+
+.custom-file-upload input {
+  position: absolute;
+  font-size: 100px;
+  right: 0;
+  top: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.error-message {
+  color: #e74c3c;
+  margin-top: 10px;
+}
+
+.form-button {
+  margin-top: 20px;
+}
+
+.form-button-first {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #009dda;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.form-button-first:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.form-button-first:hover {
+  background-color: #009dda;
+}
+
+.checkbox {
+  margin-right: 5px;
+  text-align: center;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.form-text input:focus,
+.form-text select:focus {
+  outline: none;
+}

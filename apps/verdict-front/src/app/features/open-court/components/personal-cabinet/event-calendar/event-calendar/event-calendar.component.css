@@ -1,0 +1,245 @@
+/* Стили для модального окна */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  .modal-title {
+    margin: 0;
+  }
+
+  .close {
+    font-size: 1.5rem;
+    color: #000;
+    opacity: 0.5;
+  }
+
+  .close:hover {
+    opacity: 1;
+  }
+
+  .modal-body {
+    padding: 1rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .label-bold {
+    font-weight: bold;
+  }
+
+.form-control {
+    width: 100%;
+  }
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1rem;
+    border-top: 1px solid #dee2e6;
+  }
+
+.btn-primary,
+  .btn-secondary {
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+.btn-primary {
+  background-color: #007bff;
+    color: #fff;
+    border: 1px solid #6c757d;
+  }
+  .btn-primarys{
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #6c757d;
+  }
+
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+    border: 1px solid #6c757d;
+  }
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+  }
+  .label-highlight {
+    font-weight: bold;
+    color: #007bff; /* Цвет выделения, можете изменить на свой */
+  }
+  .calendar-container {
+    max-width: 800px; /* Максимальная ширина контейнера календаря */
+    margin: 0 auto; /* Центрирование контейнера по горизонтали */
+  }
+
+/* Стили для кнопок календаря и селекторов */
+  .btn-calendar {
+    margin-right: 10px; /* Отступ между кнопками */
+  }
+
+/* Стили для выделенных элементов в селекторах */
+  .label-highlight {
+    font-weight: bold;
+    color: #007bff; /* Цвет выделения текста */
+  }
+  .calendar-container {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+.mwl-calendar-month-view,
+  .mwl-calendar-week-view,
+  .mwl-calendar-day-view {
+    max-height: 800px; /* Ограничение высоты контейнера */
+    overflow-y: auto; /* Добавление вертикальной прокрутки, если содержимое превышает высоту контейнера */
+  }
+
+.mwl-calendar-month-view .cal-cell,
+  .mwl-calendar-week-view .cal-cell,
+  .mwl-calendar-day-view .cal-cell {
+    padding: 2px; /* Уменьшение отступов */
+  }
+
+.mwl-calendar-day-view .cal-hour-segment,
+  .mwl-calendar-week-view .cal-hour-segment {
+    height: 30px; /* Уменьшение высоты каждого сегмента часа */
+  }
+
+.mwl-calendar-day-view .cal-time-label-row,
+  .mwl-calendar-week-view .cal-time-label-row {
+    height: 30px; /* Уменьшение высоты строки метки времени */
+  }
+
+.mwl-calendar-day-view .cal-time,
+  .mwl-calendar-week-view .cal-time {
+    font-size: 0.75rem; /* Уменьшение размера шрифта меток времени */
+  }
+
+.mwl-calendar-month-view .cal-cell-top {
+    font-size: 0.75rem; /* Уменьшение размера шрифта даты */
+  }
+
+.mwl-calendar-month-view .cal-events,
+  .mwl-calendar-week-view .cal-events,
+  .mwl-calendar-day-view .cal-events {
+    padding: 2px; /* Уменьшение отступов в контейнере событий */
+  }
+
+.mwl-calendar-week-view .cal-header .cal-cell,
+  .mwl-calendar-day-view .cal-header .cal-cell {
+    padding: 2px; /* Уменьшение отступов в заголовке */
+    font-size: 0.75rem; /* Уменьшение размера шрифта в заголовке */
+  }
+
+.mwl-calendar-month-view .cal-day-badge,
+  .mwl-calendar-week-view .cal-day-badge,
+  .mwl-calendar-day-view .cal-day-badge {
+    font-size: 0.75rem; /* Уменьшение размера шрифта бейджей */
+  }
+
+.mwl-calendar-event {
+    font-size: 0.75rem; /* Уменьшение размера шрифта событий */
+  }
+  .calendar-container {
+    max-width: 100%;
+    margin: 0 auto;
+    height: 700px; /* Задайте необходимую высоту */
+    overflow-y: auto;
+  }
+
+
+.cal-day-headers {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: white;
+    }
+
+.calendar-content {
+    overflow-y: auto;
+    height: calc(100vh - 40px);
+    }
+  .btn-active {
+    background-color: #007bff;
+    color: #fff;
+
+  }
+  .btn-primary {
+    background-color: white;
+    color: gray;
+  }
+
+.btn-active.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+  }
+  .badge {
+  --bs-badge-padding-x: .65em;
+  --bs-badge-padding-y: .35em;
+  --bs-badge-font-size: .75em;
+  --bs-badge-font-weight: 700;
+  --bs-badge-color: #fff;
+  --bs-badge-border-radius: .375rem;
+  display: inline-block;
+  padding: var(--bs-badge-padding-y) var(--bs-badge-padding-x);
+  font-size: var(--bs-badge-font-size);
+  font-weight: var(--bs-badge-font-weight);
+  line-height: 1;
+  color: var(--bs-badge-color);
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: var(--bs-badge-border-radius);
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.text-bg-warning {
+  color: #000 !important;
+  background-color: RGBA(255, 193, 7, var(--bs-bg-opacity, 1)) !important;
+}
+
+.text-bg-green {
+  color: #000 !important;
+  background-color: #28a745 !important;
+}
+
+.text-bg-blue {
+  color: #000 !important;
+  background-color: #007bff !important;
+}
+
+.text-bg-yellow {
+  color: #000 !important;
+  background-color: #ffc107 !important;
+}
+.close-button {
+  position: absolute;
+  top: 1px;
+  right: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+}
+
+.close-button span {
+  font-size: 24px; /* Размер крестика */
+  color: #000; /* Цвет крестика */
+}

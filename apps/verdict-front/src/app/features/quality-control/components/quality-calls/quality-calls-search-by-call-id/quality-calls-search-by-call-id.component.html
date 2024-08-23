@@ -1,0 +1,10 @@
+<div class="col-md-4 col-12">
+  <div>
+    <label class="form-label">Пошук по id запису</label>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon3">RecordID: </span>
+      <input type="number" class="form-control" placeholder="Введіть id запису" [(ngModel)]="callId" />
+      <button class="btn btn-outline-secondary" type="button" [disabled]="!callId" (click)="navigateToCallPage()"><i class="bi bi-search"></i></button>
+    </div>
+  </div>
+</div>

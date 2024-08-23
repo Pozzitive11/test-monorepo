@@ -1,0 +1,121 @@
+<div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-3 g-4 mt-3">
+  <div *ngFor="let prom of guaranteeLetterTemplatesData" class="col">
+
+    <div [class.success]="prom.confirmed" class="card">
+      <h6 (click)="cardBody.hidden=!cardBody.hidden" class="card-header h6 pointer">
+        {{ prom.ContractId }}, {{ prom.ClientName }}
+        <ng-container *ngIf="prom.ClientINN">({{ prom.ClientINN }})</ng-container>
+
+        <i [class.bi-chevron-down]="cardBody.hidden"
+           [class.bi-chevron-up]="!cardBody.hidden"
+           class="bi float-end"
+        ></i>
+      </h6>
+
+      <div #cardBody class="card-body">
+        <ul class="list-group list-group-flush">
+
+          <li class="list-group-item">
+            <strong class="mb-2">Вихідний номер:</strong>
+            <span class="float-end">{{ prom.RefNumber }}</span>
+          </li>
+
+          <li class="list-group-item">
+            <strong class="mb-2">Вихідний номер (дата):</strong>
+            <span class="float-end">{{ prom.RefNumberDate | formatDate }}</span>
+          </li>
+
+          <li class="list-group-item">
+            <strong class="mb-2 d-block">Первинний кредитор:</strong>
+            <app-input-in-group (valueChange)="onFieldChange(prom, 'FirstCreditor', $event)"
+                                [clearOnDblClick]="false"
+                                [disabled]="prom.confirmed || false"
+                                [fillColor]="'transparent'"
+                                [placeholder]="'Первинний кредитор'"
+                                [typeOfInput]="'text'"
+                                [value]="prom.FirstCreditor || ''">
+            </app-input-in-group>
+          </li>
+
+          <li class="list-group-item">
+            <strong class="mb-2 d-block">ПІБ клієнта:</strong>
+            <app-input-in-group (valueChange)="onFieldChange(prom, 'ClientName', $event)"
+                                [clearOnDblClick]="false"
+                                [disabled]="prom.confirmed || false"
+                                [fillColor]="'transparent'"
+                                [placeholder]="'Ім\'я клієнта'"
+                                [typeOfInput]="'text'"
+                                [value]="prom.ClientName">
+            </app-input-in-group>
+          </li>
+
+          <li class="list-group-item">
+            <strong>Гранична дата сплати:</strong>
+
+            <app-date-picker-popup
+              (chosenDateChange)="fromNgbDate($event, prom)"
+              [chosenDate]="toNgbDate(prom.PaymentDateLimit)"
+              [minDate]="today"
+            ></app-date-picker-popup>
+          </li>
+
+          <li class="list-group-item">
+            <strong>Договір відступлення (номер):</strong>
+            <span class="float-end">{{ prom.AssignmentDocNum }}</span>
+          </li>
+
+          <li class="list-group-item">
+            <strong>Договір відступлення (дата):</strong>
+            <span class="float-end">{{ prom.AssignmentDocDate | formatAnyValue }}</span>
+          </li>
+
+          <li class="list-group-item">
+            <strong>Дата кредитного договору:</strong>
+            <span class="float-end">{{ prom.ContractDate | formatAnyValue }}</span>
+          </li>
+
+          <li class="list-group-item">
+            <strong>Номер кредитного договору:</strong>
+            <span class="float-end">{{ prom.ContractNum }}</span>
+          </li>
+
+          <li class="list-group-item">
+            <strong>Наявність погодження:</strong>
+            <span class="float-end">{{ prom.Agreed }}</span>
+          </li>
+
+          <li class="list-group-item">
+            <strong>Відкрите ВП:</strong>
+            <span class="float-end">{{ prom.IsEPOpen ? 'є' : 'відсутнє' }}</span>
+          </li>
+
+          <li class="list-group-item">
+            <strong>Сума боргу:</strong>
+            <span class="float-end">{{ prom.SumToClose | currency:'UAH':'symbol':'1.0-2' }}</span>
+          </li>
+
+          <li class="list-group-item">
+            <strong>Сума до сплати:</strong>
+            <span class="float-end">{{ prom.SumToPay | currency:'UAH':'symbol':'1.0-2' }}</span>
+          </li>
+
+        </ul>
+
+        <div class="card-footer text-end">
+          <button (click)="confirmTemplate.emit(prom.PromotionId); cardBody.hidden=true"
+                  *ngIf="!prom.confirmed" class="btn btn-outline-success btn-sm me-2">
+            <i class="bi bi-check-circle me-2"></i>
+            <span>Підтвердити</span>
+          </button>
+
+          <button (click)="removeTemplate.emit(prom.PromotionId)" class="btn btn-outline-danger btn-sm">
+            <i class="bi bi-trash me-2"></i>
+            <span>Видалити</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

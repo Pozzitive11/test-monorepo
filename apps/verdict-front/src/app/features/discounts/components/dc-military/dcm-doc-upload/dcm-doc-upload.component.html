@@ -1,0 +1,80 @@
+<div class="accordion" style="margin-bottom: 1em">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <ngb-progressbar
+        *ngIf="loading"
+        [animated]="true"
+        [height]="'5px'"
+        [striped]="true"
+        [type]="'info'"
+        [value]="100"
+      ></ngb-progressbar>
+      <button (click)="shown=!shown" [class.collapsed]="!shown" class="accordion-button" type="button">
+        Завантажити військові документи
+      </button>
+    </h2>
+    <div *ngIf="shown" class="collapse-show">
+      <div class="form-group">
+
+        <app-file-upload
+          (fileAdded)="selectFiles($event)"
+          [id]="'otherDocsInput'"
+          [multiple]="true"
+        ></app-file-upload>
+
+        <div *ngIf="selectedFiles.length > 0" class="alert alert-primary">
+          <div class="row">
+            <div
+              *ngFor="let file of selectedFiles; let i=index"
+              class="input-group top-margin-sm text-12"
+              ngbDropdown
+            >
+              <button
+                [class.btn-outline-danger]="!file.docType"
+                [class.btn-outline-success]="!!file.docType"
+                class="btn text-11 text-start"
+                ngbDropdownToggle
+                style="width: 40%; overflow: hidden"
+                type="button"
+              >
+                <span [title]="file.docType? file.docType.name : 'Тип документа'">
+                  {{ file.docType ? file.docType.name : 'Тип документа' }}
+                </span>
+              </button>
+              <span
+                [class.btn-outline-danger]="!file.docType"
+                [style.border]="file.docType ? '1px solid #198754' : '1px solid #dc3545'"
+                [title]="file.file.name"
+                class="input-group-text"
+                style="width: 53%; overflow: hidden"
+              >{{ file.file.name | shortText:40 }}</span>
+
+              <ul class="scrollable-drop-list" ngbDropdownMenu>
+                <li *ngFor="let docType of docTypes">
+                  <a (mousedown)="file.docType = docType" class="pointer" ngbDropdownItem>{{ docType?.name }}</a>
+                </li>
+              </ul>
+              <button
+                (click)="removeFile(i)"
+                [class.btn-outline-danger]="!file.docType"
+                [class.btn-outline-success]="!!file.docType"
+                class="btn"
+                style="width: 7%"
+              >
+                <span class="btn btn-close"></span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <button
+          (click)="uploadFiles()"
+          [disabled]="canUploadMilitaryDocs()"
+          class="btn btn-primary"
+        >Завантажити файли
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

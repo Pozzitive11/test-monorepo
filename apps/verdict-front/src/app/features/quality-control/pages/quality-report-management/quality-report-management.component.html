@@ -1,0 +1,224 @@
+<div class="row py-4">
+  <div class="row">
+    <div class="d-flex justify-content-center mb-4">
+      <h2>Формування звіту</h2>
+    </div>
+  </div>
+  <form [formGroup]="formingReportForm" (ngSubmit)="showReport()">
+    <div class="row d-flex justify-content-center mb-4">
+      <div class="col-4 d-flex justify-content-center">
+        <div class="d-flex flex-column mb-4">
+          <label>Оберіть звіту: </label>
+          <ng-select
+            [formControl]="reportTypeControl"
+            [items]="reportTypeList"
+            bindLabel="name"
+            placeholder="Оберіть..."
+          >
+          </ng-select>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-3">
+        <label>Оберіть тип листа оцінки: </label>
+        <ng-select
+          [formControl]="listTypeControl"
+          [items]="qualityManagementService.listType"
+          bindLabel="name"
+          placeholder="Оберіть..."
+        >
+        </ng-select>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="d-flex justify-content-center">
+        <h3>{{ reportTypeControl.value.id === 1 ? 'Звіт за період' : 'Середній бал' }}</h3>
+      </div>
+    </div>
+    <hr />
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="col-3">
+        <div class="d-flex justify-content-center mb-4 flex-column">
+          <strong>Обрати період:</strong>
+          <!-- <mat-form-field>
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+              <input matStartDate formControlName="start" placeholder="Start date" />
+              <input matEndDate formControlName="end" placeholder="End date" />
+            </mat-date-range-input>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field> -->
+          <app-date-picker-range-popup
+          (dateChanged)="dates = $event"
+          [fromDate]="dates.fromDate"
+          [toDate]="dates.toDate"
+          [displayMonths]="1"
+        >
+        </app-date-picker-range-popup>
+        </div>
+      </div>
+    </div>
+    <div class="row d-flex justify-content-center mb-4">
+      <div class="col-5">
+        <ng-select
+          [formControl]="supervisorsListControl"
+          [items]="qualityManagementService.supervisorsList"
+          bindLabel="FullName"
+          [multiple]="true"
+          placeholder="Фільтр за супервайзером"
+          [closeOnSelect]="false"
+        >
+        </ng-select>
+      </div>
+    </div>
+    <div class="row d-flex justify-content-center mb-4">
+      <div class="col-5">
+        <ng-select
+          [formControl]="conductedMonitoringListControl"
+          [items]="qualityManagementService.conductedMonitoringList"
+          bindLabel="FullName"
+          [multiple]="true"
+          placeholder="Фільтр за проводившим моніторинг"
+          [closeOnSelect]="false"
+        >
+        </ng-select>
+      </div>
+    </div>
+    <div *ngIf="listTypeControl.value.id === 2" class="row d-flex justify-content-center mb-4">
+      <div class="col-5">
+        <ng-select
+          [formControl]="recruiterListControl"
+          [items]="qualityManagementService.recruiterList"
+          bindLabel="FullName"
+          [multiple]="true"
+          placeholder="Фільтр за рекрутером"
+          [closeOnSelect]="false"
+        >
+        </ng-select>
+      </div>
+    </div>
+    <div
+      class="row d-flex justify-content-center align-items-center flex-column"
+      *ngIf="listTypeControl.value.id === 1"
+    >
+      <div class="col-5 mb-4">
+        <ng-select
+          [formControl]="contragentListControl"
+          [items]="qualityManagementService.contragentList"
+          bindLabel="NameRUS"
+          [multiple]="true"
+          placeholder="Оберіть контрагента"
+          [closeOnSelect]="false"
+        >
+        </ng-select>
+      </div>
+
+      <div class="col-5">
+        <ng-select
+          [formControl]="operatorsListControl"
+          [items]="qualityManagementService.operatorsList"
+          bindLabel="FullName"
+          [multiple]="true"
+          placeholder="Фільтр за оператором"
+          [closeOnSelect]="false"
+        >
+        </ng-select>
+      </div>
+    </div>
+    <hr class="mt-5" />
+    <div class="row d-flex justify-content-center align-items-center mb-5" *ngIf="reportTypeControl.value.id === 1">
+      <div formArrayName="listTypePeroidReportCheckboxesArray" class="col-5">
+        <ng-container *ngFor="let group of listTypePeroidReportCheckboxesArray.controls; let i = index">
+          <ng-container *ngIf="group.get('listTypeId')?.value?.includes(listTypeControl.value.id)">
+            <div class="form-check pointer mb-1" [formGroupName]="i">
+              <input
+                formControlName="isSelected"
+                [id]="'listTypePeroidReport-' + i"
+                class="form-check-input pointer"
+                type="checkbox"
+              />
+              <label class="form-check-label pointer" for="{{ 'listTypePeroidReport-' + i }}">
+                {{ group.get('name')?.value }}
+              </label>
+            </div>
+          </ng-container>
+        </ng-container>
+        <button type="button" class="btn btn-outline-primary mt-2" (click)="toggleAllCheckboxes()">
+          {{ areListTypePeroidReportCheckboxesAllSelected ? 'Зняти вибір усіх' : 'Обрати всі' }}
+        </button>
+      </div>
+
+      <hr class="mt-5" />
+      <div formArrayName="peroidReportCheckboxesArray" class="col-5">
+        <div
+          *ngFor="let group of peroidReportCheckboxesArray.controls; let i = index"
+          class="form-check pointer mb-1"
+          [formGroupName]="i"
+        >
+          <input
+            formControlName="isSelected"
+            [id]="'peroidReport-' + i"
+            class="form-check-input pointer"
+            type="checkbox"
+          />
+          <label class="form-check-label pointer" for="{{ 'peroidReport-' + i }}">{{ group.get('name')?.value }}</label>
+        </div>
+      </div>
+    </div>
+    <div
+      class="row d-flex justify-content-center flex-column align-items-center mb-5"
+      *ngIf="reportTypeControl.value.id === 2"
+    >
+      <div formArrayName="listTypeAverageScoreCheckboxesArray" class="col-5">
+        <ng-container *ngFor="let group of listTypeAverageScoreCheckboxesArray.controls; let i = index">
+          <ng-container *ngIf="group.get('listTypeId')?.value?.includes(listTypeControl.value.id)">
+            <div class="form-check pointer mb-1" [formGroupName]="i">
+              <input
+                formControlName="isSelected"
+                [id]="'listTypeAverageScore-' + i"
+                class="form-check-input pointer"
+                type="checkbox"
+              />
+              <label class="form-check-label pointer" for="{{ 'listTypeAverageScore-' + i }}">
+                {{ group.get('name')?.value }}
+              </label>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+      <hr class="mb-4" />
+      <div formArrayName="averageScoreCheckboxesArray" class="col-5">
+        <ng-container *ngFor="let group of averageScoreCheckboxesArray.controls; let i = index">
+            <div class="form-check pointer mb-1" [formGroupName]="i">
+              <input
+                formControlName="isSelected"
+                [id]="'averageScore-' + i"
+                class="form-check-input pointer"
+                type="checkbox"
+              />
+              <label class="form-check-label pointer" for="{{ 'averageScore-' + i }}">
+                {{ group.get('name')?.value }}
+              </label>
+            </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="row">
+      <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-outline-primary" [disabled]="!this.dates.fromDate && !this.dates.toDate" >Згенерувати звіт</button>
+      </div>
+    </div>
+    <div *ngIf="tableData().length > 0">
+      <button (click)="downloadReport()" class="btn btn-outline-success">
+        Скачати звіт в excel <i class="bi bi-download"></i>
+      </button>
+    </div>
+  </form>
+
+  <div class="row mt-2">
+    <app-table-with-filters [data]="tableData()" [loading]="loading()" />
+  </div>
+</div>

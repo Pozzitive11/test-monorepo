@@ -1,0 +1,268 @@
+<div *ngIf="!!propertyObj" class="card my-2">
+
+  <h5 (click)="epInfo.hidden=!epInfo.hidden" class="card-header pointer">
+    <span class="mb-2 text-18">{{ propertyObj.PropertyType }}</span>
+    <span *ngIf="propertyObj.PropertySubType" class="mb-2 text-18"> ({{ propertyObj.PropertySubType }})</span>
+    <span class="float-end">
+      <i [class.bi-chevron-down]="epInfo.hidden" [class.bi-chevron-up]="!epInfo.hidden" class="bi"></i>
+    </span>
+  </h5>
+
+  <div #epInfo class="card-body">
+    <ul *ngIf="!!inventoryObject" class="list-group list-group-flush">
+
+      <li class="list-group-item">
+        <strong>Напрям:</strong>
+        <span class="float-end">{{ inventoryObject.Department }}</span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>Власник:</strong>
+        <span class="float-end">{{ inventoryObject.ClientName }}</span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>Частка власності:</strong>
+        <span class="float-end">{{ propertyObj.PartOfPropertyRight || '?' }}</span>
+      </li>
+
+      <li (click)="shortDescription=!shortDescription" class="list-group-item pointer">
+        <strong>
+          Опис майна:
+          <i [class.bi-chevron-down]="shortDescription" [class.bi-chevron-up]="!shortDescription"
+             class="bi float-end"></i>
+        </strong><br />
+        <span class="float-end">
+          <ng-container
+            *ngIf="!shortDescription">{{ propertyObj.PledgeDescription || propertyObj.PropertyDescription }}</ng-container>
+          <ng-container *ngIf="shortDescription">{{ propertyObj.PropertyDescription }}</ng-container>
+        </span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>Тип майна по відношенню до НКС:</strong>
+        <span class="float-end">{{ inventoryObject.PropertyToContractType }}</span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>Тип майна:</strong>
+        <span class="float-end">{{ propertyObj.PropertyType }}</span>
+      </li>
+
+      <li *ngIf="propertyObj.PropertySubType" class="list-group-item">
+        <strong>Підтип майна:</strong>
+        <span class="float-end text-end">{{ propertyObj.PropertySubType }}</span>
+      </li>
+
+      <li *ngIf="propertyObj.LandType" class="list-group-item">
+        <strong>Тип землі:</strong>
+        <span class="float-end text-end">{{ propertyObj.LandType }}</span>
+      </li>
+
+      <li *ngIf="propertyObj.ControlledTerritory != undefined" class="list-group-item">
+        <strong *ngIf="propertyObj.ControlledTerritory" class="text-success">
+          Підконтрольна територія
+        </strong>
+        <strong *ngIf="!propertyObj.ControlledTerritory" class="text-danger float-end">
+          Непідконтрольна територія
+        </strong>
+      </li>
+
+      <ng-container *ngIf="propertyObj.ControlledTerritory || inventoryObject.InventoryIsDone">
+        <li *ngIf="propertyObj.PaidPropertyCheck != undefined" class="list-group-item">
+          <strong *ngIf="propertyObj.PaidPropertyCheck" class="text-success">
+            Є платна перевірка
+          </strong>
+          <strong *ngIf="!propertyObj.PaidPropertyCheck" class="text-danger float-end">
+            Платна перевірка відсутня
+          </strong>
+        </li>
+
+        <ng-container *ngIf="propertyObj.PaidPropertyCheck || inventoryObject.InventoryIsDone">
+          <li *ngIf="propertyObj.PropertyUploaded != undefined" class="list-group-item">
+            <strong *ngIf="propertyObj.PropertyUploaded" class="text-success">
+              Майно завантажено
+            </strong>
+            <strong *ngIf="!propertyObj.PropertyUploaded" class="text-danger float-end">
+              Майно не завантажено
+            </strong>
+          </li>
+
+          <ng-container *ngIf="propertyObj.PropertyUploaded || inventoryObject.InventoryIsDone">
+            <li *ngIf="propertyObj.OwnerVerified != undefined" class="list-group-item">
+              <strong *ngIf="propertyObj.OwnerVerified" class="text-success">
+                Власник підтвердився
+              </strong>
+              <strong *ngIf="!propertyObj.OwnerVerified" class="text-danger float-end">
+                Власник не підтвердився
+              </strong>
+            </li>
+
+            <ng-container *ngIf="propertyObj.OwnerVerified || inventoryObject.InventoryIsDone">
+              <li *ngIf="propertyObj.Mortgage" class="list-group-item">
+                <strong class="text-danger float-end">Є іпотека</strong>
+              </li>
+
+              <ng-container *ngIf="!propertyObj.Mortgage || inventoryObject.InventoryIsDone">
+                <li *ngIf="inventoryObject.PropertyInQueue || !inventoryObject.InventoryIsDone" class="list-group-item">
+                  <strong *ngIf="inventoryObject.PropertyInQueue" class="text-success">
+                    Розібрано
+                  </strong>
+                  <strong *ngIf="!inventoryObject.PropertyInQueue" class="text-danger float-end">
+                    Не розібрано
+                  </strong>
+                </li>
+
+                <li *ngIf="inventoryObject.ProcessingStatus || inventoryObject.StatusDate" class="list-group-item">
+                  <strong>Статус по опрацюванню:</strong>
+                  <span class="float-end">{{ inventoryObject.ProcessingStatus }}</span>
+                </li>
+
+                <li *ngIf="inventoryObject.StatusDate" class="list-group-item">
+                  <strong>Дата переходу в статус:</strong>
+                  <span class="float-end">{{ inventoryObject.StatusDate | formatDate:false }}</span>
+                </li>
+
+                <ng-container *ngIf="propertyObj.PropertyType == 'Земля'">
+                  <li class="list-group-item">
+                    <ng-container *ngIf="propertyObj.LandRegistryRequest; else noLandRequest">
+                      <strong>Дата запиту в ДЗК:</strong>
+                      <span class="float-end">
+                        {{ propertyObj.LandRegistryRequest | formatDate:false }}
+                      </span>
+                    </ng-container>
+                  </li>
+
+                  <li *ngIf="propertyObj.LandRegistryRequest" class="list-group-item">
+                    <ng-container
+                      *ngIf="propertyObj.LandRegistryResponseIsPositive != undefined; else noLandRegistryResponse">
+                      <strong *ngIf="propertyObj.LandRegistryResponseIsPositive" class="text-success">
+                        Відповідь з ДЗК позитивна
+                      </strong>
+                      <strong *ngIf="!propertyObj.LandRegistryResponseIsPositive" class="text-danger float-end">
+                        Відповідь з ДЗК негативна
+                      </strong>
+                    </ng-container>
+                  </li>
+                </ng-container>
+
+                <ng-container *ngIf="propertyObj.PropertyType == 'Нерухомість'">
+                  <li class="list-group-item">
+                    <ng-container *ngIf="propertyObj.CNAPRequest; else noCNAPRequest">
+                      <strong>Дата запиту в ЦНАП:</strong>
+                      <span class="float-end">{{ propertyObj.CNAPRequest | formatDate:false }}</span>
+                    </ng-container>
+                  </li>
+
+                  <li *ngIf="propertyObj.CNAPRequest" class="list-group-item">
+                    <ng-container *ngIf="propertyObj.CNAPResponseIsPositive != undefined; else noCNAPResponse">
+                      <strong *ngIf="propertyObj.CNAPResponseIsPositive" class="text-success">
+                        Відповідь з ЦНАП позитивна
+                      </strong>
+                      <strong *ngIf="!propertyObj.CNAPResponseIsPositive" class="text-danger float-end">
+                        Відповідь з ЦНАП негативна
+                      </strong>
+                    </ng-container>
+                  </li>
+
+                  <li class="list-group-item">
+                    <ng-container *ngIf="propertyObj.BTIRequest; else notBTIRequest">
+                      <strong>Дата запиту в БТІ:</strong>
+                      <span class="float-end">{{ propertyObj.BTIRequest | formatDate:false }}</span>
+                    </ng-container>
+                  </li>
+
+                  <li *ngIf="propertyObj.BTIRequest" class="list-group-item">
+                    <ng-container *ngIf="propertyObj.BTIResponseIsPositive != undefined; else noBTIResponse">
+                      <strong *ngIf="propertyObj.BTIResponseIsPositive" class="text-success">
+                        Відповідь з БТІ позитивна
+                      </strong>
+                      <strong *ngIf="!propertyObj.BTIResponseIsPositive" class="text-danger float-end">
+                        Відповідь з БТІ негативна
+                      </strong>
+                    </ng-container>
+                  </li>
+                </ng-container>
+
+                <li *ngIf="inventoryObject.InventoryIsDone != undefined" class="list-group-item">
+                  <strong *ngIf="inventoryObject.InventoryIsDone" class="text-success">
+                    Описано
+                  </strong>
+                  <strong *ngIf="!inventoryObject.InventoryIsDone" class="text-danger float-end">
+                    Не описано
+                  </strong>
+                </li>
+
+                <lr-inventory-auction-card [property]="inventoryObject"></lr-inventory-auction-card>
+
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </ul>
+  </div>
+</div>
+
+
+<ng-template #noLandRequest>
+  <strong [class.text-danger]="landRegistryRequestRedZone" class="float-end">
+    <span>Запит в ДЗК відсутній </span>
+    <span
+      *ngIf="landRegistryNoRequestInfo">
+      {{ daysToString(propertyObj?.LandRegistryNoRequestDays || 0) }}
+    </span>
+  </strong>
+</ng-template>
+
+<ng-template #noLandRegistryResponse>
+  <strong [class.text-danger]="landRegistryResponseRedZone" class="float-end">
+    <span>Відповідь з ДЗК відсутня </span>
+    <span
+      *ngIf="landRegistryNoResponseInfo">
+      {{ daysToString(propertyObj?.LandRegistryNoResponseDays || 0) }}
+    </span>
+  </strong>
+</ng-template>
+
+<ng-template #noCNAPRequest>
+  <strong [class.text-danger]="CNAPRequestRedZone" class="float-end">
+    <span>Запит до ЦНАП відсутній </span>
+    <span
+      *ngIf="CNAPNoRequestInfo">
+      {{ daysToString(propertyObj?.CNAPNoRequestDays || 0) }}
+    </span>
+  </strong>
+</ng-template>
+
+<ng-template #noCNAPResponse>
+  <strong [class.text-danger]="CNAPResponseRedZone" class="float-end">
+    <span>Відповідь з ЦНАП відсутня </span>
+    <span
+      *ngIf="CNAPNoResponseInfo">
+      {{ daysToString(propertyObj?.CNAPNoResponseDays || 0) }}
+    </span>
+  </strong>
+</ng-template>
+
+<ng-template #notBTIRequest>
+  <strong *ngIf="!propertyObj?.BTIRequest"
+          [class.text-danger]="BTIRequestRedZone"
+          class="float-end">
+    <span>Запит до БТІ відсутній </span>
+    <span
+      *ngIf="BTINoRequestInfo">
+      {{ daysToString(propertyObj?.BTINoRequestDays || 0) }}
+    </span>
+  </strong>
+</ng-template>
+
+<ng-template #noBTIResponse>
+  <strong [class.text-danger]="BTIResponseRedZone" class="float-end">
+    <span>Відповідь з БТІ відсутня </span>
+    <span
+      *ngIf="BTINoResponseInfo">
+      {{ daysToString(propertyObj?.BTINoResponseDays || 0) }}
+    </span>
+  </strong>
+</ng-template>

@@ -1,0 +1,17 @@
+<div class="row">
+
+  <p><strong>Об'єднання : {{ text_1 }}</strong></p>
+  <p><strong>Сходження : {{ text_2 }}</strong></p>
+  <p><strong>Кількість : {{ text_3 }}</strong></p>
+
+
+</div>
+<br>
+<div class="r">
+  <div class="col-auto w">
+    <button (click)="download()" class="btn btn-success text-11-20">Завантажити</button>
+  </div>
+</div>
+
+
+<app-table-with-filters [data]="tableData()" [loading]="loading()" [style.color]="color" />

@@ -1,0 +1,65 @@
+<div class="container py-5 h-100">
+  <div class="row d-flex justify-content-center align-items-center h-100">
+    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+      <div class="card shadow-2-strong" style="border-radius: 1rem;">
+        <div class="card-body p-5 text-center">
+
+          <ngb-progressbar
+            *ngIf="loading"
+            [animated]="true"
+            [height]="'7px'"
+            [striped]="true"
+            [type]="'success'"
+            [value]="100"
+          ></ngb-progressbar>
+
+          <div *ngIf="error" class="alert alert-danger">
+            {{ error }}
+          </div>
+
+          <h3 class="mb-5">Вхід</h3>
+
+          <form
+            #formElement='ngForm'
+            (ngSubmit)="onLogin(formElement)"
+            *ngIf="!loading"
+          >
+            <div class="form-outline mb-4">
+              <label class="form-label" for="username">Логін</label>
+              <input
+                class="form-control form-control-lg"
+                id="username"
+                minlength="3"
+                name="username"
+                ngModel
+                required
+                type="text"
+              />
+            </div>
+
+            <div class="form-outline mb-4">
+              <label class="form-label" for="password">Пароль</label>
+              <input
+                class="form-control form-control-lg"
+                id="password"
+                minlength="6"
+                name="password"
+                ngModel
+                required
+                type="password"
+              />
+            </div>
+
+            <button
+              [disabled]="!formElement.valid"
+              class="btn btn-primary btn-lg btn-block"
+              type="submit"
+            >Увійти
+            </button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

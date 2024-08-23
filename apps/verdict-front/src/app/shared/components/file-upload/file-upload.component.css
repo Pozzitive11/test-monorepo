@@ -1,0 +1,33 @@
+
+.form-control-file {
+  width: 98%;
+  cursor: pointer;
+  padding: 3em 0;
+  opacity: 1;
+  text-align: center;
+  transition: all 0.1s linear;
+  overflow: hidden;
+  margin: auto;
+  border-radius: 3px;
+}
+
+.non-dragged {
+  border: 0.05em dashed #0f3477;
+  color: #0f3477;
+  background-color: #faffff;
+}
+
+.form-control-file:hover {
+  font-weight: bold;
+  border: 0.05em solid #0ca600;
+  color: #0ca600;
+  background-color: #fafffa;
+  border-radius: 5px;
+}
+
+.dragged-into {
+  background-color: #fffcfa;
+  border: 0.05em solid #a64500;
+  color: #a64500;
+}
+

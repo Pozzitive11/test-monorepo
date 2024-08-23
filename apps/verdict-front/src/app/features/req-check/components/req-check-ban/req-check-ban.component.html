@@ -1,0 +1,8 @@
+<div class="row mb-0 mt-3">
+  <div *ngIf="elementService.bannedUser == false" class="col-md-12 text-center border p-2 rounded text-success">
+    <label class="status-label custom-bg-a2e8a3">Клієнт не в чорному списку</label>
+  </div>
+  <div *ngIf="elementService.bannedUser === true" class="col-md-12 text-center border p-2 rounded text-danger">
+    <label class="status-label custom-bg-fcbdbd">Клієнт в чорному списку</label>
+  </div>
+</div>

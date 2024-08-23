@@ -1,0 +1,101 @@
+<ngx-spinner
+  [fullScreen]="true"
+  bdColor="rgba(0, 0, 0, 0.8)"
+  color="#0d6efd"
+  size="medium"
+  type="ball-clip-rotate-multiple"
+>
+  <p style="color: #0d6efd">
+    <strong>{{ stepMessage }}</strong>
+  </p>
+</ngx-spinner>
+
+<div [class.disabled-table]="loading$ | async" class="container-fluid mt-3">
+  <h3 class="h3">Створення документів</h3>
+
+  <div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-3 g-4 mt-3">
+    <div class="col">
+      <p class="fw-bold mb-2">Період</p>
+      <app-date-picker-range-popup
+        (dateChanged)="dateFilter = $event"
+        [fromDate]="dateFilter.fromDate"
+        [maxDate]="datesRange.MaxDate"
+        [minDate]="datesRange.MinDate"
+        [toDate]="dateFilter.toDate"
+      ></app-date-picker-range-popup>
+
+      <div class="mt-3">
+        <app-switch-checkbox
+          (valueChange)="templateService.canCreateRepeatedTemplate.set($event)"
+          [id]="'canCreateRepeatedTemplate'"
+          [value]="templateService.canCreateRepeatedTemplate()"
+          >Можливо створити документи повторно
+        </app-switch-checkbox>
+      </div>
+    </div>
+
+    <div class="col">
+      <p class="fw-bold mb-2">Типи документів</p>
+      <app-searchable-list
+        (selectedValuesChange)="templateService.selectedDocumentTypes.set($event)"
+        [list]="documentTypes"
+        [selectedValues]="templateService.selectedDocumentTypes()"
+      ></app-searchable-list>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between mt-3">
+    <div>
+      <button (click)="loadData()" class="btn btn-outline-success" type="button">
+        <i class="bi bi-arrow-repeat fw-bold me-1"></i>
+        Отримати дані
+      </button>
+
+      <button (click)="templateService.createTemplates()" class="btn btn-outline-primary ms-3" type="button">
+        <i class="bi bi-plus-circle fw-bold me-1"></i>
+        Створити документи
+      </button>
+
+      <button (click)="openRefNumbersJournalModal()" class="btn btn-outline-primary ms-3">
+        <i class="bi bi-journal-text fw-bold me-1"></i>
+        Вихідні номери
+      </button>
+
+      <button (click)="goToRequestsPage()" class="btn btn-outline-warning ms-3 position-relative">
+        <i class="bi bi-arrow-right-circle me-1"></i>
+        Запити документів
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          {{ docsRequestsService.docsRequestsInfo().NewRequests }}
+        </span>
+      </button>
+      <button (click)="goToClosingCertificatePage()" class="btn btn-outline-primary ms-3">
+        <i class="bi bi-plus-circle fw-bold me-1"></i>
+        Довідки про закриття
+      </button>
+    </div>
+
+    <ngb-pagination
+      [(page)]="page"
+      [boundaryLinks]="true"
+      [class.disabled-table]="loading$ | async"
+      [collectionSize]="dataLength"
+      [maxSize]="3"
+      [pageSize]="rowsPerPage"
+      [rotate]="true"
+    ></ngb-pagination>
+  </div>
+
+  <!--        ОСНОВНАЯ ТАБЛИЦА        -->
+  <div *ngIf="header.length > 0" class="max-width-div max-height-div mt-3">
+    <dc-promotions-table [canBeEdited]="false"></dc-promotions-table>
+  </div>
+
+  <button
+    (click)="makeExcel()"
+    *ngIf="header.length > 0"
+    [disabled]="promotionsFilterService.checkedRows.length === 0"
+    class="btn btn-outline-primary mt-3"
+  >
+    Сформувати Excel-файл
+  </button>
+</div>

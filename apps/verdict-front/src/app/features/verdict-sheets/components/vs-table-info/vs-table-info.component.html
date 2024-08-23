@@ -1,0 +1,29 @@
+@if (!allColumnsSelected()) {
+  <button class="btn btn-outline-primary mb-2" (click)="selectColumns(tableColumns())">
+    << Додати всі
+  </button>
+}
+<ul class="list-group list-group-flush">
+  @for (column of columns(); track column.name) {
+    <li class="list-group-item d-flex flex-row gap-2 align-items-center" [class.bg-success-subtle]="column.selected">
+      <button class="pointer badge bg-success bg-hover-success border-0" (click)="selectColumns([column])">
+        <i class="bi bi-plus-circle"></i>
+      </button>
+      <strong>{{ column.name }}</strong>
+      <span class="text-muted">{{ column.type.original_type }}</span>
+      @if (column.nullable) {
+        <span class="badge bg-secondary rounded-pill text-white" [ngbTooltip]="'Може бути NULL'">NULL</span>
+      }
+      @if (column.default) {
+        <span class="badge bg-secondary rounded-pill text-white"
+              [ngbTooltip]="'Значення по-замовчуванню: ' + column.default">DEF</span>
+      }
+      @if (column.autoincrement) {
+        <span class="badge bg-secondary rounded-pill text-white" [ngbTooltip]="'Автоінкремент'">A-INC</span>
+      }
+      @if (column.unique) {
+        <span class="badge bg-secondary rounded-pill text-white" [ngbTooltip]="'Унікальне значення'">UNIQ</span>
+      }
+    </li>
+  }
+</ul>

@@ -1,0 +1,62 @@
+<h5 class="h5">
+  <ng-container *ngIf="title">{{ title }}</ng-container>
+
+  <!--  APPLY FILTERS BUTTON  -->
+  <span class="float-end">
+    <button
+      (click)="applyFilters()"
+      class="btn btn-outline-success btn-sm"
+    >Згорнути</button>
+  </span>
+</h5>
+
+<app-switch-checkbox
+  [(value)]="filter.not"
+  [id]="'notNumberSwitch'"
+>не
+</app-switch-checkbox>
+
+<!--  Дорівнює  -->
+<app-input-in-group
+  (valueChangedNumber)="filter.eq = $event != undefined ? $event : undefined; selectFilter()"
+  [typeOfInput]="'number'"
+  [value]="filter.eq ? filter.eq.toString() : ''"
+>
+  <span class="input-group-text">{{ filter.not ? 'не' : '' }} {{ filterTypes.eq }}</span>
+</app-input-in-group>
+
+<!--  Менше  -->
+<app-input-in-group
+  (valueChangedNumber)="filter.less = $event != undefined ? $event : undefined; selectFilter()"
+  [typeOfInput]="'number'"
+  [value]="filter.less ? filter.less.toString() : ''"
+>
+  <span class="input-group-text">{{ filterTypes.less }}</span>
+</app-input-in-group>
+
+<!--  Більше  -->
+<app-input-in-group
+  (valueChangedNumber)="filter.greater = $event != undefined ? $event : undefined; selectFilter()"
+  [typeOfInput]="'number'"
+  [value]="filter.greater ? filter.greater.toString() : ''"
+>
+  <span class="input-group-text">{{ filterTypes.greater }}</span>
+</app-input-in-group>
+
+<!--  Менше або дорівнює  -->
+<app-input-in-group
+  (valueChangedNumber)="filter.le = $event != undefined ? $event : undefined; selectFilter()"
+  [typeOfInput]="'number'"
+  [value]="filter.le ? filter.le.toString() : ''"
+>
+  <span class="input-group-text">{{ filterTypes.le }}</span>
+</app-input-in-group>
+
+<!--  Більше або дорівнює  -->
+<app-input-in-group
+  (valueChangedNumber)="filter.ge = $event != undefined ? $event : undefined; selectFilter()"
+  [typeOfInput]="'number'"
+  [value]="filter.ge ? filter.ge.toString() : ''"
+>
+  <span class="input-group-text">{{ filterTypes.ge }}</span>
+</app-input-in-group>

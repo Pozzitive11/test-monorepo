@@ -1,0 +1,41 @@
+<div class="card">
+  <h5 (click)="cardBody.hidden=!cardBody.hidden" class="card-header pointer">
+    Виконавчі провадження
+    <span class="float-end">
+      <i [class.bi-chevron-down]="cardBody.hidden" [class.bi-chevron-up]="!cardBody.hidden" class="bi"></i>
+    </span>
+  </h5>
+  <ngb-progressbar
+    *ngIf="loading"
+    [animated]="true"
+    [height]="'3px'"
+    [striped]="true"
+    [type]="'secondary'"
+    [value]="100"
+  ></ngb-progressbar>
+
+  <div #cardBody [class.disabled-table]="loading" class="card-body">
+    <ul *ngIf="epTotalInfo" class="list-group list-group-flush">
+      <li class="list-group-item">
+        <strong>Кількість наших активних ВП:</strong>
+        <span class="float-end">{{ epTotalInfo.OurOpenedEPCount }}</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Кількість активних ВП інших компаній:</strong>
+        <span class="float-end">{{ epTotalInfo.OthersOpenedEPCount }}</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Кількість наших закритих ВП:</strong>
+        <span class="float-end">{{ epTotalInfo.OurClosedEPCount }}</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Кількість закритих ВП інших компаній:</strong>
+        <span class="float-end">{{ epTotalInfo.OthersClosedEPCount }}</span>
+      </li>
+    </ul>
+
+  </div>
+</div>
+
+
+

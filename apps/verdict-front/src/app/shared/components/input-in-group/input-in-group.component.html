@@ -1,0 +1,20 @@
+<div class="input-group" role="group" [class]="inputClass()">
+  <ng-content></ng-content>
+  @if (showInput()) {
+    <input
+      #filter
+      (blur)="selectValue(value())"
+      (dblclick)="clearOnDblClick() ? emptyValue() : null; clearOnDblClick() ? filter.blur() : null"
+      (keydown.enter)="filter.blur(); enterPressed.emit()"
+      (keydown.escape)="value.set(lastValue()); filter.blur()"
+      [(ngModel)]="value"
+      [disabled]="disabled()"
+      [placeholder]="placeholder()"
+      [style.background-color]="filter.value ? fillColor() : 'transparent'"
+      [type]="typeOfInput()"
+      class="form-control"
+    >
+  }
+</div>
+
+

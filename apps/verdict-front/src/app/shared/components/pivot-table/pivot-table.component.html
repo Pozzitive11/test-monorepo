@@ -1,0 +1,95 @@
+<ngx-spinner
+  [fullScreen]="true"
+  bdColor="rgba(0, 0, 0, 0.8)"
+  color="#0d6efd"
+  size="medium"
+  type="ball-clip-rotate-multiple"
+>
+  <p style="color: #0d6efd"><strong>Обробка...</strong></p>
+</ngx-spinner>
+
+@if (tableIndex().length) {
+  <div class="mb-5">
+    <!-- ----------------------------- ФІЛЬТРИ ----------------------------- -->
+    <div class="mt-2 mb-3 d-flex">
+      <ul class="list-group">
+        @for (column of selectedFilters(); track column) {
+          <li class="list-group-item list-group-item-action">
+            <div class="d-flex justify-content-between">
+              <div>{{ column }}</div>
+              <div class="float-end ms-3">
+                <span (click)="openFilter(column)" [class.text-bg-success]="filterIsApplied(column)"
+                      class="badge text-bg-primary pointer">
+                  <i class="bi bi-filter"></i>
+                </span>
+                <span (click)="clearFilter(column); updatePivot()" *ngIf="filterIsApplied(column)"
+                      class="badge text-bg-danger pointer ms-1">
+                  <i class="bi bi-arrow-counterclockwise"></i>
+                </span>
+              </div>
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <div>
+      <ul>
+        @for (button of selectedButtonFilters(); track button) {
+          <li>
+            <button (click)="filterDataByKey(button)" class="btn btn-primary" type="button">{{ button }}</button>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <button (click)="toExcel()" class="btn btn-outline-primary mb-2 ms-2">
+      Скачати полотно
+      @if (!basicView()) {
+        (повне)
+      }
+    </button>
+
+    @if (!basicView()) {
+      <pivot-display-table
+        (basicTableViewSelected)="basicTableView($event.rowName, $event.col)"
+        (hiddenLevelsChange)="updateHiddenLevels($event)"
+        [(sorting)]="sorting"
+        [classesForRedZone]="classesForRedZone()"
+        [displayedTable]="displayedTable()"
+        [firstRowName]="firstRowName"
+        [hiddenLevels]="hiddenLevels()"
+        [redZoneColumns]="redZoneColumns()"
+        [sep]="sep"
+        [tableColumns]="tableColumns()"
+        [tableHigherLevels]="tableHigherLevels()"
+        [tableIndex]="tableIndex()"
+        [tableLevels]="tableLevels"
+        [tableRowNames]="tableRowNames()"
+        [totalRowName]="totalRowName"
+      />
+    } @else {
+      <div class="mt-2">
+        <button (click)="basicView.set(false)" class="btn btn-outline-primary ms-2">
+          <i class="bi bi-arrow-left me-1"></i>
+          Назад
+        </button>
+        <ul class="nav nav-tabs mt-2">
+          @for (tab of selectedTabs(); track tab) {
+            <li class="nav-item">
+              <a class="nav-link pointer"
+                 [class.active]="basicViewTab() === tab"
+                 (click)="basicViewTab.set(tab)"
+              >
+                {{ tab }}
+              </a>
+            </li>
+          }
+        </ul>
+        <app-table-with-filters [data]="basicViewTabData()" [loading]="loading()" />
+      </div>
+    }
+
+  </div>
+}
+

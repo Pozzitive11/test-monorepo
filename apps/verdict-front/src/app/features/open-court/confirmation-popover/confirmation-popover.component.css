@@ -1,0 +1,73 @@
+.tag-input-container {
+  border: 1px solid #e6e8ec;
+  border-radius: 8px;
+  width: 354px;
+  height: 44px;
+  background: #fff;
+  display: flex;
+  align-items: center; /* Центрирование по вертикали */
+  padding: 0 12px; /* Внутренние отступы */
+  box-sizing: border-box; /* Учитываем отступы в ширине */
+}
+
+.custom-input {
+  border: none; /* Убираем стандартные границы */
+  outline: none; /* Убираем контур при фокусе */
+  width: 100%; /* Полная ширина внутри контейнера */
+  height: 100%; /* Полная высота внутри контейнера */
+  font-size: 14px;
+  font-family: "Geologica", sans-serif;
+  color: rgba(23, 23, 23, 0.75);
+  background: transparent; /* Фон прозрачный, чтобы использовать фон контейнера */
+}
+.popover-content {
+  width: 414px;
+  height: 390px;
+  padding: 20px; /* Рекомендуется добавить отступы для содержания */
+  background-color: #fff; /* Убедитесь, что фон белый */
+  border-radius: 8px; /* Закругленные углы */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Легкая тень для выделения поповера */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Центрирование содержимого */
+  justify-content: space-between; /* Равномерное распределение пространства между элементами */
+}
+.popover-actions .confirm-button {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  border: 1.50px solid #2f49d1;
+  border-radius: 8px;
+  padding: 14px 28px;
+  width: 117px;
+  height: 46px;
+  background-color: #2f49d1;
+  color: #fff;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+}
+.popover-message {
+  font-family: "Geologica", sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.42857;
+  color: rgba(23, 23, 23, 0.75);
+}
+.popover-content h2 {
+  font-family: "Geologica", sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.44444;
+  color: #171717;
+}
+.popover-content svg {
+  border-radius: 100px;
+  width: 68px;
+  height: 68px;
+  background: #eaedfa;
+  display: block; /* Убедитесь, что SVG отображается как блоковый элемент */
+  margin: 0 auto; /* Чтобы центрировать его */
+}

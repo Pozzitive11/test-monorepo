@@ -1,0 +1,122 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light body-width header-nav" >
+  <div class="container-fluid">
+    <a class="navbar-brand left-margin-sm">
+      <div class="nav-item dropdown navbar-nav" ngbDropdown>
+        <button
+          (click)="collapsed = true"
+          aria-expanded="false"
+          class="nav-link"
+          data-bs-toggle="dropdown"
+          id="navbarDropdown"
+          ngbDropdownToggle
+          role="button"
+          style="border: none; background: none"
+        >
+          {{ navigation.currentPage() }}
+        </button>
+
+        <ul
+          aria-labelledby="navbarDropdown"
+          class="dropdown-menu dropdown-menu-start header-dropdown header-dropdown-firefox"
+          ngbDropdownMenu
+          style="z-index: 99999; position: absolute; max-height: 50vh; overflow-y: auto"
+        >
+          <ng-container *ngFor="let page of pages">
+            <li>
+              <div class="col-auto" style="margin: 10px">
+                <div class="row-cols-auto">
+                  <protected-link
+                    (click)="goToPage(page)"
+                    [classNames]="'nav-link pointer'"
+                    [link]="page"
+                    ngbDropdownItem
+                  ></protected-link>
+                </div>
+              </div>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+    </a>
+    <button
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+      class="navbar-toggler"
+      data-bs-target="#navbarSupportedContent"
+      data-bs-toggle="collapse"
+      type="button"
+    >
+      <span (click)="collapsed = !collapsed" class="navbar-toggler-icon"></span>
+    </button>
+
+    <div [class.collapse]="collapsed" class="navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ng-container *ngIf="links.length < 5">
+          <ng-container *ngFor="let link of links">
+            <li *ngIf="link.link" class="nav-item">
+              <protected-link [classNames]="'nav-link pointer'" [link]="link"></protected-link>
+            </li>
+            <ng-container *ngIf="!link.link">
+              <li class="nav-link" ngbDropdown>
+                <button class="nav-link dropdown-toggle" ngbDropdownToggle style="border: none; background: none">
+                  {{ link.name }}
+                </button>
+                <ul ngbDropdownMenu>
+                  <ng-container *ngFor="let link of link.child_links">
+                    <li>
+                      <protected-link [classNames]="'nav-link pointer'" [link]="link" ngbDropdownItem></protected-link>
+                    </li>
+                  </ng-container>
+                </ul>
+              </li>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="links.length >= 5">
+          <li class="nav-item" ngbDropdown>
+            <button class="nav-link dropdown-toggle" ngbDropdownToggle style="border: none; background: none">
+              Обрати
+            </button>
+
+            <ul ngbDropdownMenu>
+              <ng-container *ngFor="let link of links">
+                <li *ngIf="link.link">
+                  <protected-link [classNames]="'nav-link pointer'" [link]="link" ngbDropdownItem></protected-link>
+                </li>
+                <ng-container *ngIf="!link.link">
+                  <li class="nav-link dropend" ngbDropdown style="padding: 0 16px 0">
+                    <button class="nav-link dropdown-toggle" ngbDropdownToggle style="border: none; background: none">
+                      {{ link.name }}
+                    </button>
+                    <ul ngbDropdownMenu>
+                      <ng-container *ngFor="let link of link.child_links">
+                        <li>
+                          <protected-link
+                            [classNames]="'nav-link pointer'"
+                            [link]="link"
+                            ngbDropdownItem
+                          ></protected-link>
+                        </li>
+                      </ng-container>
+                    </ul>
+                  </li>
+                </ng-container>
+              </ng-container>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <div>
+              <a class="nav-link fw-bold">{{ navigation.currentReport() }}</a>
+            </div>
+          </li>
+        </ng-container>
+      </ul>
+
+      <app-account-info *ngIf="logInOut === 'Вийти'" class="navbar-nav"></app-account-info>
+      <a (click)="logIn_logOut()" class="navbar-nav nav-link pointer fw-bold left-margin-sm">{{ logInOut }}</a>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,174 @@
+<ng-container *ngIf="knownWithStatus">
+  <nav *ngIf="knownWithStatus.show" class="nav nav-pills flex-column ms-3">
+    <a class="nav-link d-flex" role="button">
+      <i class="fa-solid fa-arrow-right"
+         style="color:#1277da;position:flex;margin-left: -33px;padding-right: 20px;"></i>
+      ВП по не нашим боржникам
+      <span *ngIf="knownWithStatus.not_our_debtor.count | async as notOurDebtorCount; else loadingSpinner"
+            class="badge bg-black bg-hover-info ms-auto">
+        {{ notOurDebtorCount | number:'1.0-0' }}
+      </span>
+      <i [class.bi-chevron-down]="!knownWithStatus.creditors_ep.show"
+         [class.bi-chevron-up]="knownWithStatus.creditors_ep.show"
+         class="bi ms-2"
+         style="color: white;"></i>
+    </a>
+    <a class="nav-link d-flex" role="button">
+      <i class="fa-solid fa-arrow-right"
+         style="color:#1277da;position:flex;margin-left: -33px;padding-right: 20px;"></i>
+      Не наші ВП
+      <span *ngIf="knownWithStatus.not_ours.count | async as notOursCount; else loadingSpinner"
+            class="badge bg-black bg-hover-info ms-auto">
+        {{ notOursCount | number:'1.0-0' }}
+      </span>
+      <i [class.bi-chevron-down]="!knownWithStatus.creditors_ep.show"
+         [class.bi-chevron-up]="knownWithStatus.creditors_ep.show"
+         class="bi ms-2"
+         style="color: white;"></i>
+    </a>
+    <a class="nav-link d-flex" role="button">
+      <i class="fa-solid fa-arrow-right"
+         style="color:#1277da;position:flex;margin-left: -33px;padding-right: 20px;"></i>
+      Наші ВП
+      <span *ngIf="knownWithStatus.our_ep.count | async as ourEPCount; else loadingSpinner"
+            class="badge bg-black bg-hover-info ms-auto">
+        {{ ourEPCount | number:'1.0-0' }}
+      </span>
+      <i [class.bi-chevron-down]="!knownWithStatus.creditors_ep.show"
+         [class.bi-chevron-up]="knownWithStatus.creditors_ep.show"
+         class="bi ms-2"
+         style="color: white;"></i>
+    </a>
+    <a class="nav-link d-flex" role="button">
+      <i class="fa-solid fa-arrow-right"
+         style="color:#1277da;position:flex;margin-left: -33px;padding-right: 20px;"></i>
+      ВП кредитора
+      <span *ngIf="knownWithStatus.creditors_ep.count | async as creditorsEPCount; else loadingSpinner"
+            class="badge bg-black bg-hover-info ms-auto">
+        {{ creditorsEPCount | number:'1.0-0' }}
+      </span>
+      <i (click)="knownWithStatus.creditors_ep.show=!knownWithStatus.creditors_ep.show"
+         [class.bi-chevron-down]="!knownWithStatus.creditors_ep.show"
+         [class.bi-chevron-up]="knownWithStatus.creditors_ep.show"
+         class="bi ms-2"></i>
+    </a>
+
+    <ng-container *ngTemplateOutlet="creditorsEP"></ng-container>
+
+  </nav>
+</ng-container>
+
+
+<!--   ВІДОБРАЖЕННЯ ВП ПЕРВИННИХ КРЕДИТОРІВ    -->
+<ng-template #creditorsEP>
+  <nav *ngIf="knownWithStatus &&
+              knownWithStatus.creditors_ep.show &&
+              knownWithStatus.creditors_ep.before_assignment &&
+              knownWithStatus.creditors_ep.after_assignment &&
+              knownWithStatus.creditors_ep.other"
+       class="nav nav-pills flex-column ms-3">
+    <a class="nav-link d-flex" role="button">
+      <i class="fa-solid fa-arrow-right"
+         style="color:#1277da;position:flex;margin-left: -33px;padding-right: 20px;"></i>
+      До відступлення
+      <span
+        *ngIf="knownWithStatus.creditors_ep.before_assignment.count | async as beforeAssignmentCount; else loadingSpinner"
+        class="badge bg-black bg-hover-info ms-auto">
+        {{ beforeAssignmentCount | number:'1.0-0' }}
+      </span>
+      <i
+        (click)="knownWithStatus.creditors_ep.before_assignment.show=!knownWithStatus.creditors_ep.before_assignment.show"
+         [class.bi-chevron-down]="!knownWithStatus.creditors_ep.before_assignment.show"
+         [class.bi-chevron-up]="knownWithStatus.creditors_ep.before_assignment.show"
+        class="bi ms-2"></i>
+    </a>
+
+    <ng-container *ngTemplateOutlet="beforeAssignmentInfo"></ng-container>
+
+    <a class="nav-link d-flex" role="button">
+      <i class="fa-solid fa-arrow-right"
+         style="color:#1277da;position:flex;margin-left: -33px;padding-right: 20px;"></i>
+      Після відступлення
+      <span
+        *ngIf="knownWithStatus.creditors_ep.after_assignment.count | async as afterAssignmentCount; else loadingSpinner"
+        class="badge bg-black bg-hover-info ms-auto">
+        {{ afterAssignmentCount | number:'1.0-0' }}
+      </span>
+      <i [class.bi-chevron-down]="!knownWithStatus.creditors_ep.show"
+         [class.bi-chevron-up]="knownWithStatus.creditors_ep.show"
+         class="bi ms-2"
+         style="color: white;"></i>
+    </a>
+    <a class="nav-link d-flex" role="button">
+      <i class="fa-solid fa-arrow-right"
+         style="color:#1277da;position:flex;margin-left: -33px;padding-right: 20px;"></i>
+      (невідомо)
+      <span *ngIf="knownWithStatus.creditors_ep.other.count | async as otherCount; else loadingSpinner"
+            class="badge bg-black bg-hover-info ms-auto">
+        {{ otherCount | number:'1.0-0' }}
+      </span>
+      <i [class.bi-chevron-down]="!knownWithStatus.creditors_ep.show"
+         [class.bi-chevron-up]="knownWithStatus.creditors_ep.show"
+         class="bi ms-2"
+         style="color: white;"></i>
+    </a>
+  </nav>
+</ng-template>
+
+
+<!--   ВІДОБРАЖЕННЯ ВП ПЕРВИННОГО КРЕДИТОРУ ДО ВІДСТУПЛЕННЯ    -->
+<ng-template #beforeAssignmentInfo>
+  <nav *ngIf="knownWithStatus &&
+              knownWithStatus.creditors_ep.before_assignment &&
+              knownWithStatus.creditors_ep.before_assignment.show"
+       class="nav nav-pills flex-column ms-3">
+    <a class="nav-link d-flex" role="button">
+      <i class="fa-solid fa-arrow-right"
+         style="color:#1277da;position:flex;margin-left: -33px;padding-right: 20px;"></i>
+      Не наші ВП
+      <span
+        *ngIf="knownWithStatus.creditors_ep.before_assignment.not_ours.count | async as notOursCount; else loadingSpinner"
+        class="badge bg-black bg-hover-info ms-auto">
+        {{ notOursCount | number:'1.0-0' }}
+      </span>
+      <i [class.bi-chevron-down]="!knownWithStatus.creditors_ep.show"
+         [class.bi-chevron-up]="knownWithStatus.creditors_ep.show"
+         class="bi ms-2"
+         style="color: white;"></i>
+    </a>
+    <a class="nav-link d-flex" role="button">
+      <i class="fa-solid fa-arrow-right"
+         style="color:#1277da;position:flex;margin-left: -33px;padding-right: 20px;"></i>
+      Сторона не замінена
+      <span
+        *ngIf="knownWithStatus.creditors_ep.before_assignment.no_side_change.count | async as noSideChangeCount; else loadingSpinner"
+        class="badge bg-black bg-hover-info ms-auto">
+        {{ noSideChangeCount | number:'1.0-0' }}
+      </span>
+      <i [class.bi-chevron-down]="!knownWithStatus.creditors_ep.show"
+         [class.bi-chevron-up]="knownWithStatus.creditors_ep.show"
+         class="bi ms-2"
+         style="color: white;"></i>
+    </a>
+    <a class="nav-link d-flex" role="button">
+      <i class="fa-solid fa-arrow-right"
+         style="color:#1277da;position:flex;margin-left: -33px;padding-right: 20px;"></i>
+      Сторона замінена
+      <span
+        *ngIf="knownWithStatus.creditors_ep.before_assignment.side_changed.count | async as sideChangeCount; else loadingSpinner"
+        class="badge bg-black bg-hover-info ms-auto">
+        {{ sideChangeCount | number:'1.0-0' }}
+      </span>
+      <i [class.bi-chevron-down]="!knownWithStatus.creditors_ep.show"
+         [class.bi-chevron-up]="knownWithStatus.creditors_ep.show"
+         class="bi ms-2"
+         style="color: white;"></i>
+    </a>
+  </nav>
+</ng-template>
+
+<ng-template #loadingSpinner>
+  <span class="badge ms-auto">
+    <app-loading-spinner [size]="20" [spinnerClass]="'loader-spinner'"></app-loading-spinner>
+  </span>
+</ng-template>

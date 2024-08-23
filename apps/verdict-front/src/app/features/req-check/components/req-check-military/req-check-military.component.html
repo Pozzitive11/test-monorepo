@@ -1,0 +1,11 @@
+<div class="row mb-0 mt-3">
+  <div *ngIf="elementService.military === false" class="col-md-12 text-center border p-2 rounded text-success">
+    <label class="status-label custom-bg-a2e8a3">Клієнт не військовий</label>
+  </div>
+  <div *ngIf="elementService.military === true" class="col-md-12 text-center border p-2 rounded text-danger">
+    <label class="status-label custom-bg-fcbdbd">Клієнт - військовий</label>
+  </div>
+  <div *ngIf="elementService.military === null" class="col-md-12 text-center border p-2 rounded">
+    <label class="status-label">Немає інформації с приводу військовий/не військовий</label>
+  </div>
+</div>

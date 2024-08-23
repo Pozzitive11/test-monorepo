@@ -1,0 +1,53 @@
+<div class="card">
+  <h5 class="card-header">НКС: {{ contractPromotion.ContractId }}</h5>
+
+  <div class="card-body">
+    <h5 class="card-title">{{ contractPromotion.Agreed }}</h5>
+
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <strong>Назва реєстра з НКС:</strong>
+        <span class="float-end">{{ contractPromotion.RegisterName }}</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Проєкт:</strong>
+        <span class="float-end">{{ contractPromotion.ProjectName }}</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Тип реєстру:</strong>
+        <span class="float-end">{{ contractPromotion.RegisterStatus }}</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Наявність погодження:</strong>
+        <span class="float-end">{{ contractPromotion.Agreed ? contractPromotion.Agreed : '-' }}</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Дата подачі:</strong>
+        <span class="float-end">{{ contractPromotion.EntryDate | formatDate }}</span>
+      </li>
+      <li *ngIf="contractPromotion.DiscountPercent" class="list-group-item">
+        <strong>Дисконт:</strong>
+        <span class="float-end">{{ contractPromotion.DiscountPercent | number:'1.0-2' }} %</span>
+      </li>
+      <li *ngIf="contractPromotion.RestructuringMonths" class="list-group-item">
+        <strong>К-сть місяців реструктуризації:</strong>
+        <span class="float-end">{{ contractPromotion.RestructuringMonths }}</span>
+      </li>
+      <li class="list-group-item">
+        <strong>Гранична дата сплати:</strong>
+        <span class="float-end">{{ contractPromotion.PaymentDateLimit | formatDate }}</span>
+      </li>
+      <li *ngIf="contractPromotion.Comment" class="list-group-item">
+        <strong>Примітка:</strong>
+        <span class="float-end">{{ contractPromotion.Comment }}</span>
+      </li>
+    </ul>
+
+    <div class="card-footer">
+      <button (click)="selectContract()" class="btn btn-primary">Обрати</button>
+    </div>
+  </div>
+</div>
+
+
+

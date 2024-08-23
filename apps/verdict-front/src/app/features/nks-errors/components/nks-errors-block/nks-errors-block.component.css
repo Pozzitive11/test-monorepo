@@ -1,0 +1,10 @@
+.custom-accordion-item {
+  background: rgba(249, 62, 62, 0.1);
+  border-color: #f93e3e;
+}
+
+.custom-accordion-header {
+  padding: 5px;
+  background: rgba(249, 62, 62, 0.1);
+  height: 50px;
+}

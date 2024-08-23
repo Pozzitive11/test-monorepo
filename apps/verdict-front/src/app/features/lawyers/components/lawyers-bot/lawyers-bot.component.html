@@ -1,0 +1,86 @@
+<h1 style="text-align: center; margin-top: 10px; font-size: 25px;"><b>ЄДРСР+Суд.Влада+Графік засідань</b></h1>
+<br>
+<br>
+
+<div class="row mb-5">
+  <div class="col-6">
+    <h4 class="h4" style="text-align: center;">Правила користування ботом</h4>
+
+    <div class="card card-body top-margin-sm">
+      <div>
+        <p style="text-align: center;"><b>Можливі формати для обробки (EXCEL):</b></p>
+        <p style="text-align: center;">колонки за назвами <b>'Номер справи', 'Суд', 'Заявка'</b></p>
+        <p style="text-align: center;">або</p>
+        <p style="text-align: center;">колонки з назвою <b>'№ справи'</b></p>
+      </div>
+    </div>
+
+    <br>
+
+    <ng-container *ngIf="fileListUpload.length > 0">
+      <ul class="list-group">
+        <li *ngFor="let file of fileListUpload" class="list-group-item list-group-item-info" style="margin-top: 10px;">
+          <strong>Назва файлу:</strong> {{ file.filename }}
+
+          <span class="left-margin-sm">
+        <i (click)="deleteFile(file.filename)" class="bi bi-x-circle pointer red-text"></i>
+
+        <ng-container *ngIf="!file.progress">
+          <ng-container *ngIf="timer === 1 ">
+            <strong>&nbsp;&nbsp;&nbsp;В обробці.</strong>
+          </ng-container>
+          <ng-container *ngIf="timer === 2 ">
+            <strong>&nbsp;&nbsp;&nbsp;В обробці..</strong>
+          </ng-container>
+          <ng-container *ngIf="timer === 3 ">
+            <strong>&nbsp;&nbsp;&nbsp;В обробці...</strong>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="file.progress">
+          <strong>&nbsp;&nbsp;&nbsp;Завершено обробку</strong>
+          <button (click)="download(file.filename)" class="btn btn-success top-margin-sm"
+                  style="margin-bottom: 15px; margin-left: 20px;">Завантажити</button>
+        </ng-container>
+      </span>
+        </li>
+
+      </ul>
+
+    </ng-container>
+  </div>
+
+  <div class="col-6 mt-3">
+    <h4 class="h4" style="text-align: center;">Завантажити файли для обробки</h4>
+    <app-file-upload
+      (fileAdded)="onUploadFile($event);updateUserFiles()"
+      [id]="'asepFileInput'"
+      [multiple]="false"
+      [ngClass]="{'disabled-table': !input }"
+
+    ></app-file-upload>
+
+    <ng-container *ngIf="fileList.length > 0">
+
+      <ul class="list-group">
+        <li *ngFor="let file of fileList" class="list-group-item list-group-item-info">
+          {{ file.file.name }}
+
+          <span class="left-margin-sm">
+            <i (click)="removeFile(file.file.name)" class="bi bi-x-circle pointer red-text"></i>
+
+          </span>
+        </li>
+      </ul>
+
+      <button (click)="uploadFiles();updateUserFiles();start()" class="btn btn-success top-margin-sm">Почати</button>
+
+
+    </ng-container>
+
+
+  </div>
+</div>
+
+
+
+

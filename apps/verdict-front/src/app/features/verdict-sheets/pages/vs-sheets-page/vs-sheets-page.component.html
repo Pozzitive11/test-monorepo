@@ -1,0 +1,136 @@
+<app-loading-bar [customType]="'inf-bar'" [loading]="loading()" />
+<div class="container-fluid mt-3" [class.disabled-table]="loading()">
+  <h2>Список зареєстрованих таблиць: </h2>
+  <div class="row mt-3">
+    <div class="col-6">
+      <ul class="list-group">
+        @if (dataService.isAdmin() || dataService.isConfigurator()) {
+          <li class="list-group-item pointer link-info d-flex justify-content-between">
+            <button class="btn btn-outline-success d-flex gap-2"
+                    [disabled]="!dataService.isAdmin()"
+                    (click)="addNewGroup()"
+            >
+              <i class="bi bi-plus-circle"></i> Створити нову групу
+            </button>
+          </li>
+        }
+
+        <ng-container [ngTemplateOutlet]="sheetListTemplate"
+                      [ngTemplateOutletContext]="{ $implicit: { name: null } }" />
+
+        <app-accordion
+          [items]="groupObjects()"
+          [titleKey]="'name'"
+          [closeOthers]="true"
+          [trackBy]="'name'"
+          [template]="sheetListTemplate"
+          [collapsed]="isCollapsed"
+        />
+        <ng-template #sheetListTemplate let-group>
+          @if (group.name && !sheetsMap().get(group.name)?.length) {
+            <div class="alert alert-dark">Група порожня</div>
+          }
+          @if (group.name && dataService.isAdmin()) {
+            <button class="btn btn-outline-danger mb-3" (click)="deleteGroup(group.name)">
+              <i class="bi bi-trash"></i>
+              Розформувати групу
+            </button>
+          }
+          @for (sheet of sheetsMap().get(group.name); track sheet) {
+            <li class="list-group-item pointer link-info"
+                [class.border-success]="sheet.uid === selectedSheet()?.uid"
+                [class.border-2]="sheet.uid === selectedSheet()?.uid"
+                (click)="selectedSheet.set(sheet)"
+            >
+              <strong>{{ sheet.name }}</strong>
+              <span class="text-muted small float-end">{{ sheet.uid }}</span>
+            </li>
+          }
+        </ng-template>
+
+        @if (dataService.isAdmin() || dataService.isConfigurator()) {
+          <li class="list-group-item pointer link-info d-flex justify-content-between">
+            <button class="btn btn-outline-warning d-flex gap-2"
+                    [disabled]="!dataService.isAdmin()"
+                    (click)="editAccessRights()"
+            >
+              <i class="bi bi-pencil-square"></i> Налаштувати права доступу
+            </button>
+
+            <button class="btn btn-outline-primary" (click)="addSheet()">
+              <i class="bi bi-plus-circle me-2"></i>
+              <strong>Додати нову таблицю</strong>
+            </button>
+          </li>
+        }
+      </ul>
+    </div>
+    @if (selectedSheet(); as selectedSheet) {
+      <div class="col-6">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title">Деталі</h5>
+          </div>
+          <div class="card-body">
+            <table class="w-100">
+              <tr class="border-bottom">
+                <td class="py-2"><strong>Назва:</strong></td>
+                <td>{{ selectedSheet.name }}</td>
+              </tr>
+              <tr class="border-bottom">
+                <td class="py-2"><strong>Створено:</strong></td>
+                <td>
+                  {{ selectedSheet.createdBy }}
+                  <span class="text-muted small">({{ selectedSheet.created | formatDate:true }})</span>
+                </td>
+              </tr>
+              <tr class="border-bottom">
+                <td class="py-2"><strong>Останнє оновлення:</strong></td>
+                <td>
+                  {{ selectedSheet.modifiedBy }}
+                  <span class="text-muted small">({{ selectedSheet.modified | formatDate:true }})</span>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" class="pt-2"><strong>SQL-запит:</strong></td>
+              </tr>
+              <tr>
+                <td colspan="2" class="pb-2">
+                  <code class="text-12 text-danger fw-bold p-0 pointer"
+                        [ngbTooltip]="showFullQuery() ? 'Згорнути' : 'Розгорнути'"
+                        (click)="showFullQuery.set(!showFullQuery())">
+                    {{ selectedSheet.sqlQuery | shortText:querySymbols() }}
+                  </code>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="card-footer">
+            <div class="d-flex gap-2">
+              <button class="btn btn-outline-success" (click)="editSheet(selectedSheet)">
+                Відкрити {{ selectedSheet.groupName ? 'групу' : 'таблицю' }}
+              </button>
+              @if (dataService.isAdmin() || dataService.isConfigurator()) {
+                <button class="btn btn-outline-primary" (click)="editConfig(selectedSheet)">
+                  Редагувати конфігурацію
+                </button>
+                <app-default-dropdown
+                  [valueList]="groupsDropdown()"
+                  [selectedValue]="selectedSheet.groupName || 'Без групи'"
+                  [showButtonTooltip]="true"
+                  [showTooltip]="false"
+                  [customTooltip]="'Група таблиці'"
+                  (valueSelected)="updateSheetGroup(selectedSheet, $event)"
+                />
+              }
+              @if (dataService.isAdmin()) {
+                <button class="btn btn-outline-danger ms-auto" (click)="deleteSheet(selectedSheet)">Видалити</button>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

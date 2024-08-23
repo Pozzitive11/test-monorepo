@@ -1,0 +1,81 @@
+<ngb-progressbar
+  *ngIf="loading"
+  [animated]="true"
+  [height]="'5px'"
+  [striped]="true"
+  [type]="'success'"
+  [value]="100"
+></ngb-progressbar>
+
+<h5 class="card-header top-margin-sm">НКС: {{ contractId }}</h5>
+
+<div *ngIf="contractId" [class.disabled-table]="loading" class="container-fluid top-margin-sm">
+  <div *ngIf="!contractId" class="alert alert-danger">Інформація відсутня</div>
+
+  <ng-container *ngIf="contractId">
+    <ul #nav="ngbNav" [(activeId)]="dataService.activeTab" [animation]="false" [destroyOnHide]="false" class="nav-tabs"
+        ngbNav>
+      <li [ngbNavItem]="'basicInfo'">
+        <a ngbNavLink>Загальна інформація</a>
+        <ng-template ngbNavContent>
+          <lr-tab-contract-info
+            [contractId]="contractId"
+            [promotionId]="promotionId"
+          ></lr-tab-contract-info>
+        </ng-template>
+      </li>
+
+      <li *ngFor="let debtor of debtors" [ngbNavItem]="debtor.INN">
+        <a ngbNavLink>Боржник ({{ debtor.FullName }}, {{ debtor.INN }})</a>
+        <ng-template ngbNavContent>
+          <lr-tab-guarantor-data
+            [contractId]="contractId"
+            [guarantor]="debtor"
+          ></lr-tab-guarantor-data>
+        </ng-template>
+      </li>
+
+      <li [ngbNavItem]="'epInfo'">
+        <a ngbNavLink>Виконавчі провадження</a>
+        <ng-template ngbNavContent>
+          <lr-tab-ep-info
+            [contractId]="contractId"
+            [promotionId]="promotionId"
+          ></lr-tab-ep-info>
+        </ng-template>
+      </li>
+
+      <li *ngFor="let guarantor of guarantors" [ngbNavItem]="guarantor.INN">
+        <a ngbNavLink>{{ guarantor.FullName }} ({{ guarantor.INN }})</a>
+        <ng-template ngbNavContent>
+          <lr-tab-guarantor-data
+            [contractId]="contractId"
+            [guarantor]="guarantor"
+          ></lr-tab-guarantor-data>
+        </ng-template>
+      </li>
+    </ul>
+
+    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+  </ng-container>
+
+  <div class="top-margin-sm">
+    <!--    <app-switch-checkbox [(value)]="addToDB" [id]="'addToDBSwitch'">Зберегти заявку до БД</app-switch-checkbox>-->
+    <button
+      (click)="createExcelFromData()"
+      [class.btn-outline-primary]="everythingLoaded && requiredDataFilled()"
+      [class.btn-outline-secondary]="!everythingLoaded || !requiredDataFilled()"
+      [class.disabled-table]="!requiredDataFilled()"
+      [ngbTooltip]="everythingLoaded ? '' : 'Деякі дані ще не завантажено'"
+      class="btn mt-2"
+    >
+      {{ everythingLoaded ? (requiredDataFilled() ? 'Створити заявку та Excel-файл' : '(не всі необхідні дані заповнені)') : '(деякі дані ще не завантажено)' }}
+
+    </button>
+  </div>
+</div>
+
+
+
+
+

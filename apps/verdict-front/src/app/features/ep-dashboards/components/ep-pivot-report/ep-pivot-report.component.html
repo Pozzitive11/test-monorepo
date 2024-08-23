@@ -1,0 +1,9 @@
+<pivot-table-offcanvas-options class="offcanvas-button-container" />
+
+<button (click)="loadData.emit()" class="btn btn-outline-primary mb-3 mt-2">Завантажити звіт</button>
+
+<div class="row mt-3">
+  <div class="col-12">
+    <app-pivot-table [reportName]="reportName()" />
+  </div>
+</div>

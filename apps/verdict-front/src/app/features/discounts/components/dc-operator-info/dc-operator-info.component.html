@@ -1,0 +1,398 @@
+<div *ngIf="!!scoreInfoData" class="row alert alert-primary">
+  <!--    Загальна інфо + поля для завантаження документів    -->
+  <div class="row">
+    <!--    Загальна таблиця інфо  -->
+    <div class="col-4">
+      <table class="table">
+        <tr>
+          <td>НКС:</td>
+          <td>
+            <strong>{{ scoreInfoData.ContractId }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td>Балів:</td>
+          <td>
+            <strong>{{ scoreInfoData.Score }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td>Валюта кредиту:</td>
+          <td>
+            <strong>{{ scoreInfoData.ContractCurrency }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td>Тип кредитора:</td>
+          <td>
+            <strong>{{ scoreInfoData.CreditorType }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td>Проєкт:</td>
+          <td>
+            <strong>{{ scoreInfoData.ProjectName }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td>Назва первинного кредитора:</td>
+          <td>
+            <strong>{{ scoreInfoData.CreditorName }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td>Борг:</td>
+          <td>
+            <strong>{{ scoreInfoData.Debt | number: '1.0-2' }} {{ scoreInfoData.FactCurrency }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td>Тіло:</td>
+          <td>
+            <strong>{{ scoreInfoData.Body | number: '1.0-2' }} {{ scoreInfoData.FactCurrency }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td>DPD:</td>
+          <td>
+            <strong>{{ scoreInfoData.DPD | number: '1.0-0' }}</strong>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-3">
+      <table *ngIf="!!scoreModel" class="table">
+        <tr>
+          <td><span>Військовий: </span></td>
+          <td>
+            <strong>{{ scoreModel.Military ? '+' : '-' }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td><span>Помер: </span></td>
+          <td>
+            <strong>{{ scoreModel.Dead ? '+' : '-' }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td><span>Інвалід: </span></td>
+          <td>
+            <strong>{{ scoreModel.Disabled ? '+' : '-' }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td><span>Наявність інших документів: </span></td>
+          <td>
+            <strong>{{ scoreModel.OtherDocs ? '+' : '-' }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span [ngbTooltip]="'Напис скасовано, є негативне рішення по ділу'">PS:</span>
+          </td>
+          <td>
+            <strong>{{ scoreModel.PS ? '+' : '-' }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              [ngbTooltip]="'Напис скасовано, є негативне рішення по ділу, пропущено строк позивної давності'"
+              class="w-100"
+            >
+              PS + пропущено СПД:
+            </span>
+          </td>
+          <td>
+            <strong>{{ scoreModel.PS && scoreModel.ClaimDateEnded ? '+' : '-' }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span [ngbTooltip]="'Напис скасовано, пропущено строк позивної давності'" class="w-100"> R1: </span>
+          </td>
+          <td>
+            <strong>{{ scoreModel.R1 ? '+' : '-' }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span
+              [ngbTooltip]="
+                'Строк позивної давності не пропущено, напис скасовано ' +
+                'або в процесі розгляду справ про скасування напису.'
+              "
+              >R2:
+            </span>
+          </td>
+          <td>
+            <strong>{{ scoreModel.R2 ? '+' : '-' }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span [ngbTooltip]="'Бан у К1'">Бан К1: </span>
+          </td>
+          <td>
+            <strong>{{ scoreModel.C1Ban ? '+' : '-' }}</strong>
+          </td>
+        </tr>
+      </table>
+
+      <!--    Инфо по стоп-листам и ранее согласованным    -->
+      <p *ngIf="!!scoreInfoData.EternalStopList" class="red-text">
+        <strong>У СТОП-ЛИСТІ ({{ scoreInfoData.EternalStopList }})</strong>
+      </p>
+      <p *ngIf="!!scoreInfoData.TempStopList" class="red-text">
+        <strong>
+          Був узгоджений раніше до {{ scoreInfoData.StopDate }} на суму
+          {{ scoreInfoData.AgreedSum | currency: 'UAH' : 'symbol' : '1.0-2' }} ({{ scoreInfoData.TempStopList }})
+        </strong>
+        <strong *ngIf="scoreInfoData.LastPromotionAgreed" class="float-end"
+          >({{ scoreInfoData.LastPromotionAgreed }} )</strong
+        >
+      </p>
+      <p *ngIf="inAgreementProcess()" class="red-text">
+        <strong>
+          Був поданий на погодження раніше до {{ scoreInfoData.StopDate }} на суму
+          {{ scoreInfoData.AgreedSum | currency: 'UAH' : 'symbol' : '1.0-2' }} ({{
+            scoreInfoData.RestructuringMonthsOld ? 'Реструктуризація' : 'Дисконт'
+          }})
+        </strong>
+        <strong *ngIf="scoreInfoData.LastPromotionAgreed" class="float-end"
+          >({{ scoreInfoData.LastPromotionAgreed }} )</strong
+        >
+      </p>
+    </div>
+
+    <!--   Завантаження документів військових / інших   -->
+    <div class="col-5">
+      <app-dc-identification-docs-upload *ngIf="!!scoreInfoData" [INN]="scoreInfoData.INN ? scoreInfoData.INN : 'NULL'">
+      </app-dc-identification-docs-upload>
+      <app-dc-other-docs-upload
+        *ngIf="!!scoreInfoData"
+        [INN]="scoreInfoData.INN ? scoreInfoData.INN : 'NULL'"
+      ></app-dc-other-docs-upload>
+      <!-- <dcm-doc-upload *ngIf="!!scoreInfoData" [INN]="scoreInfoData.INN ? scoreInfoData.INN : 'NULL'"></dcm-doc-upload> -->
+        @for (documentList of militaryDataService.militaryDocTree(); track $index) {
+          <app-dcm-doc-upload-with-types
+            [accordionTitle]="documentList['DocName']"
+            [docTypes]="documentList['Children']"
+            [isSpouse]="documentList['DocName'] === 'Завантажити військові документи Дружини/Чоловіка'"
+          ></app-dcm-doc-upload-with-types>
+        }
+      <!-- <app-dc-additional-special-conf
+        (additionalDocsChanged)="updateAdditionalDocsFields($event)"
+      ></app-dc-additional-special-conf> -->
+    </div>
+  </div>
+
+  <!--  Инфо о старой подачи  -->
+  <div class="row" [class.disabled-table]="scoreInfoData.EternalStopList">
+    <div *ngIf="scoreInfoData.EntryDate" class="col-4">
+      <p class="red-text">
+        <strong>Поданий {{ scoreInfoData.EntryDate | formatDate }} р.</strong>
+      </p>
+    </div>
+    <div *ngIf="scoreInfoData.FailedRSInfo.length" class="col-3">
+      <p class="red-text">
+        <span [ngbPopover]="failedRSInfo" placement="right" triggers="mouseenter:mouseleave">
+          <strong>РС порушена!</strong>
+          <i class="bi bi-question-circle left-margin-ultra-sm"></i>
+        </span>
+      </p>
+      <ng-template #failedRSInfo>
+        <p *ngFor="let msg of scoreInfoData.FailedRSInfo" class="red-text">{{ msg }}</p>
+      </ng-template>
+    </div>
+  </div>
+
+  <div [class.disabled-table]="chosenConditions.Denied || scoreInfoData.EternalStopList" class="accordion">
+    <!--    Повторне подання на узгодження  -->
+    <div [hidden]="!scoreInfoData.TempStopList" class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          (click)="showRepeated()"
+          [class.collapsed]="!shown.repeated || chosenConditions.Denied"
+          class="accordion-button"
+          type="button"
+        >
+          <i *ngIf="!!scoreInfoData.TempStopList" class="bi bi-unlock-fill right-margin-sm" style="color: #4fad18"></i>
+          Повторне подання
+        </button>
+      </h2>
+
+      <app-dc-repeated-contract-conditions
+        [chosenConditions]="chosenConditions"
+        [contractId]="ContractId"
+        [hidden]="!shown.repeated || chosenConditions.Denied"
+        [scoreInfoData]="scoreInfoData"
+      ></app-dc-repeated-contract-conditions>
+    </div>
+
+    <!--    Доступні акції  -->
+    <div [class.disabled-table]="!!scoreInfoData.TempStopList" class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          (click)="showPromotions()"
+          [class.collapsed]="!shown.promotions || chosenConditions.Denied"
+          class="accordion-button"
+          type="button"
+        >
+          <i
+            *ngIf="!!scoreInfoData.TempStopList"
+            [ngbTooltip]="'Стандартні умови недоступні для повторного подання'"
+            class="bi bi-lock-fill right-margin-sm"
+            style="color: #db1218"
+          ></i>
+          <i *ngIf="!scoreInfoData.TempStopList" class="bi bi-unlock-fill right-margin-sm" style="color: #4fad18"></i>
+          Доступні акції
+        </button>
+      </h2>
+
+      <app-dc-main-promotions
+        [chosenConditionsFull]="chosenConditions"
+        [contractId]="ContractId"
+        [hidden]="!shown.promotions || chosenConditions.Denied"
+        [scoreInfoData]="scoreInfoData"
+      ></app-dc-main-promotions>
+    </div>
+
+    <!--    Індивідуальні умови  -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          (click)="showIndividual()"
+          [class.collapsed]="!shown.individual || chosenConditions.Denied"
+          class="accordion-button"
+          type="button"
+        >
+          <i
+            *ngIf="!scoreInfoData.Promotions.Individual"
+            [ngbTooltip]="'Індивідуальні умови недоступні для чинної кількості балів'"
+            class="bi bi-lock-fill right-margin-sm"
+            style="color: #db1218"
+          ></i>
+          <i
+            *ngIf="scoreInfoData.Promotions.Individual"
+            class="bi bi-unlock-fill right-margin-sm"
+            style="color: #4fad18"
+          ></i>
+          Індивідуальні умови
+        </button>
+      </h2>
+
+      <app-dc-individual-conditions
+        [ContractId]="ContractId"
+        [chosenConditionsFull]="chosenConditions"
+        [hidden]="!shown.individual || chosenConditions.Denied"
+        [scoreInfoData]="scoreInfoData"
+      ></app-dc-individual-conditions>
+    </div>
+  </div>
+
+  <div class="row my-2" [class.disabled-table]="scoreInfoData.EternalStopList">
+    <div class="col-6">
+      <!--   ГРАНИЧНАЯ ДАТА   -->
+      <div class="row">
+        <div [class.disabled-table]="chosenConditions.Denied" class="col-6">
+          <span class="h6">Гранична дата по узгодженню</span>
+          <app-date-picker-popup
+            [chosenDate]="toNgbDate(chosenConditions.LimitDate)"
+            (chosenDateChange)="updateLimitDate($event)"
+          />
+        </div>
+      </div>
+
+      <!--    КОММЕНТАРИЙ    -->
+      <div class="row top-margin-sm">
+        <div class="col-12">
+          <textarea
+            #comment_val
+            (keydown.enter)="comment_val.blur()"
+            [(ngModel)]="chosenConditions.Comment"
+            [title]="chosenConditions.Comment"
+            class="form-control inputdefault"
+            placeholder="Коментар..."
+            rows="2"
+          ></textarea>
+        </div>
+      </div>
+
+      <!--   КНОПКА НЕПОДАЧИ   -->
+      <div class="row top-margin-sm">
+        <div class="col-12">
+          <div class="input-group" role="group">
+            <app-default-dropdown
+              (valueSelected)="denyContract($event)"
+              *ngIf="!chosenConditions.DocsOnly && !chosenConditions.Denied && !scoreInfoData.TempStopList"
+              [btnClass]="'btn btn-outline-danger rounded-0 rounded-start'"
+              [placement]="'top-start'"
+              [selectable]="false"
+              [selectedValue]="'Не подавати'"
+              [valueList]="denyReasons"
+            ></app-default-dropdown>
+
+            <button
+              (click)="denyContract('Поданий раніше')"
+              *ngIf="!chosenConditions.Denied && !!scoreInfoData.TempStopList"
+              class="btn btn-outline-danger"
+              type="button"
+            >
+              Не подавати
+            </button>
+
+            <span
+              *ngIf="chosenConditions.DocsOnly || chosenConditions.Denied"
+              [class.red-text]="chosenConditions.Denied"
+              [ngbTooltip]="chosenReason"
+              class="input-group-text"
+            >
+              {{ chosenReason }}
+            </span>
+
+            <button
+              (click)="requestDocs()"
+              *ngIf="!chosenConditions.Denied && !chosenConditions.DocsOnly"
+              class="btn btn-outline-secondary"
+              type="button"
+            >
+              Тільки документи
+            </button>
+
+            <button
+              (click)="cancelDenyContract()"
+              *ngIf="chosenConditions.Denied || chosenConditions.DocsOnly"
+              class="btn btn-outline-danger"
+            >
+              Змінити рішення
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--    ЗАПРОС ДОПОЛНИТЕЛЬНЫХ ДОКУМЕНТОВ ДЛЯ КЛИЕНТА    -->
+    <div *ngIf="!chosenConditions.Denied || chosenConditions.DocsOnly" class="col-6">
+      <dc-additional-docs-for-client-req
+        (additionalDocsChanged)="updateAdditionalDocsFields($event)"
+      ></dc-additional-docs-for-client-req>
+    </div>
+  </div>
+  <div class="col-12">
+    <div *ngIf="clientHistory.length > 0; else noHistory" class="accordion">
+      <!-- Історія заяв по клієнту -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button (click)="showHistory()" [class.collapsed]="!shown.history" class="accordion-button" type="button">
+            Історія заяв по клієнту
+          </button>
+        </h2>
+        <app-dc-client-history [clientHistory]="clientHistory" [hidden]="!shown.history"></app-dc-client-history>
+      </div>
+    </div>
+    <ng-template #noHistory>
+      <div class="row top-margin-sm alert alert-secondary">Інформація по даній заяві відсутня</div>
+    </ng-template>
+  </div>
+</div>

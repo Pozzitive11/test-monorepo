@@ -1,0 +1,214 @@
+<div class="row mb-3 mt-3">
+  <div>
+    <div *ngIf="elementService.asepInfo['Записи з АСВП']?.length > 0; else template2">
+      <div class="col-md-12 text-center border p-2 rounded text-danger">
+        <label class="status-label custom-bg-fcbdbd">В АСВП знайдено записи</label>
+      </div>
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>ІПН</th>
+          <th>АСВП</th>
+          <th>БОРЖНИК Дата народження</th>
+          <th>БОРЖНИК ПІБ</th>
+          <th>Дата актуальності інформації</th>
+          <th>Дата відкриття</th>
+          <th>Орган ДВС/приватний виконавець</th>
+          <th>СТЯГУВАЧ</th>
+          <th>СТЯГУВАЧ ЄДРПОУ</th>
+          <th>СТЯГУВАЧ ПІБ/Найменування</th>
+          <th>Стан ВП</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let records of elementService.asepInfo['Записи з АСВП']">
+          <td>{{ records["ІПН"] }}</td>
+          <td>{{ records["АСВП"] }}</td>
+          <td>{{ records["БОРЖНИК Дата народження"] | formatAnyValue }}</td>
+          <td>{{ records["БОРЖНИК ПІБ"] }}</td>
+          <td>{{ records["Дата актуальності інформації"] }}</td>
+          <td>{{ records["Дата відкриття"] | formatAnyValue }}</td>
+          <td>{{ records["Орган ДВС/приватний виконавець"] }}</td>
+          <td>{{ records["СТЯГУВАЧ"] }}</td>
+          <td>{{ records["СТЯГУВАЧ ЄДРПОУ"] }}</td>
+          <td>{{ records["СТЯГУВАЧ ПІБ/Найменування"] }}</td>
+          <td>{{ records["Стан ВП"] }}</td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="col-md-12 text-center border p-2 rounded text-danger mt-3">
+        <label class="status-label custom-bg-fcbdbd">В Єдиному реєстрі боржників знайдено записи</label>
+      </div>
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>ІПН</th>
+          <th>Дата народження</th>
+          <th>Категорія стягнення</th>
+          <th>Код відділу виконавця</th>
+          <th>Назва відділу виконавця</th>
+          <th>Телефон відділу виконавця</th>
+          <th>Ім'я виконавця</th>
+          <th>E-mail виконавця</th>
+          <th>Телефон виконавця</th>
+          <th>Ім'я боржника</th>
+          <th>Прізвище боржника</th>
+          <th>По-батькові боржника</th>
+          <th>Видавник</th>
+          <th>АСВП</th>
+          <th>Інше</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let record of elementService.asepInfo['Записи з єдиному реєстру боржників']">
+          <td>{{ record["ІПН"] }}</td>
+          <td>{{ record["Дата народження"] | formatAnyValue }}</td>
+          <td>{{ record["Категорія стягнення"] }}</td>
+          <td>{{ record["Код відділу виконавця"] }}</td>
+          <td>{{ record["Назва відділу виконавця"] }}</td>
+          <td>{{ record["Телефон відділу виконавця"] }}</td>
+          <td>{{ record["Ім'я виконавця"] }}</td>
+          <td>{{ record["E-mail виконавця"] }}</td>
+          <td>{{ record["Телефон виконавця"] }}</td>
+          <td>{{ record["Ім'я боржника"] }}</td>
+          <td>{{ record["Прізвище боржника"] }}</td>
+          <td>{{ record["По-батькові боржника"] }}</td>
+          <td>{{ record["Видавник"] }}</td>
+          <td>{{ record["АСВП"] }}</td>
+          <td>{{ record["Інше"] }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #template2>
+      <div>
+        <div class="col-md-12 text-center border p-2 rounded text-success">
+          <label class="status-label custom-bg-a2e8a3">В АСВП не знайдено записів</label>
+        </div>
+
+        <div class="col-md-12 text-center border p-2 rounded text-success mt-3" style="margin-top: 20px">
+          <label class="status-label custom-bg-a2e8a3">В Єдиному реєстрі боржників не знайдено записів</label>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+
+<div *ngIf="elementService.getIncomeNcsCredits">
+  <div class="row mb-3 mt-3">
+    <div
+      *ngIf="elementService.getIncomeNcsCredits.user_factoring_credit"
+      class="col-md-12 text-center border p-2 rounded text-danger"
+    >
+      <label class="status-label custom-bg-fcbdbd">Є активний кредит НКС факторинг</label>
+    </div>
+    <div
+      *ngIf="!elementService.getIncomeNcsCredits.user_factoring_credit"
+      class="col-md-12 text-center border p-2 rounded text-success"
+    >
+      <label class="status-label custom-bg-a2e8a3">Немає активного кредиту НКС факторинг</label>
+    </div>
+  </div>
+  <div class="row mb-3 mt-3">
+    <div>
+      <div *ngIf="(elementService.getIncomeNcsCredits.user_factoring_credit_details?.length || 0) > 0">
+        <table class="table table-bordered">
+          <thead>
+          <tr>
+            <th>Назва</th>
+            <th>Стоп-лист</th>
+            <th>Актуальність</th>
+            <th>Номер контракту</th>
+            <th>Нкс</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr
+            *ngFor="let record of elementService.getIncomeNcsCredits.user_factoring_credit_details || []; let i = index">
+            <td>{{ record.name }}</td>
+            <td>{{ record.stop_list }}</td>
+            <td>{{ record.is_actual }}</td>
+            <td>{{ record.contract_num }}</td>
+            <td>{{ record.nks }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!--<div class="row" style="margin-bottom: 0px">
+    <div class="col-md-12 text-center border p-2 rounded text-success" *ngIf="elementService.getIncomeNcsCredits.user_income > 0">
+      <label class="status-label custom-bg-a2e8a3">Доступно: {{ getIncomeNcsCredits.user_income }}</label>
+    </div>
+    <div class="col-md-12 text-center border p-2 rounded text-danger" *ngIf="elementService.getIncomeNcsCredits.user_income <= 0">
+      <label class="status-label custom-bg-fcbdbd">Доступно: {{ getIncomeNcsCredits.user_income }}</label>
+    </div>
+  </div>-->
+</div>
+
+
+<div class="row mb-3 mt-3">
+  <div *ngIf="elementService.prop.length === 0" class="col-md-12 text-center border p-2 rounded text-success">
+    <label class="status-label custom-bg-a2e8a3">По клієнту немає майна</label>
+  </div>
+  <div *ngIf="elementService.prop.length > 0" class="col-md-12 text-center border p-2 rounded text-danger">
+    <label class="status-label custom-bg-fcbdbd">По клієнту наявне майно</label>
+  </div>
+</div>
+
+<div class="row mb-3 mt-3">
+  <div *ngIf="elementService.auto.length === 0" class="col-md-12 text-center border p-2 rounded text-success">
+    <label class="status-label custom-bg-a2e8a3">У клієнта немає авто</label>
+  </div>
+  <div *ngIf="elementService.auto.length > 0" class="col-md-12 text-center border p-2 rounded text-danger">
+    <label class="status-label custom-bg-fcbdbd">У клієнта є авто</label>
+  </div>
+</div>
+
+<div class="row mt-3 mb-3">
+  <div>
+    <div *ngIf="elementService.courtData.records.length > 0; else template3">
+      <div class="col-md-12 text-center border p-2 rounded text-danger">
+        <label class="status-label custom-bg-fcbdbd">Знайдені записи справ про банкрутство</label>
+      </div>
+
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>Дата справи</th>
+          <th>Номер справи</th>
+          <th>Тип</th>
+          <th>Код боржника</th>
+          <th>Ім'я боржника</th>
+          <th>Номер справи</th>
+          <th>Назва суду</th>
+          <th>Дата початку</th>
+          <th>Дата закінчення</th>
+          <th>deadline</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let record of elementService.courtData.records">
+          <td>{{ record.record_date | formatAnyValue }}</td>
+          <td>{{ record.record_number }}</td>
+          <td>{{ record.type }}</td>
+          <td>{{ record.debptor_code }}</td>
+          <td>{{ record.debptor_name }}</td>
+          <td>{{ record.case_number }}</td>
+          <td>{{ record.court_name }}</td>
+          <td>{{ record.start_action_date | formatAnyValue }}</td>
+          <td>{{ record.end_action_date | formatAnyValue }}</td>
+          <td>{{ record.deadline }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #template3>
+      <div class="col-md-12 text-center border p-2 rounded text-success">
+        <label class="status-label custom-bg-a2e8a3">Справи про банкрутство відсутні</label>
+      </div>
+    </ng-template>
+  </div>
+</div>
+

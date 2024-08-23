@@ -1,0 +1,18 @@
+<div class="accordion" style="margin-bottom: 1em">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+
+      <button (click)="shown = !shown" [class.collapsed]="!shown" class="accordion-button" type="button">
+        {{ accordionTitle() }}
+      </button>
+    </h2>
+
+    <div *ngIf="shown" class="collapse-show">
+      <div ngbAccordion #accordion="ngbAccordion">
+        @for (document of docTypes(); track $index; ) {
+          <app-dcm-doc-upload-card [document]="document" [isSpouse]="isSpouse()"></app-dcm-doc-upload-card>
+        }
+      </div>
+    </div>
+  </div>
+</div>

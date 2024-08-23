@@ -1,0 +1,97 @@
+<div class="card">
+  <h5 (click)="cardBody.hidden=!cardBody.hidden" class="card-header pointer">
+    Запит до МВС
+    <span class="float-end">
+      <i [class.bi-chevron-down]="cardBody.hidden" [class.bi-chevron-up]="!cardBody.hidden" class="bi"></i>
+    </span>
+  </h5>
+  <ngb-progressbar
+    *ngIf="loading"
+    [animated]="true"
+    [height]="'3px'"
+    [striped]="true"
+    [type]="'secondary'"
+    [value]="100"
+  ></ngb-progressbar>
+
+  <div #cardBody [class.disabled-table]="loading" class="card-body">
+    <ul *ngIf="mvsStagesInfo" class="list-group list-group-flush">
+      <li *ngFor="let mvsStages of mvsStagesInfo" class="list-group-item">
+        <div class="card my-2">
+
+          <h5 (click)="incomeStagesCard.hidden=!incomeStagesCard.hidden" class="card-header pointer">
+            <span *ngIf="mvsStages.ClientType" class="mb-2 text-18">{{ mvsStages.ClientType }}<br /></span>
+            <span *ngIf="mvsStages.ClientName" class="mb-2 text-18">{{ mvsStages.ClientName }}<br /></span>
+            <span *ngIf="mvsStages.ClientINN" class="mb-2 text-18">ІПН {{ mvsStages.ClientINN }}<br /></span>
+            <span *ngIf="mvsStages.EPNum" class="mb-2 text-18">ВП {{ mvsStages.EPNum }}<br /></span>
+            <span class="float-end">
+              <i [class.bi-chevron-down]="incomeStagesCard.hidden"
+                 [class.bi-chevron-up]="!incomeStagesCard.hidden"
+                 class="bi"></i>
+            </span>
+          </h5>
+
+          <div #incomeStagesCard class="card-body">
+            <ul class="list-group list-group-flush">
+
+              <ng-container *ngIf="mvsStages.AnswerDateMVS; else noResponse">
+                <li class="list-group-item">
+                  <strong>Дата відповіді з МВС:</strong>
+                  <span class="float-end">{{ mvsStages.AnswerDateMVS | formatDate:false }}</span>
+                </li>
+
+                <li *ngIf="mvsStages.PositiveResultMVS != undefined" class="list-group-item">
+                  <strong *ngIf="mvsStages.PositiveResultMVS" class="text-success">
+                    Позитивний результат з МВС
+                  </strong>
+                  <strong *ngIf="!mvsStages.PositiveResultMVS" class="text-danger float-end">
+                    Негативний результат з МВС
+                  </strong>
+                </li>
+
+                <li *ngFor="let car of mvsStages.Cars; let i = index" class="list-group-item">
+                  <strong>Опис авто<span *ngIf="mvsStages.Cars.length > 1"> ({{ i + 1 }})</span>:</strong>
+                  <span class="float-end">{{ car.CarDescription }}</span>
+                </li>
+              </ng-container>
+
+              <ng-template #noResponse>
+                <li class="list-group-item">
+                  <strong [class.text-danger]="(mvsStages.NoAnswerDaysMVS || 0) > 14" class="text-warning">
+                    Відповідь з МВС відсутня {{ daysToString(mvsStages.NoAnswerDaysMVS || 0) }}</strong>
+                </li>
+              </ng-template>
+
+              <ng-container *ngIf="mvsStages.ResolutionDate || mvsStages.NoResolutionWithReason; else noResolution">
+                <li *ngIf="mvsStages.ResolutionDate" class="list-group-item">
+                  <strong>Дата постанови на розшук майна:</strong>
+                  <span *ngIf="mvsStages.ResolutionDate"
+                        class="float-end">{{ mvsStages.ResolutionDate | formatDate:false }}</span>
+                </li>
+
+                <li *ngIf="mvsStages.NoResolutionWithReason" class="list-group-item">
+                  <strong class="text-warning">
+                    Постанови на розшук майна не буде з об'єктивних причин
+                  </strong>
+                </li>
+              </ng-container>
+
+              <ng-template #noResolution>
+                <li *ngIf="mvsStages.PositiveResultMVS" class="list-group-item">
+                  <strong [class.text-danger]="(mvsStages.NoResolutionDays || 0) > 14" class="float-end text-warning"
+                  >Постанова на розшук майна відсутня {{ daysToString(mvsStages.NoResolutionDays || 0) }}</strong>
+                </li>
+              </ng-template>
+
+            </ul>
+          </div>
+
+        </div>
+      </li>
+    </ul>
+
+  </div>
+</div>
+
+
+

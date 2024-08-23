@@ -1,0 +1,175 @@
+<div class="block">
+  <div class="row">
+    <div class="col-auto z">
+      <label>Дата ухвалення </label>
+      <div>
+        <strong>Обрати період:</strong>
+        <app-date-picker-range-popup
+          (dateChanged)="dates1=$event"
+          [maxDate]="datesRange.MaxDate"
+          [minDate]="datesRange.MinDate"
+        >
+
+        </app-date-picker-range-popup>
+      </div>
+    </div>
+    <div class="col-auto z">
+      <label>Дата набрання </label>
+      <div>
+        <strong>Обрати період:</strong>
+        <app-date-picker-range-popup
+          (dateChanged)="dates2=$event"
+          [maxDate]="datesRange.MaxDate"
+          [minDate]="datesRange.MinDate"
+        >
+
+        </app-date-picker-range-popup>
+      </div>
+    </div>
+    <div class="col-auto z">
+      <label>Дата додавання </label>
+      <div>
+        <strong>Обрати період:</strong>
+        <app-date-picker-range-popup
+          (dateChanged)="dates3=$event"
+          [maxDate]="datesRange.MaxDate"
+          [minDate]="datesRange.MinDate"
+        >
+
+        </app-date-picker-range-popup>
+      </div>
+    </div>
+    <div class="col-auto z">
+      <label>Дата змін </label>
+      <div>
+        <strong>Обрати період:</strong>
+        <app-date-picker-range-popup
+          (dateChanged)="dates4=$event"
+          [maxDate]="datesRange.MaxDate"
+          [minDate]="datesRange.MinDate"
+        >
+
+        </app-date-picker-range-popup>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-auto q">
+      <label>Форма судового рішення: </label>
+      <ng-multiselect-dropdown
+
+        [placeholder]="'Оберіть...'"
+        [settings]="dropdownSettings"
+        [data]="dropdownList"
+        [(ngModel)]="selectedItems"
+        (onSelect)="OnSelect_1($event)"
+        (onDeSelect)="onDeSelect_1($event)"
+        (onSelectAll)="OnSelect_All_1()"
+        enableCheckAll="false"
+      >
+      </ng-multiselect-dropdown>
+    </div>
+    <div class="col-auto q">
+      <label>Компанія: </label>
+      <ng-multiselect-dropdown
+
+        [placeholder]="'Оберіть...'"
+        [settings]="dropdownSettings"
+        [data]="dropdownList_3"
+        [(ngModel)]="selectedItems2"
+        (onSelect)="OnSelect_3($event)"
+        (onDeSelect)="onDeSelect_3($event)"
+        enableCheckAll="false"
+      >
+      </ng-multiselect-dropdown>
+
+    </div>
+    <div class="col-auto q">
+      <label>Тип процесу: </label>
+      <ng-multiselect-dropdown
+
+        [placeholder]="'Оберіть...'"
+        [settings]="dropdownSettings"
+        [data]="dropdownList_2"
+        [(ngModel)]="selectedItems1"
+        (onSelect)="OnSelect_2($event)"
+        (onDeSelect)="onDeSelect_2($event)"
+        enableCheckAll="false"
+      >
+      </ng-multiselect-dropdown>
+    </div>
+    <div class="col-auto q">
+      <label>Підтип процесу: </label>
+      <ng-multiselect-dropdown
+
+        [placeholder]="'Оберіть...'"
+        [settings]="dropdownSettings"
+        [data]="dropdownList_4"
+        [(ngModel)]="selectedItems4"
+        (onSelect)="OnSelect_4($event)"
+        (onDeSelect)="onDeSelect_4($event)"
+        enableCheckAll="false"
+      >
+      </ng-multiselect-dropdown>
+    </div>
+    <div class="col-auto q">
+      <label>Тип документа: </label>
+      <ng-multiselect-dropdown
+
+        [placeholder]="'Оберіть...'"
+        [settings]="dropdownSettings"
+        [data]="dropdownList_5"
+        [(ngModel)]="selectedItems5"
+        (onSelect)="OnSelect_5($event)"
+        (onDeSelect)="onDeSelect_5($event)"
+        enableCheckAll="false"
+      >
+      </ng-multiselect-dropdown>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-auto w">
+      <button (click)="updateData();search()" class="btn btn-success text-11-20">Пошук</button>
+    </div>
+    <div class="col-auto w" style="margin-left: 195px;">
+      <label>Набрало законної сили</label>
+      <p><input (change)="change()" [value]="powers" class="form-check-input big-check" type="checkbox"></p>
+    </div>
+
+  </div>
+
+
+</div>
+<app-loading-spinner *ngIf="loading"></app-loading-spinner>
+<div *ngIf="searchFullTable" class="container mt-5 lo">
+  <table>
+    <thead>
+    <tr>
+      <th class="head">Об'єднання</th>
+      <th class="head">Сходження</th>
+      <th class="head">Кількість</th>
+      <th class="head">Без події</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of search_data;let i = index"
+        [ngClass]="{'data': data.Connection === 'Суд.влада' || data.Connection === 'Немає збігів' }">
+
+      <td class="bodys1"> {{ data.Connection }}</td>
+
+      <td class="bodys1">{{ data.Coincidence }}</td>
+
+      <td class="bodys1"><a routerLink="./file/{{full_tabl[i]}}" target="_blank">{{ data.Count }}</a></td>
+
+      <td *ngIf="data.Without_event !=0;else elseBlock" class="bodys1"><a routerLink="./file/{{full_tabls[i]}}"
+                                                                          target="_blank">{{ data.Without_event }}</a>
+      </td>
+      <ng-template #elseBlock>
+        <td class="bodys1"></td>
+      </ng-template>
+
+    </tr>
+
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,29 @@
+.table-container {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.custom-table thead {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 100;
+}
+.wide-column {
+  min-width: 200px; /* Ви можете змінити це значення на потрібне */
+}
+.sort-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.custom-table th {
+  padding: 25px 20px 5px 20px;
+}
+.sticky-column {
+  min-width: 150px;
+  max-width: 150px;
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 20 !important;
+  background-color: #fff;
+}

@@ -1,0 +1,32 @@
+/* Стилі для заголовка */
+h1.mat-dialog-title {
+    padding: 20px;
+    font-size: 24px;
+    background-color: #007bff;
+    color: #fff;
+    margin: 0;
+    border-bottom: 2px solid #283593;
+    border-radius: 8px 8px 0 0;
+  }
+  
+  /* Стилі для контента */
+  div.mat-dialog-content {
+    padding: 20px;
+  }
+  
+  /* Стилі для кнопок */
+  div.mat-dialog-actions {
+    padding: 10px 20px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  div.mat-dialog-actions button {
+    margin-left: 10px;
+  }
+  
+  div.mat-dialog-actions button:first-child {
+    margin-left: 0;
+  }
+  

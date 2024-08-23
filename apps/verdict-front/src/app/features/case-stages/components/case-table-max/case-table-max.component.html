@@ -1,0 +1,64 @@
+<br>
+<div class="row mb-5" style="font-size: 20px;">
+  <p>Таблиця: <strong>Max_Stage_Table</strong></p>
+  <p>Case_Stage: <strong>{{ name }}</strong></p>
+  <p>Кількість: <strong>{{ count }}</strong></p>
+  <button (click)="download()" class="btn btn-success top-margin-sm" style="width: 10%;margin-left: 13px;">Завантажити
+  </button>
+</div>
+<br>
+<div class="row mb-5">
+  <div class="col-6">
+    <table>
+      <thead>
+      <tr>
+        <th class="head">INN</th>
+        <th class="head">DebtName</th>
+        <th class="head">CaseNum</th>
+        <th class="head">CaseType</th>
+        <th class="head">CaseDate</th>
+        <th class="head">DebtorLegalAddress</th>
+        <th class="head">DebtorPhysicalAddress</th>
+        <th class="head">ManagerProperty</th>
+        <th class="head">LiquidatorProperty</th>
+        <th class="head">CourtDesition</th>
+        <th class="head">Judge</th>
+        <th class="head">AppDeadline</th>
+        <th class="head">AuctionStart</th>
+        <th class="head">AuctionFinish</th>
+        <th class="head">AuctionAddress</th>
+        <th class="head">AuctionOrganizer</th>
+        <th class="head">PropertyType</th>
+        <th class="head">PropertyTotalSum</th>
+        <th class="head">ContractType</th>
+        <th class="head">OtherInfo</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of case_stage">
+        <td class="bodys1"><a>{{ user.INN }}</a></td>
+        <td class="bodys1"><a>{{ user.DebtName }}</a></td>
+        <td class="bodys1"><a>{{ user.CaseNum }}</a></td>
+        <td class="bodys1"><a>{{ user.CaseType }}</a></td>
+        <td class="bodys1"><a>{{ user.CaseDate }}</a></td>
+        <td class="bodys1"><a>{{ user.DebtorLegalAddress }}</a></td>
+        <td class="bodys1"><a>{{ user.DebtorPhysicalAddress }}</a></td>
+        <td class="bodys1"><a>{{ user.ManagerProperty }}</a></td>
+        <td class="bodys1"><a>{{ user.LiquidatorProperty }}</a></td>
+        <td class="bodys1"><a>{{ user.CourtDesition }}</a></td>
+        <td class="bodys1"><a>{{ user.Judge }}</a></td>
+        <td class="bodys1"><a>{{ user.AppDeadline }}</a></td>
+        <td class="bodys1"><a>{{ user.AuctionStart }}</a></td>
+        <td class="bodys1"><a>{{ user.AuctionFinish }}</a></td>
+        <td class="bodys1"><a>{{ user.AuctionAddress }}</a></td>
+        <td class="bodys1"><a>{{ user.AuctionOrganizer }}</a></td>
+        <td class="bodys1"><a>{{ user.PropertyType }}</a></td>
+        <td class="bodys1"><a>{{ user.PropertyTotalSum }}</a></td>
+        <td class="bodys1"><a>{{ user.ContractType }}</a></td>
+        <td class="bodys1"><a>{{ user.OtherInfo }}</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+

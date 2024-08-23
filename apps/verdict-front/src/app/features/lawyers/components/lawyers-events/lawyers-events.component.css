@@ -1,0 +1,30 @@
+.bar-general {
+  background-color: #b6effb;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  width: 30%;
+  border-radius: 20px;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 30px;
+  text-align: center;
+}
+
+input[type="button"] {
+  background-color: rgb(21, 124, 21);
+  color: black;
+  border: 2px black solid;
+  border-radius: 5px;
+  margin: 5%;
+  padding: 10px;
+  font-size: 20px;
+  font-weight: 500;
+
+}
+
+input[type="button"]:hover {
+  background-color: rgb(30, 178, 30);
+}

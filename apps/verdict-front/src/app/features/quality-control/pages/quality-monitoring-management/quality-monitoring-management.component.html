@@ -1,0 +1,157 @@
+<div class="row py-4">
+  <div class="row">
+    <div class="d-flex justify-content-center">
+      <h2>Моніторинги</h2>
+    </div>
+  </div>
+  <form [formGroup]="showMonitoringsForm" (ngSubmit)="showMonitoring()">
+    <div class="row">
+      <div class="col-3">
+        <label>Оберіть тип листа оцінки: </label>
+        <ng-select
+          [formControl]="listTypeControl"
+          [items]="qualityManagementService.listType"
+          bindLabel="name"
+          placeholder="Оберіть..."
+        >
+        </ng-select>
+      </div>
+    </div>
+    <hr class="mt-5" />
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="col-3">
+        <div class="d-flex justify-content-center mb-4 flex-column">
+          <!-- <mat-form-field>
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+              <input matStartDate formControlName="start" placeholder="Start date" />
+              <input matEndDate formControlName="end" placeholder="End date" />
+            </mat-date-range-input>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field> -->
+          <strong>Обрати період:</strong>
+          <app-date-picker-range-popup
+            (dateChanged)="dates = $event"
+            [fromDate]="dates.fromDate"
+            [toDate]="dates.toDate"
+            [displayMonths]="1"
+          >
+          </app-date-picker-range-popup>
+        </div>
+      </div>
+    </div>
+
+    <div class="row d-flex justify-content-center mb-4">
+      <div class="col-5">
+        <ng-select
+          [formControl]="supervisorsListControl"
+          [items]="qualityManagementService.supervisorsList"
+          bindLabel="FullName"
+          [multiple]="true"
+          placeholder="Фільтр за супервайзером"
+          [closeOnSelect]="false"
+        >
+        </ng-select>
+      </div>
+    </div>
+    <div class="row d-flex justify-content-center mb-4">
+      <div class="col-5">
+        <ng-select
+          [formControl]="conductedMonitoringListControl"
+          [items]="qualityManagementService.conductedMonitoringList"
+          bindLabel="FullName"
+          [multiple]="true"
+          placeholder="Фільтр за проводившим моніторинг"
+          [closeOnSelect]="false"
+        >
+        </ng-select>
+      </div>
+    </div>
+    <div class="row d-flex justify-content-center mb-4" *ngIf="listTypeControl.value.id === 2">
+      <div class="col-5">
+        <ng-select
+          [formControl]="recruiterListControl"
+          [items]="qualityManagementService.recruiterList"
+          bindLabel="FullName"
+          [multiple]="true"
+          placeholder="Фільтр за рекрутером"
+          [closeOnSelect]="false"
+        >
+        </ng-select>
+      </div>
+    </div>
+    <div
+      class="row d-flex justify-content-center align-items-center flex-column"
+      *ngIf="listTypeControl.value.id === 1"
+    >
+      <div class="col-5 mb-4">
+        <ng-select
+          [formControl]="contragentListControl"
+          [items]="qualityManagementService.contragentList"
+          bindLabel="NameRUS"
+          [multiple]="true"
+          placeholder="Оберіть контрагента"
+          [closeOnSelect]="false"
+        >
+        </ng-select>
+      </div>
+
+      <div class="col-5">
+        <ng-select
+          [formControl]="operatorsListControl"
+          [items]="qualityManagementService.operatorsList"
+          bindLabel="FullName"
+          [multiple]="true"
+          placeholder="Фільтр за оператором"
+          [closeOnSelect]="false"
+        >
+        </ng-select>
+      </div>
+    </div>
+    <hr class="mt-5" />
+    <div class="row">
+      <div style="display: flex; justify-content: center">
+        <button [disabled]="!dates.fromDate && !dates.toDate" class="btn btn-outline-primary mb-3">
+          Відобразити моніторинги
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div class="row mt-2">
+    <ng-container *ngIf="monitoringTableData.length > 0; else noData">
+      <div class="table-responsive" style="max-height: 700px; overflow-y: auto">
+        <table class="table table-striped table-bordered">
+          <thead class="thead-dark">
+            <tr>
+              <th *ngFor="let header of tableHeaders">
+                {{ header | slice: 0 : 40 }}<span *ngIf="header.length > 40">...</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of monitoringTableData">
+              <td *ngFor="let header of tableHeaders" class="text-center align-middle">
+                <ng-container *ngIf="item[header] === 'Редагувати'; else notButton">
+                  <button (click)="openEditModal(item)" class="btn btn-outline-primary">Редагувати</button>
+                </ng-container>
+                <ng-template #notButton>
+                  {{ item[header] }}
+                </ng-template>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+    <ng-template #noData>
+      <div class="spinner-border text-primary mb-5" *ngIf="loader" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="row">
+        <div class="alert alert-secondary">Інформація відсутня</div>
+      </div>
+    </ng-template>
+  </div>
+</div>

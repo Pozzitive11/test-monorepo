@@ -1,0 +1,12 @@
+<div class="row mb-0 mt-3">
+  <div *ngIf="elementService.cashflowClean > 0" class="col-md-12 text-center border p-2 rounded text-success">
+    <label class="status-label custom-bg-a2e8a3"
+    >Дохід від клієнта: {{ elementService.cashflowClean | currency: "UAH" : "symbol" : "1.2-2" }}</label
+    >
+  </div>
+  <div *ngIf="elementService.cashflowClean <= 0" class="col-md-12 text-center border p-2 rounded text-danger">
+    <label class="status-label custom-bg-fcbdbd"
+    >Дохід від клієнта: {{ elementService.cashflowClean | currency: "UAH" : "symbol" : "1.2-2" }}</label
+    >
+  </div>
+</div>

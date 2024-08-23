@@ -1,0 +1,77 @@
+<div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-3 g-4 mt-3">
+
+  <div class="col">
+    <div class="card">
+      <h5 (click)="debtorBody.hidden=!debtorBody.hidden" class="card-header pointer">
+        Загальна інформація
+        <span class="float-end">
+          <i [class.bi-chevron-down]="debtorBody.hidden" [class.bi-chevron-up]="!debtorBody.hidden" class="bi"></i>
+        </span>
+      </h5>
+
+      <div #debtorBody class="card-body">
+        <ul class="list-group list-group-flush">
+
+          <li
+            class="list-group-item"
+          >
+            <strong>Тип клієнта:</strong>
+            <span class="float-end">{{ guarantor.Type }}</span>
+          </li>
+
+          <li
+            class="list-group-item"
+          >
+            <strong>ПІБ клієнта:</strong>
+            <span class="float-end">{{ guarantor.FullName }}</span>
+          </li>
+
+          <li
+            class="list-group-item"
+          >
+            <strong>ІПН клієнта:</strong>
+            <span class="float-end">{{ guarantor.INN }}</span>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <app-lr-client-objects-card
+      [INN]="INN"
+      [contractId]="contractId"
+      [isMortgage]="false"
+    ></app-lr-client-objects-card>
+  </div>
+
+  <div class="col">
+    <lr-megasolvency-card
+      [INN]="INN"
+      [contractId]="contractId"
+    ></lr-megasolvency-card>
+  </div>
+
+  <div class="col">
+    <lr-solvency-info-card
+      [INN]="INN"
+      [contractId]="contractId"
+    ></lr-solvency-info-card>
+  </div>
+
+  <div class="col">
+    <lr-ep-total-info-card
+      [INN]="INN"
+      [contractId]="contractId"
+    ></lr-ep-total-info-card>
+  </div>
+
+  <div class="col">
+    <lr-bankruptcy-info-card
+      [INN]="INN"
+      [contractId]="contractId"
+    ></lr-bankruptcy-info-card>
+  </div>
+
+</div>

@@ -1,0 +1,163 @@
+<div *ngIf="elementService.finapi" style="padding-bottom: 20px;">
+  <div class="rowss mb-0 mt-3">
+    <div class="symbol">
+      <div
+        *ngIf="elementService.finapi.response.result.zrada.length === 0"
+        class="  col-md-12 text-center border p-2 rounded text-success"
+      >
+        <label class="symbol status-label custom-bg-a2e8a3">Клієнт не є зрадником</label>
+      </div>
+      <div
+        *ngIf="elementService.finapi.response.result.zrada.length > 0"
+        class=" col-md-12 text-center border p-2 rounded text-danger"
+      >
+        <label class="symbol status-label custom-bg-fcbdbd">Клієнт є зрадником</label>
+      </div>
+    </div>
+    <div class="symbol">
+      <div
+        *ngIf="elementService.finapi.response.result.lostdocs.length === 0"
+        class=" col-md-12 text-center border p-2 rounded text-success"
+      >
+        <label class=" symbol status-label custom-bg-a2e8a3">Клієнт не втрачав документи</label>
+      </div>
+      <div
+        *ngIf="elementService.finapi.response.result.lostdocs.length > 0"
+        class=" col-md-12 text-center border p-2 rounded text-danger"
+      >
+        <label class="symbol status-label custom-bg-fcbdbd">Клієнт втрачав документи</label>
+      </div>
+    </div>
+    <div class="symbol">
+      <div
+        *ngIf="elementService.finapi.response.result.okupant.length === 0"
+        class=" col-md-12 text-center border p-2 rounded text-success"
+      >
+        <label class="symbol status-label custom-bg-a2e8a3">Клієнт не є окупантом</label>
+      </div>
+      <div
+        *ngIf="elementService.finapi.response.result.okupant.length > 0"
+        class=" col-md-12 text-center border p-2 rounded text-danger"
+      >
+        <label class="symbol status-label custom-bg-fcbdbd">Клієнт є окупантом</label>
+      </div>
+    </div>
+    <div class="symbol">
+      <div
+        *ngIf="elementService.finapi.response.result.justice.length === 0"
+        class=" col-md-12 text-center border p-2 rounded text-success"
+      >
+        <label class="symbol status-label custom-bg-a2e8a3">По клієнту немає судових рішень</label>
+      </div>
+      <div
+        *ngIf="elementService.finapi.response.result.justice.length > 0"
+        class=" col-md-12 text-center border p-2 rounded text-danger"
+      >
+        <label class="symbol status-label custom-bg-fcbdbd">По клієнту є судові рішеня</label>
+      </div>
+    </div>
+    <div class="symbol">
+      <div
+        *ngIf="elementService.finapi.response.result.licenses.length === 0"
+        class="  col-md-12 text-center border p-2 rounded text-success"
+      >
+        <label class="symbol status-label custom-bg-a2e8a3">У клієнта немає ліцензій</label>
+      </div>
+      <div
+        *ngIf="elementService.finapi.response.result.licenses.length > 0"
+        class="col-md-12 text-center border p-2 rounded text-danger"
+      >
+        <label class="symbol status-label custom-bg-fcbdbd">У клієнта є ліцензії</label>
+      </div>
+    </div>
+    <div class="symbol">
+      <div
+        *ngIf="elementService.finapi.response.result.nonrezedent.length === 0"
+        class="col-md-12 text-center border p-2 rounded text-success"
+      >
+        <label class="symbol status-label custom-bg-a2e8a3">Клієнт не належить до реєстру Нерезидентів</label>
+      </div>
+      <div
+        *ngIf="elementService.finapi.response.result.nonrezedent.length > 0"
+        class="col-md-12 text-center border p-2 rounded text-danger"
+      >
+        <label class="symbol status-label custom-bg-fcbdbd">Клієнт належить до реєстру Нерезидентів</label>
+      </div>
+    </div>
+    <div class="symbol">
+      <div
+        *ngIf="elementService.finapi.response.result.notarius.length === 0"
+        class="col-md-12 text-center border p-2 rounded text-success"
+      >
+        <label class="symbol status-label custom-bg-a2e8a3">Клієнт не належить до реєстру Нотаріусів</label>
+      </div>
+      <div
+        *ngIf="elementService.finapi.response.result.notarius.length > 0"
+        class="col-md-12 text-center border p-2 rounded text-danger"
+      >
+        <label class="symbol status-label custom-bg-fcbdbd">Клієнт належить до реєстру Нотаріусів</label>
+      </div>
+    </div>
+    <div class="symbol">
+      <div
+        *ngIf="elementService.finapi.response.result.peps.length === 0"
+        class="col-md-12 text-center border p-2 rounded text-success"
+      >
+        <label class="symbol status-label custom-bg-a2e8a3">Клієнт не публічна особа</label>
+      </div>
+      <div
+        *ngIf="elementService.finapi.response.result.peps.length > 0"
+        class="col-md-12 text-center border p-2 rounded text-danger"
+      >
+        <label class="symbol status-label custom-bg-fcbdbd">Клієнт публічна особа</label>
+      </div>
+    </div>
+    <div class="symbol">
+      <div
+        *ngIf="elementService.finapi.response.result.sanctions.length === 0"
+        class="col-md-12 text-center border p-2 rounded text-success"
+      >
+        <label class="symbol status-label custom-bg-a2e8a3">Клієнт не знаходиться в Санкційних списках</label>
+      </div>
+      <div
+        *ngIf="elementService.finapi.response.result.sanctions.length > 0"
+        class="col-md-12 text-center border p-2 rounded text-danger"
+      >
+        <label class="symbol status-label custom-bg-fcbdbd">Клієнт знаходиться в Санкційних списках</label>
+      </div>
+    </div>
+    <div class="symbol">
+      <div
+        *ngIf="elementService.finapi.response.result.taxdebtor.length === 0"
+        class="col-md-12 text-center border p-2 rounded text-success"
+      >
+        <label class="symbol status-label custom-bg-a2e8a3">Клієнт не є податковим боржником</label>
+      </div>
+      <div
+        *ngIf="elementService.finapi.response.result.taxdebtor.length > 0"
+        class="col-md-12 text-center border p-2 rounded text-danger"
+      >
+        <label class="symbol status-label custom-bg-fcbdbd">Клієнт є податковим боржником</label>
+      </div>
+    </div>
+  </div>
+  <!--<div class="row" style="margin-bottom: 0px">
+        <div class="col-md-12 text-center border p-2 rounded text-success" *ngIf="elementService.getIncomeNcsCredits.user_income > 0">
+          <label class="status-label custom-bg-a2e8a3">Доступно: {{ getIncomeNcsCredits.user_income }}</label>
+        </div>
+        <div class="col-md-12 text-center border p-2 rounded text-danger" *ngIf="elementService.getIncomeNcsCredits.user_income <= 0">
+          <label class="status-label custom-bg-fcbdbd">Доступно: {{ getIncomeNcsCredits.user_income }}</label>
+        </div>
+      </div>-->
+</div>
+
+
+
+
+
+
+
+
+
+
+

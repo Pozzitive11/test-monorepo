@@ -1,0 +1,137 @@
+<div class="modal-header">
+  <h4 class="modal-title">Умови закриття ({{ contractId }})</h4>
+  <button (click)="activeModal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+</div>
+
+
+<div class="modal-body">
+  <ul class="list-group list-group-flush">
+
+    <li class="list-group-item">
+      <strong>Сума до сплати:</strong>
+      <span *ngIf="!closeConditions.DiscountPercent" class="float-end">
+        {{ closeConditions.SumToPay | currency: closeConditions.PayCurrency : 'symbol' : '1.0-2' }}
+      </span>
+      <app-sum-input
+        (sumChange)="changeDCPercent($event)"
+        *ngIf="closeConditions.DiscountPercent"
+        [maxSum]="closeConditions.Debt"
+        [sum]="closeConditions.SumToPay"
+      ></app-sum-input>
+    </li>
+
+    <li class="list-group-item">
+      <strong *ngIf="closeConditions.DiscountPercent">Дисконт:</strong>
+      <span *ngIf="closeConditions.DiscountPercent" class="float-end">
+        {{ closeConditions.DiscountPercent | number:'1.0-2' }} %
+      </span>
+      <app-switch-checkbox
+        *ngIf="!closeConditions.DiscountPercent"
+        (valueChange)="toggleDC($event)"
+        [bottomMargin]="0"
+        [id]="'dcSwitch'"
+      ><strong>Дисконт</strong></app-switch-checkbox>
+      <input
+        (ngModelChange)="changeSumToPay()"
+        *ngIf="closeConditions.DiscountPercent"
+        [(ngModel)]="closeConditions.DiscountPercent"
+        [max]="100"
+        class="form-range"
+        min="0"
+        name="rsMonthsInput"
+        step="1"
+        type="range"
+      >
+    </li>
+
+    <li class="list-group-item">
+      <strong *ngIf="RSApplied()">Реструктуризація (місяців):</strong>
+      <span *ngIf="RSApplied()" class="float-end">
+        {{ closeConditions.RestructuringMonths }}
+      </span>
+      <app-switch-checkbox
+        *ngIf="!RSApplied()"
+        (valueChange)="toggleRS($event)"
+        [bottomMargin]="0"
+        [id]="'rsSwitch'"
+      ><strong>Реструктуризація</strong></app-switch-checkbox>
+      <input
+        (ngModelChange)="changeRSMonthPayment()"
+        *ngIf="RSApplied()"
+        [(ngModel)]="closeConditions.RestructuringMonths"
+        [max]="maxMonths"
+        class="form-range"
+        min="0"
+        name="rsMonthsInput"
+        step="1"
+        type="range"
+      >
+    </li>
+
+    <li *ngIf="RSApplied()" class="list-group-item">
+      <strong>Сума платежу по РС/місяць:</strong>
+      <span class="float-end">{{ closeConditions.RestructuringPaymentPerMonth | number:'1.0-2' }}</span>
+    </li>
+
+    <li *ngIf="RSApplied()" class="list-group-item">
+      <strong>Дата першої оплати:</strong>
+      <app-date-picker-popup
+        (chosenDateChange)="setFirstPaymentDate($event)"
+        [chosenDate]="dateFirstPayment()"
+      ></app-date-picker-popup>
+    </li>
+
+    <li *ngIf="!RSApplied()" class="list-group-item">
+      <strong>Гранична дата сплати:</strong>
+      <app-date-picker-popup
+        (chosenDateChange)="setDateLimit($event)"
+        [chosenDate]="dateLimit()"
+      ></app-date-picker-popup>
+    </li>
+
+    <li class="list-group-item">
+      <strong>Метод закриття:</strong>
+      <textarea
+        #closing_method
+        (keydown.enter)="closing_method.blur()"
+        [(ngModel)]="closeConditions.ClosingMethod"
+        class="form-control inputdefault text-13"
+        rows="2"
+      ></textarea>
+    </li>
+
+    <li class="list-group-item">
+      <strong>Коментар:</strong>
+      <textarea
+        #comment
+        (keydown.enter)="comment.blur()"
+        [(ngModel)]="closeConditions.Comment"
+        class="form-control inputdefault text-13"
+        rows="2"
+      ></textarea>
+    </li>
+
+    <li class="list-group-item">
+      <strong>Податкові зобов'язання під час врегулювання:</strong>
+      <textarea
+        #tax
+        (keydown.enter)="tax.blur()"
+        [(ngModel)]="closeConditions.TaxObligations"
+        class="form-control inputdefault text-13"
+        rows="2"
+      ></textarea>
+    </li>
+
+  </ul>
+</div>
+
+
+<div class="modal-footer">
+  <button
+    (click)="activeModal.close(closeConditions)"
+    class="btn btn-outline-primary btn-sm"
+    type="button"
+  >Зберегти
+  </button>
+</div>
+

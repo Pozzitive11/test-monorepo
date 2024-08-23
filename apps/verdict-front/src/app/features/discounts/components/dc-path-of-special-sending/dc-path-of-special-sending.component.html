@@ -1,0 +1,16 @@
+<h6 class="h6">Шляхи відправки</h6>
+<div *ngFor="let path of pathsOfSending" class="ms-4 mt-1">
+  <a
+    (click)="path.selected=!path.selected; changePaths()"
+    class="nav-link pointer"
+  >
+    <input
+      [checked]="path.selected"
+      class="form-check-input me-1"
+      type="checkbox"
+    >
+    {{ path.name }}
+  </a>
+</div>
+
+

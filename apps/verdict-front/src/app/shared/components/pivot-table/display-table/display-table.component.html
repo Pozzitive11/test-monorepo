@@ -1,0 +1,80 @@
+<ngb-pagination
+  (pageChange)="page.set($event)"
+  [boundaryLinks]="true"
+  [collectionSize]="rowsList().length"
+  [maxSize]="3"
+  [pageSize]="rowsPerPage"
+  [page]="page()"
+  [rotate]="true"
+  class="d-flex justify-content-end"
+/>
+
+<div class="max-width-div max-height-div">
+  <table class="table table-bordered table-hover table-sm text-11">
+    <thead class="sticky-top" style="background-color: #fff; z-index: 100;">
+    <tr class="align-middle row-highlight">
+      <th (click)="tableLevels > 1 && toggleLevel(null)" [title]="'Сховати/показати все'" class="pointer" scope="col">
+        {{ firstRowName }}
+        <i *ngIf="tableLevels > 1"
+           [class.bi-dash-circle]="hiddenLevels.length === 0"
+           [class.bi-plus-circle]="hiddenLevels.length !== 0"
+           class="bi mt-3 d-block"
+        ></i>
+      </th>
+      <th *ngFor="let col of tableColumns" [class.red-zone-th]="redZoneColumns.includes(col)" scope="col">
+        {{ col }}
+
+        <i
+          (click)="updateSorting(col)"
+          [class.bi-sort-up]="sorting[col] === true"
+          [style.color]="sorting[col] === undefined ? 'black' : '#4FAD18FF'"
+          class="bi bi-sort-down pointer d-block"
+          style="font-size: 40px"
+        ></i>
+      </th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr *ngFor="let row of rowsListPage(); let i = index" [class.row-highlight]="row.rowName === totalRowName">
+      <td *ngIf="getLevel(row.rowName) < tableLevels - 1" class="sticky scrollable-td soft-wide">
+        <strong class="ms-{{ getLevel(row.rowName) }}">
+          <i *ngFor="let _ of getLevelNumbersArray(row.rowName)" class="bi bi-square-fill ms-1"></i>
+          <i *ngIf="row.rowName !== totalRowName"
+             (click)="toggleLevel(row.rowName)"
+             [class.bi-dash-circle]="!hiddenLevels.includes(row.rowName)"
+             [class.bi-plus-circle]="hiddenLevels.includes(row.rowName)"
+             class="bi pointer"
+          ></i>
+          <span (click)="basicTableView(row.rowName, null)" class="pointer">
+            {{ displaySubLevelName(row.rowName) | formatAnyValue }}
+          </span>
+        </strong>
+      </td>
+
+      <td *ngIf="getLevel(row.rowName) >= tableLevels - 1" class="scrollable-td soft-wide">
+        <strong *ngIf="i === 0 && page() > 1 && row.zeroLevel !== row.rowName">
+          {{ row.zeroLevel | formatAnyValue }} <br />
+        </strong>
+        <span (click)="basicTableView(row.rowName, null)" class="pointer">
+          <i *ngFor="let _ of getLevelNumbersArray(row.rowName)" class="bi bi-square-fill ms-1"></i>
+          <span class="ms-2">{{ displaySubLevelName(row.rowName) | formatAnyValue }}</span>
+        </span>
+      </td>
+
+      <td
+        (click)="basicTableView(row.rowName, col)"
+        *ngFor="let col of tableColumns"
+        [class.fw-bold]="row.zeroLevel === row.rowName && tableLevels > 1 && row.rowName !== totalRowName"
+        [class.text-end]="isNumber(displayedTable[row.rowName][col])"
+        [class]="'soft-wide pointer ' + (useRedZone ? classesForRedZone[row.rowName][col] : '')"
+      >
+        <span>{{ displayedTable[row.rowName][col] | formatAnyValue:null: percentColumns.includes(col) }}</span>
+      </td>
+    </tr>
+
+    </tbody>
+
+  </table>
+
+</div>

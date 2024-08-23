@@ -1,0 +1,49 @@
+<div class="card">
+  <h5 (click)="cardBody.hidden=!cardBody.hidden" class="card-header pointer">
+    Доходи
+    <span class="float-end">
+      <i [class.bi-chevron-down]="cardBody.hidden" [class.bi-chevron-up]="!cardBody.hidden" class="bi"></i>
+    </span>
+  </h5>
+  <ngb-progressbar
+    *ngIf="loading"
+    [animated]="true"
+    [height]="'3px'"
+    [striped]="true"
+    [type]="'secondary'"
+    [value]="100"
+  ></ngb-progressbar>
+
+  <div #cardBody [class.disabled-table]="loading" class="card-body">
+    <ul *ngIf="incomeInfo && incomeInfo.LastCheckDate" class="list-group list-group-flush">
+      <li class="list-group-item">
+        <strong>Дата останньої перевірки:</strong>
+        <span class="float-end">{{ incomeInfo.LastCheckDate | formatDate }}</span>
+      </li>
+
+      <ng-container *ngIf="incomeInfo.IncomesByQuarter && incomeInfo.IncomesByQuarter.length">
+        <ng-container *ngFor="let quarter of quarters()">
+          <lr-income-info-by-quarter
+            [incomeQuarterInfo]="quarterInfo(quarter)"
+            [incomeQuarter]="quarter"
+          ></lr-income-info-by-quarter>
+        </ng-container>
+      </ng-container>
+
+      <li class="list-group-item">
+        <strong *ngIf="!(incomeInfo.IncomesByQuarter && incomeInfo.IncomesByQuarter.length)" class="red-text">
+          Доходи відсутні
+        </strong>
+      </li>
+
+    </ul>
+
+    <strong *ngIf="!(incomeInfo && incomeInfo.LastCheckDate)" class="red-text">
+      Перевірка відсутня
+    </strong>
+
+  </div>
+</div>
+
+
+

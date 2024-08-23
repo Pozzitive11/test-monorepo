@@ -1,0 +1,16 @@
+<div
+  [class]="'form-check form-switch pointer mb-' + bottomMargin"
+>
+  <input
+    (ngModelChange)="updateValue()"
+    [id]="id"
+    [ngModel]="value"
+    class="form-check-input pointer"
+    type="checkbox"
+  >
+  <!--   disabled-switch for label in case -->
+  <label [for]="id" class="form-check-label pointer">
+    <ng-content></ng-content>
+  </label>
+</div>
+

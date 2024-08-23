@@ -1,0 +1,23 @@
+<div class="input-group">
+  <input
+    #d="ngbDatepicker"
+    (click)="d.open()"
+    (dateSelect)="changeValue($event); d.toggle()"
+    (dblclick)="chosenDate = null; changeValue(null)"
+    [container]="'body'"
+    [autoClose]="'outside'"
+    [disabled]="disabled"
+    [maxDate]="maxDate!"
+    [minDate]="minDate!"
+    [startDate]="chosenDate!"
+    [value]="formatter.format(chosenDate)"
+    [style.font-size.pt]="fontSize"
+    class="form-control"
+    name="dp"
+    ngbDatepicker
+    placeholder="dd.mm.yyyy"
+  />
+  <button (click)="d.toggle()" [disabled]="disabled" class="btn btn-outline-secondary calendar" type="button">
+    <i class="bi bi-calendar" style="color:#000"></i>
+  </button>
+</div>

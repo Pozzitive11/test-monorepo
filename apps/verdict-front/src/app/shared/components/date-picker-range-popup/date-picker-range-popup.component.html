@@ -1,0 +1,61 @@
+<form class="row row-cols-sm-auto top-margin-sm">
+  <div class="col-12">
+    <div class="dp-hidden position-absolute">
+      <div class="input-group">
+        <input
+          #datepicker="ngbDatepicker"
+          (dateSelect)="onDateSelection($event, datepicker)"
+          [autoClose]="'outside'"
+          [dayTemplate]="t"
+          [displayMonths]="displayMonths"
+          [footerTemplate]="footerTemplate"
+          [maxDate]="maxDate!"
+          [minDate]="minDate!"
+          [startDate]="startDate!"
+          class="form-control"
+          name="datepicker"
+          ngbDatepicker
+          outsideDays="hidden"
+          tabindex="-1"
+        />
+      </div>
+    </div>
+
+    <div class="input-group">
+      <input
+        #dpFromDate
+        (blur)="validateInput(fromDate, toDate, dpFromDate.value)"
+        (keyup.enter)="dpFromDate.blur()"
+        (keyup.escape)="dpFromDate.blur()"
+        [value]="formatter.format(fromDate) + ' => ' + formatter.format(toDate)"
+        class="form-control"
+        name="dpFromDate"
+        placeholder="dd.mm.yyyy => dd.mm.yyyy"
+      />
+      <button (click)="datepicker.toggle()" class="btn btn-outline-secondary bi bi-calendar3" type="button"></button>
+      <ng-content></ng-content>
+    </div>
+  </div>
+
+</form>
+
+<ng-template #t let-date let-focused="focused">
+  <span
+    (mouseenter)="hoveredDate = date"
+    (mouseleave)="hoveredDate = null"
+    [class.disabled-table]="isDisabled(date)"
+    [class.faded]="isHovered(date) || isInside(date)"
+    [class.focused]="focused"
+    [class.range]="isRange(date)"
+    class="custom-day"
+  >
+    {{ date.day }}
+  </span>
+</ng-template>
+
+<ng-template #footerTemplate>
+  <hr class="my-0" />
+  <button (click)="datepicker.close(); selectAll()" class="btn btn-success btn-sm m-2 float-start">Обрати все</button>
+  <button (click)="datepicker.close()" class="btn btn-secondary btn-sm m-2 float-end">Закрити</button>
+</ng-template>
+

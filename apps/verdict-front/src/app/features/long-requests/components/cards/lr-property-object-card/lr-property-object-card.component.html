@@ -1,0 +1,112 @@
+<div [hidden]="hidden" class="card">
+  <div class="card-body">
+    <ul class="list-group list-group-flush">
+
+      <li class="list-group-item">
+        <strong>Статус перевірки:</strong>
+        <span class="float-end">{{ propertyObject.CheckStatus }}</span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>Опис:</strong>
+        <span class="float-end">{{ propertyObject.Description }}</span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>Частка власності:</strong>
+        <span class="float-end">{{ propertyObject.PartOfPropertyRight }}</span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>Інші власники:</strong>
+        <span *ngIf="propertyObject.OtherOwners.length" class="float-end">
+          <ng-container *ngFor="let owner of propertyObject.OtherOwners">
+            {{ ownerInfo(owner) }}
+            <br>
+          </ng-container>
+        </span>
+        <span *ngIf="!propertyObject.OtherOwners.length" class="float-end">
+          -
+        </span>
+      </li>
+
+      <li class="list-group-item">
+        <strong [class.text-danger]="!propertyObject.CollateralArea">Площа:</strong>
+        <span *ngIf="propertyObject.CollateralArea" class="float-end">
+          {{ propertyObject.CollateralArea | number: '1.0-2' }}
+          {{ propertyObject.PropertyType.includes('земля') ? 'га' : 'кв. м.' }}
+        </span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>
+          Оцінка при покупці:
+        </strong>
+        <span class="float-end">
+          {{ propertyObject.CostValuationOnPurchase | currency: 'USD' : 'symbol' : '1.0-2' }}
+        </span>
+      </li>
+
+      <li class="list-group-item">
+        <strong [class.text-danger]="isMortgage && propertyObject.CostValuationPerUnit === null">
+          Середня ринкова вартість одиниці площі:
+        </strong>
+        <span class="float-end">
+          {{ propertyObject.CostValuationPerUnit | currency: 'USD' : 'symbol' : '1.0-2' }}
+        </span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>Дата оцінки:</strong>
+        <span class="float-end">
+          {{ propertyObject.DateOfValuation | formatDate }}
+        </span>
+      </li>
+
+      <li *ngIf="isMortgage || propertyObject.MortgageInfo" class="list-group-item">
+        <strong>Іпотека:</strong>
+        <span class="float-end">{{ propertyObject.MortgageInfo }}</span>
+      </li>
+
+      <li *ngIf="isMortgage || propertyObject.EncumbranceInfo" class="list-group-item">
+        <strong>Обтяження:</strong>
+        <span class="float-end">{{ propertyObject.EncumbranceInfo }}</span>
+      </li>
+
+      <li *ngIf="propertyObject.ArrestInfo" class="list-group-item">
+        <strong>Арешти:</strong>
+        <span class="float-end">{{ propertyObject.ArrestInfo }}</span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>Мораторій:</strong>
+        <span class="float-end">{{ propertyObject.MoratoriumInfo }}</span>
+      </li>
+
+      <li class="list-group-item">
+        <strong>Ф 3:</strong>
+        <span class="float-end">{{ propertyObject.SignedPeopleInfo }}</span>
+      </li>
+
+      <li *ngIf="isMortgage" class="list-group-item">
+        <strong>Risk Group:</strong>
+        <span class="float-end">{{ propertyObject.RiskGroup }}</span>
+      </li>
+
+      <li *ngIf="isMortgage" class="list-group-item">
+        <strong>LTV:</strong>
+        <span class="float-end">{{ propertyObject.LTV | number:'1.0-2' }} {{ propertyObject.LTV ? '%' : '' }}</span>
+      </li>
+
+      <li *ngIf="isMortgage && propertyObject.LTV && propertyObject.LTV < 200 && propertyObject.CostValuation !== 0"
+          class="list-group-item">
+        <strong [class.text-danger]="!propertyObject.LTVArgumentation">Аргументація LTV <200%:</strong>
+        <span class="float-end">{{ propertyObject.LTVArgumentation }}</span>
+      </li>
+
+    </ul>
+  </div>
+</div>
+
+
+

@@ -1,0 +1,61 @@
+<div class="modal-header">
+  <h4 class="modal-title">Виконавче провадження № {{ epDetailedInfo.EPNum }}</h4>
+  <button (click)="activeModal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+</div>
+
+<div class="modal-body">
+  <ul class="list-group list-group-flush">
+
+    <li class="list-group-item">
+      <strong>Стаття закриття ВП:</strong>
+      <textarea
+        #ltvArgumentation
+        (keydown.enter)="ltvArgumentation.blur()"
+        [(ngModel)]="epDetailedInfo.EPFinalState"
+        class="form-control inputdefault text-13"
+        rows="2"
+      ></textarea>
+    </li>
+
+    <li class="list-group-item">
+      <strong>Винагорода приватного виконавця:</strong>
+      <app-sum-input [(sum)]="epDetailedInfo.PrivateAgentReward"></app-sum-input>
+    </li>
+
+    <li class="list-group-item">
+      <strong>Платник винагороди:</strong>
+      <div class="btn-group float-end" role="group">
+        <app-default-dropdown
+          (valueSelected)="epDetailedInfo.RewardPayer = $event"
+          [btnClass]="'float-end btn btn-outline-primary'"
+          [cycled]="true"
+          [placement]="'top-end'"
+          [scrollable]="true"
+          [selectedValue]="epDetailedInfo.RewardPayer || 'Оберіть платника'"
+          [showTooltip]="false"
+          [valueList]="rewardPayerList"
+        ></app-default-dropdown>
+        <i
+          (click)="epDetailedInfo.RewardPayer = undefined"
+          *ngIf="epDetailedInfo.RewardPayer"
+          [ngbTooltip]="'очистити'"
+          class="text-danger bi bi-x-lg pointer ms-2"
+          style="font-size: 1.5rem;"
+        >
+        </i>
+      </div>
+    </li>
+
+  </ul>
+</div>
+
+
+<div class="modal-footer">
+  <button
+    (click)="activeModal.close(epDetailedInfo)"
+    class="btn btn-outline-primary btn-sm"
+    type="button"
+  >Зберегти
+  </button>
+</div>
+

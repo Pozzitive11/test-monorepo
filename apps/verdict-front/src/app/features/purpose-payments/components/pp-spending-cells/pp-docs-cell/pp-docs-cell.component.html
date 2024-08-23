@@ -1,0 +1,114 @@
+<i (click)="openModal(docsEdit)"
+   [class.bi-file-earmark-arrow-up]="value.length === 0"
+   [class.bi-file-earmark]="value.length === 1"
+   [class.bi-files]="value.length > 1"
+   [ngbTooltip]="tooltip"
+   class="bi pointer text-primary text-30 float-end"
+></i>
+
+
+<ng-template #docsEdit let-modal>
+  <ngb-progressbar
+    *ngIf="loading$ | async"
+    [animated]="true"
+    [height]="'3px'"
+    [max]="100"
+    [showValue]="false"
+    [striped]="true"
+    [type]="'primary'"
+    [value]="100"
+  ></ngb-progressbar>
+
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Документи</h4>
+    <button (click)="modal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+  </div>
+
+  <div [class.disabled-table]="loading$ | async" class="modal-body">
+    <ul class="list-group">
+      <li *ngFor="let doc of valueInEdit" class="list-group-item">
+        <div class="input-group">
+          <app-default-dropdown (valueSelected)="doc.DocType = $event"
+                                [btnClass]="'btn btn-outline-primary w-100 rounded-0 rounded-start'"
+                                [placement]="'bottom-start'"
+                                [selectedValue]="doc.DocType"
+                                [valueList]="PAYMENT_DOC_TYPES"
+                                style="width: 20%"
+          ></app-default-dropdown>
+
+          <span [ngbTooltip]="doc.DocPath"
+                class="input-group-text"
+                style="width: 65%; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"
+          >
+            {{ doc.DocPath }}
+          </span>
+          <button (click)="downloadFile(doc.DocPath)"
+                  [ngbTooltip]="'Завантажити файл'"
+                  class="btn btn-outline-primary rounded-0"
+                  style="width: 5%"
+          >
+            <i class="bi bi-download"></i>
+          </button>
+          <button (click)="copyPath(doc.DocPath)"
+                  [ngbTooltip]="'Скопіювати посилання'"
+                  class="btn btn-outline-primary rounded-0"
+                  style="width: 5%"
+          >
+            <i class="bi bi-clipboard"></i>
+          </button>
+          <button (click)="valueInEdit.splice(valueInEdit.indexOf(doc), 1)"
+                  [ngbTooltip]="'Видалити файл'"
+                  class="btn btn-outline-danger"
+                  style="width: 5%"
+                  type="button"
+          >
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </li>
+    </ul>
+
+    <app-file-upload (fileAdded)="addFiles($event)"
+                     [disabled]="!!(loading$ | async)"
+                     [id]="'load-payment-doc'"
+                     [multiple]="true"
+    >
+    </app-file-upload>
+    <ul class="list-group">
+      <li *ngFor="let doc of newLoadedDocs" class="list-group-item">
+        <div class="input-group">
+          <app-default-dropdown (valueSelected)="doc.docType = $event"
+                                [btnClass]="'btn btn-outline-primary w-100 rounded-0 rounded-start' + (doc.docType ? '' : ' btn-outline-danger')"
+                                [placement]="'bottom-start'"
+                                [selectedValue]="doc.docType"
+                                [valueList]="PAYMENT_DOC_TYPES"
+                                style="width: 20%"
+          ></app-default-dropdown>
+          <span class="input-group-text" style="width: 75%">{{ doc.file.name }}</span>
+          <button (click)="newLoadedDocs.splice(newLoadedDocs.indexOf(doc), 1)"
+                  [ngbTooltip]="'Видалити файл'"
+                  class="btn btn-outline-danger"
+                  style="width: 5%"
+                  type="button"
+          >
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </li>
+    </ul>
+    <button (click)="uploadFiles()" [disabled]="!canBeUploaded()" class="float-end btn btn-outline-success mt-3">
+      Завантажити
+    </button>
+  </div>
+
+  <div [class.disabled-table]="loading$ | async" class="modal-footer">
+    <button (click)="modal.close()"
+            [disabled]="newLoadedDocs.length > 0"
+            class="btn btn-outline-success"
+            type="button"
+    >Зберегти
+    </button>
+    <button (click)="modal.dismiss()" class="btn btn-outline-secondary" type="button">Відмінити</button>
+  </div>
+</ng-template>
+

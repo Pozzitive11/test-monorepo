@@ -1,0 +1,22 @@
+<div style="display: flex;">
+  <div class="bg" style="height: 315px;">
+    <div class="form">
+      <div class="form-title">Демонстрація реєстру</div>
+      <div class="form-text">
+        <p>Ваш логін: {{ session_id }}</p>
+      </div>
+      <div class="form-text">
+        <p>Введіть реестр:</p>
+        <input [(ngModel)]="reestr" style="width:200px;margin-left: 10px;border-radius: 5px;">
+      </div>
+      <div class="form-button">
+        <button (click)="viewRegister()" class="form-button-first">Показати реєстр</button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<div style="margin-top: 10px;">
+  <ngx-extended-pdf-viewer [height]="'650px'" [src]="pdfData"></ngx-extended-pdf-viewer>
+</div>

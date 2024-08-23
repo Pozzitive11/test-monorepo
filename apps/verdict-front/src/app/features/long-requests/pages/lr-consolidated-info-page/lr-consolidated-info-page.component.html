@@ -1,0 +1,75 @@
+<div [class.disabled-table]="loading" class="container-fluid">
+
+  <ngb-progressbar
+    *ngIf="loading"
+    [animated]="true"
+    [height]="'5px'"
+    [striped]="true"
+    [type]="'primary'"
+    [value]="100"
+  ></ngb-progressbar>
+
+  <div class="row top-margin-sm mb-2">
+
+    <div class="col-md">
+      <app-file-upload
+        (fileAdded)="selectFile($event)"
+        *ngIf="!file"
+        [accept]="['.xlsx']"
+        [title]="'Завантажте Excel-файл зі списком НКС'"
+      ></app-file-upload>
+      <div *ngIf="!!file" class="alert alert-info">
+        <strong
+          (click)="clearFile()"
+          [ngbTooltip]="'Змінити файл'"
+          class="bi bi-x-lg pointer red-text"
+        ></strong>
+        Обрано файл <strong class="text-primary">{{ file.name }}</strong>
+      </div>
+    </div>
+
+    <div [class.disabled-table]="!!file" class="col-md">
+      <textarea
+        [(ngModel)]="contractIdsField"
+        class="form-control inputdefault"
+        placeholder="Внесіть список НКС (можна використовувати будь-який роздільник)"
+        rows="3"
+      ></textarea>
+    </div>
+
+  </div>
+
+  <div class="row mb-2">
+
+    <div class="col-md">
+      <div class="row">
+
+        <app-switch-checkbox
+          [(value)]="bankruptcy"
+          [bottomMargin]="2"
+          [id]="'bankruptcySwitch'"
+        ><strong>Лише з наявними справами по банкрутству</strong></app-switch-checkbox>
+
+        <app-switch-checkbox
+          [(value)]="backUpInfo"
+          [bottomMargin]="2"
+          [id]="'fastInfoSwitch'"
+        >
+          <strong>Дані на початок дня</strong>
+          <strong [ngbTooltip]="backUpTooltip" class="bi bi-question-circle left-margin-sm"></strong>
+        </app-switch-checkbox>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-md">
+      <button (click)="consolidateInfo()" class="btn btn-outline-primary">Сформувати Excel-файл</button>
+    </div>
+  </div>
+
+</div>
+
+

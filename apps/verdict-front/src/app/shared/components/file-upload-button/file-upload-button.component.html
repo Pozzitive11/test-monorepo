@@ -1,0 +1,24 @@
+<label>
+  <input
+    #fileInput
+    (change)="onUploadFile($event)"
+    [accept]="accepts"
+    [id]="id"
+    [multiple]="multiple"
+    hidden="hidden"
+    style="width: 100%; height: 100%"
+    type="file"
+  >
+  <button
+    #fileButton
+    (click)="fileInput.click()"
+    (dragleave)="fileButton.classList.replace('btn-outline-warning', buttonClass)"
+    (dragover)="fileButton.classList.replace(buttonClass, 'btn-outline-warning')"
+    (drop)="onFileDrop($event); fileButton.classList.replace('btn-outline-warning', buttonClass)"
+    [class]="buttonClass"
+    class="btn"
+    draggable="true"
+  >
+    {{ title }}
+  </button>
+</label>

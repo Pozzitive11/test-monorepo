@@ -1,0 +1,200 @@
+<ngx-spinner [fullScreen]="true" bdColor="rgba(0, 0, 0, 0.8)" color="#0d6efd" size="medium"
+             type="ball-clip-rotate-multiple">
+  <p class="text-center" style="color: #0d6efd"><strong>{{ stepMessage }}</strong></p>
+
+  <ng-container *ngIf="percent !== null">
+    <p class="text-center" style="color: #0d6efd">
+      Завантаження файлів: {{ (percent * 100).toFixed(2) }}%
+    </p>
+
+    <ngb-progressbar
+      [animated]="true"
+      [height]="'5px'"
+      [max]="1"
+      [striped]="true"
+      [type]="'primary'"
+      [value]="percent"
+    ></ngb-progressbar>
+  </ng-container>
+</ngx-spinner>
+
+
+<div [class.disabled-table]="loading$ | async" class="container-fluid mt-3">
+  <button (click)="navigationService.navigateBack()" class="btn btn-outline-secondary">Повернутися</button>
+
+  <h4 *ngIf="currentStep === 0 || currentStep === 3" class="h4 mt-3">
+    Список документів на створення
+    <i *ngIf="currentStep === 3 && !someNotConfirmed()" class="bi bi-check-circle ms-3 text-success"></i>
+  </h4>
+
+  <div *ngIf="currentStep === 0 || currentStep === 3" class="row row-cols-1 row-cols-xl-2 g-4 mt-2">
+    <div [class.col-xl-3]="currentStep === 3" class="col">
+
+      <dct-list
+        (confirmTemplate)="confirmDocument($event.id, $event.templateType)"
+        (removeTemplate)="removeTemplate($event.id, $event.templateType)"
+        (selectTemplate)="templatesService.selectedTemplate.set($event)"
+        [currentStep]="currentStep"
+        [selectedTemplate]="templatesService.selectedTemplate()"
+        [shownTemplateData]="shownTemplateData()"
+        [templatesList]="templatesService.templatesList()"
+      ></dct-list>
+
+    </div>
+
+    <div *ngIf="currentStep === 3" class="col col-xl-9">
+      <dct-preview-cards (reloadFile)="rebuildTemplate($event!)"
+                         *ngIf="shownTemplateData()"
+                         [selectedTemplate]="templatesService.selectedTemplate()"
+                         [shownTemplateData]="shownTemplateData()"
+      ></dct-preview-cards>
+    </div>
+  </div>
+
+  <button (click)="confirmAllDocuments(null)"
+          *ngIf="currentStep === 3 && someNotConfirmed()"
+          [disabled]="someFilesNotLoaded()"
+          class="btn btn-outline-success btn-sm me-2 mt-3">
+    <i class="bi bi-check-circle me-2"></i>
+    <span>Підтвердити всі</span>
+  </button>
+
+  <!-- ******************************* ABSTRACT **************************** -->
+
+
+  <ng-container *ngIf="abstractService.inputAbstractData().length > 0 && currentStep < 3 && currentStep > 0">
+    <h4 (click)="showingElements.abstract=!showingElements.abstract" class="h4 mt-3 pointer">
+      <span [class.bi-chevron-down]="!showingElements.abstract"
+            [class.bi-chevron-up]="showingElements.abstract"
+            class="bi"></span>
+      Витяг
+      <i *ngIf="templatesService.abstractConfirmed()" class="bi bi-check-circle ms-3 text-success"></i>
+    </h4>
+
+    <dct-abstract-cards (confirmTemplate)="confirmDocument($event, dctTypesShortEnum.ABSTRACT)"
+                        (removeTemplate)="removeTemplate($event, dctTypesShortEnum.ABSTRACT)"
+                        *ngIf="currentStep === 1 && showingElements.abstract"
+                        [inputAbstractData]="abstractService.inputAbstractData()"></dct-abstract-cards>
+
+    <dct-abstract-confirm-cards (changeTemplate)="abstractService.abstractData.set($event)"
+                                (confirmTemplate)="confirmDocument($event, dctTypesShortEnum.ABSTRACT)"
+                                (removeTemplate)="removeTemplate($event, dctTypesShortEnum.ABSTRACT)"
+                                *ngIf="currentStep === 2 && showingElements.abstract"
+                                [abstractData]="abstractService.abstractData()"></dct-abstract-confirm-cards>
+
+
+    <button (click)="confirmAllDocuments(dctTypesShortEnum.ABSTRACT)"
+            *ngIf="!templatesService.abstractConfirmed()"
+            class="btn btn-outline-success btn-sm me-2 mt-3">
+      <i class="bi bi-check-circle me-2"></i>
+      <span>Підтвердити всі</span>
+    </button>
+  </ng-container>
+
+  <!-- ******************************* WRITING OFF **************************** -->
+
+  <ng-container *ngIf="writingOffService.inputWritingOffData().length > 0 && currentStep < 3 && currentStep > 0">
+    <h4 (click)="showingElements.writingOff=!showingElements.writingOff" class="h4 mt-3 pointer">
+      <span [class.bi-chevron-down]="!showingElements.writingOff"
+            [class.bi-chevron-up]="showingElements.writingOff"
+            class="bi"></span>
+      Угода про визначення розміру зобов'язання та порядок його виконання
+      <i *ngIf="templatesService.writingOffConfirmed()" class="bi bi-check-circle ms-3 text-success"></i>
+    </h4>
+
+    <dct-input-cards (confirmTemplate)="confirmDocument($event, dctTypesShortEnum.WRITING_OFF_CONTRACT)"
+                     (removeTemplate)="removeTemplate($event, dctTypesShortEnum.WRITING_OFF_CONTRACT)"
+                     *ngIf="currentStep === 1 && showingElements.writingOff"
+                     [inputWritingOffData]="writingOffService.inputWritingOffData()"></dct-input-cards>
+    <dct-confirm-cards (changeTemplate)="writingOffService.writingOffData.set($event)"
+                       (confirmTemplate)="confirmDocument($event, dctTypesShortEnum.WRITING_OFF_CONTRACT)"
+                       (removeTemplate)="removeTemplate($event, dctTypesShortEnum.WRITING_OFF_CONTRACT)"
+                       *ngIf="currentStep === 2 && showingElements.writingOff"
+                       [writingOffData]="writingOffService.writingOffData()"></dct-confirm-cards>
+
+    <button (click)="confirmAllDocuments(dctTypesShortEnum.WRITING_OFF_CONTRACT)"
+            *ngIf="!templatesService.writingOffConfirmed()"
+            class="btn btn-outline-success btn-sm me-2 mt-3">
+      <i class="bi bi-check-circle me-2"></i>
+      <span>Підтвердити всі</span>
+    </button>
+  </ng-container>
+
+
+  <!-- ******************************* GUARANTEE LETTERS **************************** -->
+
+  <ng-container
+    *ngIf="guaranteeLetterService.inputGuaranteeLetterData().length > 0 && currentStep < 3 && currentStep > 0">
+    <h4 (click)="showingElements.guaranteeLetter = !showingElements.guaranteeLetter" class="h4 mt-3 pointer">
+      <span [class.bi-chevron-down]="!showingElements.guaranteeLetter"
+            [class.bi-chevron-up]="showingElements.guaranteeLetter"
+            class="bi"></span>
+      Гарантійний лист
+      <i *ngIf="templatesService.guaranteeLetterConfirmed()" class="bi bi-check-circle ms-3 text-success"></i>
+    </h4>
+
+    <dct-input-guarantee-letter-cards (confirmTemplate)="confirmDocument($event, dctTypesShortEnum.GUARANTEE_LETTER)"
+                                      (removeTemplate)="removeTemplate($event, dctTypesShortEnum.GUARANTEE_LETTER)"
+                                      *ngIf="currentStep === 1 && showingElements.guaranteeLetter"
+                                      [inputGuaranteeLetterData]="guaranteeLetterService.inputGuaranteeLetterData()"></dct-input-guarantee-letter-cards>
+    <dct-confirm-guarantee-letter-cards
+      (changeTemplate)="guaranteeLetterService.guaranteeLetterTemplatesData.set($event)"
+      (confirmTemplate)="confirmDocument($event, dctTypesShortEnum.GUARANTEE_LETTER)"
+      (removeTemplate)="removeTemplate($event, dctTypesShortEnum.GUARANTEE_LETTER)"
+      *ngIf="currentStep === 2 && showingElements.guaranteeLetter"
+      [guaranteeLetterTemplatesData]="guaranteeLetterService.guaranteeLetterTemplatesData()"></dct-confirm-guarantee-letter-cards>
+
+    <button (click)="confirmAllDocuments(dctTypesShortEnum.GUARANTEE_LETTER)"
+            *ngIf="!templatesService.guaranteeLetterConfirmed()"
+            class="btn btn-outline-success btn-sm me-2 mt-3">
+      <i class="bi bi-check-circle me-2"></i>
+      <span>Підтвердити всі</span>
+    </button>
+  </ng-container>
+
+
+  <!-- ******************************* INFORM LETTER **************************** -->
+
+
+  <ng-container *ngIf="informLetterService.informLetterTemplatesData().length > 0 && currentStep === 2">
+    <h4 (click)="showingElements.informLetter=!showingElements.informLetter" class="h4 mt-3 pointer">
+      <span [class.bi-chevron-down]="!showingElements.informLetter"
+            [class.bi-chevron-up]="showingElements.informLetter"
+            class="bi"></span>
+      Інформаційний лист про відступлення прав вимоги
+      <i *ngIf="templatesService.informLetterConfirmed()" class="bi bi-check-circle ms-3 text-success"></i>
+    </h4>
+
+    <dct-inform-letter-cards (changeTemplate)="informLetterService.informLetterTemplatesData.set($event)"
+                             (confirmTemplate)="confirmDocument($event, dctTypesShortEnum.ASSIGNMENT_LETTER)"
+                             (removeTemplate)="removeTemplate($event, dctTypesShortEnum.ASSIGNMENT_LETTER)"
+                             *ngIf="showingElements.informLetter"
+                             [informLetterTemplatesData]="informLetterService.informLetterTemplatesData()"
+    ></dct-inform-letter-cards>
+
+    <button (click)="confirmAllDocuments(dctTypesShortEnum.ASSIGNMENT_LETTER)"
+            *ngIf="!templatesService.informLetterConfirmed()"
+            class="btn btn-outline-success btn-sm me-2 mt-3">
+      <i class="bi bi-check-circle me-2"></i>
+      <span>Підтвердити всі</span>
+    </button>
+  </ng-container>
+
+  <div *ngIf="currentStep <= 4" class="row">
+    <div class="col">
+      <button (click)="prevStep()" *ngIf="currentStep >= 1" class="btn btn-outline-secondary mt-5 me-2">
+        <i class="bi bi-arrow-left"></i>
+        Минулий крок
+      </button>
+      <button (click)="nextStep()"
+              *ngIf="currentStep < 4"
+              [disabled]="someNotConfirmed()"
+              class="btn btn-outline-success mt-5">
+        {{ currentStep < 3 ? 'Далі' : 'Підтвердити' }}
+        <i class="bi bi-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+

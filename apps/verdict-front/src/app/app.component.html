@@ -1,0 +1,23 @@
+<app-header></app-header>
+<app-sidenav (onToggleSideNav)="onToggleSideNav($event)"></app-sidenav>
+<div class="container-fluid">
+
+
+  <ng-container *ngIf="isAuthorized">
+    <div class="body-width">
+      @if (showAlert()) {
+        <ngb-alert [type]="'danger'" (closed)="showAlert.set(false)">
+          Шановні користувачі, адреса <a href="http://10.11.32.57:8020">10.11.32.57:8020</a> найближчим часом перестане
+          працювати (<strong style="text-decoration: underline;">НА ДАНИЙ МОМЕНТ ВЖЕ НЕ ОНОВЛЮЄТЬСЯ</strong>). На разі доступна нова актуальна адреса:
+          <a href="http://data-factory.ua" target="_blank">data-factory.ua</a>
+        </ngb-alert>
+      }
+      <router-outlet></router-outlet>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!isAuthorized">
+    <app-auth></app-auth>
+  </ng-container>
+
+  <app-message-box></app-message-box>
+</div>

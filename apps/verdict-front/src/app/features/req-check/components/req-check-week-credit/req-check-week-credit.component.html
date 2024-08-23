@@ -1,0 +1,10 @@
+<div class="row mb-0 mt-3">
+  <div *ngIf="!elementService.weekCredit" class="col-md-12 text-center border p-2 rounded text-danger">
+    <label class="status-label custom-bg-fcbdbd">У клієнта немає закритих кредитів, якими користувався більше 7-ми
+      днів</label>
+  </div>
+  <div *ngIf="elementService.weekCredit" class="col-md-12 text-center border p-2 rounded text-success">
+    <label class="status-label custom-bg-a2e8a3">У клієнта є закриті кредити, якими користувався більше 7-ми
+      днів</label>
+  </div>
+</div>

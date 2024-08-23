@@ -1,0 +1,67 @@
+<ngb-progressbar
+  *ngIf="loading"
+  [animated]="true"
+  [height]="'5px'"
+  [striped]="true"
+  [type]="'success'"
+  [value]="100"
+></ngb-progressbar>
+<div [class.disabled-table]="loading" class="container-fluid top-margin-sm">
+
+  <h4 class="h4 mb-2">Довгі заявки</h4>
+
+  <div class="row top-margin-sm">
+    <div class="col-4">
+      <div class="mb-3">
+        <label class="form-label" for="ContractIdInput">НКС</label>
+        <div class="input-group">
+          <input
+            #contract
+            (dblclick)="contract.value=''"
+            [(ngModel)]="contractId"
+            [class.is-invalid]="!contract.validity.valid"
+            [class.is-valid]="contract.validity.valid"
+            autofocus
+            class="form-control"
+            id="ContractIdInput"
+            pattern="\d*"
+            placeholder="Введіть НКС"
+            required
+            type="text"
+          />
+          <button
+            (click)="getContractPromotions()"
+            [disabled]="!contract.validity.valid"
+            class="btn btn-primary"
+          >Отримати інформацію
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-4 g-4 top-margin-sm">
+    <div *ngFor="let prom of contractPromotions" class="col">
+      <lr-contract-promotion-card
+        (selected)="selectPromotion($event)"
+        [contractPromotion]="prom"
+      >
+      </lr-contract-promotion-card>
+    </div>
+
+    <div (click)="createPromotion()" *ngIf="selectedContractId" class="col pointer">
+      <div class="card border-info">
+        <div class="card-header">НКС: {{ contractId }}</div>
+        <div class="card-body">
+          <h5 class="card-title">Створити нову довгу заявку</h5>
+          <p class="card-text border-dark">
+            <i class="bi bi-plus-circle" style="font-size: 60px"></i>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,17 @@
+<div [class]="class()">
+  <strong>Рядків на сторінці: </strong>
+  <input
+    #rowsPerPage
+    (blur)="updateMaxRows()"
+    (click)="processClick()"
+    (dblclick)="rowsPerPage.select()"
+    (keydown.enter)="rowsPerPage.blur()"
+    (keydown.escape)="maxRowsPerPage=maxRowsPerPage_old; rowsPerPage.blur()"
+    [(ngModel)]="maxRowsPerPage"
+    [min]="1"
+    class="form-control inputdefault small-col mt-2"
+    type="number"
+  >
+</div>
+
+

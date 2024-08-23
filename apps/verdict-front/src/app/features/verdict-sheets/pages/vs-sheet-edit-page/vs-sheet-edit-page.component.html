@@ -1,0 +1,305 @@
+<app-loading-bar [customType]="'inf-bar'" [loading]="loading()" />
+
+<ul class="nav nav-tabs">
+  @for (sheet of groupSheets(); track sheet.uid) {
+    <li class="nav-item">
+      <a class="nav-link pointer"
+         aria-current="page"
+         [class.active]="sheet.uid === sheetUid()"
+         (click)="loadSheet(sheet.uid)"
+      >{{ sheet.name }}</a>
+    </li>
+  }
+</ul>
+
+<div [class.disabled-table]="loading()" class="container-fluid mt-3 mb-5">
+
+  <div class="row">
+    <div class="d-flex flex-row gap-3">
+      @if (userChangesLength()) {
+        <button (click)="saveChanges()" class="btn btn-outline-primary d-flex gap-2"
+                [disabled]="connectionError().start">
+          @if (connectionError().start) {
+            <app-loading-spinner [size]="20" [spinnerClass]="'loader-spinner'" />
+          }
+          Зберегти зміни
+        </button>
+        <button (click)="resetChanges()" class="btn btn-outline-danger d-flex gap-2"
+                [disabled]="connectionError().start">
+          @if (connectionError().start) {
+            <app-loading-spinner [size]="20" [spinnerClass]="'loader-spinner'" />
+          }
+          Скинути зміни
+        </button>
+      }
+      @if (changes().length) {
+        <button (click)="showChanges()" class="btn btn-outline-info position-relative">
+          Показати зміни
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                style="top: 25%"
+          >{{ userChangesLength() }}/{{ changes().length }}</span>
+        </button>
+      } @else {
+        <div class="align-content-around text-muted" role="alert">
+          <div class="text-muted">Зміни відсутні</div>
+        </div>
+      }
+
+      <div class="border-start"></div>
+
+      <div class="h-100 d-flex align-items-center">
+        <button (click)="downloadExcel()"
+                [disabled]="loading() || changes().length || !sheetUid()"
+                class="btn btn-outline-primary"
+        >Завантажити Excel
+        </button>
+      </div>
+
+      <div class="border-start"></div>
+
+      <div class="h-100 d-flex align-items-center">
+        @if (pivotConfigNames().length) {
+          <app-dropdown-searchable
+            [selectedValue]="selectedPivotConfigName() || 'Обрати зведену'"
+            (selectedValueChange)="makePivotTable($event)"
+            [valueList]="pivotConfigNames()"
+            [showButtonTooltip]="true"
+            [width]="'400px'"
+            [maxSymbols]="60"
+            [closeOnSelect]="true"
+          />
+        } @else {
+          <button (click)="makePivotTable()" class="btn btn-outline-primary">Створити зведену</button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="d-flex flex-row flex-wrap gap-3">
+      <div>
+        <strong>Розмір шрифту:</strong>
+        <input
+          [(ngModel)]="fontSize"
+          (ngModelChange)="uiChanged.set(true)"
+          [min]="8"
+          [max]="40"
+          class="form-control inputdefault small-col mt-2"
+          type="number"
+        >
+      </div>
+
+      <div class="border-start"></div>
+
+      <div>
+        <strong>Масштаб:</strong>
+        <input
+          [(ngModel)]="scale"
+          (ngModelChange)="uiChanged.set(true)"
+          [min]="25"
+          [max]="200"
+          class="form-control inputdefault small-col mt-2"
+          type="number"
+        >
+      </div>
+
+      <div class="border-start"></div>
+
+      <div>
+        <app-max-page-rows-filter
+          class="d-flex flex-column flex-wrap"
+          (maxRowsPerPageChange)="pageSize.set($event); uiChanged.set(true)"
+          [maxRowsPerPage]="pageSize()"
+        />
+      </div>
+
+      @if (hiddenColumns().length) {
+        <div class="border-start"></div>
+
+        <div class="d-flex align-items-center">
+          <app-dropdown-searchable
+            [staticBtnText]="'Приховані колонки'"
+            (selectedValueChange)="$event && toggleColumn($event)"
+            [valueList]="hiddenColumns()"
+            [showButtonTooltip]="true"
+            [width]="'400px'"
+            [maxSymbols]="60"
+          />
+        </div>
+      }
+
+      @if (uiChanged()) {
+        <div class="border-start"></div>
+
+        <div class="d-flex flex-column align-items-center">
+          <app-switch-checkbox [value]="saveForAllUsers()" (valueChange)="saveForAllUsers.set($event)">
+            Зберегти для всіх користувачів
+          </app-switch-checkbox>
+          <button (click)="saveUIChanges()" class="btn btn-outline-warning mx-2">Зберегти налаштування інтерфейсу
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="d-flex flex-row-reverse">
+    <ngb-pagination
+      [page]="page()"
+      (pageChange)="page.set($event)"
+      [boundaryLinks]="true"
+      [collectionSize]="dataLength()"
+      [maxSize]="3"
+      [pageSize]="pageSize()"
+      [rotate]="true"
+    ></ngb-pagination>
+  </div>
+
+  <div class="styled-scrolls" style="max-height: 70vh; min-height: 70vh; overflow-y: auto">
+    <div class="spreadsheet mb-5">
+      <div class="sticky-top ss__row ss__header" style="background-color: rgb(236, 236, 236); z-index: 100">
+        @for (key of header(); track key) {
+          <div class="ss__cell header-cell position-relative"
+               [minWidth]="scale() * 1.5"
+               [style.min-width.px]="scaledColumnWidths().get(key) || scale() * 1.5"
+               [style.width.px]="scaledColumnWidths().get(key) || scale() * 1.5"
+               [style.background-color]="headerColors().get(key) || '#f0f0f0'"
+               (columnResize)="updateColumnWidth(key, $event)"
+               (contextmenu)="contextMenu.hidden = false"
+          >
+            <div class="content">
+              <p class="card-title fw-bolder pointer"
+                 [style.font-size.pt]="scaledFontSize()"
+                 [title]="'Клікніть, щоб приховати колонку'"
+                 (click)="toggleColumn(key)"
+              >{{ key }}</p>
+
+              <i
+                (click)="openFilter(key)"
+                [style.color]="isFilterApplied(key) ? '#4FAD18FF' : 'black'"
+                [style.font-size.pt]="scaledFontSize() * 1.8"
+                class="bi bi-filter-circle mb-2 pointer"
+              ></i>
+              @if (isFilterApplied(key)) {
+                <i
+                  #resetFilter
+                  (click)="clearFilter(key)"
+                  (mouseout)="resetFilter.classList.remove('red-text')"
+                  (mouseover)="resetFilter.classList.add('red-text')"
+                  [style.font-size.pt]="scaledFontSize() * 1.8"
+                  class="bi bi-arrow-counterclockwise ms-2 mb-2 pointer"
+                ></i>
+              }
+            </div>
+            <div #contextMenu [hidden]="true" class="context-menu p-3">
+              @if (!contextMenu.hidden) {
+                <app-color-picker [color]="headerColors().get(key) || '#f0f0f0'"
+                                  (colorChange)="updateColor(key, $event)"
+                />
+
+                <strong>Інші кольори:</strong>
+                <div class="d-flex flex-row flex-wrap gap-2 mb-3 mt-1" style="max-width: 260px;">
+                  @for (color of usedColors(); track color) {
+                    <div class="rounded-circle"
+                         style="width: 25px; height: 25px; cursor: pointer;"
+                         [style.background-color]="color"
+                         (click)="updateColor(key, color); contextMenu.hidden = true">
+                    </div>
+                  }
+                </div>
+
+                <button class="btn btn-sm btn-outline-primary" (click)="contextMenu.hidden = true">Закрити</button>
+              }
+            </div>
+
+            <div class="ss__resize"></div>
+          </div>
+        }
+      </div>
+
+      @for (row of filteredData() | pagination:page():pageSize(); track row) {
+        <div class="ss__row position-relative"
+             columnResize
+             (rowResize)="updateRowHeight(row, $event)"
+             [style.font-size.pt]="scaledFontSize()"
+             [style.min-height.px]="scaledRowHeights().get(getRowsFirstId(row)) || scale() / 2"
+             [style.height.px]="scaledRowHeights().get(getRowsFirstId(row)) || scale() / 2"
+             [class.highlight]="highlightedRows().has(getRowsFirstId(row))"
+             (click)="highlightedRows().has(getRowsFirstId(row)) ? highlightedRows().delete(getRowsFirstId(row)) : highlightedRows().add(getRowsFirstId(row))"
+        >
+          @for (key of header(); track key) {
+
+            @if (columnTypes().get(key); as type) {
+
+              @if (editableCols().includes(key) && userCanEdit()) {
+                <app-vs-editable-cell
+                  class="ss__cell align-middle"
+                  [class.edited]="row['#' + key + 'chagedByUser']"
+                  [class.by-me]="row['#' + key + 'chagedByCurrentUser']"
+                  [attr.data-user]="row['#' + key + 'chagedByUser']"
+                  [value]="row[key]"
+                  [type]="type"
+                  [id]="row[dataService.getIdName(key)]"
+                  [dictionary]="getDictionary(key)"
+                  [fontSize]="scaledFontSize()"
+                  [user]="row['#chagedByUser']"
+                  (saveValue)="addChange($event, row[key], key, row[dataService.getIdName(key)])"
+                />
+              } @else {
+                <div [style.text-align]="type.ts_type === 'number' ? 'right' : 'left'"
+                     class="ss__cell align-middle overflow-hidden"
+                     [title]="row[key] | formatAnyValue:null:false:includesTime(type):type.python_type !== 'int'"
+                     [style.font-size.pt]="scaledFontSize()"
+                >
+                  <div style="height: inherit">
+                    @if (String(row[key]).startsWith('http')) {
+                      <a [href]="row[key]" target="_blank">{{ row[key] }}</a>
+                    } @else {
+                      {{ row[key] | formatAnyValue:null:false:includesTime(type):type.python_type !== 'int' }}
+                    }
+                  </div>
+                </div>
+              }
+
+            } @else {
+              <div class="ss__cell text-center align-middle overflow-hidden" [style.font-size.pt]="scaledFontSize()">
+                <div style="height: inherit" [title]="row[key] | formatAnyValue">
+                  @if (String(row[key]).startsWith('http')) {
+                    <a [href]="row[key]" target="_blank">{{ row[key] }}</a>
+                  } @else {
+                    {{ row[key] | formatAnyValue }}
+                  }
+                </div>
+              </div>
+            }
+          }
+
+          <div class="ss__resize__row"></div>
+        </div>
+      }
+    </div>
+  </div>
+
+</div>
+
+@if (connectionError().start) {
+  <ngb-alert type="danger" class="fixed-bottom w-50 ms-auto m-0" [dismissible]="false">
+    <div class="d-flex justify-content-between">
+      <div class="d-flex align-items-center">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <strong class="me-2">
+          Помилка підключення до сервера. Повторна спроба
+          @if (tryToConnectIn(); as connectIn) {
+            через {{ connectIn | number:'1.0-0' }} сек 😟
+          } @else {
+            зараз 👀
+          }
+        </strong>
+        @if (tryToConnectIn()) {
+          <button (click)="tryToConnect()" class="btn btn-sm btn-outline-danger float-end">Спробувати зараз</button>
+        } @else {
+          <app-loading-spinner [size]="20" [spinnerClass]="'loader-spinner'" />
+        }
+      </div>
+    </div>
+  </ngb-alert>
+}

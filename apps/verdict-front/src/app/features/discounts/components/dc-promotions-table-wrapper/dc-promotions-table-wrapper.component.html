@@ -1,0 +1,48 @@
+<ngx-spinner
+  [fullScreen]="true"
+  bdColor="rgba(0, 0, 0, 0.8)"
+  color="#0d6efd"
+  size="medium"
+  type="ball-clip-rotate-multiple"
+>
+  <p style="color: #0d6efd"><strong>Завантаження...</strong></p>
+</ngx-spinner>
+
+<div [class.disabled-table]="loading$ | async" class="container-fluid top-margin-sm">
+  <!--           ФІЛЬТРИ            -->
+  <dc-promotions-table-filters></dc-promotions-table-filters>
+
+  <!--        ОСНОВНАЯ ТАБЛИЦА        -->
+  <div *ngIf="header.length > 0" class="max-width-div max-height-div top-margin-sm">
+    <dc-promotions-table></dc-promotions-table>
+  </div>
+
+  <!--        КНОПКА ОТПРАВКИ НА СОГЛАСОВАНИЕ        -->
+  <div *ngIf="header.length > 0" class="row top-margin-sm">
+    <div class="col-12">
+      <div class="btn-group top-margin-sm text-13 dropup" ngbDropdown role="group">
+        <button (click)="sendToAgreement()" [disabled]="!isChecked()" class="btn btn-success">
+          Відправити на погодження
+        </button>
+        <button [disabled]="!isCheckedForAgree()" class="btn btn-success dropdown-toggle" ngbDropdownToggle>
+          Відмітити наявність погодження
+        </button>
+
+        <ul class="dropdown-menu" ngbDropdownMenu>
+          <li *ngFor="let type of agreeInfoTypes">
+            <a (mousedown)="markApproved(type)" class="dropdown-item pointer" ngbDropdownItem>{{ type }}</a>
+          </li>
+        </ul>
+
+        <button (click)="makeExcel()" [disabled]="!rowsAreChecked" class="btn btn-primary">
+          Сформувати Excel-файл
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="header.length === 0" class="row top-margin-sm alert alert-secondary">
+    Інформація за обраними фільтрами відсутня
+  </div>
+</div>
+<dc-promotions-table-filters-modal></dc-promotions-table-filters-modal>

@@ -1,0 +1,42 @@
+<div class="container-fluid top-margin-sm">
+
+  <div class="row">
+
+    <div class="col-5">
+      <div class="mb-3">
+        <label class="form-label" for="SearchInput">Введіть {{ searchType }}</label>
+        <div class="input-group">
+
+          <app-default-dropdown
+            (valueSelected)="searchType = $event"
+            [btnClass]="'btn btn-outline-secondary rounded-0 rounded-start'"
+            [cycled]="true"
+            [placement]="'bottom-start'"
+            [selectedValue]="searchType"
+            [valueList]="searchTypes"
+          ></app-default-dropdown>
+
+          <input
+            #search
+            (dblclick)="search.value=''"
+            [(ngModel)]="searchValue"
+            [class.is-invalid]="!search.validity.valid"
+            [class.is-valid]="search.validity.valid"
+            [placeholder]="'Введіть ' + searchType"
+            autofocus
+            class="form-control"
+            id="SearchInput"
+            pattern="\d*"
+            required
+            type="text"
+          />
+          <button (click)="getPromotionsInfo()" class="btn btn-primary">
+            <i class="bi bi-search me-1"></i> Знайти
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

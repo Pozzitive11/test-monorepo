@@ -1,0 +1,99 @@
+<app-loading-bar [loading]="inLoading().length > 0" customType="inf-bar" />
+
+<div *ngIf="router.url === '/ep_dashboards'" class="my-3 row">
+  <div class="col-12 col-md-6">
+    <div class="accordion" ngbAccordion>
+      <div [collapsed]="false" class="accordion-item" ngbAccordionItem>
+        <h2 class="accordion-header" ngbAccordionHeader>
+          <button class="accordion-button" ngbAccordionToggle>
+            Звіти в кеші ("назва__ліміт")
+          </button>
+        </h2>
+
+        <div class="collapse-show" ngbAccordionCollapse>
+          <div ngbAccordionBody>
+            <ng-template>
+              <div *ngFor="let cachedReport of reportsInCache()"
+                   [class.disabled-table]="inLoading().includes(cachedReport.key)"
+                   class="flex-column">
+                <app-loading-bar [loading]="inLoading().includes(cachedReport.key)" customType="inf-bar" />
+
+                <div class="alert alert-secondary d-flex">
+                  {{ cachedReport.key }} ({{ cachedReport.created_at | date: 'dd.MM.yyyy HH:mm' }})
+                  <div class="ms-auto">
+                    <span class="badge bg-primary bg-hover-info" title="Займає пам'яті">
+                      {{ formatByteSize(cachedReport.byte_size) }}
+                    </span>
+                    <span (click)="reloadReport(cachedReport.key)"
+                          class="ms-2 pointer badge bg-success bg-hover-success"
+                          title="Перезавантажити у кеші">
+                      <i class="bi bi-arrow-counterclockwise"></i>
+                    </span>
+                    <span (click)="deleteReport(cachedReport.key)"
+                          class="ms-2 pointer badge bg-danger bg-hover-danger"
+                          title="Видалити">
+                      <i class="bi bi-x-circle"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-6">
+    <div class="accordion" ngbAccordion>
+      <div [collapsed]="false" class="accordion-item" ngbAccordionItem>
+        <h2 class="accordion-header" ngbAccordionHeader>
+          <button class="accordion-button" ngbAccordionToggle>
+            Збережені raw-sql запити
+          </button>
+        </h2>
+
+        <div class="collapse-show" ngbAccordionCollapse>
+          <div ngbAccordionBody>
+            <ng-template>
+              <div>
+                <app-input-in-group (valueChangedNumber)="limit.set($event || 0)"
+                                    [typeOfInput]="'number'"
+                                    [value]="limit().toString()"
+                >
+                  <span class="input-group-text fw-bold">Ліміт:</span>
+                </app-input-in-group>
+              </div>
+              <div *ngFor="let rawSql of rawSqlNames()"
+                   [class.disabled-table]="inLoading().includes(rawSql + '__' + limit())"
+                   class="flex-column">
+                <app-loading-bar [loading]="inLoading().includes(rawSql + '__' + limit())" customType="inf-bar" />
+                <div class="alert alert-secondary d-flex">
+                  <div class="me-3">
+                    <span (click)="loadReport(rawSql, limit())"
+                          class="ms-2 pointer badge bg-success bg-hover-success"
+                          title="Завантажити в кеш">
+                      <i class="bi bi-arrow-left"></i>
+                    </span>
+                  </div>
+
+                  {{ rawSql }}
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<router-outlet />
+
+
+<!--   СПІНЕР    -->
+<ng-template #loadingSpinner>
+    <span class="badge ms-auto">
+      <app-loading-spinner [size]="20" [spinnerClass]="'loader-spinner'" />
+    </span>
+</ng-template>

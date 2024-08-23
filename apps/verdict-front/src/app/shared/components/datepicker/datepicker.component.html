@@ -1,0 +1,26 @@
+<ngb-datepicker
+  #dp
+  (dateSelect)="!disabled ? onDateSelection($event) : null"
+  [class.disabled-table]="disabled"
+  [dayTemplate]="t"
+  [displayMonths]="2"
+  [maxDate]="today"
+  outsideDays="hidden"
+>
+</ngb-datepicker>
+
+<ng-template #t let-date let-focused="focused">
+  <span (mouseenter)="hoveredDate=date"
+        (mouseleave)="hoveredDate=null"
+        *ngIf="!disabled"
+        [class.disabled-table]="disabled"
+        [class.faded]="isHovered(date) || isInside(date)"
+        [class.focused]="focused"
+        [class.range]="isRange(date)"
+        class="custom-day">
+    {{ date.day }}
+  </span>
+  <span *ngIf="disabled" class="custom-day disabled-table">{{ date.day }}
+  </span>
+</ng-template>
+

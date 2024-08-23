@@ -1,0 +1,56 @@
+<div *ngIf="reportData.length > 0" class="row max-width-div max-height-div top-margin-sm">
+  <table class="table table-bordered table-responsive table-sm text-12">
+    <caption>{{ 'Загальний звіт' }}</caption>
+    <thead class="sticky-top">
+    <tr class="header-level">
+      <th
+        *ngFor="let column of header; let j=index"
+        [style.vertical-align]="'middle'"
+        scope="col"
+      >
+        <span [ngbTooltip]="getTooltip(column)">{{ column }}</span>
+        <span
+          (click)="changeSortType(column)"
+          *ngIf="!nonSortedColumns.includes(column)"
+          [class.bi-filter-left]="getSortType(column).none"
+          [class.bi-sort-down]="getSortType(column).down"
+          [class.bi-sort-up]="getSortType(column).up"
+          [style.font-size]="'25px'"
+          [style.vertical-align]="'middle'"
+          class="bi"
+        ></span>
+      </th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <ng-container *ngFor="let row of reportData">
+      <tr
+        *ngFor="let data of row.phoneData; let i=index"
+        [class.top-level-row-0]="row.project.toString().includes('Всього')"
+        [class.top-level-row-1]="data.PhonePresence.toString().includes('Всього')"
+        style="text-align: right"
+      >
+        <ng-container *ngIf="i===0">
+          <td [rowSpan]="row.phoneData.length" style="text-align: left">{{ row.project }}</td>
+        </ng-container>
+        <td style="text-align: left">{{ data.PhonePresence }}</td>
+
+        <td>{{ data.data.ContractCount | number:'1.0-0' }}</td>
+        <td>{{ data.data.ContractCountProjectPercent | number:'1.0-2' }}</td>
+        <td>{{ data.data.SumDelayBody | number:'1.0-2' }}</td>
+        <td>{{ data.data.Outstanding | number:'1.0-2' }}</td>
+        <td>{{ data.data.BalancePercent | number:'1.0-2' }}</td>
+        <td>{{ data.data.SumDelayBodyPercent | number:'1.0-2' }}</td>
+        <td>{{ data.data.DebtPartPercent | number:'1.0-2' }}</td>
+        <td>{{ data.data.BodyAvg | number:'1.0-2' }}</td>
+        <td>{{ data.data.OutstandingAvg | number:'1.0-2' }}</td>
+        <td>{{ data.data.DpdAvg | number:'1.0-0' }}</td>
+        <td>{{ data.data.Deviation | number:'1.0-2' }}</td>
+      </tr>
+    </ng-container>
+    </tbody>
+
+  </table>
+</div>
+

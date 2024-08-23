@@ -1,0 +1,44 @@
+<ul *ngIf="collapsed && data.items && data.items.length > 0"
+    [@submenu]="expanded ? {value:'visible',params:{transitionParams:'400ms cubic-bezier(0.86,0,0.07,1)',height:'*'}} : {value:'hidden',params:{transitionParams:'400ms cubic-bezier(0.86,0,0.07,1)',height:'0'}} "
+    class="sublevel-nav">
+  <li *ngFor="let item of data.items" class="sublevel-nav-item">
+    <a (click)="handleClick(item)" *ngIf="item.items && item.items.length > 0" class="sublevel-nav-link">
+      <i class="sublevel-link-icon fa fa-circle"></i>
+      <span *ngIf="collapsed" class="sublevel-link-text">{{ item.label }}</span>
+      <i
+        *ngIf="item.items && collapsed"
+        [ngClass]="!item.expanded ? 'bi-chevron-right':'bi-chevron-down'"
+        class="menu-collapse-icon bi"
+      ></i>
+    </a>
+
+    <a
+      (click)="collapsed=false"
+      *ngIf="(!item.items || (item.items && item.items.length === 0)) && !item.external"
+      [routerLinkActiveOptions]="{exact: true}"
+      [routerLink]="[item.routeLink]"
+      class="sublevel-nav-link"
+      routerLinkActive="active-sublevel"
+    >
+      <i class="sublevel-link-icon fa fa-circle"></i>
+      <span *ngIf="collapsed" class="sublevel-link-text">{{ item.label }}</span>
+    </a>
+    <a
+      *ngIf="item.external"
+      [href]="item.routeLink"
+      class="sublevel-nav-link"
+    >
+      <i class="sublevel-link-icon fa fa-circle"></i>
+      <span *ngIf="collapsed" class="sublevel-link-text">{{ item.label }}</span>
+    </a>
+
+    <div *ngIf="item.items && item.items.length > 0">
+      <app-sublevel-menu [collapsed]="collapsed" [data]="item" [expanded]="item.expanded" [multiple]="multiple">
+      </app-sublevel-menu>
+    </div>
+
+
+  </li>
+
+
+</ul>

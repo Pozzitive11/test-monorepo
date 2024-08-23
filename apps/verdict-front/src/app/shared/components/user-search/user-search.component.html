@@ -1,0 +1,20 @@
+<ng-template #rt let-r="result" let-t="term">
+  <ngb-highlight
+    [result]="r.Login + '(' + r.FullName + ')'" [term]="t"
+  ></ngb-highlight>
+</ng-template>
+
+<label for="typeahead-format">{{ title }}</label>
+<input
+  (selectItem)="selectUser($event.item)"
+  [(ngModel)]="selectedUser"
+  [editable]="false"
+  [inputFormatter]="formatter"
+  [ngbTypeahead]="search"
+  [resultTemplate]="rt"
+  class="form-control"
+  id="typeahead-format"
+  placeholder="Введіть логін або ім'я..."
+  type="text"
+/>
+

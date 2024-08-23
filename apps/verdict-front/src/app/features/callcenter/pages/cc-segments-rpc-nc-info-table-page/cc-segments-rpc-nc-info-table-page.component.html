@@ -1,0 +1,80 @@
+<nav aria-label="Page navigation" class="top-margin-sm">
+  <div class="row">
+    <div class="col-6">
+      <button class="btn btn-outline-secondary" routerLink="/callcenter/SegmentsRPCNC">Повернутися</button>
+      <button
+        (click)="downloadPhones()"
+        class="btn btn-outline-success left-margin-sm"
+      >
+        Скачати файл з телефонами
+      </button>
+    </div>
+
+    <div class="col-6">
+      <ul class="pagination justify-content-end">
+        <li [class.disabled-table]="page===1" class="page-item pointer">
+          <a (click)="previousPage()" class="page-link" tabindex="-1"> < </a>
+        </li>
+        <li *ngFor="let p of allPages()" [class.active]="p===page" class="page-item pointer">
+          <a (click)="goToPage(p)" class="page-link">{{ p }}</a>
+        </li>
+        <li [class.disabled-table]="page===totalPages" class="page-item pointer">
+          <a (click)="nextPage()" class="page-link"> > </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<ngb-progressbar
+  *ngIf="updating"
+  [animated]="true"
+  [height]="'7px'"
+  [striped]="true"
+  [type]="'info'"
+  [value]="100"
+></ngb-progressbar>
+
+<div
+  *ngIf="dataInfo.length > 0"
+  [class.disabled-table]="updating"
+  class="row max-height-div"
+>
+  <table class="table table-bordered table-responsive table-hover table-sm text-12">
+    <caption>Сегменти RPC і NC</caption>
+    <thead class="sticky-top">
+    <tr class="header-level">
+      <th *ngFor="let region_type of header" scope="col">
+        {{ region_type }}
+      </th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr
+      *ngFor="let row of dataInfoShown"
+      style="text-align: left"
+    >
+      <td> {{ row.RegionType }}</td>
+      <td> {{ row.ProjectName }}</td>
+      <td> {{ row.RNumber }}</td>
+      <td> {{ row.ContractId }}</td>
+      <td> {{ row.INN }}</td>
+      <td> {{ row.Surname }}</td>
+      <td> {{ row.Name }}</td>
+      <td> {{ row.MiddleName }}</td>
+      <td style="text-align: right"> {{ row.SumToClose | number:'1.0-2' }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+
+
+
+
+

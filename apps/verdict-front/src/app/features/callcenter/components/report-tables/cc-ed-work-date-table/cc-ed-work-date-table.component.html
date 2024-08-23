@@ -1,0 +1,96 @@
+<ngb-progressbar
+  *ngIf="updating"
+  [animated]="true"
+  [height]="'7px'"
+  [striped]="true"
+  [type]="'info'"
+  [value]="100"
+></ngb-progressbar>
+<div
+  *ngIf="shownData.length > 0"
+  [class.disabled-table]="updating"
+  class="row max-height-div"
+>
+  <table class="table table-bordered table-responsive table-sm text-12">
+    <caption>Щоденна робота КЦ</caption>
+    <thead class="sticky-top">
+    <tr class="header-level">
+      <th [colSpan]="header.length-4"></th>
+      <th colspan="4">Нові RPC</th>
+    </tr>
+
+    <tr class="header-level">
+      <th
+        (click)="hideAllColumn(column)"
+        *ngFor="let column of header; let c=index"
+        [class.pointer]="c<2"
+        scope="col"
+      >
+        {{ column }}
+      </th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <ng-container *ngFor="let projectRow of shownData; let i=index">
+      <ng-container *ngFor="let dateRow of projectRow.ProjectData; let j=index">
+        <tr
+          *ngFor="let row of dateRow.ADateData; let r=index"
+          [class.top-level-row-0]="projectRow.ProjectName.includes('Всього')"
+          [class.top-level-row-1]="dateRow.ADate.toString().includes('Всього')"
+          [class.top-level-row-2]="row.Rnumber.toString().includes('Всього')"
+          style="text-align: right"
+        >
+          <td
+            (click)="hideRow(i)"
+            *ngIf="r+j === 0"
+            [class.pointer]="!projectRow.ProjectName.includes('Всього')"
+            [rowSpan]="countColumnLength(projectRow)"
+            style="text-align: left"
+          >
+            <ng-container *ngIf="!projectRow.ProjectName.includes('Всього')">
+              <b *ngIf="isRowHidden(i)">[+]</b>
+              <b *ngIf="!isRowHidden(i)">[-]</b>
+            </ng-container>
+            {{ projectRow.ProjectName }}
+          </td>
+          <td
+            (click)="hideRow(i, j)"
+            *ngIf="r === 0"
+            [class.pointer]="!dateRow.ADate.toString().includes('Всього')"
+            [rowSpan]="countColumnLength(dateRow)"
+            style="text-align: left"
+          >
+            <ng-container *ngIf="!dateRow.ADate.toString().includes('Всього') && dateRow.ADate !== ''">
+              <b *ngIf="isRowHidden(i, j)">[+]</b>
+              <b *ngIf="!isRowHidden(i, j)">[-]</b>
+            </ng-container>
+            {{ dateRow.ADate | formatDate:false }}
+          </td>
+
+          <td style="text-align: left">
+            {{ row.Rnumber }}
+          </td>
+
+          <td> {{ row.PTPCount }}</td>
+          <td> {{ row.PTPSum | number:'1.2-2' }}</td>
+          <td> {{ row.Prc | number:'1.0-2' }}</td>
+          <td> {{ row.IncomeFromPTP | number:'1.2-2' }}</td>
+          <td> {{ row.RPCcount }}</td>
+          <td> {{ row.PTPtoRPCPercent | number:'1.0-2' }}</td>
+          <td> {{ row.PTPUnicCount }}</td>
+          <td> {{ row.PTPUnicSum | number:'1.2-2' }}</td>
+          <td> {{ row.RPCUnic196 }}</td>
+          <td> {{ row.RPCUnic202 }}</td>
+          <td> {{ row.RPCUnic210 }}</td>
+          <td> {{ row.RPCUnicCount }}</td>
+        </tr>
+      </ng-container>
+    </ng-container>
+    </tbody>
+
+  </table>
+</div>
+
+
+

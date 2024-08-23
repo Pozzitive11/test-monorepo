@@ -1,0 +1,58 @@
+<div #accordion="ngbAccordion" ngbAccordion>
+  <div
+    #third="ngbAccordionItem"
+    [class.disabled]="third.disabled"
+    class="custom-accordion-item"
+    ngbAccordionItem="third"
+  >
+    <div class="accordion-button pointer custom-accordion-header" ngbAccordionHeader ngbAccordionToggle>
+      <div class="d-flex justify-content-between align-items-center w-100">
+        <div class="d-block text-white bg-danger p-2 rounded">
+          {{ blockName }}
+          <i
+            class="bi bi-info-circle"
+            ngbPopover="Оператор зафіксував результат дії 'Запрещено контактироват' лише по одному з усіх діючих КД боржника ( по ІПН)"
+            style="margin-left: 5px"
+            triggers="mouseenter:mouseleave"
+          ></i>
+        </div>
+        <div *ngIf="clientsCount === 0" class="spinner-border text-danger" role="status" style="margin-right: 15px">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <strong *ngIf="clientsCount" class="d-block" style="margin-right: 15px">
+          Кількість ІПН: {{ clientsCount }}
+        </strong>
+      </div>
+    </div>
+
+    <div ngbAccordionCollapse>
+      <div ngbAccordionBody>
+        <ng-template>
+          <div *ngFor="let user of nonBannedClients | keyvalue">
+            <div class="card mb-3">
+              <div class="card-body">
+                <h5 class="card-title">ІПН: {{ user.key }}</h5>
+                <div *ngFor="let userInfo of user.value">
+                  <table class="table table-bordered">
+                    <thead class="table-light">
+                    <tr>
+                      <th scope="col">НКС</th>
+                      <th scope="col">Номер телефону</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let userContractId of userInfo.contract_ids">
+                      <td>{{ userContractId }}</td>
+                      <td>+3{{ userInfo.number }}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,203 @@
+<div class="container-fluid top-margin-sm">
+  <!--  ФИЛЬТРЫ ТУТ -->
+  <div class="alert alert-info top-margin-sm">
+    <div class="row">
+      <div class="col-3">
+        <a (click)="switchReestrMode()" class="nav-link pointer">
+          <input
+            [checked]="isInvestProjectOnly"
+            class="form-check-input big-check"
+            type="checkbox"
+          >
+          Фільтр за інвест-портфелями
+        </a>
+        <div [class.disabled-table]="isInvestProjectOnly" class="row top-margin-sm">
+          <app-project-manager></app-project-manager>
+        </div>
+        <div [class.disabled-table]="isInvestProjectOnly" class="row top-margin-sm">
+          <app-project></app-project>
+        </div>
+
+        <hr style="width: 80%">
+
+        <div [class.disabled-table]="!isInvestProjectOnly" class="row top-margin-sm">
+          <app-invest-project></app-invest-project>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="row">
+          <a
+            (click)="toggleIsActual()"
+            class="nav-link pointer"
+          >
+            <input
+              [checked]="isActual"
+              class="form-check-input big-check"
+              type="checkbox"
+            >
+            Актуальні реєстри
+          </a>
+        </div>
+        <div class="row top-margin-sm">
+          <app-reestr-type></app-reestr-type>
+        </div>
+        <div class="row top-margin-sm">
+          <app-reestr-status></app-reestr-status>
+        </div>
+        <div class="row top-margin-sm">
+          <app-reestr></app-reestr>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="row top-margin-sm">
+          <app-dpd-bucket-filter></app-dpd-bucket-filter>
+        </div>
+        <div class="row top-margin-sm">
+          <app-debts-filter></app-debts-filter>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row top-margin-sm">
+      <div class="col-4">
+        <button
+          (click)="getData()"
+          [disabled]="!allFiltersSelected() || loading"
+          class="btn btn-success"
+        >
+          Завантажити звіт
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!--  ВКЛАДКИ ОТЧЁТОВ ТУТ -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!--    <a class="navbar-brand left-margin-sm">СЕГМЕНТАЦІЯ</a>-->
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li *ngFor="let segmentation of segmentationTypes" class="nav-item">
+        <div
+          [class.success-color]="selectedSegmentationTypes.includes(segmentation.type)"
+        >
+          <a
+            (click)="selectedTotalReport=false; toggleSegmentType(segmentation.type); updateReport()"
+            [ngbTooltip]="segmentation.description"
+            class="nav-link fw-bold pointer"
+          >
+            {{ segmentation.type }}
+          </a>
+        </div>
+      </li>
+      <li *ngIf="selectedSegmentationTypes.length > 0" class="nav-item"
+          style="margin-left: -0.5rem; margin-top: -0.7rem">
+        <a
+          [ngbTooltip]="'Очистити'"
+          class="nav-link fw-bold pointer"
+        >
+          <button (click)="selectedSegmentationTypes=[]; updateReport()" aria-label="Close" class="btn-close"
+                  type="button"></button>
+        </a>
+      </li>
+
+      <li class="nav-item left-margin-sm"></li>
+      <li class="nav-item left-margin-sm"></li>
+      <li *ngFor="let phone of phoneTypes" class="nav-item">
+        <div
+          [class.info-color]="selectedPhoneTypes.includes(phone.type) && selectedTotalReport"
+          [class.success-color]="selectedPhoneTypes.includes(phone.type) && !selectedTotalReport"
+        >
+          <a
+            (click)="togglePhoneType(phone.type); updateReport()"
+            [ngbTooltip]="phone.description"
+            class="nav-link fw-bold pointer"
+          >{{ phone.type }}</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <div
+          [class.info-color]="phoneTypesSplit && selectedTotalReport"
+          [class.success-color]="phoneTypesSplit && !selectedTotalReport"
+        >
+          <a
+            (click)="splitPhoneType()"
+            [ngbTooltip]="'Розділити інформацію по наявності телефонів на наявність актуального мобільного телефону та наявність лише стаціонарного'"
+            [style.vertical-align]="'middle'"
+            class="bi bi-vr nav-link fw-bold pointer"
+          ></a>
+        </div>
+      </li>
+      <li *ngIf="selectedPhoneTypes.length > 0" class="nav-item" style="margin-left: -0.5rem; margin-top: -0.7rem">
+        <a
+          [ngbTooltip]="'Очистити'"
+          class="nav-link fw-bold pointer"
+        >
+          <button (click)="selectedPhoneTypes=[]; updateReport()" aria-label="Close" class="btn-close"
+                  type="button"></button>
+        </a>
+      </li>
+
+      <li class="nav-item left-margin-sm"></li>
+      <li class="nav-item left-margin-sm"></li>
+      <li class="nav-item">
+        <div
+          [class.info-color]="selectedTotalReport"
+        >
+          <a
+            (click)="selectedTotalReport=!selectedTotalReport; selectedSegmentationTypes=[]; updateReport()"
+            [ngbTooltip]="'Звіт з групуванням по проєктах. Всі проєкти в одній таблиці, сегментація відсутня.'"
+            class="nav-link fw-bold pointer"
+          >
+            Загальний звіт
+          </a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+
+  <!--  ТАБЛИЦА СО СРЕДНИМИ ЗНАЧЕНИЯМИ ТУТ -->
+  <app-cc-segments-rpc-nc-total-info-box>
+  </app-cc-segments-rpc-nc-total-info-box>
+
+
+  <!--  ТАБЛИЦА С ОТЧЁТОМ ТУТ -->
+  <app-loading-spinner *ngIf="loading" class="top-margin-sm"></app-loading-spinner>
+  <div>
+    <ngb-progressbar
+      *ngIf="updating"
+      [animated]="true"
+      [height]="'7px'"
+      [striped]="true"
+      [type]="'info'"
+      [value]="100"
+    ></ngb-progressbar>
+  </div>
+
+  <app-cc-segmentation-total-table
+    *ngIf="reportType==='TotalReport'"
+    [class.disabled-table]="updating || loading"
+  ></app-cc-segmentation-total-table>
+  <app-cc-segmentation-dpd-table
+    *ngIf="reportType==='DpdReport'"
+    [class.disabled-table]="updating || loading">
+  </app-cc-segmentation-dpd-table>
+  <app-cc-segmentation-debt-table
+    *ngIf="reportType==='DebtReport'"
+    [class.disabled-table]="updating || loading">
+  </app-cc-segmentation-debt-table>
+  <app-cc-segmentation-debt-dpd-table
+    *ngIf="reportType==='DebtDpdReport'"
+    [class.disabled-table]="updating || loading">
+  </app-cc-segmentation-debt-dpd-table>
+
+</div>
+
+
+
+
+
+
+

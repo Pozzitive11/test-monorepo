@@ -1,0 +1,31 @@
+.mat-dialog-container {
+  width: 400px;
+  max-width: 100%;
+  padding: 0;
+}
+
+.mat-dialog-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.mat-dialog-content {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.mat-dialog-actions {
+  padding: 15px 24px;
+}
+
+button.mat-button {
+  min-width: 88px;
+}
+
+button.mat-button span {
+  white-space: nowrap;
+}
+
+mat-form-field {
+  width: 100%;
+}

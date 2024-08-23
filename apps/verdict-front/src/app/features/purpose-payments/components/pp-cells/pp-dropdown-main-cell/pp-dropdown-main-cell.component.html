@@ -1,0 +1,12 @@
+<app-default-dropdown
+  (valueSelected)="setDropdownValue($event)"
+  [btnClass]="'btn btn-secondary float-end'"
+  [fontSize]="11"
+  [cycled]="false"
+  [placement]="'bottom-end'"
+  [scrollable]="true"
+  [selectedValue]="value || ''"
+  [showTooltip]="false"
+  [valueList]="dropdownMenu"
+></app-default-dropdown>
+

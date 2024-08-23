@@ -1,0 +1,9 @@
+<h1 mat-dialog-title style="background-color: #007bff; color: #fff; padding: 20px; border-radius: 10px 10px 0 0;">{{ data.title }}</h1>
+<div mat-dialog-content style="padding: 20px;">
+  <label for="tagInput" style="font-size: 16px;">Введіть тег:</label>
+  <input type="text" id="tagInput" [(ngModel)]="tagValue" class="form-control custom-input" />
+</div>
+<div mat-dialog-actions style="padding: 10px 20px; border-top: 1px solid #e0e0e0; display: flex; justify-content: flex-end;">
+  <button mat-button (click)="onCancelClick()" style="background-color: transparent; color: #007bff; border: 2px solid #007bff; padding: 10px 20px; cursor: pointer; border-radius: 6px; transition: background-color 0.3s ease; margin-left: 10px;">Скасувати</button>
+  <button mat-button color="primary" (click)="onSaveClick()" style="background-color: #007bff; color: #fff; border: 2px solid #007bff; padding: 10px 20px; cursor: pointer; border-radius: 6px; transition: background-color 0.3s ease; margin-left: 10px;">Зберегти</button>
+</div>

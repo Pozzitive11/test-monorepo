@@ -1,0 +1,200 @@
+<div class="modal-header">
+  <h4 class="modal-title">НКС: <strong>{{ row['Системний номер договору'] }}</strong></h4>
+  <button (click)="activeModal.dismiss()" aria-label="Close" class="btn-close" type="button"></button>
+</div>
+
+<div class="modal-body">
+  <div class="row alert alert-secondary">
+
+    <ng-container *ngIf="!row['Причина неподачі']">
+
+      <!--    ДИСКОНТ  -->
+      <div *ngIf="showPromotions(row)" class="col-6 py-3">
+        <h6 class="h6">Дисконт</h6>
+        <div class="input-group mb-2">
+          <span class="input-group-text">Сума до сплати: </span>
+          <input
+            #SumToPay
+            (blur)="changeSumToPay()"
+            (dblclick)="SumToPay.value=''"
+            (keyup.enter)="SumToPay.blur()"
+            [(ngModel)]="sumToPay"
+            [class.is-invalid]="!SumToPay.validity.valid || row['% списання'] > 100"
+            [class.is-valid]="SumToPay.validity.valid && row['% списання'] <= 100"
+            class="form-control"
+            id="SumToPayInput"
+            pattern="(?:[\d\s]+[.,]?\d{0,2})?"
+            required
+            type="text"
+          />
+          <span class="input-group-text">грн</span>
+        </div>
+
+        <p>Відсоток списання по ДС: <strong>{{ row['% списання'] | number:'1.0-2' }} %</strong></p>
+        <input
+          (change)="changeWriteOffPercent()"
+          [(ngModel)]="row['% списання']"
+          [max]="100"
+          class="form-range white-range"
+          min="0"
+          name="dcWriteOffPercentInput"
+          step="1"
+          type="range"
+        >
+
+        <p>Сума до сплати: <strong>{{ row['Сума до сплати'] | number:'1.0-2' }} грн</strong></p>
+      </div>
+
+
+      <!--    РЕСТРУКТУРИЗАЦИЯ  -->
+      <div *ngIf="showPromotions(row)" class="col-6 py-3">
+        <h6 class="h6">Реструктуризація</h6>
+        <p>Кількість місяців для розбивки: <strong>{{ row['Кількість місяців по РС'] }}</strong></p>
+        <input
+          (ngModelChange)="changeRSMonths()"
+          [(ngModel)]="row['Кількість місяців по РС']"
+          [max]="maxMonths"
+          class="form-range white-range"
+          min="0"
+          name="rcMonthsInput"
+          step="1"
+          type="range"
+        >
+        <p>Сума оплат/місяць: <strong>{{ row['Сума оплат/місяць'] | number:'1.0-2' }} грн</strong></p>
+      </div>
+
+
+      <!--    ДАТА    -->
+      <div *ngIf="showPromotions(row)" class="col-6 py-3">
+        <h6 class="h6">Гранична дата по узгодженню</h6>
+        <form class="row row-cols-sm-auto">
+          <div>
+            <div class="input-group">
+              <input
+                #d="ngbDatepicker"
+                [(ngModel)]="row['Гранична дата по узгодженню']"
+                class="form-control"
+                name="dp"
+                ngbDatepicker
+                placeholder="dd.mm.yyyy"
+              >
+              <button (click)="d.toggle()" class="btn btn-outline-secondary calendar" type="button"></button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+
+      <!--     Дата відправки     -->
+      <div class="col-6 py-3">
+        <h6 class="h6">Дата відправки</h6>
+        <form class="row row-cols-sm-auto">
+          <div class="input-group">
+            <input
+              #d="ngbDatepicker"
+              [(ngModel)]="row['Дата відправки']"
+              class="form-control"
+              name="dp"
+              ngbDatepicker
+              placeholder="dd.mm.yyyy"
+            >
+            <button (click)="d.toggle()" class="btn btn-outline-secondary calendar" type="button"></button>
+          </div>
+        </form>
+      </div>
+
+      <!--     Шляхи відправки     -->
+      <div class="col-6 py-3">
+        <dc-paths-of-doc-sending
+          (pathsChosen)="changePaths($event)"
+          [pathsOfSending]="pathsOfSending"
+        ></dc-paths-of-doc-sending>
+      </div>
+
+      <!--     Адреса Укр або Нової пошти     -->
+      <div class="col-6 py-3">
+        <h6 class="h6">Адреса Укр або Нової пошти</h6>
+        <textarea
+          #address_val
+          (keydown.enter)="address_val.blur()"
+          [(ngModel)]="row['Адреса Укр або Нової пошти']"
+          [title]="row['Адреса Укр або Нової пошти']"
+          class="form-control inputdefault"
+          placeholder="Адреса Укр або Нової пошти..."
+          rows="4"
+        ></textarea>
+      </div>
+
+      <!--     Індивідуальні умови стосовно Угоди     -->
+      <div class="col-6 py-3">
+        <h6 class="h6">Індивідуальні умови стосовно Угоди</h6>
+        <textarea
+          #individual_val
+          (keydown.enter)="individual_val.blur()"
+          [(ngModel)]="row['Індивідуальні умови стосовно Угоди']"
+          [title]="row['Індивідуальні умови стосовно Угоди']"
+          class="form-control inputdefault"
+          placeholder="Індивідуальні умови стосовно Угоди..."
+          rows="4"
+        ></textarea>
+      </div>
+
+      <!--  ТС  -->
+      <div class="col-6 py-3">
+        <h6 class="h6">ТС</h6>
+        <app-user-search
+          (click)="loadOperators()"
+          (userSelected)="changeTS($event)"
+          [inputUser]="getOperatorModel()"
+          [users]="operators"
+        ></app-user-search>
+      </div>
+
+
+      <!--     ВСЯКИЕ ШТУКИ ИЗ РАСШИРЕННОГО ФАЙЛА     -->
+      <div class="col-6 py-3">
+        <dc-additional-docs-fields
+          (fieldChanged)="changeAdditionalDocsFields($event)"
+          [row]="row"
+        ></dc-additional-docs-fields>
+      </div>
+
+    </ng-container>
+
+
+    <!--    КОММЕНТАРИЙ  -->
+    <div class="col-6 py-3">
+      <h6 class="h6">Примітка</h6>
+      <textarea
+        #comment_val
+        (keydown.enter)="comment_val.blur()"
+        [(ngModel)]="row['Коментар ТС']"
+        [title]="row['Коментар ТС']"
+        class="form-control inputdefault"
+        placeholder="Коментар..."
+        rows="4"
+      ></textarea>
+    </div>
+
+
+    <!--    ОРИГІНАЛ ДОГОВОРУ  -->
+    <div class="col-6 py-3">
+      <h6 class="h6">Оригінал дод. угоди з підписом боржника</h6>
+      <app-switch-checkbox
+        [(value)]="row['Оригінал дод. угоди з підписом боржника']"
+        [id]="'originalsSwitch'"
+      >Оригінал дод. угоди з підписом боржника
+      </app-switch-checkbox>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button (click)="save(); activeModal.close()" class="btn btn-outline-success">Зберегти зміни</button>
+</div>
+
+
+
+
+
+

@@ -1,0 +1,10 @@
+<input
+  #cell
+  (blur)="changeValue()"
+  (focusin)="oldValue=value"
+  (keydown.enter)="cell.blur()"
+  (keydown.escape)="cancelChange()"
+  (ngModelChange)="cleanValue($event)"
+  [ngModel]="value"
+  class="form-control inputdefault text-11"
+>

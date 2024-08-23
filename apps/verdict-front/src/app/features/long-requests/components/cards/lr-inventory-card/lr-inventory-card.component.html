@@ -1,0 +1,78 @@
+<div class="card">
+  <h5 (click)="cardBody.hidden=!cardBody.hidden" class="card-header pointer">
+    Інформація про опис майна
+    <span class="float-end">
+      <i [class.bi-chevron-down]="cardBody.hidden" [class.bi-chevron-up]="!cardBody.hidden" class="bi"></i>
+    </span>
+  </h5>
+  <ngb-progressbar
+    *ngIf="loading"
+    [animated]="true"
+    [height]="'3px'"
+    [striped]="true"
+    [type]="'secondary'"
+    [value]="100"
+  ></ngb-progressbar>
+
+  <div #cardBody [class.disabled-table]="loading" class="card-body">
+    <ul *ngIf="fullPropertyList" class="list-group list-group-flush">
+
+      <li class="list-group-item">
+        <strong>К-ть землі:</strong>
+        <span class="float-end">{{ landCount }}</span>
+      </li>
+
+      <li *ngIf="!!landList && landList.length" class="list-group-item">
+        <lr-property-sub-card
+          *ngFor="let property of landList"
+          [inventoryObject]="property"
+          [propertyObj]="property.PropertyObject!"
+        ></lr-property-sub-card>
+      </li>
+
+      <li class="list-group-item">
+        <strong>К-ть житлової нерухомості:</strong>
+        <span class="float-end">{{ residentialCount }}</span>
+      </li>
+
+      <li *ngIf="!!residentialPropertyList && residentialPropertyList.length" class="list-group-item">
+        <lr-property-sub-card
+          *ngFor="let property of residentialPropertyList"
+          [inventoryObject]="property"
+          [propertyObj]="property.PropertyObject!"
+        ></lr-property-sub-card>
+      </li>
+
+      <li class="list-group-item">
+        <strong>К-ть нежитлової нерухомості:</strong>
+        <span class="float-end">{{ nonResidentialCount }}</span>
+      </li>
+
+      <li *ngIf="!!nonResidentialPropertyList && nonResidentialPropertyList.length" class="list-group-item">
+        <lr-property-sub-card
+          *ngFor="let property of nonResidentialPropertyList"
+          [inventoryObject]="property"
+          [propertyObj]="property.PropertyObject!"
+        ></lr-property-sub-card>
+      </li>
+
+      <li class="list-group-item">
+        <strong>К-ть авто:</strong>
+        <span class="float-end">{{ carPropertyCount }}</span>
+      </li>
+
+      <li *ngIf="!!carPropertyList && carPropertyList.length" class="list-group-item">
+        <lr-car-sub-card
+          *ngFor="let property of carPropertyList"
+          [carObj]="property.CarObject!"
+          [inventoryObject]="property"
+        ></lr-car-sub-card>
+      </li>
+
+    </ul>
+
+  </div>
+</div>
+
+
+

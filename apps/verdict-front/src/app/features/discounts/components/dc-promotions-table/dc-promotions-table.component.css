@@ -1,0 +1,53 @@
+
+table {
+  width: 100%;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 101;
+}
+
+td {
+  transition: all 0.5s linear;
+  min-width: 100px;
+  padding: 0.7rem 0.3rem;
+  background-color: transparent !important;
+}
+
+th {
+  padding: 0.7rem 0.3rem;
+  min-width: 100px;
+}
+
+.ellipsis td {
+  max-height: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ultra-small-col {
+  max-width: 50px !important;
+  min-width: 50px !important;
+  text-align: center;
+}
+
+.mid-col {
+  max-width: 250px !important;
+  min-width: 250px !important;
+}
+
+.small-mid-col {
+  max-width: 200px !important;
+  min-width: 200px !important;
+}
+
+.large-col {
+  max-width: 300px !important;
+  min-width: 300px !important;
+}
+
+

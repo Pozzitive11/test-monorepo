@@ -1,0 +1,29 @@
+<div class="py-4">
+  <div class="row mt-2 mb-4">
+    <div style="display: flex; justify-content: center">
+      <h2>Звільнити користувача</h2>
+    </div>
+  </div>
+
+  <div class="row d-flex justify-content-center mb--4">
+    <div class="col-5">
+      <ng-multiselect-dropdown
+        [placeholder]="'Логін користувача'"
+        [settings]="dropdownSettingsLogin"
+        [data]="dropdownListLogin"
+        [(ngModel)]="selectedItemsLogin"
+        (onSelect)="OnSelectLogin($event)"
+        (onDeSelect)="onDeSelectLogin($event)"
+        s
+        enableCheckAll="false"
+      >
+      </ng-multiselect-dropdown>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="d-flex justify-content-center">
+      <button (click)="deleted()" class="btn btn-primary" type="button">Звільнити</button>
+    </div>
+  </div>
+</div>

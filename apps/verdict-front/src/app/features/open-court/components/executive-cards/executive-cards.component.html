@@ -1,0 +1,98 @@
+<div class="card-container h-100">
+  <div class="col h-100">
+    <div class="row h-100">
+      <div class="col mb-3 h-100" *ngIf="executiveData">
+        <div class="card court-card">
+          <div class="card-header bg-primary text-white">
+            <h5 class="card-title">№ ВП: {{ executiveData.VP_ORDERNUM }}</h5>
+          </div>
+          <div class="card-body">
+            
+            <p *ngIf="executiveData.ORG_NAME" class="card-text">
+              <span class="highlight"><i class="fas fa-building"></i> Організація: </span>{{ executiveData.ORG_NAME }}
+            </p>
+            <p *ngIf="executiveData.DEBTOR_NAME" class="card-text">
+              <span class="highlight"><i class="fas fa-user"></i> Боржник: </span>{{ executiveData.DEBTOR_NAME }}
+            </p>
+            <p *ngIf="executiveData.DEBTOR_BIRTHDATE" class="card-text">
+              <span class="highlight"><i class="fas fa-birthday-cake"></i> Дата народження боржника: </span>{{ executiveData.DEBTOR_BIRTHDATE }}
+            </p>
+            <p *ngIf="executiveData.DEBTOR_CODE" class="card-text">
+              <span class="highlight"><i class="fas fa-id-card"></i> Код боржника: </span>{{ executiveData.DEBTOR_CODE }}
+            </p>
+            <p *ngIf="executiveData.CREDITOR_NAME" class="card-text">
+              <span class="highlight"><i class="fas fa-user-tie"></i> Кредитор: </span>{{ executiveData.CREDITOR_NAME }}
+            </p>
+            <p *ngIf="executiveData.CREDITOR_CODE" class="card-text">
+              <span class="highlight"><i class="fas fa-id-badge"></i> Код кредитора: </span>{{ executiveData.CREDITOR_CODE }}
+            </p>
+            <p *ngIf="executiveData.VP_BEGINDATE" class="card-text">
+              <span class="highlight"><i class="far fa-calendar-alt"></i> Дата початку виконавчого провадження: </span>{{ executiveData.VP_BEGINDATE }}
+            </p>
+            <p *ngIf="executiveData.VP_STATE" class="card-text">
+              <span class="highlight"><i class="fas fa-info-circle"></i> Статус виконавчого провадження: </span>{{ executiveData.VP_STATE }}
+            </p>
+          </div>
+          <div class="card-footer text-right">
+            <button class="btn-add"><i class="fas fa-plus"></i> Слідкувати за справою</button>
+            <button  class="btn btn-primary"  (click)="openModal(executiveData)">Детальніше</button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-content" *ngIf="FullEcecutiveCard">
+    <div class="modal-header">
+      <h4 class="modal-title">№ ВП: {{ FullEcecutiveCard.VP_ORDERNUM }}</h4>
+      <!-- <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss()"></button> -->
+    </div>
+    <div class="card">
+      <div class="card-body-flex">
+  
+        <!-- Кубик с информацией об организации -->
+        <div class="info-block" *ngIf="FullEcecutiveCard?.ORG_NAME">
+          <span class="highlight"><i class="fas fa-building"></i> Організація: </span>{{ FullEcecutiveCard.ORG_NAME }}
+        </div>
+  
+        <!-- Кубик с информацией о боржнике -->
+        <div class="info-block" *ngIf="FullEcecutiveCard?.DEBTOR_NAME || FullEcecutiveCard?.DEBTOR_BIRTHDATE || FullEcecutiveCard?.DEBTOR_CODE">
+          <p *ngIf="FullEcecutiveCard?.DEBTOR_NAME"><span class="highlight"><i class="fas fa-user"></i> Боржник: </span>{{ FullEcecutiveCard.DEBTOR_NAME }}</p>
+          <p *ngIf="FullEcecutiveCard?.DEBTOR_BIRTHDATE"><span class="highlight"><i class="fas fa-birthday-cake"></i> Дата народження боржника: </span>{{ FullEcecutiveCard.DEBTOR_BIRTHDATE }}</p>
+          <p *ngIf="FullEcecutiveCard?.DEBTOR_CODE"><span class="highlight"><i class="fas fa-id-card"></i> Код боржника: </span>{{ FullEcecutiveCard.DEBTOR_CODE }}</p>
+        </div>
+  
+        <!-- Кубик с информацией о кредиторе -->
+        <div class="info-block" *ngIf="FullEcecutiveCard?.CREDITOR_NAME || FullEcecutiveCard?.CREDITOR_CODE">
+          <p *ngIf="FullEcecutiveCard?.CREDITOR_NAME"><span class="highlight"><i class="fas fa-user-tie"></i> Кредитор: </span>{{ FullEcecutiveCard.CREDITOR_NAME }}</p>
+          <p *ngIf="FullEcecutiveCard?.CREDITOR_CODE"><span class="highlight"><i class="fas fa-id-badge"></i> Код кредитора: </span>{{ FullEcecutiveCard.CREDITOR_CODE }}</p>
+        </div>
+  
+        <!-- Кубик с информацией о начале виконавчого провадження -->
+        <div class="info-block" *ngIf="FullEcecutiveCard?.VP_BEGINDATE">
+          <p><span class="highlight"><i class="far fa-calendar-alt"></i> Дата початку виконавчого провадження: </span>{{ FullEcecutiveCard.VP_BEGINDATE }}</p>
+        </div>
+  
+        <!-- Кубик с информацией о статусе виконавчого провадження -->
+        <div class="info-block" *ngIf="FullEcecutiveCard?.VP_STATE">
+          <p><span class="highlight"><i class="fas fa-info-circle"></i> Статус виконавчого провадження: </span>{{ FullEcecutiveCard.VP_STATE }}</p>
+        </div>
+  
+        <!-- Кубик с информацией о телефоне -->
+        <div class="info-block" *ngIf="FullEcecutiveCard?.PHONE_NUM || FullEcecutiveCard?.EMAIL_ADDR || FullEcecutiveCard?.BANK_ACCOUNT">
+          <div *ngIf="FullEcecutiveCard?.PHONE_NUM">
+            <p><span class="highlight"><i class="fas fa-phone"></i> Телефон: </span>{{ FullEcecutiveCard.PHONE_NUM }}</p>
+          </div>
+          <div *ngIf="FullEcecutiveCard?.EMAIL_ADDR">
+            <p><span class="highlight"><i class="fas fa-envelope"></i> Email: </span>{{ FullEcecutiveCard.EMAIL_ADDR }}</p>
+          </div>
+          <div *ngIf="FullEcecutiveCard?.BANK_ACCOUNT">
+            <p><span class="highlight"><i class="fas fa-money-check-alt"></i> Банківський рахунок: </span>{{ FullEcecutiveCard.BANK_ACCOUNT }}</p>
+          </div>
+        </div>
+        <div class="card-footer text-right">
+          <button class="btn-add"><i class="fas fa-plus"></i> Слідкувати за справою</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

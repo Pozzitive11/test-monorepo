@@ -1,0 +1,84 @@
+<div *ngIf="qualityCallsService.isCallsLoaded$ | async">
+  <div class="table-responsive">
+    <table
+      class="table table-sm table-striped table-bordered my-5"
+      *ngIf="qualityCallsPaginationService.paginatedCredits$ | async as paginatedCredits"
+    >
+      <thead>
+        <tr>
+          <th>
+            ID дзвінка
+            <input
+              [(ngModel)]="qualityCallsService.vrIDInput"
+              class="form-control w-100"
+              type="text"
+              (input)="onFilterChange('vrID', $event.target)"
+              style="height: 30px"
+            />
+          </th>
+          <th>
+            Логін
+            <input
+              [(ngModel)]="qualityCallsService.loginInput"
+              class="form-control w-100"
+              type="text"
+              (input)="onFilterChange('Login', $event.target)"
+              style="height: 30px"
+            />
+          </th>
+          <th style="width: 200px">
+            Дата
+            <input
+              [(ngModel)]="qualityCallsService.startTimeInput"
+              class="form-control w-100"
+              type="text"
+              (input)="onFilterChange('StartTime', $event.target)"
+              style="height: 30px"
+            />
+          </th>
+          <th>
+            Тривалість
+            <input
+              [(ngModel)]="qualityCallsService.durationInput"
+              class="form-control w-100"
+              type="text"
+              (input)="onFilterChange('Duration', $event.target)"
+              style="height: 30px"
+            />
+          </th>
+          <th>
+            Номер телефону
+            <input
+              [(ngModel)]="qualityCallsService.phoneNumberInput"
+              class="form-control w-100"
+              type="text"
+              (input)="onFilterChange('PhoneNumber', $event.target)"
+              style="height: 30px"
+            />
+          </th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let call of qualityCallsPaginationService.paginatedCredits$ | async">
+          <td>{{ call.vrID }}</td>
+          <td>{{ call.Login }}</td>
+          <td>{{ call.StartTime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+          <td>{{ call.Duration  * 1000 | date: 'mm:ss' }}</td>
+          <td>{{ call.PhoneNumber }}</td>
+          <td>
+            <a
+              class="btn btn-info text-white"
+              [routerLink]="['/quality-control/quality-calls-call']"
+              [queryParams]="{ CallId: call.vrID }"
+              target="_blank"
+            >
+              Детальніше
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <app-quality-calls-pagination></app-quality-calls-pagination>
+</div>
