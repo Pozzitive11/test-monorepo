@@ -4,7 +4,7 @@
   "projectType": "application",
   "prefix": "app",
   "sourceRoot": "apps/verdict-front/src",
-  "tags": [],
+  "tags": ["type:app", "scope:verdict-front"],
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:application",

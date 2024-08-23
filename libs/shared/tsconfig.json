@@ -1,34 +1,18 @@
 {
   "compilerOptions": {
     "target": "es2022",
-    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
-    "declaration": false,
-    "downlevelIteration": true,
-    "experimentalDecorators": true,
-    "skipLibCheck": true,
-    "moduleResolution": "node",
-    "importHelpers": true,
-    "module": "es2020",
-    "strictPropertyInitialization": false,
-    "lib": ["es2020", "dom", "dom.iterable", "es5", "es6"],
-    "useDefineForClassFields": false
+    "noFallthroughCasesInSwitch": true
   },
   "files": [],
   "include": [],
   "references": [
     {
-      "path": "./tsconfig.editor.json"
-    },
-    {
-      "path": "./tsconfig.app.json"
+      "path": "./tsconfig.lib.json"
     },
     {
       "path": "./tsconfig.spec.json"

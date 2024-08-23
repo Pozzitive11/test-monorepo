@@ -8,7 +8,6 @@ import { HeaderComponent } from './shared/components/header/header.component';
 import { AuthComponent } from './shared/components/auth/auth.component';
 import { MessageBoxComponent } from './shared/components/message-box/message-box.component';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

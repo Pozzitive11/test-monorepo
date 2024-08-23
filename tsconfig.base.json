@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "crypto": ["/node_modules/crypto-js"]
+      "@test-monorepo/shared": ["libs/shared/src/index.ts"],
+      "crypto": ["node_modules/crypto-js"]
     }
   },
   "exclude": ["node_modules", "tmp"]

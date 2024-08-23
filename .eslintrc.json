@@ -15,6 +15,21 @@
               {
                 "sourceTag": "*",
                 "onlyDependOnLibsWithTags": ["*"]
+              },
+              {
+                "sourceTag": "type:app",
+                "onlyDependOnLibsWithTags": ["type:app", "type:shared"]
+              },
+              {
+                "sourceTag": "scope:verdict-front",
+                "onlyDependOnLibsWithTags": [
+                  "scope:verdict-front",
+                  "scope:shared"
+                ]
+              },
+              {
+                "sourceTag": "scope:shared",
+                "onlyDependOnLibsWithTags": ["scope:shared"]
               }
             ]
           }
