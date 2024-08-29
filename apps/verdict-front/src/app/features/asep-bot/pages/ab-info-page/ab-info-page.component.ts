@@ -3,7 +3,6 @@ import { MessageHandlingService } from '../../../../shared/services/message-hand
 import { AbAsepBotDataService } from '../../services/ab-asep-bot-data.service';
 import { AbHttpService } from '../../services/ab-http.service';
 import { Router } from '@angular/router';
-import { UtilFunctions } from '../../../../shared/utils/util.functions';
 import { WebSocketSubject } from 'rxjs/webSocket';
 import { FilesInWorkModel } from '../../models/files-in-work.model';
 import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
@@ -13,6 +12,7 @@ import { AbBotRulesComponent } from '../../components/ab-bot-rules/ab-bot-rules.
 import { NgbProgressbar, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { DecimalPipe, NgFor, NgIf } from '@angular/common';
 import { AuthService } from 'apps/verdict-front/src/app/core/services/auth.service';
+import { UtilFunctions } from '@test-monorepo/shared';
 
 @Component({
   selector: 'app-ab-info-page',

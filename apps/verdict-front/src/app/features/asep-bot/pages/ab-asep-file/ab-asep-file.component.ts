@@ -13,7 +13,7 @@ import { InputInGroupComponent } from '../../../../shared/components/input-in-gr
 import { FormsModule } from '@angular/forms';
 import { NgFor, NgIf } from '@angular/common';
 import { AuthService } from 'apps/verdict-front/src/app/core/services/auth.service';
-import { MessageHandlingService } from 'apps/verdict-front/src/app/shared/services/message-handling.service';
+import { MessageHandlingService } from '@test-monorepo/shared';
 
 @Component({
   selector: 'app-ab-asep-file',

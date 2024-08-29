@@ -1,0 +1,23 @@
+<div class="error-right pb-3">
+  @if (activeMessages()) {
+    <ngb-toast [autohide]="false" class="bg-warning pointer hide-anim text-white mb-2 text-center fw-bold fs-6 p-0"
+               (click)="hideAll()">
+      Приховати все
+    </ngb-toast>
+
+    @for (error of errors(); track error) {
+      <ngb-toast [autohide]="false" class="bg-danger hide-anim pointer text-white mb-1 bg-opacity-75"
+                 (click)="hideError(error)">
+        <span [innerHTML]="error"></span>
+      </ngb-toast>
+    }
+
+    @for (info of infos(); track info) {
+      <ngb-toast class="bg-success hide-anim pointer text-white mb-1"
+                 [autohide]="false"
+                 (click)="hideInfo(info)">
+        <span [innerHTML]="info"></span>
+      </ngb-toast>
+    }
+  }
+</div>
